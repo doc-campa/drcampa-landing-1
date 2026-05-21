@@ -85,7 +85,7 @@ collections:
             summary: "{{fields.type}} · {{fields.title_a}}{{fields.title}}{{fields.headline_main}}"
             types:
 
-              - label: "✨ Hero (intestazione a tutto schermo)"
+              - label: "✨ Hero"
                 name: "hero"
                 widget: "object"
                 summary: "Hero · {{fields.headline_main}} {{fields.headline_accent}}"
@@ -106,7 +106,7 @@ collections:
                   - {label: "Card missione - testo finale (parte normale)", name: "mission_sub_a", widget: "string", required: false}
                   - {label: "Card missione - testo finale (parte arancione)", name: "mission_sub_b", widget: "string", required: false}
 
-              - label: "💬 Problema (testo lungo + citazione)"
+              - label: "💬 Problema"
                 name: "problem"
                 widget: "object"
                 summary: "Problema · {{fields.title_a}} {{fields.title_accent}}"
@@ -133,7 +133,7 @@ collections:
                     field: {label: "Riga", name: "line", widget: "text"}
                   - {label: "Riga di chiusura", name: "final_line", widget: "text", required: false}
 
-              - label: "👤 Chi è il dottore (about con foto)"
+              - label: "👤 Chi è il dottore"
                 name: "about"
                 widget: "object"
                 summary: "About · {{fields.title}}"
@@ -149,7 +149,7 @@ collections:
                     field: {label: "Paragrafo", name: "p", widget: "text"}
                   - {label: "Citazione finale (box evidenziato)", name: "callout", widget: "text", required: false}
 
-              - label: "🟧 Card Valore (riquadro arancione con 3 vantaggi)"
+              - label: "🏅 Card valore"
                 name: "value_card"
                 widget: "object"
                 summary: "Card Valore · {{fields.title}}"
@@ -168,7 +168,7 @@ collections:
                   - {label: "Testo finale (parte normale)", name: "footnote", widget: "text", required: false}
                   - {label: "Testo finale (parte in GRASSETTO)", name: "footnote_strong", widget: "string", required: false}
 
-              - label: "🪜 Metodo (3 colonne con foto e numeri)"
+              - label: "🪜 Metodo"
                 name: "method"
                 widget: "object"
                 summary: "Metodo · {{fields.title_a}} {{fields.title_accent}}"
@@ -188,7 +188,7 @@ collections:
                       - {label: "Titolo", name: "title", widget: "string"}
                       - {label: "Descrizione", name: "body", widget: "text"}
 
-              - label: "🔺 Piramide (3 livelli)"
+              - label: "🔺 Piramide"
                 name: "levels"
                 widget: "object"
                 summary: "Piramide · {{fields.title_a}} {{fields.title_accent}}"
@@ -210,7 +210,7 @@ collections:
                   - {label: "Testo di chiusura", name: "footer_a", widget: "text", required: false}
                   - {label: "Testo di chiusura in grassetto", name: "footer_strong", widget: "string", required: false}
 
-              - label: "📦 Programmi (card grandi)"
+              - label: "📦 Programmi"
                 name: "programs"
                 widget: "object"
                 summary: "Programmi · {{fields.title_a}} {{fields.title_accent}}"
@@ -231,7 +231,7 @@ collections:
                       - {label: "Foto del programma", name: "photo", widget: "image"}
                       - {label: "Foto a destra del testo?", name: "reverse", widget: "boolean", default: false}
 
-              - label: "👥 Audience (3 colonne)"
+              - label: "👥 Audience"
                 name: "audience"
                 widget: "object"
                 summary: "Audience · {{fields.title_a}} {{fields.title_accent}}"
@@ -291,7 +291,7 @@ collections:
                       - {label: "Foto del paziente (avatar tondo)", name: "avatar", widget: "image"}
                       - {label: "Nome (e iniziale del cognome)", name: "name", widget: "string"}
 
-              - label: "💬 Grande citazione (sezione scura)"
+              - label: "🎤 Grande citazione"
                 name: "big_quote"
                 widget: "object"
                 summary: "Quote · {{fields.author_name}}"
@@ -300,7 +300,7 @@ collections:
                   - {label: "Foto autore (tonda)", name: "author_photo", widget: "image"}
                   - {label: "Nome autore", name: "author_name", widget: "string"}
 
-              - label: "🟧 Card Caratteristiche (arancione con pillole)"
+              - label: "✅ Caratteristiche"
                 name: "features_card"
                 widget: "object"
                 summary: "Caratteristiche · {{fields.title}}"
@@ -314,7 +314,7 @@ collections:
                       - {label: "Testo della pillola", name: "text", widget: "string"}
                       - {label: "Pillola SPECIALE (sfondo dorato + corsivo)", name: "special", widget: "boolean", default: false}
 
-              - label: "📝 Form di Contatto"
+              - label: "📩 Form Contatti"
                 name: "cta_form"
                 widget: "object"
                 summary: "Form Contatti · {{fields.title_a}} {{fields.title_accent}}"
