@@ -348,6 +348,97 @@ a { color:inherit; text-decoration:none; }
   animation:spin .8s linear infinite;
 }
 @keyframes spin { to { transform:rotate(360deg); } }
+
+/* ====== DRAG & DROP ====== */
+.section-row { cursor:default; }
+.section-drag { cursor:grab; user-select:none; }
+.section-drag:active { cursor:grabbing; }
+.section-row.is-dragging {
+  opacity:.4;
+  background:#f4ede3;
+}
+.section-row.drag-over-above {
+  box-shadow:inset 0 3px 0 0 var(--coral);
+}
+.section-row.drag-over-below {
+  box-shadow:inset 0 -3px 0 0 var(--coral);
+}
+
+/* ====== HISTORY MODAL ====== */
+.modal-backdrop {
+  position:fixed; inset:0; background:rgba(10,10,10,.6);
+  display:flex; align-items:center; justify-content:center;
+  z-index:200; padding:40px 20px;
+  backdrop-filter:blur(4px); -webkit-backdrop-filter:blur(4px);
+}
+.modal {
+  background:#fff; border-radius:16px; max-width:680px; width:100%;
+  max-height:80vh; display:flex; flex-direction:column;
+  box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+  overflow:hidden;
+}
+.modal-header {
+  display:flex; align-items:center; padding:18px 22px;
+  border-bottom:0.5px solid var(--line); gap:12px;
+}
+.modal-title { flex:1; font-weight:600; font-size:16px; }
+.modal-subtitle { color:var(--ink-light); font-size:13px; font-weight:400; }
+.modal-close {
+  padding:8px; border-radius:8px; color:var(--ink-light);
+}
+.modal-close:hover { background:#f4ede3; color:var(--ink); }
+.modal-body {
+  flex:1; overflow-y:auto; padding:8px 0;
+}
+.modal-loading {
+  padding:40px; text-align:center; color:var(--ink-light);
+}
+.commit-row {
+  display:grid; grid-template-columns:auto 1fr auto;
+  gap:14px; align-items:center;
+  padding:14px 22px; border-bottom:0.5px solid var(--line-soft);
+  transition:background .1s;
+}
+.commit-row:last-child { border-bottom:0; }
+.commit-row:hover { background:#fafaf7; }
+.commit-avatar {
+  width:32px; height:32px; border-radius:50%; background:#d4cab8;
+  display:grid; place-items:center; color:#5a554d; font-weight:600;
+  font-size:13px; flex-shrink:0; overflow:hidden;
+}
+.commit-avatar img { width:100%; height:100%; object-fit:cover; }
+.commit-info { min-width:0; }
+.commit-message {
+  font-size:13.5px; color:var(--ink); font-weight:500;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.commit-meta {
+  font-size:11.5px; color:var(--ink-light); margin-top:2px;
+}
+.commit-meta .latest {
+  display:inline-block; background:#e1f5ee; color:#0f6e56;
+  padding:1px 7px; border-radius:4px; font-weight:500;
+  margin-left:6px;
+}
+.commit-action {
+  padding:6px 14px; font-size:12px;
+  border:0.5px solid var(--line); border-radius:6px;
+  background:#fff; color:var(--ink); transition:all .12s;
+  cursor:pointer;
+}
+.commit-action:hover {
+  border-color:var(--coral); color:var(--coral); background:var(--coral-soft);
+}
+.commit-action.current {
+  border-color:transparent; color:var(--ink-light);
+  background:transparent; cursor:default;
+}
+.commit-action.current:hover {
+  border-color:transparent; color:var(--ink-light); background:transparent;
+}
+
+/* ====== PREVIEW PANEL hover hints (set inside iframe via injected CSS) ====== */
+/* (these go into the iframe srcdoc, see PREVIEW_HOVER_CSS in JS) */
 </style>
 </head>
 <body>
@@ -723,6 +814,152 @@ async function uploadImage(file){
 }
 
 /* =====================================================================
+   CLICK-TO-EDIT FROM PREVIEW
+   ===================================================================== */
+function openSectionFromPreview(idx){
+  if(!data || !data.sections || idx >= data.sections.length) return;
+  ui.expandedSection = idx;
+  renderEditor();
+  // Scroll the editor to the expanded section
+  setTimeout(() => {
+    const row = document.querySelector(`[data-section-idx="${idx}"]`);
+    if(row){
+      row.scrollIntoView({behavior:'smooth', block:'center'});
+    }
+  }, 50);
+}
+
+// Listen to messages from the preview iframe
+window.addEventListener('message', (e) => {
+  if(e.data && e.data.cms === 'open-section'){
+    openSectionFromPreview(e.data.idx);
+  }
+});
+
+/* =====================================================================
+   HISTORY MODAL
+   ===================================================================== */
+async function openHistory(){
+  // Show modal with loading state
+  let modal = document.querySelector('#historyModal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'historyModal';
+    document.body.appendChild(modal);
+  }
+  modal.innerHTML = `<div class="modal-backdrop" data-history-backdrop>
+    <div class="modal">
+      <div class="modal-header">
+        <div class="modal-title">Storico modifiche <span class="modal-subtitle">— ultime versioni di content.json</span></div>
+        <button class="modal-close" id="closeHistoryBtn" aria-label="Chiudi">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="modal-body" id="historyBody">
+        <div class="modal-loading"><div class="spinner" style="display:inline-block;vertical-align:middle;margin-right:8px"></div> Carico lo storico…</div>
+      </div>
+    </div>
+  </div>`;
+  // Close handlers
+  document.querySelector('#closeHistoryBtn').onclick = closeHistory;
+  document.querySelector('[data-history-backdrop]').onclick = (e) => {
+    if(e.target === e.currentTarget) closeHistory();
+  };
+  // Fetch commits
+  try {
+    const commits = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/commits?path=content.json&per_page=20&sha=${BRANCH}`);
+    renderHistoryList(commits);
+  } catch(err){
+    document.querySelector('#historyBody').innerHTML =
+      `<div class="modal-loading" style="color:var(--red)">Errore: ${esc(err.message)}</div>`;
+  }
+}
+function closeHistory(){
+  const m = document.querySelector('#historyModal');
+  if(m) m.remove();
+}
+function timeAgo(iso){
+  const then = new Date(iso).getTime();
+  const sec = Math.floor((Date.now() - then)/1000);
+  if(sec < 60) return 'pochi secondi fa';
+  if(sec < 3600) return Math.floor(sec/60) + ' min fa';
+  if(sec < 86400) return Math.floor(sec/3600) + ' ore fa';
+  if(sec < 86400*7) return Math.floor(sec/86400) + ' giorni fa';
+  return new Date(iso).toLocaleDateString('it-IT', {day:'numeric',month:'short',year:'numeric'});
+}
+function renderHistoryList(commits){
+  const body = document.querySelector('#historyBody');
+  if(!commits || !commits.length){
+    body.innerHTML = `<div class="modal-loading">Nessun commit trovato per content.json.</div>`;
+    return;
+  }
+  const rows = commits.map((c, i) => {
+    const author = c.commit.author || {};
+    const isLatest = i === 0;
+    const initials = (author.name || 'C').split(' ').map(s=>s[0]).join('').substring(0,2).toUpperCase();
+    const avatar = c.author && c.author.avatar_url
+      ? `<img src="${esc(c.author.avatar_url)}" alt="">`
+      : esc(initials);
+    return `<div class="commit-row">
+      <div class="commit-avatar">${avatar}</div>
+      <div class="commit-info">
+        <div class="commit-message">${esc(c.commit.message.split('\n')[0])}</div>
+        <div class="commit-meta">${esc(author.name||'?')} · ${esc(timeAgo(author.date))} · <code style="font-size:11px;color:var(--ink-light)">${esc(c.sha.substring(0,7))}</code>${isLatest?'<span class="latest">attuale</span>':''}</div>
+      </div>
+      ${isLatest
+        ? `<button class="commit-action current" disabled>Versione attuale</button>`
+        : `<button class="commit-action" data-restore-sha="${esc(c.sha)}" data-restore-msg="${esc(c.commit.message.split('\n')[0])}">Ripristina</button>`
+      }
+    </div>`;
+  }).join('');
+  body.innerHTML = rows;
+  // Wire restore buttons
+  body.querySelectorAll('[data-restore-sha]').forEach(btn => {
+    btn.onclick = async () => {
+      const sha = btn.dataset.restoreSha;
+      const msg = btn.dataset.restoreMsg;
+      if(!confirm(`Ripristinare la versione "${msg}" (${sha.substring(0,7)})?\n\nLe modifiche non pubblicate andranno perse. La versione attuale rimane nello storico.`)) return;
+      btn.disabled = true;
+      btn.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:-2px"></span> Ripristino…';
+      try {
+        await restoreVersion(sha);
+        closeHistory();
+        showToast('Versione ripristinata e pubblicata', 'success');
+      } catch(err){
+        btn.disabled = false;
+        btn.textContent = 'Ripristina';
+        showToast('Errore: ' + err.message, 'error');
+      }
+    };
+  });
+}
+async function restoreVersion(sha){
+  // Get the content of content.json at that commit
+  const file = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.json?ref=${sha}`);
+  const oldContent = b64decode(file.content.replace(/\n/g, ''));
+  // Validate JSON
+  let parsed;
+  try { parsed = JSON.parse(oldContent); }
+  catch(err){ throw new Error('Il file in quel commit non è JSON valido: ' + err.message); }
+  // Commit it as a NEW commit (preserving history)
+  const body = {
+    message: `Ripristina versione ${sha.substring(0,7)}`,
+    content: b64encode(oldContent),
+    sha: dataSha, // SHA of current content.json
+    branch: BRANCH
+  };
+  const r = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.json`, {
+    method: 'PUT',
+    body: body
+  });
+  dataSha = r.content.sha;
+  data = parsed;
+  ui.expandedSection = null;
+  ui.isDirty = false;
+  renderApp();
+}
+
+/* =====================================================================
    STATE HELPERS
    ===================================================================== */
 function getPath(obj, path){
@@ -1079,12 +1316,47 @@ async function buildPreviewHTML(){
     }
   }
   const baseCss = buildPreviewHTML._css;
-  const sectionsHTML = (data.sections||[]).map(s => {
+  const sectionsHTML = (data.sections||[]).map((s, i) => {
     const tpl = previewTemplates[s.type];
-    if(!tpl) return `<div style="padding:20px;background:#ffe;color:#a60">Tipo sconosciuto: ${esc(s.type)}</div>`;
-    try { return tpl(s); } catch(e){ return `<div style="padding:20px;background:#fee;color:#a60">Errore in ${esc(s.type)}: ${esc(e.message)}</div>`; }
+    let inner;
+    if(!tpl) inner = `<div style="padding:20px;background:#ffe;color:#a60">Tipo sconosciuto: ${esc(s.type)}</div>`;
+    else {
+      try { inner = tpl(s); }
+      catch(e){ inner = `<div style="padding:20px;background:#fee;color:#a60">Errore in ${esc(s.type)}: ${esc(e.message)}</div>`; }
+    }
+    // Wrap with click-to-edit marker
+    return `<div data-cms-section-idx="${i}" data-cms-section-type="${esc(s.type)}">${inner}</div>`;
   }).join('');
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,400..500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>body{margin:0}</style></head><body>${renderPreviewNav(data)}<main>${sectionsHTML}</main>${renderPreviewFooter(data)}</body></html>`;
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,400..500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>
+body{margin:0}
+[data-cms-section-idx]{position:relative; cursor:pointer;}
+[data-cms-section-idx]:hover{outline:3px dashed rgba(232,93,60,.55); outline-offset:-3px;}
+[data-cms-section-idx]::before{
+  content:"📍 Clicca per modificare " attr(data-cms-section-type);
+  position:absolute; top:12px; left:12px; z-index:9999;
+  background:#0a0a0a; color:#fff; padding:7px 14px; border-radius:999px;
+  font:600 12px/1 "Inter", system-ui, sans-serif; letter-spacing:.02em;
+  opacity:0; transform:translateY(-4px);
+  transition:opacity .15s, transform .15s; pointer-events:none;
+  box-shadow:0 8px 20px -4px rgba(0,0,0,.4);
+}
+[data-cms-section-idx]:hover::before{opacity:1; transform:translateY(0);}
+[data-cms-section-idx] a, [data-cms-section-idx] button, [data-cms-section-idx] input, [data-cms-section-idx] textarea, [data-cms-section-idx] select{cursor:pointer;}
+</style></head><body>${renderPreviewNav(data)}<main>${sectionsHTML}</main>${renderPreviewFooter(data)}<script>
+(function(){
+  document.addEventListener('click', function(e){
+    var sec = e.target.closest('[data-cms-section-idx]');
+    if(!sec) return;
+    // Lascia passare i click su elementi interattivi reali
+    if(e.target.closest('a, button, input, textarea, select, form')) return;
+    e.preventDefault(); e.stopPropagation();
+    var idx = parseInt(sec.getAttribute('data-cms-section-idx'));
+    if(!isNaN(idx)){
+      parent.postMessage({cms:'open-section', idx:idx}, '*');
+    }
+  }, true);
+})();
+<\/script></body></html>`;
 }
 
 async function updatePreview(){
@@ -1224,6 +1496,10 @@ function renderApp(){
         <div class="topbar-status" id="statusBar"><span class="dot"></span><span>Salvato</span></div>
         <div class="topbar-actions">
           <a class="btn btn-secondary" href="/" target="_blank" rel="noopener">Vedi sito ↗</a>
+          <button class="btn btn-secondary" id="historyBtn" title="Storico modifiche">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/><path d="M12 7v5l3 2"/></svg>
+            Storico
+          </button>
           <button class="btn btn-secondary" id="logoutBtn" title="Logout">Esci</button>
           <button class="btn btn-primary" id="saveBtn">Pubblica</button>
         </div>
@@ -1239,6 +1515,7 @@ function renderApp(){
   `;
   document.querySelector('#saveBtn').onclick = doSave;
   document.querySelector('#logoutBtn').onclick = logout;
+  document.querySelector('#historyBtn').onclick = openHistory;
   renderEditor();
   updatePreview();
 }
@@ -1330,8 +1607,8 @@ function renderSectionsBlock(){
     const label = TYPE_LABELS[s.type] || s.type;
     const summary = summarize(s);
     const formHTML = isExpanded ? renderSectionForm(s, i) : '';
-    return `<div class="section-row ${isExpanded?'expanded':''}" data-section-idx="${i}">
-      <div class="section-drag" title="Riordina (futuro)">
+    return `<div class="section-row ${isExpanded?'expanded':''}" data-section-idx="${i}" draggable="true">
+      <div class="section-drag" title="Trascina per riordinare">
         <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
         <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
         <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
@@ -1339,12 +1616,6 @@ function renderSectionsBlock(){
       <span class="section-pill ${pillClass}">${esc(label)}</span>
       <span class="section-summary" data-toggle-section="${i}">${esc(summary || TYPE_DESC[s.type] || '')}</span>
       <div class="section-actions">
-        <button data-move-section="${i}" data-direction="-1" aria-label="Sposta su" ${i===0?'disabled style="opacity:.3"':''}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
-        </button>
-        <button data-move-section="${i}" data-direction="1" aria-label="Sposta giù" ${i===sections.length-1?'disabled style="opacity:.3"':''}>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
-        </button>
         <button data-toggle-section="${i}" aria-label="${isExpanded?'Chiudi':'Apri'}">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:rotate(${isExpanded?'180':'0'}deg);transition:transform .15s"><polyline points="6 9 12 15 18 9"/></svg>
         </button>
@@ -1359,7 +1630,7 @@ function renderSectionsBlock(){
   return `<div class="sections-block">
     <div class="sections-header">
       <div class="sections-header-title">🧩 Sezioni della pagina</div>
-      <div class="sections-count">${sections.length} sezioni · clicca per modificare · usa ▲▼ per riordinare</div>
+      <div class="sections-count">${sections.length} sezioni · clicca per modificare · trascina per riordinare</div>
     </div>
     <div class="sections-list">${rows || '<div style="padding:20px;color:var(--ink-light);text-align:center">Nessuna sezione. Aggiungine una qui sotto.</div>'}</div>
     <div class="add-section-wrap">
@@ -1411,21 +1682,65 @@ function attachEditorListeners(){
     };
   });
 
-  // Move sections up/down
-  editor.querySelectorAll('[data-move-section]').forEach(el => {
-    el.onclick = (e) => {
-      e.stopPropagation();
-      const i = parseInt(el.dataset.moveSection);
-      const dir = parseInt(el.dataset.direction);
-      const j = i + dir;
-      if(j<0 || j>=data.sections.length) return;
-      const [moved] = data.sections.splice(i,1);
-      data.sections.splice(j, 0, moved);
-      if(ui.expandedSection === i) ui.expandedSection = j;
-      else if(ui.expandedSection === j) ui.expandedSection = i;
+  // Drag & drop sections
+  let dragSrcIdx = null;
+  editor.querySelectorAll('.section-row').forEach(row => {
+    row.addEventListener('dragstart', (e) => {
+      dragSrcIdx = parseInt(row.dataset.sectionIdx);
+      row.classList.add('is-dragging');
+      e.dataTransfer.effectAllowed = 'move';
+      // Required for Firefox
+      try { e.dataTransfer.setData('text/plain', String(dragSrcIdx)); } catch(err){}
+    });
+    row.addEventListener('dragend', () => {
+      row.classList.remove('is-dragging');
+      editor.querySelectorAll('.section-row').forEach(r => {
+        r.classList.remove('drag-over-above','drag-over-below');
+      });
+      dragSrcIdx = null;
+    });
+    row.addEventListener('dragover', (e) => {
+      if(dragSrcIdx === null) return;
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      const targetIdx = parseInt(row.dataset.sectionIdx);
+      if(targetIdx === dragSrcIdx) return;
+      // Determine if we're over the top or bottom half
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height/2;
+      row.classList.remove('drag-over-above','drag-over-below');
+      if(e.clientY < midY) row.classList.add('drag-over-above');
+      else row.classList.add('drag-over-below');
+    });
+    row.addEventListener('dragleave', () => {
+      row.classList.remove('drag-over-above','drag-over-below');
+    });
+    row.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if(dragSrcIdx === null) return;
+      const targetIdx = parseInt(row.dataset.sectionIdx);
+      if(targetIdx === dragSrcIdx) return;
+      const rect = row.getBoundingClientRect();
+      const midY = rect.top + rect.height/2;
+      const dropBelow = e.clientY >= midY;
+      let newIdx = dropBelow ? targetIdx + 1 : targetIdx;
+      // Adjust for removal of src that happens before insertion
+      if(dragSrcIdx < newIdx) newIdx--;
+      const [moved] = data.sections.splice(dragSrcIdx, 1);
+      data.sections.splice(newIdx, 0, moved);
+      // Track expanded section through the move
+      if(ui.expandedSection === dragSrcIdx) ui.expandedSection = newIdx;
+      else if(ui.expandedSection !== null){
+        // Recompute: this is messy because we moved an item. Simplest = if expanded was between src and new, shift by 1
+        const e1 = Math.min(dragSrcIdx, newIdx);
+        const e2 = Math.max(dragSrcIdx, newIdx);
+        if(ui.expandedSection >= e1 && ui.expandedSection <= e2){
+          ui.expandedSection += (dragSrcIdx > newIdx) ? 1 : -1;
+        }
+      }
       markDirty();
       renderEditor();
-    };
+    });
   });
 
   // Delete sections
