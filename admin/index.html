@@ -1373,19 +1373,29 @@ body{margin:0}
     }
   }, true);
 
-  // Receive highlight messages from parent
+  // Receive messages from parent
   window.addEventListener('message', function(e){
-    if(!e.data || e.data.cms !== 'highlight') return;
-    document.querySelectorAll('[data-cms-section-idx]').forEach(function(el){
-      el.classList.remove('cms-current');
-    });
-    if(e.data.idx == null) return;
-    var target = document.querySelector('[data-cms-section-idx="' + e.data.idx + '"]');
-    if(target) target.classList.add('cms-current');
+    if(!e.data) return;
+    if(e.data.cms === 'highlight'){
+      document.querySelectorAll('[data-cms-section-idx]').forEach(function(el){
+        el.classList.remove('cms-current');
+      });
+      if(e.data.idx == null) return;
+      var target = document.querySelector('[data-cms-section-idx="' + e.data.idx + '"]');
+      if(target) target.classList.add('cms-current');
+    } else if(e.data.cms === 'scroll-to'){
+      if(e.data.idx == null) return;
+      var target = document.querySelector('[data-cms-section-idx="' + e.data.idx + '"]');
+      if(target){
+        target.scrollIntoView({behavior:'smooth', block:'start'});
+      }
+    }
   });
 })();
 <\/script></body></html>`;
 }
+
+let pendingPreviewScroll = null;
 
 async function updatePreview(){
   const iframe = document.querySelector('#preview-iframe');
@@ -1396,8 +1406,15 @@ async function updatePreview(){
   const html = await buildPreviewHTML();
   const onLoad = () => {
     iframe.removeEventListener('load', onLoad);
-    // Restore scroll
-    try { iframe.contentWindow.scrollTo(0, savedScroll); } catch(e){}
+    if(pendingPreviewScroll !== null){
+      // User asked to scroll preview to a specific section (e.g. just added one)
+      const idx = pendingPreviewScroll;
+      pendingPreviewScroll = null;
+      setTimeout(() => scrollPreviewToSection(idx), 50);
+    } else {
+      // Normal data update: restore previous scroll position
+      try { iframe.contentWindow.scrollTo(0, savedScroll); } catch(e){}
+    }
     // Re-apply "currently editing" highlight on the right section
     syncPreviewHighlight();
   };
@@ -1413,6 +1430,18 @@ function syncPreviewHighlight(){
     iframe.contentWindow.postMessage({
       cms: 'highlight',
       idx: ui.expandedSection
+    }, '*');
+  } catch(e){}
+}
+
+/* Tell the iframe to scroll to a specific section */
+function scrollPreviewToSection(idx){
+  const iframe = document.querySelector('#preview-iframe');
+  if(!iframe || !iframe.contentWindow) return;
+  try {
+    iframe.contentWindow.postMessage({
+      cms: 'scroll-to',
+      idx: idx
     }, '*');
   } catch(e){}
 }
@@ -1732,9 +1761,10 @@ function attachEditorListeners(){
       const wasExpanded = ui.expandedSection === i;
       ui.expandedSection = wasExpanded ? null : i;
       renderEditor();
-      // If we just opened a section, scroll editor to it AND highlight in preview
+      // If we just opened a section: scroll BOTH editor row + preview section
       if(!wasExpanded){
         setTimeout(() => scrollEditorToSection(i), 60);
+        setTimeout(() => scrollPreviewToSection(i), 60);
       }
       syncPreviewHighlight();
     };
@@ -1833,6 +1863,8 @@ function attachEditorListeners(){
       data.sections.push(newSection);
       ui.expandedSection = data.sections.length - 1;
       ui.addMenuOpen = false;
+      // Schedule preview to scroll to the new section once iframe reloads with it
+      pendingPreviewScroll = ui.expandedSection;
       markDirty();
       renderEditor();
       setTimeout(() => scrollEditorToSection(ui.expandedSection), 60);
