@@ -1,5 +1,5 @@
 # =====================================================================
-# DECAP CMS — configurazione del pannello di amministrazione
+# CMS — configurazione del pannello di amministrazione
 # =====================================================================
 # Questo file definisce COSA il dottore può modificare dal pannello /admin
 # Quando si modifica un campo, le modifiche vengono salvate nel file
@@ -7,7 +7,8 @@
 # =====================================================================
 
 backend:
-  name: git-gateway
+  name: github
+  repo: doc-campa/drcampa-landing-1
   branch: main
 
 # Cartella dove vengono caricate le immagini dal pannello
@@ -22,11 +23,6 @@ site_url: /
 display_url: /
 
 collections:
-  # ===================================================================
-  # Una sola "collection" che contiene un solo file: content.json
-  # Il dottore vedrà UNA voce: "Landing page". Cliccandola apre
-  # l'editor per tutto il sito.
-  # ===================================================================
   - name: "content"
     label: "Contenuti del sito"
     delete: false
@@ -81,7 +77,6 @@ collections:
             summary: "{{fields.type}} — {{fields.title_a}}{{fields.title}}{{fields.headline_main}}"
             types:
 
-              # -----------------------------------------------------
               - label: "Hero (intestazione con sfondo grande)"
                 name: "hero"
                 widget: "object"
@@ -102,7 +97,6 @@ collections:
                   - {label: "Card missione - testo sotto, parte normale", name: "mission_sub_a", widget: "string", required: false}
                   - {label: "Card missione - testo sotto, parte evidenziata", name: "mission_sub_b", widget: "string", required: false}
 
-              # -----------------------------------------------------
               - label: "Problema (testo lungo con quote)"
                 name: "problem"
                 widget: "object"
@@ -129,7 +123,6 @@ collections:
                     field: {label: "Riga", name: "line", widget: "text"}
                   - {label: "Riga finale (centrata, arancione)", name: "final_line", widget: "text", required: false}
 
-              # -----------------------------------------------------
               - label: "Chi è il dottore (about con foto)"
                 name: "about"
                 widget: "object"
@@ -144,7 +137,6 @@ collections:
                     field: {label: "Paragrafo", name: "p", widget: "text"}
                   - {label: "Callout finale (riquadro evidenziato)", name: "callout", widget: "text", required: false}
 
-              # -----------------------------------------------------
               - label: "Card Valore (riquadro arancione con 3 vantaggi)"
                 name: "value_card"
                 widget: "object"
@@ -163,7 +155,6 @@ collections:
                   - {label: "Nota a piè di pagina", name: "footnote", widget: "text", required: false}
                   - {label: "Nota a piè di pagina - chiusura in grassetto", name: "footnote_strong", widget: "string", required: false}
 
-              # -----------------------------------------------------
               - label: "Metodo (3 colonne con foto e numeri)"
                 name: "method"
                 widget: "object"
@@ -183,7 +174,6 @@ collections:
                       - {label: "Titolo", name: "title", widget: "string"}
                       - {label: "Descrizione", name: "body", widget: "text"}
 
-              # -----------------------------------------------------
               - label: "Livelli (piramide a 3 stadi)"
                 name: "levels"
                 widget: "object"
@@ -205,7 +195,6 @@ collections:
                   - {label: "Testo di chiusura", name: "footer_a", widget: "text", required: false}
                   - {label: "Testo di chiusura - parte in grassetto", name: "footer_strong", widget: "string", required: false}
 
-              # -----------------------------------------------------
               - label: "Programmi (card grandi con foto)"
                 name: "programs"
                 widget: "object"
@@ -226,7 +215,6 @@ collections:
                       - {label: "Foto", name: "photo", widget: "image"}
                       - {label: "Foto a destra del testo?", name: "reverse", widget: "boolean", default: false}
 
-              # -----------------------------------------------------
               - label: "Audience (a chi è rivolto - 3 colonne)"
                 name: "audience"
                 widget: "object"
@@ -243,7 +231,6 @@ collections:
                       - {label: "Frase d'apertura in grassetto", name: "body_strong", widget: "string"}
                       - {label: "Resto del paragrafo", name: "body", widget: "text"}
 
-              # -----------------------------------------------------
               - label: "Statistiche (numeri grandi)"
                 name: "stats"
                 widget: "object"
@@ -269,7 +256,6 @@ collections:
                       - {label: "Etichetta sotto", name: "label", widget: "text"}
                   - {label: "Nota a piè di pagina", name: "footnote", widget: "text", required: false}
 
-              # -----------------------------------------------------
               - label: "Testimonianze (card con stelle e avatar)"
                 name: "testimonials"
                 widget: "object"
@@ -286,7 +272,6 @@ collections:
                       - {label: "Avatar (foto della persona)", name: "avatar", widget: "image"}
                       - {label: "Nome", name: "name", widget: "string"}
 
-              # -----------------------------------------------------
               - label: "Grande citazione (sezione scura)"
                 name: "big_quote"
                 widget: "object"
@@ -295,7 +280,6 @@ collections:
                   - {label: "Foto autore", name: "author_photo", widget: "image"}
                   - {label: "Nome autore", name: "author_name", widget: "string"}
 
-              # -----------------------------------------------------
               - label: "Card Caratteristiche (arancione con elenco pillole)"
                 name: "features_card"
                 widget: "object"
@@ -309,7 +293,6 @@ collections:
                       - {label: "Testo", name: "text", widget: "string"}
                       - {label: "Pillola speciale (sfondo diverso)", name: "special", widget: "boolean", default: false}
 
-              # -----------------------------------------------------
               - label: "Form di contatto (lead generation)"
                 name: "cta_form"
                 widget: "object"
