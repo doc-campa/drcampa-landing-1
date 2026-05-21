@@ -1,10 +1,6 @@
 # =====================================================================
 # CMS — pannello di amministrazione del sito Studio Campa
 # =====================================================================
-# Questa configurazione definisce TUTTO quello che il dottore può
-# modificare dal pannello di /admin. Ogni campo ha un suggerimento
-# che spiega cosa fa e dove appare sulla landing.
-# =====================================================================
 
 backend:
   name: github
@@ -13,14 +9,9 @@ backend:
   base_url: https://ubiquitous-bunny-0cd00a.netlify.app
   auth_endpoint: .netlify/functions/auth
 
-# Cartella dove vengono caricate le immagini dal pannello
 media_folder: "images"
 public_folder: "/images"
-
-# Lingua del pannello
 locale: 'it'
-
-# Mostra il pulsante "Vedi il sito" in alto a destra
 site_url: /
 display_url: /
 
@@ -28,7 +19,6 @@ collections:
   - name: "content"
     label: "Contenuti del sito"
     delete: false
-    # Anteprima attiva: a destra dell'editor compare il sito così come sarà
     editor:
       preview: true
     files:
@@ -45,11 +35,23 @@ collections:
             name: "site"
             widget: "object"
             collapsed: true
-            hint: "Le informazioni che compaiono nel tab del browser e su Google."
+            hint: "Le informazioni che compaiono nel tab del browser, su Google, e i colori del sito."
             fields:
-              - {label: "Titolo del sito", name: "title", widget: "string", hint: "Quello che si legge nel tab del browser. Es: 'Dr. Domenico Campa — Chirurgia Estetica'"}
-              - {label: "Descrizione per Google", name: "meta_description", widget: "text", hint: "La descrizione che appare sotto il titolo del sito nei risultati di Google. Max 160 caratteri consigliati."}
-              - {label: "Testo accanto al logo", name: "logo_text", widget: "string", hint: "Quello che compare accanto al quadratino arancione del logo, in alto a sinistra. Es: 'Dr. Campa'"}
+              - {label: "Titolo del sito", name: "title", widget: "string", hint: "Quello che si legge nel tab del browser."}
+              - {label: "Descrizione per Google", name: "meta_description", widget: "text", hint: "La descrizione che appare sotto il titolo del sito su Google. Max 160 caratteri."}
+              - {label: "Testo accanto al logo", name: "logo_text", widget: "string", hint: "Quello che compare accanto al quadratino arancione del logo, in alto a sinistra."}
+
+              # ---- 🎨 COLORI ----
+              - label: "🎨 Colori del sito"
+                name: "colors"
+                widget: "object"
+                collapsed: true
+                hint: "Personalizza i colori principali del sito. Cambiando il colore ARANCIONE qui, tutti i bottoni arancioni, titoli evidenziati, e bordi del sito cambieranno di conseguenza. Lasciare un campo vuoto per usare il colore di default."
+                fields:
+                  - {label: "Colore principale (arancione brand)", name: "primary", widget: "color", required: false, default: "#e85d3c", allowInput: true, hint: "Il colore arancione del marchio. Compare in: bottoni primari, titoli evidenziati, card grandi arancioni, link accentuati. Default: #e85d3c"}
+                  - {label: "Colore accento (giallo)", name: "accent", widget: "color", required: false, default: "#ffd43b", allowInput: true, hint: "Il giallo che si vede nell'hero principale (parola sottolineata) e nei bottoni gialli. Default: #ffd43b"}
+                  - {label: "Colore testo principale (nero)", name: "ink", widget: "color", required: false, default: "#0a0a0a", allowInput: true, hint: "Il nero del testo principale e dello sfondo del footer/citazione. Default: #0a0a0a"}
+                  - {label: "Sfondo soft (beige chiaro)", name: "bg_soft", widget: "color", required: false, default: "#faf7f3", allowInput: true, hint: "Il colore delle sezioni con sfondo leggero (Problema, Metodo, Programmi, Testimonianze). Default: #faf7f3"}
 
           # =========================================================
           # 📋 MENU
@@ -65,12 +67,12 @@ collections:
                 widget: "list"
                 hint: "Le voci cliccabili nel menu. Puoi aggiungere, rimuovere o riordinare."
                 fields:
-                  - {label: "Testo visibile", name: "label", widget: "string", hint: "Quello che il visitatore legge. Es: 'Trattamenti'"}
-                  - {label: "Destinazione (link)", name: "href", widget: "string", hint: "Dove porta il click. Usa #nome-sezione per saltare a una sezione (es. #trattamenti). Le sezioni hanno l'ID nella loro impostazione."}
-              - {label: "Testo del link telefono", name: "phone_label", widget: "string", required: false, hint: "Opzionale. Es: 'Chiama'. Lascia vuoto per nascondere."}
-              - {label: "Numero di telefono (per chiamate)", name: "phone_href", widget: "string", required: false, hint: "Formato: tel:+390200000000 (con tel: davanti, senza spazi)"}
-              - {label: "Testo del bottone arancione", name: "cta_label", widget: "string", hint: "Il bottone principale a destra. Es: 'Prenota Consulto'"}
-              - {label: "Link del bottone arancione", name: "cta_href", widget: "string", hint: "Tipicamente #contatti per scrollare al form in basso."}
+                  - {label: "Testo visibile", name: "label", widget: "string"}
+                  - {label: "Destinazione (link)", name: "href", widget: "string", hint: "Usa #nome-sezione per saltare a una sezione (es. #trattamenti)."}
+              - {label: "Testo del link telefono", name: "phone_label", widget: "string", required: false}
+              - {label: "Numero di telefono", name: "phone_href", widget: "string", required: false, hint: "Formato: tel:+390200000000"}
+              - {label: "Testo del bottone arancione", name: "cta_label", widget: "string"}
+              - {label: "Link del bottone arancione", name: "cta_href", widget: "string"}
 
           # =========================================================
           # 🧩 SEZIONI
@@ -79,126 +81,114 @@ collections:
             name: "sections"
             widget: "list"
             label_singular: "Sezione"
-            hint: "Trascina le sezioni per riordinarle. Clicca + per aggiungerne. Click sui tre puntini per rimuoverne o duplicarne. L'ordine qui = l'ordine sul sito."
+            hint: "Trascina le sezioni per riordinarle. Clicca + per aggiungerne. L'ordine qui = l'ordine sul sito."
             summary: "{{fields.type}} · {{fields.title_a}}{{fields.title}}{{fields.headline_main}}"
             types:
 
-              # -----------------------------------------------------
               - label: "✨ Hero (intestazione a tutto schermo)"
                 name: "hero"
                 widget: "object"
                 summary: "Hero · {{fields.headline_main}} {{fields.headline_accent}}"
                 fields:
-                  - {label: "Immagine di sfondo", name: "bg_image", widget: "image", hint: "Sfondo a tutto schermo della prima vista. Idealmente orizzontale, almeno 1920px di larghezza. Verrà oscurata per leggere il testo bianco sopra."}
-                  - {label: "Watermark (testo gigante in trasparenza)", name: "watermark", widget: "string", required: false, hint: "Testo bianco quasi invisibile dietro la grafica. Es: 'Dr. Campa'. Lascia vuoto per nasconderlo."}
-                  - {label: "Riga sopra il titolo (sottotitolo piccolo)", name: "headline_pre", widget: "string", hint: "Es: 'Bellezza Autentica. Risultati Reali.' Compare in piccolo sopra al titolo grosso."}
-                  - {label: "Titolo grande - parte normale", name: "headline_main", widget: "string", hint: "La prima parte del titolone in bianco. Es: 'Scopri la Tua'"}
-                  - {label: "Titolo grande - parola GIALLA evidenziata", name: "headline_accent", widget: "string", hint: "La parola in giallo con il segno disegnato a mano sotto. Es: 'Versione Migliore.'"}
-                  - {label: "Sottotitolo - parte in corsivo", name: "subtitle_em", widget: "text", required: false, hint: "La prima frase del paragrafo, in corsivo elegante. Es: 'È il momento di smettere di sognare...'"}
-                  - {label: "Sottotitolo - parte normale", name: "subtitle", widget: "text", hint: "Il testo principale di benvenuto, segue il corsivo."}
-                  - {label: "Testo del bottone giallo", name: "cta_label", widget: "string", required: false, hint: "Es: 'Inizia il Tuo Percorso'. Lascia vuoto per nascondere il bottone."}
-                  - {label: "Link del bottone giallo", name: "cta_href", widget: "string", required: false, default: "#contatti", hint: "Tipicamente #contatti per saltare al form."}
-                  - {label: "─── Card MISSIONE bianca ───", name: "mission_label_strong", widget: "string", required: false, hint: "Il testo in alto della card bianca con la barra di progresso. Tipicamente: 'LA NOSTRA MISSIONE:'. Lascia tutti i campi mission vuoti per nascondere l'intera card."}
-                  - {label: "Card missione · testo descrittivo", name: "mission_label_text", widget: "string", required: false, hint: "Es: 'RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.'"}
-                  - {label: "Card missione · percentuale (0-100)", name: "mission_percent", widget: "number", required: false, value_type: "int", min: 0, max: 100, hint: "Quanto è piena la barra di progresso. Es: 62"}
-                  - {label: "Card missione · numero grande", name: "mission_figure", widget: "string", required: false, hint: "Es: '6.200+ Percorsi Completati'"}
-                  - {label: "Card missione · testo finale (parte normale)", name: "mission_sub_a", widget: "string", required: false, hint: "Es: 'Donne e uomini che oggi'"}
-                  - {label: "Card missione · testo finale (parte arancione)", name: "mission_sub_b", widget: "string", required: false, hint: "Es: 'si guardano allo specchio con un sorriso diverso.'"}
+                  - {label: "Immagine di sfondo", name: "bg_image", widget: "image", hint: "Sfondo a tutto schermo. Idealmente orizzontale, almeno 1920px."}
+                  - {label: "Watermark (testo gigante in trasparenza)", name: "watermark", widget: "string", required: false}
+                  - {label: "Riga sopra il titolo", name: "headline_pre", widget: "string", hint: "Es: 'Bellezza Autentica. Risultati Reali.'"}
+                  - {label: "Titolo grande - parte normale", name: "headline_main", widget: "string"}
+                  - {label: "Titolo grande - parola GIALLA evidenziata", name: "headline_accent", widget: "string", hint: "La parola in giallo con il segno disegnato a mano sotto."}
+                  - {label: "Sottotitolo - parte in corsivo", name: "subtitle_em", widget: "text", required: false}
+                  - {label: "Sottotitolo - parte normale", name: "subtitle", widget: "text"}
+                  - {label: "Testo del bottone giallo", name: "cta_label", widget: "string", required: false}
+                  - {label: "Link del bottone giallo", name: "cta_href", widget: "string", required: false, default: "#contatti"}
+                  - {label: "Card missione - etichetta in grassetto", name: "mission_label_strong", widget: "string", required: false, hint: "Lascia tutti i campi mission vuoti per nascondere l'intera card."}
+                  - {label: "Card missione - testo descrittivo", name: "mission_label_text", widget: "string", required: false}
+                  - {label: "Card missione - percentuale (0-100)", name: "mission_percent", widget: "number", required: false, value_type: "int", min: 0, max: 100}
+                  - {label: "Card missione - numero grande", name: "mission_figure", widget: "string", required: false}
+                  - {label: "Card missione - testo finale (parte normale)", name: "mission_sub_a", widget: "string", required: false}
+                  - {label: "Card missione - testo finale (parte arancione)", name: "mission_sub_b", widget: "string", required: false}
 
-              # -----------------------------------------------------
               - label: "💬 Problema (testo lungo + citazione)"
                 name: "problem"
                 widget: "object"
                 summary: "Problema · {{fields.title_a}} {{fields.title_accent}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false, hint: "Identificativo per linkare a questa sezione. Es: 'studio'. Poi nel menu metti #studio."}
-                  - {label: "Watermark trasparente sullo sfondo", name: "watermark", widget: "string", required: false, hint: "Testo grande arancione semi-invisibile dietro la sezione."}
-                  - {label: "Titolo - parte nera", name: "title_a", widget: "string", hint: "Es: 'L'Estetica Non è il Problema.'"}
-                  - {label: "Titolo - parte ARANCIONE evidenziata", name: "title_accent", widget: "string", hint: "La parte colorata del titolo. Es: 'La Confusione Lo È.'"}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false, hint: "Es: 'studio' per linkare con #studio dal menu."}
+                  - {label: "Watermark trasparente", name: "watermark", widget: "string", required: false}
+                  - {label: "Titolo - parte nera", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte ARANCIONE evidenziata", name: "title_accent", widget: "string"}
                   - label: "Paragrafi introduttivi"
                     name: "intro_paragraphs"
                     widget: "list"
-                    hint: "I primi paragrafi di apertura. Puoi aggiungerne quanti vuoi."
                     field: {label: "Paragrafo", name: "p", widget: "text"}
                   - label: "Domande in grassetto"
                     name: "questions"
                     widget: "list"
-                    hint: "Una serie di domande che mettono il visitatore davanti al dubbio. Vengono mostrate una sotto l'altra in grassetto."
                     field: {label: "Domanda", name: "q", widget: "string"}
                   - label: "Paragrafi centrali"
                     name: "middle_paragraphs"
                     widget: "list"
-                    hint: "Continuano il discorso dopo le domande."
                     field: {label: "Paragrafo", name: "p", widget: "text"}
                   - label: "Citazione evidenziata (bordo arancione)"
                     name: "quote_lines"
                     widget: "list"
-                    hint: "Il box con il bordo arancione a sinistra. Ogni elemento di questa lista è una riga. La prima è di solito la più forte."
                     field: {label: "Riga", name: "line", widget: "text"}
-                  - {label: "Riga di chiusura (arancione, centrata)", name: "final_line", widget: "text", required: false, hint: "L'ultima frase d'impatto, di solito una sentenza."}
+                  - {label: "Riga di chiusura", name: "final_line", widget: "text", required: false}
 
-              # -----------------------------------------------------
               - label: "👤 Chi è il dottore (about con foto)"
                 name: "about"
                 widget: "object"
                 summary: "About · {{fields.title}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false, hint: "Es: 'dottore' per linkarla dal menu come #dottore."}
-                  - {label: "Titolo principale", name: "title", widget: "string", hint: "Es: 'Una chirurgia che mette la persona prima della procedura.'"}
-                  - {label: "Lead (sottotitolo)", name: "lead", widget: "text", hint: "La frase di apertura, più grande del corpo del testo."}
-                  - {label: "Foto del dottore", name: "photo", widget: "image", hint: "Foto orizzontale del dottore (in studio, all'opera, ritratto). Idealmente 1600x1000px."}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false}
+                  - {label: "Titolo principale", name: "title", widget: "string"}
+                  - {label: "Lead (sottotitolo)", name: "lead", widget: "text"}
+                  - {label: "Foto del dottore", name: "photo", widget: "image"}
                   - label: "Paragrafi del testo"
                     name: "body_paragraphs"
                     widget: "list"
-                    hint: "Il testo lungo che racconta il dottore. Puoi usare <strong>parola</strong> per mettere qualcosa in grassetto."
+                    hint: "Puoi usare <strong>parola</strong> per mettere in grassetto."
                     field: {label: "Paragrafo", name: "p", widget: "text"}
-                  - {label: "Citazione finale (box evidenziato)", name: "callout", widget: "text", required: false, hint: "Una frase finale d'impatto in un riquadro con bordo arancione."}
+                  - {label: "Citazione finale (box evidenziato)", name: "callout", widget: "text", required: false}
 
-              # -----------------------------------------------------
               - label: "🟧 Card Valore (riquadro arancione con 3 vantaggi)"
                 name: "value_card"
                 widget: "object"
                 summary: "Card Valore · {{fields.title}}"
                 fields:
-                  - {label: "Titolo grande (bianco su arancione)", name: "title", widget: "string", hint: "Il titolone bianco al centro del riquadro arancione."}
-                  - {label: "Paragrafo descrittivo", name: "lead", widget: "text", hint: "Il testo bianco sotto al titolo."}
-                  - {label: "Chiusura del paragrafo in GRASSETTO", name: "lead_strong", widget: "string", required: false, hint: "L'ultima frase del paragrafo, evidenziata in grassetto."}
+                  - {label: "Titolo grande (bianco su arancione)", name: "title", widget: "string"}
+                  - {label: "Paragrafo descrittivo", name: "lead", widget: "text"}
+                  - {label: "Chiusura del paragrafo in GRASSETTO", name: "lead_strong", widget: "string", required: false}
                   - label: "3 cardline (i 3 vantaggi)"
                     name: "items"
                     widget: "list"
                     max: 3
-                    hint: "Massimo 3 card bianche dentro il riquadro arancione. Ognuna ha icona, titolo e tag."
                     fields:
-                      - {label: "Icona", name: "icon", widget: "select", options: ["clock", "chart", "shield"], hint: "Scegli: clock (orologio), chart (grafico), shield (scudo)."}
-                      - {label: "Titolo", name: "title", widget: "string", hint: "Es: 'Ritrova sicurezza ogni mattina'"}
-                      - {label: "Tag (pillola in basso)", name: "tag", widget: "string", required: false, hint: "L'etichetta beige sotto il titolo. Es: 'Risultati visibili'"}
-                  - {label: "Testo finale (parte normale)", name: "footnote", widget: "text", required: false, hint: "Il paragrafo bianco sotto le 3 card."}
+                      - {label: "Icona", name: "icon", widget: "select", options: ["clock", "chart", "shield"]}
+                      - {label: "Titolo", name: "title", widget: "string"}
+                      - {label: "Tag (pillola in basso)", name: "tag", widget: "string", required: false}
+                  - {label: "Testo finale (parte normale)", name: "footnote", widget: "text", required: false}
                   - {label: "Testo finale (parte in GRASSETTO)", name: "footnote_strong", widget: "string", required: false}
 
-              # -----------------------------------------------------
               - label: "🪜 Metodo (3 colonne con foto e numeri)"
                 name: "method"
                 widget: "object"
                 summary: "Metodo · {{fields.title_a}} {{fields.title_accent}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false}
-                  - {label: "Titolo - parte normale", name: "title_a", widget: "string", hint: "Es: 'Il Metodo'"}
-                  - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string", hint: "Es: 'Campa'"}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Sottotitolo (prima riga)", name: "subtitle_a", widget: "text"}
                   - {label: "Sottotitolo (seconda riga)", name: "subtitle_b", widget: "text", required: false}
                   - {label: "Sottotitolo - chiusura in grassetto", name: "subtitle_strong", widget: "string", required: false}
-                  - label: "Le tappe del metodo (3 colonne)"
+                  - label: "Le tappe del metodo"
                     name: "cards"
                     widget: "list"
-                    hint: "Tipicamente 3 tappe (es. Ascoltare / Pianificare / Eseguire). Ognuna con foto, numero e descrizione."
                     fields:
-                      - {label: "Numero", name: "num", widget: "string", hint: "Es: '01', '02', '03'"}
-                      - {label: "Foto", name: "photo", widget: "image", hint: "Foto quadrata o leggermente orizzontale per la colonna."}
-                      - {label: "Titolo", name: "title", widget: "string", hint: "Es: 'Ascoltare'"}
+                      - {label: "Numero", name: "num", widget: "string"}
+                      - {label: "Foto", name: "photo", widget: "image"}
+                      - {label: "Titolo", name: "title", widget: "string"}
                       - {label: "Descrizione", name: "body", widget: "text"}
 
-              # -----------------------------------------------------
-              - label: "🔺 Piramide (3 livelli con visualizzazione triangolare)"
+              - label: "🔺 Piramide (3 livelli)"
                 name: "levels"
                 widget: "object"
                 summary: "Piramide · {{fields.title_a}} {{fields.title_accent}}"
@@ -206,24 +196,21 @@ collections:
                   - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
                   - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Sottotitolo", name: "subtitle", widget: "text"}
-                  - label: "I 3 livelli (dal 1 al 3)"
+                  - label: "I 3 livelli"
                     name: "levels"
                     widget: "list"
-                    hint: "Tre voci ordinate dal più semplice al più avanzato (es. Consulenza → Medicina Estetica → Chirurgia)."
                     fields:
-                      - {label: "Tag", name: "tag", widget: "string", hint: "Es: 'Livello 1'"}
+                      - {label: "Tag", name: "tag", widget: "string"}
                       - {label: "Titolo", name: "title", widget: "string"}
                       - {label: "Descrizione", name: "body", widget: "text"}
-                  - label: "Etichette sulla piramide (dall'alto in basso)"
+                  - label: "Etichette sulla piramide"
                     name: "pyramid_labels"
                     widget: "list"
-                    hint: "I nomi dentro al disegno della piramide. Devono essere brevi (massimo 3-4 parole)."
                     field: {label: "Etichetta", name: "label", widget: "string"}
-                  - {label: "Testo di chiusura (parte normale)", name: "footer_a", widget: "text", required: false}
-                  - {label: "Testo di chiusura (parte in grassetto)", name: "footer_strong", widget: "string", required: false}
+                  - {label: "Testo di chiusura", name: "footer_a", widget: "text", required: false}
+                  - {label: "Testo di chiusura in grassetto", name: "footer_strong", widget: "string", required: false}
 
-              # -----------------------------------------------------
-              - label: "📦 Programmi (card grandi con foto)"
+              - label: "📦 Programmi (card grandi)"
                 name: "programs"
                 widget: "object"
                 summary: "Programmi · {{fields.title_a}} {{fields.title_accent}}"
@@ -231,22 +218,20 @@ collections:
                   - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
                   - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Sottotitolo", name: "subtitle", widget: "text"}
-                  - label: "Programmi (card grandi)"
+                  - label: "Programmi"
                     name: "cards"
                     widget: "list"
-                    hint: "Ogni programma è una card grande con foto da un lato e testo dall'altro. Tipicamente 2-3."
                     fields:
-                      - {label: "Tag in corsivo (sopra il titolo)", name: "tag", widget: "string", required: false, hint: "Es: 'Studio Campa' - compare in piccolo, in corsivo arancione."}
-                      - {label: "Titolo del programma", name: "title", widget: "string", hint: "Es: 'Consulto Gratuito'"}
-                      - {label: "Sottotitolo del programma", name: "subtitle", widget: "string", required: false, hint: "In grassetto, sotto al titolo. Es: 'Il Punto di Partenza'"}
+                      - {label: "Tag in corsivo", name: "tag", widget: "string", required: false}
+                      - {label: "Titolo del programma", name: "title", widget: "string"}
+                      - {label: "Sottotitolo del programma", name: "subtitle", widget: "string", required: false}
                       - {label: "Descrizione", name: "body", widget: "text"}
-                      - {label: "Testo del link", name: "link_label", widget: "string", required: false, hint: "Es: 'Prenota Ora →'. Lascia vuoto per nascondere il link."}
+                      - {label: "Testo del link", name: "link_label", widget: "string", required: false}
                       - {label: "Destinazione del link", name: "link_href", widget: "string", required: false, default: "#contatti"}
                       - {label: "Foto del programma", name: "photo", widget: "image"}
-                      - {label: "Foto a destra del testo?", name: "reverse", widget: "boolean", default: false, hint: "Spunta per invertire: foto a destra, testo a sinistra. Utile per alternare l'estetica quando ci sono più card."}
+                      - {label: "Foto a destra del testo?", name: "reverse", widget: "boolean", default: false}
 
-              # -----------------------------------------------------
-              - label: "👥 Audience (a chi è rivolto - 3 colonne)"
+              - label: "👥 Audience (3 colonne)"
                 name: "audience"
                 widget: "object"
                 summary: "Audience · {{fields.title_a}} {{fields.title_accent}}"
@@ -254,75 +239,67 @@ collections:
                   - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
                   - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Sottotitolo", name: "subtitle", widget: "text"}
-                  - label: "Tipi di paziente (3 colonne)"
+                  - label: "Tipi di paziente"
                     name: "items"
                     widget: "list"
-                    hint: "Le diverse categorie di pazienti, ognuna con foto e descrizione. Tipicamente 3."
                     fields:
-                      - {label: "Foto", name: "photo", widget: "image", hint: "Foto quadrata che rappresenta quel tipo di paziente."}
-                      - {label: "Titolo (categoria)", name: "title", widget: "string", hint: "Es: 'Donne in Carriera'"}
-                      - {label: "Frase d'apertura in grassetto", name: "body_strong", widget: "string", hint: "La prima frase che cattura. Es: 'Sai cosa vuoi.'"}
+                      - {label: "Foto", name: "photo", widget: "image"}
+                      - {label: "Titolo (categoria)", name: "title", widget: "string"}
+                      - {label: "Frase d'apertura in grassetto", name: "body_strong", widget: "string"}
                       - {label: "Resto del paragrafo", name: "body", widget: "text"}
 
-              # -----------------------------------------------------
-              - label: "📊 Statistiche (numeri arancioni grandi)"
+              - label: "📊 Statistiche"
                 name: "stats"
                 widget: "object"
                 summary: "Statistiche · {{fields.title_a}} {{fields.title_accent}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false}
                   - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
                   - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Sottotitolo", name: "subtitle", widget: "text"}
-                  - label: "Riga 1 di statistiche (di solito 3)"
+                  - label: "Riga 1 di statistiche"
                     name: "row_a"
                     widget: "list"
-                    hint: "I numeri principali. Es: punteggio sicurezza, % follow-up, % risultati. Ognuno è un grande numero arancione."
-                    fields:
-                      - {label: "Pillola sopra il numero", name: "pill", widget: "string", required: false, hint: "Es: 'Da 4.1 / 10 a'. Lascia vuoto per non mostrare la pillola."}
-                      - {label: "Numero grande arancione", name: "num", widget: "string", hint: "Es: '8.7 / 10', '70%', '98%'"}
-                      - {label: "Etichetta sotto", name: "label", widget: "text", hint: "Cosa misura il numero."}
-                  - label: "Riga 2 di statistiche (opzionale)"
-                    name: "row_b"
-                    widget: "list"
-                    required: false
-                    hint: "Seconda riga di numeri. Tipicamente totali (pazienti seguite, interventi, anni). Lascia la lista vuota per nascondere la riga."
                     fields:
                       - {label: "Pillola sopra il numero", name: "pill", widget: "string", required: false}
                       - {label: "Numero grande arancione", name: "num", widget: "string"}
                       - {label: "Etichetta sotto", name: "label", widget: "text"}
-                  - {label: "Disclaimer in fondo (corsivo piccolo)", name: "footnote", widget: "text", required: false, hint: "Es: 'Tutti i dati provengono da sondaggi interni...'"}
+                  - label: "Riga 2 di statistiche (opzionale)"
+                    name: "row_b"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Pillola sopra il numero", name: "pill", widget: "string", required: false}
+                      - {label: "Numero grande arancione", name: "num", widget: "string"}
+                      - {label: "Etichetta sotto", name: "label", widget: "text"}
+                  - {label: "Disclaimer in fondo", name: "footnote", widget: "text", required: false}
 
-              # -----------------------------------------------------
-              - label: "⭐ Testimonianze (card con stelle e avatar)"
+              - label: "⭐ Testimonianze"
                 name: "testimonials"
                 widget: "object"
                 summary: "Testimonianze · {{fields.title_a}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false}
-                  - {label: "Titolo - parte normale", name: "title_a", widget: "string", hint: "Es: 'Persone Reali —'"}
-                  - {label: "Titolo - parte in CORSIVO elegante", name: "title_italic", widget: "string", hint: "Es: 'Storie Reali'. Viene reso in corsivo serif."}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte in CORSIVO elegante", name: "title_italic", widget: "string"}
                   - label: "Testimonianze"
                     name: "items"
                     widget: "list"
-                    hint: "Recensioni dei pazienti. Aggiungine quante ne vuoi. 3-6 sono il numero ottimale."
                     fields:
-                      - {label: "Frase di apertura (in grassetto)", name: "text_strong", widget: "text", hint: "La parte più forte della testimonianza, va in grassetto. Tienila tra virgolette se è una citazione."}
-                      - {label: "Resto del commento", name: "text", widget: "text", hint: "La continuazione del commento, in tono normale."}
-                      - {label: "Foto del paziente (avatar tondo)", name: "avatar", widget: "image", hint: "Foto del volto del paziente. Verrà ritagliata in cerchio."}
-                      - {label: "Nome (e iniziale del cognome)", name: "name", widget: "string", hint: "Per privacy si usa nome + iniziale del cognome. Es: 'Teresa N.'"}
+                      - {label: "Frase di apertura (in grassetto)", name: "text_strong", widget: "text"}
+                      - {label: "Resto del commento", name: "text", widget: "text"}
+                      - {label: "Foto del paziente (avatar tondo)", name: "avatar", widget: "image"}
+                      - {label: "Nome (e iniziale del cognome)", name: "name", widget: "string"}
 
-              # -----------------------------------------------------
               - label: "💬 Grande citazione (sezione scura)"
                 name: "big_quote"
                 widget: "object"
                 summary: "Quote · {{fields.author_name}}"
                 fields:
-                  - {label: "La citazione (testo lungo)", name: "quote", widget: "text", hint: "Una testimonianza forte. Compare grande, su sfondo nero, in pagina intera. Includi le virgolette manualmente."}
+                  - {label: "La citazione (testo lungo)", name: "quote", widget: "text"}
                   - {label: "Foto autore (tonda)", name: "author_photo", widget: "image"}
                   - {label: "Nome autore", name: "author_name", widget: "string"}
 
-              # -----------------------------------------------------
               - label: "🟧 Card Caratteristiche (arancione con pillole)"
                 name: "features_card"
                 widget: "object"
@@ -333,36 +310,32 @@ collections:
                   - label: "Pillole/caratteristiche"
                     name: "pills"
                     widget: "list"
-                    hint: "Tante card bianche brevi con un'azione/beneficio ognuna. 8-12 è il numero ideale per una griglia bilanciata."
                     fields:
-                      - {label: "Testo della pillola", name: "text", widget: "string", hint: "Es: 'Recuperare sicurezza'"}
-                      - {label: "Pillola SPECIALE (sfondo dorato + corsivo)", name: "special", widget: "boolean", default: false, hint: "Una sola pillola dovrebbe essere speciale (l'ultima, di solito, con un beneficio cruciale)."}
+                      - {label: "Testo della pillola", name: "text", widget: "string"}
+                      - {label: "Pillola SPECIALE (sfondo dorato + corsivo)", name: "special", widget: "boolean", default: false}
 
-              # -----------------------------------------------------
-              - label: "📝 Form di Contatto (lead generation)"
+              - label: "📝 Form di Contatto"
                 name: "cta_form"
                 widget: "object"
                 summary: "Form Contatti · {{fields.title_a}} {{fields.title_accent}}"
                 fields:
-                  - {label: "ID per i link interni", name: "id", widget: "string", required: false, default: "contatti", hint: "Lascialo a 'contatti' così tutti i bottoni 'Prenota' funzionano."}
+                  - {label: "ID per link interni", name: "id", widget: "string", required: false, default: "contatti"}
                   - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
-                  - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string", hint: "L'invito finale all'azione. Es: 'Inizia.'"}
+                  - {label: "Titolo - parte ARANCIONE", name: "title_accent", widget: "string"}
                   - {label: "Paragrafo introduttivo", name: "body", widget: "text"}
                   - label: "Bullet point con check arancione"
                     name: "perks"
                     widget: "list"
-                    hint: "I motivi per fidarsi (es. 'Primo colloquio gratuito', 'Risposta entro 24h', ecc.)"
                     field: {label: "Vantaggio", name: "p", widget: "string"}
-                  - {label: "Titolo del box del form (a destra)", name: "form_title", widget: "string", default: "Prenota Consulto"}
+                  - {label: "Titolo del box del form", name: "form_title", widget: "string", default: "Prenota Consulto"}
                   - {label: "Sottotitolo sotto al titolo del form", name: "form_subtitle", widget: "string"}
-                  - label: "Opzioni del menù 'Cosa ti interessa'"
+                  - label: "Opzioni del menu 'Cosa ti interessa'"
                     name: "treatments"
                     widget: "list"
-                    hint: "I trattamenti elencati nel menù a tendina del form. Aggiungi/togli liberamente."
                     field: {label: "Trattamento", name: "t", widget: "string"}
                   - {label: "Etichetta bottone invio", name: "submit_label", widget: "string", default: "Invia Richiesta"}
                   - {label: "Titolo schermata di conferma", name: "success_title", widget: "string", default: "Grazie!"}
-                  - {label: "Messaggio di conferma dopo invio", name: "success_body", widget: "text", hint: "Il messaggio che vede il paziente dopo aver inviato il form. Es: 'Ti contatteremo entro 24 ore...'"}
+                  - {label: "Messaggio di conferma dopo invio", name: "success_body", widget: "text"}
 
           # =========================================================
           # 📎 FOOTER
@@ -373,11 +346,10 @@ collections:
             collapsed: true
             hint: "La sezione nera in fondo al sito con link, contatti e copyright."
             fields:
-              - {label: "Testo descrittivo accanto al logo", name: "about_text", widget: "text", hint: "Frase di una riga che riassume lo studio."}
+              - {label: "Testo descrittivo accanto al logo", name: "about_text", widget: "text"}
               - label: "Colonne di link"
                 name: "columns"
                 widget: "list"
-                hint: "Le colonne di link nel footer (es. Trattamenti / Studio / Contatti)."
                 fields:
                   - {label: "Titolo della colonna", name: "title", widget: "string"}
                   - label: "Link nella colonna"
@@ -386,7 +358,7 @@ collections:
                     fields:
                       - {label: "Testo del link", name: "label", widget: "string"}
                       - {label: "Destinazione", name: "href", widget: "string"}
-              - {label: "Testo in basso a sinistra (copyright, P.IVA)", name: "bottom_left", widget: "string"}
+              - {label: "Copyright (in basso a sinistra)", name: "bottom_left", widget: "string"}
               - label: "Link in basso a destra (Privacy, Cookie, ecc.)"
                 name: "bottom_links"
                 widget: "list"
