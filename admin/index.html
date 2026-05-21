@@ -816,17 +816,22 @@ async function uploadImage(file){
 /* =====================================================================
    CLICK-TO-EDIT FROM PREVIEW
    ===================================================================== */
+function scrollEditorToSection(idx){
+  const editor = document.querySelector('#editor');
+  const row = document.querySelector(`[data-section-idx="${idx}"]`);
+  if(!editor || !row) return;
+  // Calculate the row's top relative to the editor's scroll origin
+  const rowRect = row.getBoundingClientRect();
+  const editorRect = editor.getBoundingClientRect();
+  const targetScroll = editor.scrollTop + (rowRect.top - editorRect.top) - 16;
+  editor.scrollTo({top: Math.max(0, targetScroll), behavior:'smooth'});
+}
+
 function openSectionFromPreview(idx){
   if(!data || !data.sections || idx >= data.sections.length) return;
   ui.expandedSection = idx;
   renderEditor();
-  // Scroll the editor to the expanded section
-  setTimeout(() => {
-    const row = document.querySelector(`[data-section-idx="${idx}"]`);
-    if(row){
-      row.scrollIntoView({behavior:'smooth', block:'center'});
-    }
-  }, 50);
+  setTimeout(() => scrollEditorToSection(idx), 60);
 }
 
 // Listen to messages from the preview iframe
@@ -1341,13 +1346,25 @@ body{margin:0}
   box-shadow:0 8px 20px -4px rgba(0,0,0,.4);
 }
 [data-cms-section-idx]:hover::before{opacity:1; transform:translateY(0);}
+
+/* ⭐ Sezione attualmente in modifica (rimane evidenziata sempre) */
+[data-cms-section-idx].cms-current{
+  outline:3px solid #e85d3c !important;
+  outline-offset:-3px;
+}
+[data-cms-section-idx].cms-current::before{
+  content:"✏️ Stai modificando: " attr(data-cms-section-type);
+  background:#e85d3c;
+  opacity:1; transform:translateY(0);
+}
+
 [data-cms-section-idx] a, [data-cms-section-idx] button, [data-cms-section-idx] input, [data-cms-section-idx] textarea, [data-cms-section-idx] select{cursor:pointer;}
 </style></head><body>${renderPreviewNav(data)}<main>${sectionsHTML}</main>${renderPreviewFooter(data)}<script>
 (function(){
+  // Click on a section → tell parent editor to open it
   document.addEventListener('click', function(e){
     var sec = e.target.closest('[data-cms-section-idx]');
     if(!sec) return;
-    // Lascia passare i click su elementi interattivi reali
     if(e.target.closest('a, button, input, textarea, select, form')) return;
     e.preventDefault(); e.stopPropagation();
     var idx = parseInt(sec.getAttribute('data-cms-section-idx'));
@@ -1355,6 +1372,17 @@ body{margin:0}
       parent.postMessage({cms:'open-section', idx:idx}, '*');
     }
   }, true);
+
+  // Receive highlight messages from parent
+  window.addEventListener('message', function(e){
+    if(!e.data || e.data.cms !== 'highlight') return;
+    document.querySelectorAll('[data-cms-section-idx]').forEach(function(el){
+      el.classList.remove('cms-current');
+    });
+    if(e.data.idx == null) return;
+    var target = document.querySelector('[data-cms-section-idx="' + e.data.idx + '"]');
+    if(target) target.classList.add('cms-current');
+  });
 })();
 <\/script></body></html>`;
 }
@@ -1362,7 +1390,31 @@ body{margin:0}
 async function updatePreview(){
   const iframe = document.querySelector('#preview-iframe');
   if(!iframe) return;
-  iframe.srcdoc = await buildPreviewHTML();
+  // Capture current scroll position so it's not lost during reload
+  let savedScroll = 0;
+  try { savedScroll = (iframe.contentWindow && iframe.contentWindow.scrollY) || 0; } catch(e){}
+  const html = await buildPreviewHTML();
+  const onLoad = () => {
+    iframe.removeEventListener('load', onLoad);
+    // Restore scroll
+    try { iframe.contentWindow.scrollTo(0, savedScroll); } catch(e){}
+    // Re-apply "currently editing" highlight on the right section
+    syncPreviewHighlight();
+  };
+  iframe.addEventListener('load', onLoad);
+  iframe.srcdoc = html;
+}
+
+/* Send a message to the iframe telling it which section is currently being edited */
+function syncPreviewHighlight(){
+  const iframe = document.querySelector('#preview-iframe');
+  if(!iframe || !iframe.contentWindow) return;
+  try {
+    iframe.contentWindow.postMessage({
+      cms: 'highlight',
+      idx: ui.expandedSection
+    }, '*');
+  } catch(e){}
 }
 
 /* =====================================================================
@@ -1677,8 +1729,14 @@ function attachEditorListeners(){
     el.onclick = (e) => {
       e.stopPropagation();
       const i = parseInt(el.dataset.toggleSection);
-      ui.expandedSection = (ui.expandedSection === i) ? null : i;
+      const wasExpanded = ui.expandedSection === i;
+      ui.expandedSection = wasExpanded ? null : i;
       renderEditor();
+      // If we just opened a section, scroll editor to it AND highlight in preview
+      if(!wasExpanded){
+        setTimeout(() => scrollEditorToSection(i), 60);
+      }
+      syncPreviewHighlight();
     };
   });
 
@@ -1777,6 +1835,7 @@ function attachEditorListeners(){
       ui.addMenuOpen = false;
       markDirty();
       renderEditor();
+      setTimeout(() => scrollEditorToSection(ui.expandedSection), 60);
     };
   });
 
