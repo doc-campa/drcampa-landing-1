@@ -10,7 +10,7 @@ backend:
   name: github
   repo: doc-campa/drcampa-landing-1
   branch: main
-  bbase_url: https://ubiquitous-bunny-0cd00a.netlify.app
+  base_url: https://ubiquitous-bunny-0cd00a.netlify.app
   auth_endpoint: .netlify/functions/auth
 
 # Cartella dove vengono caricate le immagini dal pannello
