@@ -742,7 +742,16 @@ async function init(){
       </div>`;
     return;
   }
-
+  if(data.site && data.site.colors){
+    const c = data.site.colors;
+    const rules = [];
+    if(c.primary){ rules.push('--coral-deep:'+c.primary); rules.push('--coral-1:'+c.primary); rules.push('--coral-darker:'+c.primary); }
+    if(c.accent) rules.push('--yellow:'+c.accent);
+    if(c.ink) rules.push('--ink:'+c.ink);
+    if(c.bg_soft) rules.push('--bg-soft:'+c.bg_soft);
+    if(rules.length){
+      const s = document.createElement('style');
+      s.textContent = ':root{'+rules.join(';')+';}';
   // Document meta
   document.title = data.site?.title || 'Sito';
   const metaDesc = document.querySelector('meta[name="description"]');
