@@ -8,85 +8,128 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
   /* ============================================================
-     CSS PERSONALIZZATO DEL PANNELLO
-     Migliora l'aspetto di Decap CMS: tipografia, spaziatura,
-     colori brand, hierarchy.
+     CSS PANNELLO  (più aggressivo di v3)
      ============================================================ */
 
-  :root{
-    --brand-coral:#e85d3c;
-    --brand-coral-light:#ff8a5c;
-    --brand-yellow:#ffd43b;
-    --brand-ink:#0a0a0a;
-    --brand-bg:#fafaf7;
-    --brand-line:#e7e1d4;
-    --brand-soft:#6f6a62;
-  }
-
-  /* Sfondo generale più caldo */
-  body, .nc-app-Notifs, [class*="App__"]{
-    background:var(--brand-bg) !important;
+  /* Reset di base più forte */
+  body, [class*="App"], [class*="Workflow"], [class*="EditorContainer"] {
+    background:#f7f3ec !important;
     font-family:"DM Sans", system-ui, -apple-system, sans-serif !important;
   }
 
-  /* Header in alto */
-  [class*="AppHeader"]{
+  /* Header in alto (logo Decap + status) */
+  [class*="AppHeader"], header[class*="AppBar"] {
     background:#fff !important;
-    border-bottom:1px solid var(--brand-line) !important;
-    box-shadow:none !important;
-  }
-  [class*="AppHeader"] a, [class*="AppHeader"] button{
-    color:var(--brand-ink) !important;
+    border-bottom:1px solid #e7e1d4 !important;
+    box-shadow:0 1px 3px rgba(0,0,0,.04) !important;
   }
 
-  /* Tutte le label dei campi: più scure, più grandi, più leggibili */
-  label, [class*="FieldLabel"]{
-    color:var(--brand-ink) !important;
+  /* Tutti i label */
+  label, [class*="FieldLabel"], [class*="ControlLabel"] {
+    color:#0a0a0a !important;
     font-weight:600 !important;
-    font-size:.88rem !important;
-    letter-spacing:-.005em !important;
+    font-size:.86rem !important;
+    letter-spacing:0 !important;
     margin-bottom:8px !important;
     line-height:1.35 !important;
+    display:block !important;
   }
 
-  /* Hint text (i suggerimenti sotto i campi) */
-  [class*="ControlHint"], [class*="HintText"], [class*="FieldHint"]{
-    color:var(--brand-soft) !important;
+  /* Hint text */
+  [class*="ControlHint"], [class*="HintText"], [class*="FieldHint"] {
+    color:#5a554d !important;
     font-size:.82rem !important;
     font-style:normal !important;
-    line-height:1.45 !important;
-    margin-top:6px !important;
-    padding-left:2px !important;
-    border-left:2px solid var(--brand-line) !important;
-    padding-left:10px !important;
+    line-height:1.5 !important;
     margin-top:8px !important;
+    padding:6px 12px !important;
+    border-left:3px solid #ff8a5c !important;
+    background:rgba(255,138,92,.06) !important;
+    border-radius:0 6px 6px 0 !important;
   }
 
-  /* Input, textarea, select - più moderni */
+  /* Input/textarea/select */
   input[type="text"], input[type="number"], input[type="email"], input[type="url"],
   input[type="tel"], textarea, select,
   [class*="ControlContainer"] input,
-  [class*="ControlContainer"] textarea{
-    border:1px solid var(--brand-line) !important;
+  [class*="ControlContainer"] textarea {
+    border:1px solid #d4cab8 !important;
     border-radius:10px !important;
     background:#fff !important;
     font-size:.95rem !important;
     padding:11px 14px !important;
     font-family:"DM Sans", sans-serif !important;
     transition:border-color .15s, box-shadow .15s !important;
-    color:var(--brand-ink) !important;
+    color:#0a0a0a !important;
+    width:100% !important;
   }
-  input:focus, textarea:focus, select:focus{
-    border-color:var(--brand-coral) !important;
-    box-shadow:0 0 0 3px rgba(232,93,60,.12) !important;
+  input:focus, textarea:focus, select:focus {
+    border-color:#e85d3c !important;
+    box-shadow:0 0 0 3px rgba(232,93,60,.15) !important;
     outline:0 !important;
   }
 
-  /* Bottone primario (Save, Add, ecc.) - coral brand */
+  /* ========== TUTTI gli elementi della list (SEZIONI) ========== */
+  /* Cerco di catturare ogni possibile container che Decap usa */
+  [class*="StyledListItem"],
+  [class*="ListItem-"],
+  [class*="ListItemContainer"],
+  div[class*="ListControl"] > div > div,
+  [data-rbd-draggable-id] {
+    background:#fff !important;
+    border:1px solid #e7e1d4 !important;
+    border-radius:14px !important;
+    margin-bottom:10px !important;
+    box-shadow:0 1px 3px rgba(0,0,0,.04) !important;
+    overflow:hidden !important;
+    transition:all .15s !important;
+  }
+  [class*="StyledListItem"]:hover,
+  [class*="ListItem-"]:hover,
+  [data-rbd-draggable-id]:hover {
+    border-color:#ff8a5c !important;
+    box-shadow:0 6px 18px -4px rgba(232,93,60,.18) !important;
+    transform:translateY(-1px) !important;
+  }
+
+  /* TopBar delle list item (chevron + drag + X) */
+  [class*="StyledListItemTopBar"],
+  [class*="ListItemTopBar"],
+  button[class*="StyledListItem"]:first-child,
+  div[class*="StyledListItem"] > button:first-child {
+    background:linear-gradient(180deg, #fafaf7 0%, #f4ede3 100%) !important;
+    border-bottom:1px solid #e7e1d4 !important;
+    padding:10px 16px !important;
+    cursor:pointer !important;
+  }
+
+  /* OBJECT widgets (Impostazioni Generali, Menu, Footer) */
+  [class*="ObjectControl"] > div,
+  [class*="ObjectField"],
+  [class*="CollapsedObjectControl"] {
+    background:#fff !important;
+    border:1px solid #e7e1d4 !important;
+    border-radius:14px !important;
+    padding:0 !important;
+    margin-bottom:14px !important;
+    overflow:hidden !important;
+  }
+  [class*="ObjectFieldHeader"],
+  [class*="CollapsibleHeader"] {
+    background:linear-gradient(180deg, #fff, #fafaf7) !important;
+    padding:14px 18px !important;
+    font-weight:700 !important;
+    font-size:1rem !important;
+    color:#0a0a0a !important;
+    border-bottom:1px solid #e7e1d4 !important;
+  }
+
+  /* Bottoni primari (Save, Add) */
   button[class*="PrimaryButton"],
   [class*="ToolbarButton-saveButton"],
-  [class*="SaveButton"]{
-    background:linear-gradient(135deg, var(--brand-coral-light), var(--brand-coral)) !important;
+  [class*="SaveButton"],
+  button[class*="primary"] {
+    background:linear-gradient(135deg, #ff8a5c, #e85d3c) !important;
     color:#fff !important;
     border-radius:999px !important;
     font-weight:600 !important;
@@ -94,527 +137,706 @@
     border:0 !important;
     box-shadow:0 6px 14px -4px rgba(232,93,60,.4) !important;
     transition:transform .15s, box-shadow .15s !important;
+    cursor:pointer !important;
   }
   button[class*="PrimaryButton"]:hover,
-  [class*="ToolbarButton-saveButton"]:hover{
+  [class*="ToolbarButton-saveButton"]:hover {
     transform:translateY(-1px) !important;
     box-shadow:0 10px 22px -6px rgba(232,93,60,.5) !important;
   }
 
-  /* Sidebar / pannello sinistro */
-  [class*="MainContainer"] aside,
-  [class*="SidebarContainer"]{
-    background:#fff !important;
-    border-right:1px solid var(--brand-line) !important;
-  }
-
-  /* List items (le sezioni) - card più definite */
-  [class*="StyledListItem"], [class*="ListItem-"]{
-    background:#fff !important;
-    border:1px solid var(--brand-line) !important;
-    border-radius:12px !important;
-    margin-bottom:10px !important;
-    box-shadow:0 1px 2px rgba(0,0,0,.02) !important;
-    transition:border-color .15s, box-shadow .15s !important;
-  }
-  [class*="StyledListItem"]:hover, [class*="ListItem-"]:hover{
-    border-color:var(--brand-coral-light) !important;
-    box-shadow:0 4px 12px -4px rgba(232,93,60,.15) !important;
-  }
-
-  /* Header collapsible (Impostazioni / Menu / Sezioni / Footer) */
-  [class*="ObjectFieldHeader"],
-  [class*="CollapsibleHeader"],
-  [class*="ObjectControl"] > div > [class*="Header"]{
-    background:linear-gradient(135deg, #fff, #faf7f3) !important;
-    border:1px solid var(--brand-line) !important;
-    border-radius:12px !important;
-    padding:14px 18px !important;
-    font-weight:700 !important;
-    font-size:1rem !important;
-    color:var(--brand-ink) !important;
-  }
-
-  /* Bottone "Aggiungi sezione" - più visibile */
-  [class*="AddButton"], button[class*="addLabel"]{
-    background:var(--brand-ink) !important;
+  /* "Aggiungi sezione" più visibile */
+  [class*="AddButton"],
+  button[class*="addLabel"],
+  [class*="StyledDropdownButton"] {
+    background:#0a0a0a !important;
     color:#fff !important;
     border-radius:999px !important;
-    padding:10px 20px !important;
+    padding:9px 20px !important;
     font-weight:600 !important;
+    font-size:.88rem !important;
+    cursor:pointer !important;
+    border:0 !important;
+  }
+  [class*="AddButton"]:hover {
+    background:#e85d3c !important;
   }
 
-  /* Drag handle (il == per spostare le sezioni) */
-  [class*="dragHandle"], [class*="DragHandle"]{
-    color:var(--brand-soft) !important;
+  /* Drag handle */
+  [class*="dragHandle"], [class*="DragHandle"] {
+    color:#8a8786 !important;
     cursor:grab !important;
   }
 
-  /* Toolbar in alto a destra (Status / Save / View Live) */
-  [class*="ToolbarSectionMain"], [class*="StatusButton"]{
-    background:transparent !important;
+  /* X / remove button */
+  button[class*="StyledRemove"],
+  button[class*="Remove"] {
+    color:#8a8786 !important;
+    transition:color .15s !important;
+  }
+  button[class*="StyledRemove"]:hover {
+    color:#e85d3c !important;
   }
 
-  /* Preview pane - bordo più morbido */
-  [class*="PreviewContainer"], [class*="PreviewPaneFrame"]{
+  /* Color widget — più grande e visibile */
+  [class*="ColorControl"] > div,
+  [class*="ColorSwatch"] {
+    width:48px !important;
+    height:48px !important;
+    border-radius:12px !important;
+    border:2px solid #e7e1d4 !important;
+    box-shadow:0 2px 6px rgba(0,0,0,.06) !important;
+    cursor:pointer !important;
+  }
+
+  /* Sidebar / collection list */
+  [class*="SidebarContainer"],
+  [class*="MainContainer"] aside {
     background:#fff !important;
-    border-left:1px solid var(--brand-line) !important;
-  }
-
-  /* Anchor link "Vai a #..." */
-  a{ color:var(--brand-coral) !important }
-
-  /* Errori e warning */
-  [class*="ErrorMessage"]{
-    color:#c44a2e !important;
-    background:#fff5f0 !important;
-    border-left:3px solid var(--brand-coral) !important;
-    padding:10px 14px !important;
-    border-radius:8px !important;
+    border-right:1px solid #e7e1d4 !important;
   }
 
   /* Markdown editor toolbar */
-  [class*="MarkdownToolbar"]{
+  [class*="MarkdownToolbar"] {
     background:#fff !important;
-    border:1px solid var(--brand-line) !important;
+    border:1px solid #e7e1d4 !important;
     border-bottom:0 !important;
     border-radius:10px 10px 0 0 !important;
   }
+
+  /* Animazione highlight quando una sezione viene aperta dal click in preview */
+  @keyframes pulseHighlight {
+    0%   { box-shadow:0 0 0 0 rgba(232,93,60,.6); }
+    50%  { box-shadow:0 0 0 8px rgba(232,93,60,.0); }
+    100% { box-shadow:0 0 0 0 rgba(232,93,60,0); }
+  }
+  .cms-highlight-pulse {
+    animation:pulseHighlight 1.2s ease-out 1 !important;
+    border-color:#e85d3c !important;
+  }
+
+  /* Banner help "Clicca su una sezione" */
+  .cms-help-banner {
+    position:fixed;
+    top:70px;
+    right:20px;
+    z-index:9999;
+    background:linear-gradient(135deg, #0a0a0a, #2a2622);
+    color:#fff;
+    padding:12px 20px;
+    border-radius:999px;
+    font:600 13px/1.3 "DM Sans", system-ui, sans-serif;
+    box-shadow:0 12px 30px -8px rgba(0,0,0,.5);
+    max-width:340px;
+    opacity:0;
+    transform:translateY(-10px);
+    transition:opacity .3s, transform .3s;
+    pointer-events:none;
+  }
+  .cms-help-banner.show {
+    opacity:1;
+    transform:translateY(0);
+  }
+  .cms-help-banner b { color:#ffd43b; }
   </style>
 </head>
 <body>
-  <!-- Decap CMS core -->
-  <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-  <script>
-  /* ==========================================================
-     HELPERS
-     ========================================================== */
-  function esc(s){
-    if(s==null) return '';
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function img(src, alt){
-    if(!src) return '';
-    return '<img src="' + esc(src) + '" alt="' + esc(alt||'') + '">';
-  }
+<!-- Banner che spiega il click-to-edit -->
+<div class="cms-help-banner" id="cmsHelpBanner">
+  💡 <b>Tip:</b> clicca una sezione nell'anteprima a destra per aprirla qui a sinistra
+</div>
 
-  /* ==========================================================
-     COLOR THEMING — applica i colori personalizzati del sito
-     come variabili CSS, sia nell'anteprima che nel sito live.
-     ========================================================== */
-  function colorOverrideCss(colors){
-    if(!colors) return '';
-    const c = colors;
-    const rules = [];
-    if(c.primary){
-      rules.push(`--coral-deep:${c.primary}`);
-      rules.push(`--coral-1:${c.primary}`);
-      rules.push(`--coral-darker:${c.primary}`);
-    }
-    if(c.accent) rules.push(`--yellow:${c.accent}`);
-    if(c.ink) rules.push(`--ink:${c.ink}`);
-    if(c.bg_soft) rules.push(`--bg-soft:${c.bg_soft}`);
-    if(!rules.length) return '';
-    return `<style>:root{${rules.join(';')};}</style>`;
-  }
+<!-- Decap CMS -->
+<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
-  /* ==========================================================
-     SECTION TEMPLATES — identici a quelli di index.html
-     ========================================================== */
-  const templates = {
-    hero(s){
-      return `
-        <section class="hero" data-section="hero"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="hero-bg">${img(s.bg_image, 'Hero')}</div>
-          ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
-          <div class="container hero-content">
-            <h1>
-              ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-              ${s.headline_main?`${esc(s.headline_main)} `:''}
-              ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-            </h1>
-            <p class="hero-sub">
-              ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
-              ${s.subtitle?esc(s.subtitle):''}
-            </p>
-            ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
-            ${(s.mission_label_strong||s.mission_figure)?`
-              <div class="mission-card">
-                <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
-                <div class="mission-bar">
-                  <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-                  <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-                </div>
-                <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-                <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
-              </div>`:''}
-          </div>
-        </section>`;
-    },
-    problem(s){
-      const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-      const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
-      const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-      const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
-      return `
-        <section class="problem" data-section="problem"${s.id?` id="${esc(s.id)}"`:''}>
-          ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
-          <div class="container">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <div class="problem-body">
-              ${intro}
-              ${questions?`<p>${questions}</p>`:''}
-              ${middle}
-              ${quote?`<div class="problem-quote">${quote}</div>`:''}
-              ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
-            </div>
-          </div>
-        </section>`;
-    },
-    about(s){
-      const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
-      return `
-        <section class="about" data-section="about"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container about-grid">
-            <div>
-              <h2>${esc(s.title||'')}</h2>
-              ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
-            </div>
-            ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
-            <div class="about-body">
-              ${body}
-              ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
-            </div>
-          </div>
-        </section>`;
-    },
-    value_card(s){
-      const icons = {
-        clock:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M32 18v14l8 4"/></svg>`,
-        chart:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L24 30 L36 38 L52 14"/><polyline points="40 14 52 14 52 26"/></svg>`,
-        shield:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L52 16 V32 C52 44 32 56 32 56 C32 56 12 44 12 32 V16 Z"/></svg>`
-      };
-      const items = (s.items||[]).map(it=>`
-        <div class="value-item">
-          <div class="value-icon">${icons[it.icon]||icons.clock}</div>
-          <h4>${esc(it.title||'')}</h4>
-          ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
-        </div>`).join('');
-      return `
-        <section class="value-section" data-section="value_card"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="value-card">
-              <h2>${esc(s.title||'')}</h2>
-              <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
-              <div class="value-grid">${items}</div>
-              ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
-            </div>
-          </div>
-        </section>`;
-    },
-    method(s){
-      const cards = (s.cards||[]).map(c=>`
-        <div class="method-card">
-          <div class="method-photo">
-            ${img(c.photo, c.title)}
-            <div class="method-num">${esc(c.num||'')}</div>
-          </div>
-          <div class="method-body">
-            <h3>${esc(c.title||'')}</h3>
-            <p>${esc(c.body||'')}</p>
-          </div>
-        </div>`).join('');
-      return `
-        <section class="method" data-section="method"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="method-head">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
-            </div>
-            <div class="method-grid">${cards}</div>
-          </div>
-        </section>`;
-    },
-    levels(s){
-      const items = (s.levels||[]).map(l=>`
-        <div class="level">
-          <div class="level-tag">${esc(l.tag||'')}</div>
-          <h4>${esc(l.title||'')}</h4>
-          <p>${esc(l.body||'')}</p>
-        </div>`).join('');
-      const labels = s.pyramid_labels||[];
-      return `
-        <section class="levels" data-section="levels"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="levels-head">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p class="sub">${esc(s.subtitle||'')}</p>
-            </div>
-            <div class="levels-grid">
-              <div class="pyramid">
-                <div class="tri tri-3"><span class="tri-label">${esc(labels[0]||'')}</span></div>
-                <div class="tri tri-2"><span class="tri-label">${esc(labels[1]||'')}</span></div>
-                <div class="tri tri-1"><span class="tri-label">${esc(labels[2]||'')}</span></div>
-              </div>
-              <div class="levels-list">${items}</div>
-            </div>
-          </div>
-        </section>`;
-    },
-    programs(s){
-      const cards = (s.cards||[]).map(c=>`
-        <div class="program-card ${c.reverse?'reverse':''}">
-          <div class="program-text">
-            ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
-            <h3>${esc(c.title||'')}</h3>
-            ${c.subtitle?`<div class="program-subtitle">${esc(c.subtitle)}</div>`:''}
-            <p>${esc(c.body||'')}</p>
-            ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
-          </div>
-          <div class="program-img">${img(c.photo, c.title)}</div>
-        </div>`).join('');
-      return `
-        <section class="programs" data-section="programs"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="programs-head">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p class="sub">${esc(s.subtitle||'')}</p>
-            </div>
-            ${cards}
-          </div>
-        </section>`;
-    },
-    audience(s){
-      const items = (s.items||[]).map(it=>`
-        <div class="audience-item">
-          <div class="audience-photo">${img(it.photo, it.title)}</div>
-          <h4>${esc(it.title||'')}</h4>
-          <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
-        </div>`).join('');
-      return `
-        <section data-section="audience"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="audience-head">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p class="sub">${esc(s.subtitle||'')}</p>
-            </div>
-            <div class="audience-grid">${items}</div>
-          </div>
-        </section>`;
-    },
-    stats(s){
-      const renderRow = (row)=>{
-        if(!row||!row.length) return '';
-        const cells = row.map(c=>`
-          <div class="stat">
-            ${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}
-            <div class="num">${esc(c.num||'')}</div>
-            <div class="lbl">${esc(c.label||'')}</div>
-          </div>`).join('');
-        return `<div class="stats-row">${cells}</div>`;
-      };
-      return `
-        <section class="stats" data-section="stats"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="stats-head">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p class="sub">${esc(s.subtitle||'')}</p>
-            </div>
-            ${renderRow(s.row_a)}
-            ${renderRow(s.row_b)}
-            ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
-          </div>
-        </section>`;
-    },
-    testimonials(s){
-      const items = (s.items||[]).map(t=>`
-        <div class="test-card">
-          <div class="test-stars">★★★★★</div>
-          <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
-          <div class="test-author">
-            <div class="test-avatar">${img(t.avatar, t.name)}</div>
-            <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
-          </div>
-        </div>`).join('');
-      return `
-        <section class="testimonials" data-section="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="test-head">
-              <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
-            </div>
-            <div class="test-grid">${items}</div>
-          </div>
-        </section>`;
-    },
-    big_quote(s){
-      return `
-        <section class="big-quote" data-section="big_quote"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <p class="q">${esc(s.quote||'')}</p>
-            <div class="who">
-              ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
-              <div class="n">${esc(s.author_name||'')}</div>
-            </div>
-          </div>
-        </section>`;
-    },
-    features_card(s){
-      const pills = (s.pills||[]).map(p=>{
-        if(p.special){
-          const t = (p.text||'').split(/\b(VIVERE|VIVI)\b/i);
-          if(t.length===3){
-            return `<div class="pill-item special">${esc(t[0])}<em>${esc(t[1])}</em>${esc(t[2])}</div>`;
-          }
-          return `<div class="pill-item special">${esc(p.text||'')}</div>`;
-        }
-        return `<div class="pill-item">${esc(p.text||'')}</div>`;
-      }).join('');
-      return `
-        <section class="features-section" data-section="features_card"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="features-card">
-              <h2>${esc(s.title||'')}</h2>
-              <p class="lead">${esc(s.lead||'')}</p>
-              <div class="feature-pills">${pills}</div>
-            </div>
-          </div>
-        </section>`;
-    },
-    cta_form(s){
-      const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
-      return `
-        <section class="cta-section" data-section="cta_form"${s.id?` id="${esc(s.id)}"`:''}>
-          <div class="container">
-            <div class="cta-card">
-              <div class="cta-text">
-                <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-                <p>${esc(s.body||'')}</p>
-                <ul class="cta-perks">${perks}</ul>
-              </div>
-              <div class="form-wrap">
-                <h3>${esc(s.form_title||'Prenota')}</h3>
-                <p class="form-sub">${esc(s.form_subtitle||'')}</p>
-                <p style="color:#888;font-style:italic;font-size:.85rem;text-align:center;margin-top:30px">[ qui appaiono i campi del form sulla landing ]</p>
-              </div>
-            </div>
-          </div>
-        </section>`;
-    }
-  };
+<script>
+/* ==========================================================
+   HELPERS
+   ========================================================== */
+function esc(s){
+  if(s==null) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function img(src, alt){
+  if(!src) return '';
+  return '<img src="' + esc(src) + '" alt="' + esc(alt||'') + '">';
+}
 
-  function renderNav(data){
-    const nav = data.nav||{};
-    const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
+/* ==========================================================
+   COLOR OVERRIDE
+   ========================================================== */
+function colorOverrideCss(colors){
+  // Sempre applico i default se mancano valori, per coerenza
+  const def = {primary:'#e85d3c', accent:'#ffd43b', ink:'#0a0a0a', bg_soft:'#faf7f3'};
+  const c = Object.assign({}, def, colors||{});
+  const rules = [
+    `--coral-deep:${c.primary}`,
+    `--coral-1:${c.primary}`,
+    `--coral-darker:${c.primary}`,
+    `--yellow:${c.accent}`,
+    `--ink:${c.ink}`,
+    `--bg-soft:${c.bg_soft}`
+  ];
+  return `<style>:root{${rules.join(';')};}</style>`;
+}
+
+/* ==========================================================
+   SECTION TEMPLATES — uguali a v3
+   ========================================================== */
+const templates = {
+  hero(s){
     return `
-      <div class="container nav-inner">
-        <a href="#" class="logo">
-          <span class="logo-mark">DC</span>
-          <span>${esc(data.site?.logo_text||'Dr. Campa')}</span>
-        </a>
-        <ul class="nav-links">${links}</ul>
-        <div class="nav-cta">
-          ${nav.phone_label?`<a href="#" class="login">${esc(nav.phone_label)}</a>`:''}
-          ${nav.cta_label?`<a href="#" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+      <section class="hero" data-section="hero" data-section-label="Hero"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="hero-bg">${img(s.bg_image, 'Hero')}</div>
+        ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
+        <div class="container hero-content">
+          <h1>
+            ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+            ${s.headline_main?`${esc(s.headline_main)} `:''}
+            ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+          </h1>
+          <p class="hero-sub">
+            ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
+            ${s.subtitle?esc(s.subtitle):''}
+          </p>
+          ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
+          ${(s.mission_label_strong||s.mission_figure)?`
+            <div class="mission-card">
+              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
+              <div class="mission-bar">
+                <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+                <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+              </div>
+              <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+              <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
+            </div>`:''}
         </div>
-      </div>`;
-  }
-
-  function renderFooter(data){
-    const f = data.footer||{};
-    const cols = (f.columns||[]).map(c=>{
-      const links = (c.links||[]).map(l=>`<li><a href="#">${esc(l.label||'')}</a></li>`).join('');
-      return `<div><h5>${esc(c.title||'')}</h5><ul>${links}</ul></div>`;
+      </section>`;
+  },
+  problem(s){
+    const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+    const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
+    const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+    const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
+    return `
+      <section class="problem" data-section="problem" data-section-label="Problema"${s.id?` id="${esc(s.id)}"`:''}>
+        ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
+        <div class="container">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <div class="problem-body">
+            ${intro}
+            ${questions?`<p>${questions}</p>`:''}
+            ${middle}
+            ${quote?`<div class="problem-quote">${quote}</div>`:''}
+            ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
+          </div>
+        </div>
+      </section>`;
+  },
+  about(s){
+    const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
+    return `
+      <section class="about" data-section="about" data-section-label="Chi è il dottore"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container about-grid">
+          <div>
+            <h2>${esc(s.title||'')}</h2>
+            ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+          </div>
+          ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
+          <div class="about-body">
+            ${body}
+            ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
+          </div>
+        </div>
+      </section>`;
+  },
+  value_card(s){
+    const icons = {
+      clock:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M32 18v14l8 4"/></svg>`,
+      chart:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L24 30 L36 38 L52 14"/><polyline points="40 14 52 14 52 26"/></svg>`,
+      shield:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L52 16 V32 C52 44 32 56 32 56 C32 56 12 44 12 32 V16 Z"/></svg>`
+    };
+    const items = (s.items||[]).map(it=>`
+      <div class="value-item">
+        <div class="value-icon">${icons[it.icon]||icons.clock}</div>
+        <h4>${esc(it.title||'')}</h4>
+        ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
+      </div>`).join('');
+    return `
+      <section class="value-section" data-section="value_card" data-section-label="Card Valore"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="value-card">
+            <h2>${esc(s.title||'')}</h2>
+            <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
+            <div class="value-grid">${items}</div>
+            ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
+          </div>
+        </div>
+      </section>`;
+  },
+  method(s){
+    const cards = (s.cards||[]).map(c=>`
+      <div class="method-card">
+        <div class="method-photo">
+          ${img(c.photo, c.title)}
+          <div class="method-num">${esc(c.num||'')}</div>
+        </div>
+        <div class="method-body">
+          <h3>${esc(c.title||'')}</h3>
+          <p>${esc(c.body||'')}</p>
+        </div>
+      </div>`).join('');
+    return `
+      <section class="method" data-section="method" data-section-label="Metodo"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="method-head">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
+          </div>
+          <div class="method-grid">${cards}</div>
+        </div>
+      </section>`;
+  },
+  levels(s){
+    const items = (s.levels||[]).map(l=>`
+      <div class="level">
+        <div class="level-tag">${esc(l.tag||'')}</div>
+        <h4>${esc(l.title||'')}</h4>
+        <p>${esc(l.body||'')}</p>
+      </div>`).join('');
+    const labels = s.pyramid_labels||[];
+    return `
+      <section class="levels" data-section="levels" data-section-label="Piramide"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="levels-head">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p class="sub">${esc(s.subtitle||'')}</p>
+          </div>
+          <div class="levels-grid">
+            <div class="pyramid">
+              <div class="tri tri-3"><span class="tri-label">${esc(labels[0]||'')}</span></div>
+              <div class="tri tri-2"><span class="tri-label">${esc(labels[1]||'')}</span></div>
+              <div class="tri tri-1"><span class="tri-label">${esc(labels[2]||'')}</span></div>
+            </div>
+            <div class="levels-list">${items}</div>
+          </div>
+        </div>
+      </section>`;
+  },
+  programs(s){
+    const cards = (s.cards||[]).map(c=>`
+      <div class="program-card ${c.reverse?'reverse':''}">
+        <div class="program-text">
+          ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
+          <h3>${esc(c.title||'')}</h3>
+          ${c.subtitle?`<div class="program-subtitle">${esc(c.subtitle)}</div>`:''}
+          <p>${esc(c.body||'')}</p>
+          ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
+        </div>
+        <div class="program-img">${img(c.photo, c.title)}</div>
+      </div>`).join('');
+    return `
+      <section class="programs" data-section="programs" data-section-label="Programmi"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="programs-head">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p class="sub">${esc(s.subtitle||'')}</p>
+          </div>
+          ${cards}
+        </div>
+      </section>`;
+  },
+  audience(s){
+    const items = (s.items||[]).map(it=>`
+      <div class="audience-item">
+        <div class="audience-photo">${img(it.photo, it.title)}</div>
+        <h4>${esc(it.title||'')}</h4>
+        <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
+      </div>`).join('');
+    return `
+      <section data-section="audience" data-section-label="Audience"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="audience-head">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p class="sub">${esc(s.subtitle||'')}</p>
+          </div>
+          <div class="audience-grid">${items}</div>
+        </div>
+      </section>`;
+  },
+  stats(s){
+    const renderRow = (row)=>{
+      if(!row||!row.length) return '';
+      const cells = row.map(c=>`
+        <div class="stat">
+          ${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}
+          <div class="num">${esc(c.num||'')}</div>
+          <div class="lbl">${esc(c.label||'')}</div>
+        </div>`).join('');
+      return `<div class="stats-row">${cells}</div>`;
+    };
+    return `
+      <section class="stats" data-section="stats" data-section-label="Statistiche"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="stats-head">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p class="sub">${esc(s.subtitle||'')}</p>
+          </div>
+          ${renderRow(s.row_a)}
+          ${renderRow(s.row_b)}
+          ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+        </div>
+      </section>`;
+  },
+  testimonials(s){
+    const items = (s.items||[]).map(t=>`
+      <div class="test-card">
+        <div class="test-stars">★★★★★</div>
+        <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
+        <div class="test-author">
+          <div class="test-avatar">${img(t.avatar, t.name)}</div>
+          <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
+        </div>
+      </div>`).join('');
+    return `
+      <section class="testimonials" data-section="testimonials" data-section-label="Testimonianze"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="test-head">
+            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          </div>
+          <div class="test-grid">${items}</div>
+        </div>
+      </section>`;
+  },
+  big_quote(s){
+    return `
+      <section class="big-quote" data-section="big_quote" data-section-label="Grande citazione"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <p class="q">${esc(s.quote||'')}</p>
+          <div class="who">
+            ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
+            <div class="n">${esc(s.author_name||'')}</div>
+          </div>
+        </div>
+      </section>`;
+  },
+  features_card(s){
+    const pills = (s.pills||[]).map(p=>{
+      if(p.special){
+        const t = (p.text||'').split(/\b(VIVERE|VIVI)\b/i);
+        if(t.length===3){
+          return `<div class="pill-item special">${esc(t[0])}<em>${esc(t[1])}</em>${esc(t[2])}</div>`;
+        }
+        return `<div class="pill-item special">${esc(p.text||'')}</div>`;
+      }
+      return `<div class="pill-item">${esc(p.text||'')}</div>`;
     }).join('');
     return `
-      <div class="container">
-        <div class="footer-top">
-          <div class="footer-about">
-            <a href="#" class="logo">
-              <span class="logo-mark">DC</span>
-              <span>${esc(data.site?.logo_text||'')}</span>
-            </a>
-            <p>${esc(f.about_text||'')}</p>
+      <section class="features-section" data-section="features_card" data-section-label="Caratteristiche"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="features-card">
+            <h2>${esc(s.title||'')}</h2>
+            <p class="lead">${esc(s.lead||'')}</p>
+            <div class="feature-pills">${pills}</div>
           </div>
-          ${cols}
         </div>
-        <div class="footer-bottom">
-          <div>${esc(f.bottom_left||'')}</div>
+      </section>`;
+  },
+  cta_form(s){
+    const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
+    return `
+      <section class="cta-section" data-section="cta_form" data-section-label="Form Contatti"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="cta-card">
+            <div class="cta-text">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p>${esc(s.body||'')}</p>
+              <ul class="cta-perks">${perks}</ul>
+            </div>
+            <div class="form-wrap">
+              <h3>${esc(s.form_title||'Prenota')}</h3>
+              <p class="form-sub">${esc(s.form_subtitle||'')}</p>
+              <p style="color:#888;font-style:italic;font-size:.85rem;text-align:center;margin-top:30px">[ qui appaiono i campi del form sulla landing ]</p>
+            </div>
+          </div>
         </div>
-      </div>`;
+      </section>`;
   }
+};
 
-  /* ==========================================================
-     EXTRA CSS dentro l'anteprima per labels e hover sezioni
-     ========================================================== */
-  const PREVIEW_EXTRA_CSS = `
-    <style>
-      /* Banner in cima all'anteprima */
-      .preview-banner{
-        background:#fff8e6;
-        border-bottom:1px solid #f0d878;
-        padding:10px 16px;
-        font:13px/1.4 "DM Sans", system-ui, sans-serif;
-        color:#7a5b00;
-        text-align:center;
-        position:sticky;top:0;z-index:100;
-      }
-      /* Bollino su ogni sezione all'hover */
-      [data-section]{position:relative; transition:outline .15s}
-      [data-section]:hover{outline:2px dashed rgba(232,93,60,.4); outline-offset:-2px}
-      [data-section]::before{
-        content:"Sezione: " attr(data-section);
-        position:absolute; top:8px; left:8px; z-index:50;
-        background:#0a0a0a; color:#fff;
-        padding:5px 12px; border-radius:999px;
-        font:600 11px/1 "DM Sans", system-ui, sans-serif;
-        letter-spacing:.04em; text-transform:uppercase;
-        opacity:0; transform:translateY(-4px);
-        transition:opacity .15s, transform .15s;
-        pointer-events:none;
-      }
-      [data-section]:hover::before{opacity:.95; transform:translateY(0)}
-    </style>
-  `;
+function renderNav(data){
+  const nav = data.nav||{};
+  const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
+  return `
+    <div class="container nav-inner">
+      <a href="#" class="logo">
+        <span class="logo-mark">DC</span>
+        <span>${esc(data.site?.logo_text||'Dr. Campa')}</span>
+      </a>
+      <ul class="nav-links">${links}</ul>
+      <div class="nav-cta">
+        ${nav.phone_label?`<a href="#" class="login">${esc(nav.phone_label)}</a>`:''}
+        ${nav.cta_label?`<a href="#" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+      </div>
+    </div>`;
+}
 
-  function renderFullSite(data){
-    let html = colorOverrideCss(data.site?.colors);
-    html += PREVIEW_EXTRA_CSS;
-    html += `<div class="preview-banner"><strong>Anteprima dal vivo.</strong> Passa il mouse su una sezione per vederne il nome. Clicca <strong>Save</strong> in alto per pubblicare.</div>`;
-    html += '<nav class="nav">' + renderNav(data) + '</nav>';
-    html += '<main>';
-    (data.sections||[]).forEach(s => {
-      const tpl = templates[s.type];
-      if(tpl){
-        try { html += tpl(s); }
-        catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore rendering sezione "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
-      } else {
-        html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo di sezione sconosciuto: "' + esc(s.type) + '"</div>';
-      }
-    });
-    html += '</main>';
-    html += '<footer class="footer">' + renderFooter(data) + '</footer>';
-    return html;
-  }
+function renderFooter(data){
+  const f = data.footer||{};
+  const cols = (f.columns||[]).map(c=>{
+    const links = (c.links||[]).map(l=>`<li><a href="#">${esc(l.label||'')}</a></li>`).join('');
+    return `<div><h5>${esc(c.title||'')}</h5><ul>${links}</ul></div>`;
+  }).join('');
+  return `
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-about">
+          <a href="#" class="logo">
+            <span class="logo-mark">DC</span>
+            <span>${esc(data.site?.logo_text||'')}</span>
+          </a>
+          <p>${esc(f.about_text||'')}</p>
+        </div>
+        ${cols}
+      </div>
+      <div class="footer-bottom">
+        <div>${esc(f.bottom_left||'')}</div>
+      </div>
+    </div>`;
+}
 
-  /* ==========================================================
-     PREVIEW REGISTRATION
-     ========================================================== */
-  const SitePreview = function(props){
-    let data;
-    try {
-      data = props.entry.getIn(['data']).toJS();
-    } catch(e){
-      return h('div', {style:{padding:'40px',fontFamily:'sans-serif'}}, 'Errore lettura dati: ' + e.message);
+/* ==========================================================
+   CSS EXTRA dentro l'anteprima
+   ========================================================== */
+const PREVIEW_EXTRA_CSS = `
+  <style>
+    body { cursor:default; }
+
+    /* Banner top dell'anteprima */
+    .preview-banner{
+      background:linear-gradient(135deg, #fff8e6, #fef3c7);
+      border-bottom:1px solid #f0d878;
+      padding:11px 16px;
+      font:13px/1.4 "DM Sans", system-ui, sans-serif;
+      color:#7a5b00;
+      text-align:center;
+      position:sticky;top:0;z-index:100;
     }
-    return h('div', {dangerouslySetInnerHTML: {__html: renderFullSite(data)}});
-  };
+    .preview-banner b { color:#0a0a0a; }
 
-  // Carica gli stili del sito nell'iframe di anteprima
-  CMS.registerPreviewStyle('/admin/preview.css');
+    /* Ogni sezione è cliccabile */
+    [data-section]{
+      position:relative;
+      cursor:pointer;
+      transition:outline .15s, outline-offset .15s;
+    }
+    [data-section]:hover{
+      outline:3px dashed rgba(232,93,60,.6);
+      outline-offset:-3px;
+    }
+    [data-section]::before{
+      content:"📍 " attr(data-section-label) " — clicca per modificare";
+      position:absolute;
+      top:12px; left:12px;
+      z-index:50;
+      background:#0a0a0a;
+      color:#fff;
+      padding:7px 14px;
+      border-radius:999px;
+      font:600 12px/1 "DM Sans", system-ui, sans-serif;
+      letter-spacing:.02em;
+      opacity:0;
+      transform:translateY(-6px);
+      transition:opacity .15s, transform .15s;
+      pointer-events:none;
+      box-shadow:0 6px 18px -4px rgba(0,0,0,.4);
+    }
+    [data-section]:hover::before{
+      opacity:1;
+      transform:translateY(0);
+    }
+    /* I link e bottoni dentro le sezioni rimangono cliccabili senza triggerare l'edit */
+    [data-section] a, [data-section] button, [data-section] input,
+    [data-section] textarea, [data-section] select {
+      cursor:pointer;
+    }
+  </style>
+`;
 
-  // Registra il template di anteprima per il file content.json
-  CMS.registerPreviewTemplate('main', SitePreview);
-  </script>
+function renderFullSite(data){
+  let html = colorOverrideCss(data.site?.colors);
+  html += PREVIEW_EXTRA_CSS;
+  html += `<div class="preview-banner">👆 <b>Clicca su una sezione per modificarla nell'editor</b> — Save in alto a destra per pubblicare</div>`;
+  html += '<nav class="nav">' + renderNav(data) + '</nav>';
+  html += '<main>';
+  (data.sections||[]).forEach(s => {
+    const tpl = templates[s.type];
+    if(tpl){
+      try { html += tpl(s); }
+      catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore rendering sezione "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
+    } else {
+      html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo di sezione sconosciuto: "' + esc(s.type) + '"</div>';
+    }
+  });
+  html += '</main>';
+  html += '<footer class="footer">' + renderFooter(data) + '</footer>';
+  return html;
+}
+
+/* ==========================================================
+   PREVIEW REGISTRATION
+   ========================================================== */
+const SitePreview = function(props){
+  let data;
+  try {
+    data = props.entry.getIn(['data']).toJS();
+  } catch(e){
+    return h('div', {style:{padding:'40px',fontFamily:'sans-serif'}}, 'Errore lettura dati: ' + e.message);
+  }
+  return h('div', {dangerouslySetInnerHTML: {__html: renderFullSite(data)}});
+};
+
+CMS.registerPreviewStyle('/admin/preview.css');
+CMS.registerPreviewTemplate('main', SitePreview);
+
+
+/* ==========================================================
+   ⭐ CLICK-TO-EDIT
+   Quando l'utente clicca su una sezione nell'anteprima a destra,
+   apriamo la corrispondente sezione nel pannello a sinistra.
+   ========================================================== */
+const helpBanner = document.getElementById('cmsHelpBanner');
+let helpShownOnce = false;
+
+function showHelpBanner(){
+  if(helpShownOnce) return;
+  helpShownOnce = true;
+  helpBanner.classList.add('show');
+  setTimeout(() => helpBanner.classList.remove('show'), 5000);
+}
+
+function findSectionsList(){
+  // Strategia 1: trova un label/header con il testo "Sezioni della pagina"
+  const allText = document.querySelectorAll('label, [class*="Label"], [class*="Header"]');
+  for(const el of allText){
+    const txt = (el.textContent||'').trim();
+    if(/sezioni della pagina/i.test(txt)){
+      // Risali fino a trovare un parent che contiene più list items
+      let parent = el.parentElement;
+      let depth = 0;
+      while(parent && depth < 20){
+        const items = parent.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
+        if(items.length >= 5){
+          return parent;
+        }
+        parent = parent.parentElement;
+        depth++;
+      }
+    }
+  }
+
+  // Strategia 2: fallback — la lista più grande nel documento
+  const containers = document.querySelectorAll('div, ul, ol');
+  let biggest = null;
+  let maxCount = 0;
+  containers.forEach(c => {
+    const items = c.querySelectorAll(':scope > [class*="StyledListItem"], :scope > [class*="ListItem-"], :scope > [data-rbd-draggable-id]');
+    if(items.length > maxCount && items.length >= 5){
+      maxCount = items.length;
+      biggest = c;
+    }
+  });
+  return biggest;
+}
+
+function getSectionsListItems(){
+  const container = findSectionsList();
+  if(!container) return [];
+  const all = container.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
+  // Filtra solo top-level (non annidati)
+  return Array.from(all).filter(item => {
+    let p = item.parentElement;
+    while(p && p !== container){
+      if(p.matches('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]')) return false;
+      p = p.parentElement;
+    }
+    return true;
+  });
+}
+
+function openSectionInEditor(index){
+  const items = getSectionsListItems();
+  if(!items.length){
+    console.warn('[CMS] Non trovo la lista sezioni');
+    return;
+  }
+  const target = items[index];
+  if(!target){
+    console.warn('[CMS] Sezione ' + index + ' non trovata (' + items.length + ' disponibili)');
+    return;
+  }
+
+  // Scrolla in vista
+  target.scrollIntoView({behavior:'smooth', block:'center'});
+
+  // Highlight con pulse
+  target.classList.add('cms-highlight-pulse');
+  setTimeout(() => target.classList.remove('cms-highlight-pulse'), 1500);
+
+  // Clicca la top bar per espandere (se non già espanso)
+  setTimeout(() => {
+    const expandTriggers = [
+      target.querySelector('[class*="StyledListItemTopBar"]'),
+      target.querySelector('[class*="ListItemTopBar"]'),
+      target.querySelector('button'),
+      target.querySelector('[role="button"]')
+    ].filter(Boolean);
+
+    // Determina se è già espanso
+    const hasContent = target.querySelector('input, textarea, [class*="ObjectControl"]');
+    if(!hasContent && expandTriggers[0]){
+      try { expandTriggers[0].click(); }
+      catch(e) { console.warn('[CMS] Click su top bar fallito:', e); }
+    }
+  }, 400);
+}
+
+function setupClickToEdit(){
+  // Trova tutti gli iframe (preview pane)
+  const iframes = document.querySelectorAll('iframe');
+  iframes.forEach(iframe => {
+    if(iframe.dataset.cmsBound === '1') return;
+    let doc;
+    try { doc = iframe.contentDocument; }
+    catch(e) { return; }
+    if(!doc || !doc.body) return;
+
+    iframe.dataset.cmsBound = '1';
+
+    // Event delegation: ascolta tutti i click nell'iframe
+    doc.addEventListener('click', function(e){
+      const sec = e.target.closest('[data-section]');
+      if(!sec) return;
+      // Lascia passare click su link/bottoni/input interni
+      if(e.target.closest('a, button, input, textarea, select, form')) return;
+      e.preventDefault();
+      e.stopPropagation();
+
+      const all = doc.querySelectorAll('[data-section]');
+      const idx = Array.from(all).indexOf(sec);
+      if(idx >= 0){
+        openSectionInEditor(idx);
+      }
+    }, true);
+
+    // Mostra il banner di help al primo iframe loaded
+    setTimeout(showHelpBanner, 800);
+  });
+}
+
+// Riprova periodicamente — il preview iframe viene ricreato spesso
+setInterval(setupClickToEdit, 1500);
+</script>
 </body>
 </html>
