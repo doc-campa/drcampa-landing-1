@@ -1,498 +1,882 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editor — Studio Campa</title>
-  <link rel="icon" href="data:,">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <style>
-  /* ==========================================================
-     PANNELLO — DESIGN B "COMPATTO INLINE"
-     ========================================================== */
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Editor — Studio Campa</title>
+<link rel="icon" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#fafaf8; --bg-card:#fff; --bg-soft:#f4ede3;
+  --ink:#1a1714; --ink-soft:#5a554d; --ink-light:#8a8580;
+  --line:#e7e1d4; --line-soft:#f0ece3;
+  --coral:#e85d3c; --coral-soft:#fff5ed;
+  --yellow:#ffd43b;
+  --green:#0f7a4a;
+  --red:#a32d2d;
+}
+* { box-sizing:border-box; }
+html,body {
+  margin:0; height:100%; overflow:hidden;
+  font-family:"Inter", system-ui, -apple-system, sans-serif;
+  font-size:14px; line-height:1.5; color:var(--ink);
+  background:var(--bg);
+}
+button { font:inherit; cursor:pointer; border:0; background:none; color:inherit; padding:0; }
+input,textarea,select { font:inherit; }
+a { color:inherit; text-decoration:none; }
 
-  body, [class*="Workflow"], [class*="EditorContainer"], [class*="EntryEditor"] {
-    background:#fafaf8 !important;
-    font-family:"Inter", system-ui, -apple-system, sans-serif !important;
-  }
+/* ====== LOGIN ====== */
+.login {
+  position:fixed; inset:0; display:flex; align-items:center; justify-content:center;
+  background:#0a0a0a;
+}
+.login-card {
+  background:#fff; border-radius:16px; padding:48px 40px; max-width:380px; width:100%;
+  text-align:center; box-shadow:0 30px 60px -20px rgba(0,0,0,.5);
+}
+.login-logo {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:48px; height:48px; border-radius:12px;
+  background:linear-gradient(135deg, #ff8a5c, #e85d3c);
+  color:#fff; font-weight:700; font-size:18px; margin-bottom:20px;
+}
+.login h1 { font-size:22px; font-weight:600; margin:0 0 8px; }
+.login p { color:var(--ink-soft); margin:0 0 28px; font-size:14px; line-height:1.55; }
+.login-btn {
+  display:inline-flex; align-items:center; gap:10px; padding:11px 22px;
+  background:#1a1714; color:#fff; border-radius:999px; font-weight:500; font-size:14px;
+  transition:transform .12s;
+}
+.login-btn:hover { transform:translateY(-1px); }
+.login-error {
+  margin-top:14px; padding:10px 14px; background:#fef2f2; color:#a32d2d;
+  border-radius:8px; font-size:13px;
+}
 
-  /* Field labels (ovunque) */
-  label, [class*="FieldLabel"], [class*="ControlLabel"] {
-    font-family:"Inter", system-ui, sans-serif !important;
-    font-size:12px !important;
-    font-weight:500 !important;
-    color:#1a1714 !important;
-    margin:0 0 3px 0 !important;
-    letter-spacing:0 !important;
-    text-transform:none !important;
-  }
+/* ====== APP LAYOUT ====== */
+.app { display:flex; flex-direction:column; height:100vh; }
+.topbar {
+  flex:0 0 56px; display:flex; align-items:center; padding:0 20px;
+  background:#fff; border-bottom:1px solid var(--line); gap:16px;
+}
+.topbar-logo {
+  display:flex; align-items:center; gap:10px; font-weight:600;
+}
+.topbar-logo-mark {
+  width:30px; height:30px; border-radius:8px;
+  background:linear-gradient(135deg, #ff8a5c, #e85d3c);
+  display:grid; place-items:center; color:#fff; font-weight:700; font-size:13px;
+}
+.topbar-status { flex:1; display:flex; justify-content:center; gap:8px; font-size:13px; color:var(--ink-light); }
+.topbar-status .dot { width:8px; height:8px; border-radius:50%; background:var(--ink-light); margin-top:5px; }
+.topbar-status.dirty { color:#b45309; }
+.topbar-status.dirty .dot { background:#f59e0b; }
+.topbar-status.saving { color:#1d4ed8; }
+.topbar-status.saving .dot { background:#3b82f6; animation:pulse 1s infinite; }
+.topbar-status.saved { color:var(--green); }
+.topbar-status.saved .dot { background:var(--green); }
+@keyframes pulse { 50% { opacity:.4; } }
+.topbar-actions { display:flex; gap:10px; align-items:center; }
+.btn {
+  display:inline-flex; align-items:center; gap:6px; padding:8px 16px;
+  border-radius:999px; font-weight:500; font-size:13px; transition:all .12s;
+  border:0.5px solid transparent;
+}
+.btn-secondary { border-color:var(--line); color:var(--ink); background:#fff; }
+.btn-secondary:hover { border-color:var(--ink-light); }
+.btn-primary { background:#1a1714; color:#fff; }
+.btn-primary:hover { background:var(--coral); }
+.btn-primary:disabled { background:var(--ink-light); cursor:not-allowed; }
+.btn-icon-only { padding:8px; }
 
-  /* Hint text sotto i campi */
-  [class*="ControlHint"], [class*="HintText"], [class*="FieldHint"] {
-    font-size:11.5px !important;
-    color:#8a8580 !important;
-    font-style:normal !important;
-    font-weight:400 !important;
-    line-height:1.4 !important;
-    margin:0 0 7px 0 !important;
-    padding:0 !important;
-    background:transparent !important;
-    border:0 !important;
-    letter-spacing:0 !important;
-  }
+.main { flex:1; display:flex; min-height:0; }
+.editor {
+  flex:0 0 50%; max-width:680px; overflow-y:auto;
+  background:var(--bg); padding:20px 24px 60px; border-right:1px solid var(--line);
+}
+.preview { flex:1; min-width:0; background:#fff; position:relative; }
+.preview iframe { border:0; width:100%; height:100%; display:block; }
+.preview-loading {
+  position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+  color:var(--ink-light); font-size:13px;
+}
 
-  /* Hint dei top-level (object headers) — più visibile */
-  [class*="ObjectControl"] > [class*="Hint"],
-  [class*="ObjectFieldWrapper"] > [class*="Hint"] {
-    padding:6px 12px !important;
-    border-left:2px solid #ff8a5c !important;
-    background:#fff7f1 !important;
-    border-radius:0 6px 6px 0 !important;
-    margin:6px 0 14px !important;
-  }
+/* ====== OBJECT BLOCKS (Impostazioni Generali, Nav, Footer) ====== */
+.block {
+  background:var(--bg-card); border:0.5px solid var(--line); border-radius:12px;
+  margin-bottom:14px; overflow:hidden;
+}
+.block-header {
+  display:flex; align-items:center; padding:14px 18px; cursor:pointer;
+  user-select:none; gap:10px;
+}
+.block-header:hover { background:#fafaf7; }
+.block-header-text { flex:1; font-weight:500; font-size:14px; }
+.block-header-hint { color:var(--ink-light); font-size:12px; font-weight:400; }
+.block-chevron {
+  color:var(--ink-light); transition:transform .15s;
+  display:inline-block; line-height:1;
+}
+.block-chevron.open { transform:rotate(180deg); }
+.block-body { padding:0 18px 16px; display:none; }
+.block.open .block-body { display:block; }
+.block.open .block-header { border-bottom:0.5px solid var(--line-soft); }
 
-  /* Input / textarea / select */
-  input[type="text"], input[type="number"], input[type="email"], input[type="url"], input[type="tel"],
-  textarea, select {
-    border:0.5px solid #d5d0c5 !important;
-    border-radius:7px !important;
-    background:#fff !important;
-    font-size:13.5px !important;
-    font-family:"Inter", system-ui, sans-serif !important;
-    padding:9px 12px !important;
-    color:#1a1714 !important;
-    width:100% !important;
-    transition:border-color .12s, box-shadow .12s !important;
-  }
-  input:focus, textarea:focus, select:focus {
-    border-color:#e85d3c !important;
-    box-shadow:0 0 0 3px rgba(232,93,60,.15) !important;
-    outline:0 !important;
-  }
-  textarea { min-height:54px !important; resize:vertical !important; }
+/* ====== SECTIONS LIST (B-MOCKUP) ====== */
+.sections-block { margin-bottom:14px; }
+.sections-header {
+  display:flex; align-items:center; padding:0 4px 10px; gap:10px;
+}
+.sections-header-title {
+  font-weight:500; font-size:14px; flex:1;
+}
+.sections-count {
+  font-size:12px; color:var(--ink-light); font-weight:400;
+}
+.sections-list {
+  background:var(--bg-card); border:0.5px solid var(--line); border-radius:12px;
+  overflow:hidden;
+}
+.section-row {
+  display:grid; grid-template-columns:auto auto 1fr auto; gap:12px;
+  align-items:center; padding:10px 14px; min-height:42px;
+  border-bottom:0.5px solid var(--line-soft); background:#fff;
+  transition:background .1s;
+  position:relative;
+}
+.section-row:last-child { border-bottom:0; }
+.section-row:hover { background:#fafaf7; }
+.section-row.expanded { background:#fff; }
+.section-row.expanded::after {
+  content:""; position:absolute; left:0; top:0; width:3px; height:100%;
+  background:var(--coral);
+}
+.section-drag {
+  display:flex; flex-direction:column; gap:1px; color:var(--ink-light);
+  cursor:grab; padding:4px;
+}
+.section-drag-row { display:flex; gap:1px; }
+.section-drag-dot { width:3px; height:3px; border-radius:50%; background:currentColor; }
+.section-pill {
+  display:inline-flex; align-items:center; gap:5px;
+  padding:3px 10px; border-radius:6px; font-size:11.5px; font-weight:500;
+  white-space:nowrap; flex-shrink:0; line-height:1.4;
+}
+.section-summary {
+  font-size:13.5px; color:var(--ink); font-weight:400;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0;
+  cursor:pointer;
+}
+.section-actions { display:flex; align-items:center; gap:4px; color:var(--ink-light); }
+.section-actions button { padding:6px; border-radius:6px; }
+.section-actions button:hover { background:#f0ece3; color:var(--ink); }
+.section-actions button.danger:hover { background:#fee; color:var(--red); }
 
-  /* OBJECTS (Impostazioni Generali, Menu, Footer) come card */
-  [class*="ObjectControl"] > [class*="StyledObjectFieldWrapper"],
-  [class*="CollapsedObjectControl"] {
-    background:#fff !important;
-    border:0.5px solid #e5e7eb !important;
-    border-radius:8px !important;
-    padding:14px 18px !important;
-    margin-bottom:14px !important;
-  }
+/* ====== EXPANDED FORM (inside a section) ====== */
+.section-form {
+  background:var(--bg); padding:22px 24px; border-bottom:0.5px solid var(--line-soft);
+  display:none;
+}
+.section-row.expanded + .section-form { display:block; }
+.section-form-fields { display:flex; flex-direction:column; gap:18px; }
 
-  /* ==========================================================
-     LISTA DELLE SEZIONI — v7 con classi VERE di Decap 3.x
-     Classi vere: ...ListItem-listControlItem-SortableListItem
-                  ...TopBar-StyledListItemTopBar
-                  (nessuna classe "Summary")
-     ========================================================== */
+.field { display:block; }
+.field-label {
+  font-size:12px; font-weight:500; color:var(--ink); margin-bottom:3px;
+  display:flex; align-items:center; gap:6px;
+}
+.field-required { color:var(--coral); font-weight:600; }
+.field-hint {
+  font-size:11.5px; color:var(--ink-light); margin:0 0 7px; line-height:1.45;
+}
+.field-input, .field-textarea, .field-select {
+  width:100%; padding:9px 12px; border:0.5px solid #d5d0c5; border-radius:7px;
+  background:#fff; font-size:13.5px; color:var(--ink); font-family:inherit;
+  transition:border-color .12s, box-shadow .12s;
+}
+.field-input:focus, .field-textarea:focus, .field-select:focus {
+  outline:0; border-color:var(--coral);
+  box-shadow:0 0 0 3px rgba(232,93,60,.15);
+}
+.field-textarea { min-height:54px; resize:vertical; line-height:1.5; }
+.field-number { width:120px; }
 
-  /* Container delle list items — card unica */
-  [class*="ListControl"] [class*="StyledListItemsArea"],
-  [class*="ListControl"] ul,
-  [class*="ListControl"] > div:has([class*="SortableListItem"]) {
-    background:#fff !important;
-    border:0.5px solid #e5e7eb !important;
-    border-radius:8px !important;
-    overflow:hidden !important;
-    padding:0 !important;
-  }
+/* ====== IMAGE FIELD ====== */
+.field-image {
+  display:flex; gap:12px; align-items:center; padding:10px;
+  background:#fff; border:0.5px solid #d5d0c5; border-radius:8px;
+}
+.field-image-thumb {
+  width:74px; height:50px; border-radius:5px; background:#d4cab8;
+  display:flex; align-items:center; justify-content:center;
+  color:#8a7d63; flex-shrink:0; overflow:hidden;
+}
+.field-image-thumb img { width:100%; height:100%; object-fit:cover; }
+.field-image-thumb svg { width:20px; height:20px; }
+.field-image-info { flex:1; min-width:0; }
+.field-image-name {
+  font-size:12.5px; color:var(--ink); font-weight:500;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.field-image-meta { font-size:11px; color:var(--ink-light); margin-top:2px; }
+.field-image-btn {
+  padding:6px 12px; font-size:12px; border:0.5px solid #d5d0c5;
+  border-radius:6px; background:#fff; color:var(--ink);
+}
+.field-image-btn:hover { border-color:var(--ink-light); }
+.field-image-btn.icon { padding:6px; }
+.field-image-btn.icon:hover { color:var(--red); border-color:#fcc; }
+.field-image-uploading { color:var(--ink-light); font-style:italic; font-size:12px; }
 
-  /* ============================================
-     ⭐ GRID 1-RIGA per ogni section item
-     Classi VERE: SortableListItem + listControlItem
-     ============================================ */
-  [class*="SortableListItem"],
-  [class*="listControlItem"] {
-    display:grid !important;
-    grid-template-columns:auto 1fr auto !important;
-    grid-template-areas:"pill summary controls" !important;
-    align-items:center !important;
-    gap:14px !important;
-    padding:9px 14px !important;
-    background:#fff !important;
-    border:0 !important;
-    border-bottom:0.5px solid #f0f0f0 !important;
-    border-radius:0 !important;
-    margin:0 !important;
-    box-shadow:none !important;
-    overflow:visible !important;
-    min-height:0 !important;
-    transition:background .1s !important;
-    width:auto !important;
-  }
-  [class*="SortableListItem"]:last-child,
-  [class*="listControlItem"]:last-child {
-    border-bottom:0 !important;
-  }
-  [class*="SortableListItem"]:hover {
-    background:#fafaf8 !important;
-  }
+/* ====== COLOR PICKER ====== */
+.field-color {
+  display:flex; gap:10px; align-items:center;
+}
+.field-color-swatch {
+  width:40px; height:40px; border-radius:8px; border:0.5px solid var(--line);
+  cursor:pointer; position:relative; flex-shrink:0;
+}
+.field-color-swatch input[type="color"] {
+  position:absolute; inset:0; opacity:0; cursor:pointer;
+}
+.field-color-input {
+  flex:1; max-width:120px; font-family:ui-monospace, monospace; font-size:13px;
+}
+.field-color-default {
+  font-size:11.5px; color:var(--ink-light);
+}
 
-  /* Primo figlio = il pill del tipo */
-  [class*="SortableListItem"] > *:nth-child(1),
-  [class*="listControlItem"] > *:nth-child(1) {
-    grid-area:pill !important;
-    width:auto !important;
-    margin:0 !important;
-    padding:0 !important;
-  }
+/* ====== LIST FIELD (paragraphs, etc.) ====== */
+.field-list { display:flex; flex-direction:column; gap:6px; }
+.field-list-item {
+  display:grid; grid-template-columns:auto 1fr auto; gap:8px;
+  align-items:start; padding:8px 10px;
+  background:#fff; border:0.5px solid #d5d0c5; border-radius:7px;
+}
+.field-list-item-drag { display:flex; flex-direction:column; gap:2px; padding:6px 0; color:var(--ink-light); }
+.field-list-item-drag .section-drag-row { gap:1.5px; }
+.field-list-item-drag .section-drag-dot { width:2.5px; height:2.5px; }
+.field-list-item-content { display:flex; flex-direction:column; gap:0; padding:2px 0; }
+.field-list-item textarea, .field-list-item input {
+  border:0; padding:4px 0; font-size:13px; font-family:inherit; color:var(--ink);
+  resize:vertical; min-height:30px; outline:none; background:transparent; width:100%;
+}
+.field-list-item textarea:focus, .field-list-item input:focus {
+  outline:none;
+}
+.field-list-item-remove {
+  padding:6px; color:var(--ink-light); border-radius:4px;
+  align-self:start;
+}
+.field-list-item-remove:hover { color:var(--red); background:#fee; }
+.field-list-add {
+  margin-top:8px; display:inline-flex; align-items:center; gap:6px;
+  padding:6px 12px; font-size:12px; border:0.5px dashed #b0a896; border-radius:6px;
+  background:transparent; color:var(--ink-soft); align-self:flex-start;
+}
+.field-list-add:hover {
+  border-style:solid; border-color:var(--coral); color:var(--coral); background:var(--coral-soft);
+}
 
-  /* Secondo figlio = TopBar con chevron, drag, X */
-  [class*="SortableListItem"] > *:nth-child(2),
-  [class*="listControlItem"] > *:nth-child(2) {
-    grid-area:controls !important;
-    width:auto !important;
-    margin:0 !important;
-    padding:0 !important;
-    background:transparent !important;
-    border:0 !important;
-    display:flex !important;
-    align-items:center !important;
-    gap:8px !important;
-    flex-shrink:0 !important;
-  }
+/* Sub-fields (nested objects in lists) */
+.subfields {
+  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  width:100%;
+}
+.subfields .field-textarea { grid-column:1 / -1; }
+.subfields .field-full { grid-column:1 / -1; }
 
-  /* Terzo figlio = il summary text */
-  [class*="SortableListItem"] > *:nth-child(3),
-  [class*="listControlItem"] > *:nth-child(3) {
-    grid-area:summary !important;
-    width:auto !important;
-    margin:0 !important;
-    padding:0 !important;
-    background:transparent !important;
-    border:0 !important;
-    font-size:13.5px !important;
-    color:#3a3733 !important;
-    font-weight:400 !important;
-    overflow:hidden !important;
-    text-overflow:ellipsis !important;
-    white-space:nowrap !important;
-    min-width:0 !important;
-  }
+/* ====== ADD SECTION BUTTON ====== */
+.add-section-wrap { display:flex; justify-content:flex-start; padding-left:6px; margin-top:10px; }
+.add-section {
+  display:inline-flex; align-items:center; gap:6px; padding:7px 14px;
+  font-size:12.5px; border:0.5px dashed #b0a896; border-radius:7px;
+  background:transparent; color:var(--ink-soft); position:relative;
+}
+.add-section:hover {
+  border-style:solid; border-color:var(--coral); color:var(--coral); background:var(--coral-soft);
+}
+.add-section-menu {
+  position:absolute; top:100%; left:0; margin-top:6px;
+  background:#fff; border:0.5px solid var(--line); border-radius:10px;
+  box-shadow:0 14px 30px -8px rgba(0,0,0,.2); padding:6px;
+  display:flex; flex-direction:column; gap:1px; min-width:240px;
+  z-index:10;
+}
+.add-section-menu button {
+  padding:8px 10px; border-radius:6px; text-align:left;
+  display:flex; align-items:center; gap:8px; font-size:13px;
+}
+.add-section-menu button:hover { background:#f4ede3; }
 
-  /* PILL — stile base (grigio default) */
-  [class*="SortableListItem"] > label,
-  [class*="SortableListItem"] > [class*="FieldLabel"],
-  [class*="listControlItem"] > label,
-  [class*="listControlItem"] > [class*="FieldLabel"] {
-    display:inline-flex !important;
-    align-items:center !important;
-    gap:5px !important;
-    padding:3px 9px !important;
-    border-radius:6px !important;
-    font-size:11.5px !important;
-    font-weight:500 !important;
-    text-transform:none !important;
-    letter-spacing:0 !important;
-    background:#f1efe8 !important;
-    color:#444441 !important;
-    line-height:1.4 !important;
-    white-space:nowrap !important;
-    flex-shrink:0 !important;
-    max-width:200px !important;
-  }
+/* ====== SECTION TYPE PILL COLORS ====== */
+.pill-hero { background:#fff5ed; color:#c44a2e; }
+.pill-problem { background:#fdecec; color:#a32d2d; }
+.pill-about { background:#e1f5ee; color:#0f6e56; }
+.pill-value_card { background:#faeeda; color:#854f0b; }
+.pill-method { background:#e6f1fb; color:#185fa5; }
+.pill-levels { background:#eeedfe; color:#534ab7; }
+.pill-programs { background:#eaf3de; color:#3b6d11; }
+.pill-audience { background:#fbeaf0; color:#993556; }
+.pill-stats { background:#e1f5ee; color:#085041; }
+.pill-testimonials { background:#faece7; color:#993c1d; }
+.pill-big_quote { background:#d3d1c7; color:#2c2c2a; }
+.pill-features_card { background:#faeeda; color:#633806; }
+.pill-cta_form { background:#d85a30; color:#fff; }
 
-  /* COLORI per TIPO — selettori puliti */
-  [data-section-type="hero"] > label,
-  [data-section-type="hero"] > [class*="FieldLabel"] {
-    background:#fff5ed !important; color:#c44a2e !important;
-  }
-  [data-section-type="problem"] > label,
-  [data-section-type="problem"] > [class*="FieldLabel"] {
-    background:#fdecec !important; color:#a32d2d !important;
-  }
-  [data-section-type="about"] > label,
-  [data-section-type="about"] > [class*="FieldLabel"] {
-    background:#e1f5ee !important; color:#0f6e56 !important;
-  }
-  [data-section-type="value_card"] > label,
-  [data-section-type="value_card"] > [class*="FieldLabel"] {
-    background:#faeeda !important; color:#854f0b !important;
-  }
-  [data-section-type="method"] > label,
-  [data-section-type="method"] > [class*="FieldLabel"] {
-    background:#e6f1fb !important; color:#185fa5 !important;
-  }
-  [data-section-type="levels"] > label,
-  [data-section-type="levels"] > [class*="FieldLabel"] {
-    background:#eeedfe !important; color:#534ab7 !important;
-  }
-  [data-section-type="programs"] > label,
-  [data-section-type="programs"] > [class*="FieldLabel"] {
-    background:#eaf3de !important; color:#3b6d11 !important;
-  }
-  [data-section-type="audience"] > label,
-  [data-section-type="audience"] > [class*="FieldLabel"] {
-    background:#fbeaf0 !important; color:#993556 !important;
-  }
-  [data-section-type="stats"] > label,
-  [data-section-type="stats"] > [class*="FieldLabel"] {
-    background:#e1f5ee !important; color:#085041 !important;
-  }
-  [data-section-type="testimonials"] > label,
-  [data-section-type="testimonials"] > [class*="FieldLabel"] {
-    background:#faece7 !important; color:#993c1d !important;
-  }
-  [data-section-type="big_quote"] > label,
-  [data-section-type="big_quote"] > [class*="FieldLabel"] {
-    background:#d3d1c7 !important; color:#2c2c2a !important;
-  }
-  [data-section-type="features_card"] > label,
-  [data-section-type="features_card"] > [class*="FieldLabel"] {
-    background:#faeeda !important; color:#633806 !important;
-  }
-  [data-section-type="cta_form"] > label,
-  [data-section-type="cta_form"] > [class*="FieldLabel"] {
-    background:#d85a30 !important; color:#fff !important;
-  }
+/* ====== TOAST ====== */
+.toast {
+  position:fixed; bottom:20px; left:50%; transform:translateX(-50%);
+  background:#1a1714; color:#fff; padding:11px 20px; border-radius:999px;
+  font-size:13px; font-weight:500; z-index:1000;
+  box-shadow:0 12px 30px -8px rgba(0,0,0,.4);
+  opacity:0; transition:opacity .2s, transform .2s;
+  pointer-events:none;
+}
+.toast.show { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+.toast.error { background:var(--red); }
+.toast.success { background:var(--green); }
 
-  /* ICONE: chevron, drag, X */
-  [class*="SortableListItem"] svg,
-  [class*="listControlItem"] svg {
-    color:#888 !important;
-    width:14px !important;
-    height:14px !important;
-  }
-  [class*="SortableListItem"] button:hover svg { color:#e85d3c !important; }
-
-  /* Stato ESPANSO: layout ritorna a colonne quando ci sono input dentro */
-  [class*="SortableListItem"]:has(input, textarea, select),
-  [class*="listControlItem"]:has(input, textarea, select) {
-    display:block !important;
-    padding:0 !important;
-  }
-  [class*="SortableListItem"]:has(input, textarea, select) > *,
-  [class*="listControlItem"]:has(input, textarea, select) > * {
-    grid-area:auto !important;
-    width:auto !important;
-  }
-  [class*="SortableListItem"]:has(input, textarea, select) [class*="StyledObjectFieldWrapper"],
-  [class*="SortableListItem"]:has(input, textarea, select) [class*="ObjectControl"] > div {
-    background:#fafaf8 !important;
-    padding:18px 22px !important;
-    border-top:0.5px solid #ece9e3 !important;
-  }
-
-  /* ==========================================================
-     BOTTONI
-     ========================================================== */
-
-  /* "Aggiungi sezione" — dashed sottile */
-  [class*="AddButton"], button[class*="addLabel"], [class*="StyledDropdownButton"] {
-    background:transparent !important;
-    color:#5a554d !important;
-    border:0.5px dashed #b0a896 !important;
-    border-radius:6px !important;
-    padding:6px 14px !important;
-    font-size:12.5px !important;
-    font-weight:500 !important;
-    margin-top:8px !important;
-    cursor:pointer !important;
-    transition:all .12s !important;
-  }
-  [class*="AddButton"]:hover, button[class*="addLabel"]:hover {
-    border-color:#e85d3c !important;
-    border-style:solid !important;
-    color:#e85d3c !important;
-    background:#fff7f1 !important;
-  }
-
-  /* Save button in alto a destra */
-  button[class*="ToolbarButton-saveButton"],
-  [class*="SaveButton"],
-  button[class*="primary"] {
-    background:#1a1714 !important;
-    color:#fff !important;
-    border-radius:999px !important;
-    font-weight:500 !important;
-    padding:9px 20px !important;
-    border:0 !important;
-    font-size:13px !important;
-    box-shadow:none !important;
-    cursor:pointer !important;
-    transition:background .12s !important;
-  }
-  button[class*="ToolbarButton-saveButton"]:hover,
-  [class*="SaveButton"]:hover {
-    background:#e85d3c !important;
-  }
-
-  /* Color widget */
-  [class*="ColorControl"] {
-    display:flex !important;
-    align-items:center !important;
-    gap:10px !important;
-  }
-  [class*="ColorControl"] > div:first-child,
-  [class*="ColorSwatch"] {
-    width:36px !important;
-    height:36px !important;
-    border-radius:8px !important;
-    border:0.5px solid #d5d0c5 !important;
-    cursor:pointer !important;
-  }
-
-  /* File/image preview compatta */
-  [class*="ImageControl"] > div, [class*="FileControl"] > div {
-    border:0.5px solid #d5d0c5 !important;
-    border-radius:8px !important;
-    padding:10px !important;
-    background:#fff !important;
-  }
-  </style>
+/* ====== UTILITY ====== */
+.hidden { display:none !important; }
+.spinner {
+  width:16px; height:16px; border:2px solid rgba(0,0,0,.1);
+  border-top-color:currentColor; border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+</style>
 </head>
 <body>
-
-<script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+<div id="app"></div>
 
 <script>
-/* ==========================================================
-   HELPERS
-   ========================================================== */
+/* =====================================================================
+   CONFIG
+   ===================================================================== */
+const REPO_OWNER = 'doc-campa';
+const REPO_NAME  = 'drcampa-landing-1';
+const BRANCH     = 'main';
+
+/* =====================================================================
+   SECTION SCHEMA — definition of all 13 section types with their fields
+   ===================================================================== */
+const TYPE_LABELS = {
+  hero: '✨ Hero',
+  problem: '💬 Problema',
+  about: '👤 Chi è il dottore',
+  value_card: '🏅 Card valore',
+  method: '🪜 Metodo',
+  levels: '🔺 Piramide',
+  programs: '📦 Programmi',
+  audience: '👥 Audience',
+  stats: '📊 Statistiche',
+  testimonials: '⭐ Testimonianze',
+  big_quote: '🎤 Grande citazione',
+  features_card: '✅ Caratteristiche',
+  cta_form: '📩 Form Contatti'
+};
+
+const TYPE_DESC = {
+  hero: 'Intestazione a tutto schermo',
+  problem: 'Testo lungo + citazione',
+  about: 'About con foto',
+  value_card: 'Riquadro arancione con 3 vantaggi',
+  method: '3 colonne con foto e numeri',
+  levels: 'Piramide con 3 livelli',
+  programs: 'Card grandi con foto',
+  audience: '3 colonne per pubblico target',
+  stats: 'Numeri grandi',
+  testimonials: 'Recensioni di pazienti',
+  big_quote: 'Sezione scura con citazione',
+  features_card: 'Pillole arancioni',
+  cta_form: 'Form di contatto finale'
+};
+
+function summarize(s) {
+  if(!s) return '';
+  return (
+    s.headline_main || s.title_a || s.title || s.quote || s.form_title || ''
+  ).trim().substring(0,80);
+}
+
+/* Field schema for each section type */
+const SECTION_SCHEMA = {
+  hero: [
+    ['bg_image', 'Immagine di sfondo', 'image', 'Sfondo a tutto schermo. Idealmente orizzontale, almeno 1920px.'],
+    ['watermark', 'Watermark (testo gigante in trasparenza)', 'text'],
+    ['headline_pre', 'Riga sopra il titolo', 'text', 'Es: "Bellezza Autentica. Risultati Reali."'],
+    ['headline_main', 'Titolo grande - parte normale', 'text'],
+    ['headline_accent', 'Titolo grande - parola GIALLA evidenziata', 'text', 'La parola in giallo con il segno disegnato sotto.'],
+    ['subtitle_em', 'Sottotitolo - parte in corsivo', 'textarea'],
+    ['subtitle', 'Sottotitolo - parte normale', 'textarea'],
+    ['cta_label', 'Testo del bottone giallo', 'text'],
+    ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti"'],
+    ['mission_label_strong', 'Card missione - etichetta', 'text', 'Lascia tutti i campi mission vuoti per nascondere la card.'],
+    ['mission_label_text', 'Card missione - testo descrittivo', 'text'],
+    ['mission_percent', 'Card missione - percentuale (0-100)', 'number'],
+    ['mission_figure', 'Card missione - numero grande', 'text'],
+    ['mission_sub_a', 'Card missione - testo finale (parte normale)', 'text'],
+    ['mission_sub_b', 'Card missione - testo finale (parte arancione)', 'text']
+  ],
+  problem: [
+    ['id', 'ID per link interni', 'text', 'Es: "studio" per linkare con #studio dal menu.'],
+    ['watermark', 'Watermark trasparente', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['intro_paragraphs', 'Paragrafi introduttivi', 'list-text'],
+    ['questions', 'Domande in grassetto', 'list-text'],
+    ['middle_paragraphs', 'Paragrafi centrali', 'list-text'],
+    ['quote_lines', 'Citazione evidenziata (bordo arancione)', 'list-text'],
+    ['final_line', 'Riga finale arancione', 'text']
+  ],
+  about: [
+    ['id', 'ID per link interni', 'text'],
+    ['title', 'Titolo della sezione', 'text', 'Il titolone H2 in cima alla sezione "Chi è il dottore".'],
+    ['lead', 'Sottotitolo (lead)', 'textarea', 'La frase introduttiva sotto al titolo, in grigio.'],
+    ['photo', 'Foto del dottore', 'image', 'Consigliata orizzontale, 1600×1000px, JPG sotto 500 KB.'],
+    ['body_paragraphs', 'Paragrafi del corpo', 'list-text', 'Aggiungi un blocco per ogni paragrafo.'],
+    ['callout', 'Callout finale (opzionale)', 'text', 'Frase corta evidenziata in arancione a fine sezione.']
+  ],
+  value_card: [
+    ['id', 'ID per link interni', 'text'],
+    ['title', 'Titolo grande (bianco su arancione)', 'text'],
+    ['lead', 'Lead - prima parte', 'text'],
+    ['lead_strong', 'Lead - parte in grassetto', 'text'],
+    ['items', 'I 3 vantaggi', 'list-object', null, [
+      ['title', 'Titolo del vantaggio', 'text'],
+      ['icon', 'Icona', 'select', null, ['clock','chart','shield']],
+      ['tag', 'Tag sotto (opzionale)', 'text']
+    ]],
+    ['footnote', 'Nota finale - prima parte', 'text'],
+    ['footnote_strong', 'Nota finale - in grassetto', 'text']
+  ],
+  method: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['subtitle_a', 'Sottotitolo - prima parte', 'textarea'],
+    ['subtitle_b', 'Sottotitolo - seconda parte', 'textarea'],
+    ['subtitle_strong', 'Sottotitolo - parte grassetto', 'text'],
+    ['cards', 'Le tappe del metodo', 'list-object', null, [
+      ['num', 'Numero (es. 01)', 'text'],
+      ['photo', 'Foto della tappa', 'image'],
+      ['title', 'Titolo della tappa', 'text'],
+      ['body', 'Descrizione della tappa', 'textarea']
+    ]]
+  ],
+  levels: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['subtitle', 'Sottotitolo', 'textarea'],
+    ['levels', 'I 3 livelli (top→bottom)', 'list-object', null, [
+      ['tag', 'Tag (es. "LIVELLO BASE")', 'text'],
+      ['title', 'Titolo del livello', 'text'],
+      ['body', 'Descrizione', 'textarea']
+    ]],
+    ['pyramid_labels', 'Etichette sulla piramide (3)', 'list-text']
+  ],
+  programs: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['subtitle', 'Sottotitolo', 'textarea'],
+    ['cards', 'Programmi', 'list-object', null, [
+      ['tag', 'Tag (corsivo)', 'text'],
+      ['title', 'Titolo del programma', 'text'],
+      ['subtitle', 'Sottotitolo grassetto', 'text'],
+      ['body', 'Descrizione', 'textarea'],
+      ['link_label', 'Testo del link', 'text'],
+      ['photo', 'Foto', 'image'],
+      ['reverse', 'Foto a sinistra invece che a destra', 'boolean']
+    ]]
+  ],
+  audience: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['subtitle', 'Sottotitolo', 'textarea'],
+    ['items', 'Tipi di paziente', 'list-object', null, [
+      ['photo', 'Foto', 'image'],
+      ['title', 'Titolo del tipo', 'text'],
+      ['body_strong', 'Descrizione - parte grassetto', 'text'],
+      ['body', 'Descrizione - parte normale', 'text']
+    ]]
+  ],
+  stats: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['subtitle', 'Sottotitolo', 'textarea'],
+    ['row_a', 'Riga 1 di statistiche', 'list-object', null, [
+      ['pill', 'Pillola sopra (opzionale)', 'text'],
+      ['num', 'Numero grande', 'text'],
+      ['label', 'Descrizione sotto', 'text']
+    ]],
+    ['row_b', 'Riga 2 di statistiche (opzionale)', 'list-object', null, [
+      ['pill', 'Pillola sopra (opzionale)', 'text'],
+      ['num', 'Numero grande', 'text'],
+      ['label', 'Descrizione sotto', 'text']
+    ]],
+    ['footnote', 'Nota in fondo (corsivo)', 'text']
+  ],
+  testimonials: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_italic', 'Titolo - parte in corsivo', 'text'],
+    ['items', 'Testimonianze', 'list-object', null, [
+      ['text_strong', 'Testo - prima frase grassetta', 'text'],
+      ['text', 'Testo - resto della testimonianza', 'textarea'],
+      ['avatar', 'Foto del paziente (tonda)', 'image'],
+      ['name', 'Nome del paziente', 'text']
+    ]]
+  ],
+  big_quote: [
+    ['id', 'ID per link interni', 'text'],
+    ['quote', 'La citazione', 'textarea'],
+    ['author_photo', 'Foto autore (tonda)', 'image'],
+    ['author_name', 'Nome autore', 'text']
+  ],
+  features_card: [
+    ['id', 'ID per link interni', 'text'],
+    ['title', 'Titolo grande (bianco)', 'text'],
+    ['lead', 'Lead introduttivo', 'textarea'],
+    ['pills', 'Pillole/caratteristiche', 'list-object', null, [
+      ['text', 'Testo della pillola', 'text'],
+      ['special', 'Pillola SPECIALE (sfondo dorato)', 'boolean']
+    ]]
+  ],
+  cta_form: [
+    ['id', 'ID per link interni', 'text'],
+    ['title_a', 'Titolo - parte normale', 'text'],
+    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['body', 'Paragrafo introduttivo', 'textarea'],
+    ['perks', 'Bullet point con check arancione', 'list-text'],
+    ['form_title', 'Titolo del box del form', 'text'],
+    ['form_subtitle', 'Sottotitolo del form', 'text'],
+    ['treatments', 'Opzioni del menu "Cosa ti interessa"', 'list-text'],
+    ['submit_label', 'Etichetta bottone invio', 'text'],
+    ['success_title', 'Titolo schermata conferma', 'text'],
+    ['success_body', 'Messaggio di conferma', 'textarea']
+  ]
+};
+
+const SITE_SCHEMA = [
+  ['title', 'Titolo della pagina (browser/Google)', 'text', 'Es: "Dr. Domenico Campa — Chirurgo Plastico"'],
+  ['meta_description', 'Descrizione SEO', 'textarea', 'La frase che appare in Google. 150-160 caratteri ideali.'],
+  ['logo_text', 'Testo accanto al logo', 'text', 'Es: "Dr. Campa"']
+];
+
+const COLORS_SCHEMA = [
+  ['primary', 'Colore principale (arancione brand)', 'color', '#e85d3c', 'Compare in: bottoni primari, titoli evidenziati, card grandi, link.'],
+  ['accent', 'Colore accento (giallo)', 'color', '#ffd43b', 'Il giallo dell\'hero (parola sottolineata) e nei bottoni gialli.'],
+  ['ink', 'Colore testo principale', 'color', '#0a0a0a', 'Il nero del testo principale e dello sfondo footer/citazione.'],
+  ['bg_soft', 'Sfondo soft (beige chiaro)', 'color', '#faf7f3', 'Sezioni con sfondo leggero (Problema, Metodo, ecc.).']
+];
+
+const NAV_SCHEMA = [
+  ['phone_label', 'Testo del numero', 'text', 'Es: "Chiama 06.123.456"'],
+  ['phone_href', 'Link tel: del numero', 'text', 'Es: "tel:+390612345"'],
+  ['cta_label', 'Testo del bottone arancione', 'text'],
+  ['cta_href', 'Link del bottone', 'text']
+];
+
+const FOOTER_SCHEMA = [
+  ['about_text', 'Testo descrittivo accanto al logo', 'textarea'],
+  ['bottom_left', 'Copyright (in basso a sinistra)', 'text']
+];
+
+/* =====================================================================
+   STATE
+   ===================================================================== */
+let data = null;
+let dataSha = null;
+let token = sessionStorage.getItem('gh_token') || null;
+let ui = {
+  expandedSection: null,
+  openObjects: new Set(['sections']),
+  isDirty: false,
+  isSaving: false,
+  addMenuOpen: false
+};
+
+/* =====================================================================
+   OAUTH
+   ===================================================================== */
+function login(){
+  const w = 600, h = 700;
+  const left = (screen.width-w)/2, top = (screen.height-h)/2;
+  const authUrl = '/.netlify/functions/auth?provider=github&scope=repo&site_id=' + location.host;
+  const popup = window.open(authUrl, 'gh_oauth', `width=${w},height=${h},left=${left},top=${top}`);
+  if(!popup){ showError('Popup bloccato. Sblocca i popup per questo sito.'); return; }
+  function handler(e){
+    if(typeof e.data !== 'string') return;
+    if(e.data === 'authorizing:github'){
+      popup.postMessage('authorizing:github', '*');
+      return;
+    }
+    const m = e.data.match(/^authorization:github:(success|error):(.*)/);
+    if(m){
+      if(m[1] === 'success'){
+        try {
+          const parsed = JSON.parse(m[2]);
+          if(parsed.token){
+            token = parsed.token;
+            sessionStorage.setItem('gh_token', token);
+            window.removeEventListener('message', handler);
+            try { popup.close(); } catch(e){}
+            init();
+          }
+        } catch(err){ showError('Errore parsing token: ' + err.message); }
+      } else {
+        showError('Login fallito: ' + m[2]);
+      }
+    }
+  }
+  window.addEventListener('message', handler);
+}
+function logout(){
+  sessionStorage.removeItem('gh_token');
+  token = null;
+  location.reload();
+}
+
+/* =====================================================================
+   GITHUB API
+   ===================================================================== */
+async function gh(path, opts){
+  opts = opts || {};
+  opts.headers = Object.assign({
+    'Authorization': 'Bearer ' + token,
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  }, opts.headers || {});
+  if(opts.body && typeof opts.body !== 'string'){
+    opts.body = JSON.stringify(opts.body);
+    opts.headers['Content-Type'] = 'application/json';
+  }
+  const res = await fetch('https://api.github.com' + path, opts);
+  if(res.status === 401){
+    sessionStorage.removeItem('gh_token');
+    token = null;
+    throw new Error('Sessione scaduta. Rifai login.');
+  }
+  if(!res.ok){
+    const txt = await res.text();
+    throw new Error(`GitHub ${res.status}: ${txt.substring(0,200)}`);
+  }
+  return res.json();
+}
+
+function b64encode(str){
+  // Handle Unicode chars correctly
+  return btoa(unescape(encodeURIComponent(str)));
+}
+function b64decode(str){
+  return decodeURIComponent(escape(atob(str)));
+}
+
+async function loadContent(){
+  const r = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.json?ref=${BRANCH}`);
+  dataSha = r.sha;
+  return JSON.parse(b64decode(r.content.replace(/\n/g, '')));
+}
+
+async function saveContent(){
+  const content = JSON.stringify(data, null, 2);
+  const body = {
+    message: 'Update content.json',
+    content: b64encode(content),
+    sha: dataSha,
+    branch: BRANCH
+  };
+  const r = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.json`, {
+    method: 'PUT',
+    body: body
+  });
+  dataSha = r.content.sha;
+}
+
+async function uploadImage(file){
+  const buf = await file.arrayBuffer();
+  let binary = '';
+  const bytes = new Uint8Array(buf);
+  for(let i=0; i<bytes.length; i++) binary += String.fromCharCode(bytes[i]);
+  const b64 = btoa(binary);
+  const safeName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase();
+  const path = `images/${Date.now()}-${safeName}`;
+  const body = {
+    message: `Add image ${safeName}`,
+    content: b64,
+    branch: BRANCH
+  };
+  await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/${path}`, {
+    method: 'PUT',
+    body: body
+  });
+  // Return the path the site will use to fetch this image
+  return '/' + path;
+}
+
+/* =====================================================================
+   STATE HELPERS
+   ===================================================================== */
+function getPath(obj, path){
+  let cur = obj;
+  for(const k of path){
+    if(cur == null) return undefined;
+    cur = cur[k];
+  }
+  return cur;
+}
+function setPath(obj, path, val){
+  let cur = obj;
+  for(let i=0; i<path.length-1; i++){
+    const k = path[i];
+    if(cur[k] == null){
+      cur[k] = (typeof path[i+1] === 'number') ? [] : {};
+    }
+    cur = cur[k];
+  }
+  cur[path[path.length-1]] = val;
+}
+function delPath(obj, path){
+  let cur = obj;
+  for(let i=0; i<path.length-1; i++){
+    if(cur[path[i]] == null) return;
+    cur = cur[path[i]];
+  }
+  const k = path[path.length-1];
+  if(Array.isArray(cur)) cur.splice(k, 1);
+  else delete cur[k];
+}
+
+function markDirty(){
+  ui.isDirty = true;
+  updateStatusBar();
+  schedulePreviewUpdate();
+}
+
+let previewTimeout = null;
+function schedulePreviewUpdate(){
+  if(previewTimeout) clearTimeout(previewTimeout);
+  previewTimeout = setTimeout(updatePreview, 300);
+}
+
+/* =====================================================================
+   ESCAPE HELPERS for PREVIEW
+   ===================================================================== */
 function esc(s){
-  if(s==null) return '';
+  if(s == null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-function img(src, alt){
+function imgTag(src, alt){
   if(!src) return '';
-  return '<img src="' + esc(src) + '" alt="' + esc(alt||'') + '">';
+  return `<img src="${esc(src)}" alt="${esc(alt||'')}">`;
 }
 
-/* ==========================================================
-   COLOR OVERRIDE (usato nell'anteprima)
-   ========================================================== */
-function colorOverrideCss(colors){
-  const def = {primary:'#e85d3c', accent:'#ffd43b', ink:'#0a0a0a', bg_soft:'#faf7f3'};
-  const c = Object.assign({}, def, colors||{});
-  const rules = [
-    `--coral-deep:${c.primary}`,
-    `--coral-1:${c.primary}`,
-    `--coral-darker:${c.primary}`,
-    `--yellow:${c.accent}`,
-    `--ink:${c.ink}`,
-    `--bg-soft:${c.bg_soft}`
-  ];
-  return `<style>:root{${rules.join(';')};}</style>`;
-}
-
-/* ==========================================================
-   13 SECTION TEMPLATES (preview)
-   ========================================================== */
-const templates = {
+/* =====================================================================
+   PREVIEW TEMPLATES (copied from index.html)
+   ===================================================================== */
+const previewTemplates = {
   hero(s){
-    return `
-      <section class="hero" data-section="hero" data-section-label="Hero"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="hero-bg">${img(s.bg_image, 'Hero')}</div>
-        ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
-        <div class="container hero-content">
-          <h1>
-            ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-            ${s.headline_main?`${esc(s.headline_main)} `:''}
-            ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-          </h1>
-          <p class="hero-sub">
-            ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
-            ${s.subtitle?esc(s.subtitle):''}
-          </p>
-          ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
-          ${(s.mission_label_strong||s.mission_figure)?`
-            <div class="mission-card">
-              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
-              <div class="mission-bar">
-                <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-                <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-              </div>
-              <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-              <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
-            </div>`:''}
-        </div>
-      </section>`;
+    return `<section class="hero">
+      <div class="hero-bg">${imgTag(s.bg_image, 'Hero')}</div>
+      ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
+      <div class="container hero-content">
+        <h1>
+          ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+          ${s.headline_main?`${esc(s.headline_main)} `:''}
+          ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+        </h1>
+        <p class="hero-sub">
+          ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
+          ${s.subtitle?esc(s.subtitle):''}
+        </p>
+        ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
+        ${(s.mission_label_strong||s.mission_figure)?`
+          <div class="mission-card">
+            <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
+            <div class="mission-bar">
+              <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+              <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+            </div>
+            <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+            <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
+          </div>`:''}
+      </div>
+    </section>`;
   },
   problem(s){
     const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
     const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
     const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
     const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
-    return `
-      <section class="problem" data-section="problem" data-section-label="Problema"${s.id?` id="${esc(s.id)}"`:''}>
-        ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
-        <div class="container">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <div class="problem-body">
-            ${intro}
-            ${questions?`<p>${questions}</p>`:''}
-            ${middle}
-            ${quote?`<div class="problem-quote">${quote}</div>`:''}
-            ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
-          </div>
+    return `<section class="problem">
+      ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
+      <div class="container">
+        <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+        <div class="problem-body">
+          ${intro}${questions?`<p>${questions}</p>`:''}${middle}
+          ${quote?`<div class="problem-quote">${quote}</div>`:''}
+          ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
         </div>
-      </section>`;
+      </div>
+    </section>`;
   },
   about(s){
-    const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
-    return `
-      <section class="about" data-section="about" data-section-label="Chi è il dottore"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container about-grid">
-          <div>
-            <h2>${esc(s.title||'')}</h2>
-            ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
-          </div>
-          ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
-          <div class="about-body">
-            ${body}
-            ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
-          </div>
+    const body = (s.body_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+    return `<section class="about">
+      <div class="container about-grid">
+        <div>
+          <h2>${esc(s.title||'')}</h2>
+          ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
         </div>
-      </section>`;
+        ${s.photo?`<div class="about-photo">${imgTag(s.photo,'Dr. Campa')}</div>`:''}
+        <div class="about-body">
+          ${body}
+          ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
+        </div>
+      </div>
+    </section>`;
   },
   value_card(s){
-    const icons = {
-      clock:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M32 18v14l8 4"/></svg>`,
-      chart:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L24 30 L36 38 L52 14"/><polyline points="40 14 52 14 52 26"/></svg>`,
-      shield:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L52 16 V32 C52 44 32 56 32 56 C32 56 12 44 12 32 V16 Z"/></svg>`
-    };
     const items = (s.items||[]).map(it=>`
       <div class="value-item">
-        <div class="value-icon">${icons[it.icon]||icons.clock}</div>
+        <div class="value-icon" data-icon="${esc(it.icon||'clock')}"></div>
         <h4>${esc(it.title||'')}</h4>
         ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
       </div>`).join('');
-    return `
-      <section class="value-section" data-section="value_card" data-section-label="Card Valore"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="value-card">
-            <h2>${esc(s.title||'')}</h2>
-            <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
-            <div class="value-grid">${items}</div>
-            ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
-          </div>
+    return `<section class="value-section">
+      <div class="container">
+        <div class="value-card">
+          <h2>${esc(s.title||'')}</h2>
+          <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
+          <div class="value-grid">${items}</div>
+          ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
         </div>
-      </section>`;
+      </div>
+    </section>`;
   },
   method(s){
     const cards = (s.cards||[]).map(c=>`
       <div class="method-card">
-        <div class="method-photo">
-          ${img(c.photo, c.title)}
-          <div class="method-num">${esc(c.num||'')}</div>
-        </div>
-        <div class="method-body">
-          <h3>${esc(c.title||'')}</h3>
-          <p>${esc(c.body||'')}</p>
-        </div>
+        <div class="method-photo">${imgTag(c.photo, c.title)}<div class="method-num">${esc(c.num||'')}</div></div>
+        <div class="method-body"><h3>${esc(c.title||'')}</h3><p>${esc(c.body||'')}</p></div>
       </div>`).join('');
-    return `
-      <section class="method" data-section="method" data-section-label="Metodo"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="method-head">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
-          </div>
-          <div class="method-grid">${cards}</div>
+    return `<section class="method">
+      <div class="container">
+        <div class="method-head">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
         </div>
-      </section>`;
+        <div class="method-grid">${cards}</div>
+      </div>
+    </section>`;
   },
   levels(s){
     const items = (s.levels||[]).map(l=>`
@@ -502,23 +886,22 @@ const templates = {
         <p>${esc(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
-    return `
-      <section class="levels" data-section="levels" data-section-label="Piramide"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="levels-head">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
-          </div>
-          <div class="levels-grid">
-            <div class="pyramid">
-              <div class="tri tri-3"><span class="tri-label">${esc(labels[0]||'')}</span></div>
-              <div class="tri tri-2"><span class="tri-label">${esc(labels[1]||'')}</span></div>
-              <div class="tri tri-1"><span class="tri-label">${esc(labels[2]||'')}</span></div>
-            </div>
-            <div class="levels-list">${items}</div>
-          </div>
+    return `<section class="levels">
+      <div class="container">
+        <div class="levels-head">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <p class="sub">${esc(s.subtitle||'')}</p>
         </div>
-      </section>`;
+        <div class="levels-grid">
+          <div class="pyramid">
+            <div class="tri tri-3"><span class="tri-label">${esc(labels[0]||'')}</span></div>
+            <div class="tri tri-2"><span class="tri-label">${esc(labels[1]||'')}</span></div>
+            <div class="tri tri-1"><span class="tri-label">${esc(labels[2]||'')}</span></div>
+          </div>
+          <div class="levels-list">${items}</div>
+        </div>
+      </div>
+    </section>`;
   },
   programs(s){
     const cards = (s.cards||[]).map(c=>`
@@ -530,60 +913,51 @@ const templates = {
           <p>${esc(c.body||'')}</p>
           ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
         </div>
-        <div class="program-img">${img(c.photo, c.title)}</div>
+        <div class="program-img">${imgTag(c.photo, c.title)}</div>
       </div>`).join('');
-    return `
-      <section class="programs" data-section="programs" data-section-label="Programmi"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="programs-head">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
-          </div>
-          ${cards}
+    return `<section class="programs">
+      <div class="container">
+        <div class="programs-head">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <p class="sub">${esc(s.subtitle||'')}</p>
         </div>
-      </section>`;
+        ${cards}
+      </div>
+    </section>`;
   },
   audience(s){
     const items = (s.items||[]).map(it=>`
       <div class="audience-item">
-        <div class="audience-photo">${img(it.photo, it.title)}</div>
+        <div class="audience-photo">${imgTag(it.photo, it.title)}</div>
         <h4>${esc(it.title||'')}</h4>
         <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
       </div>`).join('');
-    return `
-      <section data-section="audience" data-section-label="Audience"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="audience-head">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
-          </div>
-          <div class="audience-grid">${items}</div>
+    return `<section>
+      <div class="container">
+        <div class="audience-head">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <p class="sub">${esc(s.subtitle||'')}</p>
         </div>
-      </section>`;
+        <div class="audience-grid">${items}</div>
+      </div>
+    </section>`;
   },
   stats(s){
-    const renderRow = (row)=>{
+    const renderRow = row => {
       if(!row||!row.length) return '';
-      const cells = row.map(c=>`
-        <div class="stat">
-          ${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}
-          <div class="num">${esc(c.num||'')}</div>
-          <div class="lbl">${esc(c.label||'')}</div>
-        </div>`).join('');
+      const cells = row.map(c=>`<div class="stat">${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}<div class="num">${esc(c.num||'')}</div><div class="lbl">${esc(c.label||'')}</div></div>`).join('');
       return `<div class="stats-row">${cells}</div>`;
     };
-    return `
-      <section class="stats" data-section="stats" data-section-label="Statistiche"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="stats-head">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
-          </div>
-          ${renderRow(s.row_a)}
-          ${renderRow(s.row_b)}
-          ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+    return `<section class="stats">
+      <div class="container">
+        <div class="stats-head">
+          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <p class="sub">${esc(s.subtitle||'')}</p>
         </div>
-      </section>`;
+        ${renderRow(s.row_a)}${renderRow(s.row_b)}
+        ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+      </div>
+    </section>`;
   },
   testimonials(s){
     const items = (s.items||[]).map(t=>`
@@ -591,221 +965,710 @@ const templates = {
         <div class="test-stars">★★★★★</div>
         <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
         <div class="test-author">
-          <div class="test-avatar">${img(t.avatar, t.name)}</div>
+          <div class="test-avatar">${imgTag(t.avatar, t.name)}</div>
           <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
         </div>
       </div>`).join('');
-    return `
-      <section class="testimonials" data-section="testimonials" data-section-label="Testimonianze"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="test-head">
-            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
-          </div>
-          <div class="test-grid">${items}</div>
+    return `<section class="testimonials">
+      <div class="container">
+        <div class="test-head">
+          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
         </div>
-      </section>`;
+        <div class="test-grid">${items}</div>
+      </div>
+    </section>`;
   },
   big_quote(s){
-    return `
-      <section class="big-quote" data-section="big_quote" data-section-label="Grande citazione"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <p class="q">${esc(s.quote||'')}</p>
-          <div class="who">
-            ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
-            <div class="n">${esc(s.author_name||'')}</div>
-          </div>
+    return `<section class="big-quote">
+      <div class="container">
+        <p class="q">${esc(s.quote||'')}</p>
+        <div class="who">
+          ${s.author_photo?`<div class="av">${imgTag(s.author_photo, s.author_name)}</div>`:''}
+          <div class="n">${esc(s.author_name||'')}</div>
         </div>
-      </section>`;
+      </div>
+    </section>`;
   },
   features_card(s){
     const pills = (s.pills||[]).map(p=>{
-      if(p.special){
-        const t = (p.text||'').split(/\b(VIVERE|VIVI)\b/i);
-        if(t.length===3){
-          return `<div class="pill-item special">${esc(t[0])}<em>${esc(t[1])}</em>${esc(t[2])}</div>`;
-        }
-        return `<div class="pill-item special">${esc(p.text||'')}</div>`;
-      }
-      return `<div class="pill-item">${esc(p.text||'')}</div>`;
+      const cls = p.special ? 'pill-item special' : 'pill-item';
+      return `<div class="${cls}">${esc(p.text||'')}</div>`;
     }).join('');
-    return `
-      <section class="features-section" data-section="features_card" data-section-label="Caratteristiche"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="features-card">
-            <h2>${esc(s.title||'')}</h2>
-            <p class="lead">${esc(s.lead||'')}</p>
-            <div class="feature-pills">${pills}</div>
-          </div>
+    return `<section class="features-section">
+      <div class="container">
+        <div class="features-card">
+          <h2>${esc(s.title||'')}</h2>
+          <p class="lead">${esc(s.lead||'')}</p>
+          <div class="feature-pills">${pills}</div>
         </div>
-      </section>`;
+      </div>
+    </section>`;
   },
   cta_form(s){
     const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
-    return `
-      <section class="cta-section" data-section="cta_form" data-section-label="Form Contatti"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container">
-          <div class="cta-card">
-            <div class="cta-text">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p>${esc(s.body||'')}</p>
-              <ul class="cta-perks">${perks}</ul>
-            </div>
-            <div class="form-wrap">
-              <h3>${esc(s.form_title||'Prenota')}</h3>
-              <p class="form-sub">${esc(s.form_subtitle||'')}</p>
-              <p style="color:#888;font-style:italic;font-size:.85rem;text-align:center;margin-top:30px">[ qui appaiono i campi del form sulla landing ]</p>
-            </div>
+    return `<section class="cta-section">
+      <div class="container">
+        <div class="cta-card">
+          <div class="cta-text">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <p>${esc(s.body||'')}</p>
+            <ul class="cta-perks">${perks}</ul>
+          </div>
+          <div class="form-wrap">
+            <h3>${esc(s.form_title||'Prenota')}</h3>
+            <p class="form-sub">${esc(s.form_subtitle||'')}</p>
+            <p style="color:#888;font-style:italic;text-align:center;margin-top:30px">[ form lead sulla landing ]</p>
           </div>
         </div>
-      </section>`;
+      </div>
+    </section>`;
   }
 };
 
-function renderNav(data){
-  const nav = data.nav||{};
+function renderPreviewNav(d){
+  const nav = d.nav||{};
   const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
-  return `
-    <div class="container nav-inner">
-      <a href="#" class="logo">
-        <span class="logo-mark">DC</span>
-        <span>${esc(data.site?.logo_text||'Dr. Campa')}</span>
-      </a>
-      <ul class="nav-links">${links}</ul>
-      <div class="nav-cta">
-        ${nav.phone_label?`<a href="#" class="login">${esc(nav.phone_label)}</a>`:''}
-        ${nav.cta_label?`<a href="#" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
-      </div>
-    </div>`;
+  return `<nav class="nav"><div class="container nav-inner">
+    <a href="#" class="logo"><span class="logo-mark">DC</span><span>${esc(d.site?.logo_text||'')}</span></a>
+    <ul class="nav-links">${links}</ul>
+    <div class="nav-cta">
+      ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login">${esc(nav.phone_label)}</a>`:''}
+      ${nav.cta_label?`<a href="${esc(nav.cta_href||'#')}" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+    </div>
+  </div></nav>`;
 }
-
-function renderFooter(data){
-  const f = data.footer||{};
+function renderPreviewFooter(d){
+  const f = d.footer||{};
   const cols = (f.columns||[]).map(c=>{
-    const links = (c.links||[]).map(l=>`<li><a href="#">${esc(l.label||'')}</a></li>`).join('');
+    const links = (c.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
     return `<div><h5>${esc(c.title||'')}</h5><ul>${links}</ul></div>`;
   }).join('');
-  return `
-    <div class="container">
-      <div class="footer-top">
-        <div class="footer-about">
-          <a href="#" class="logo">
-            <span class="logo-mark">DC</span>
-            <span>${esc(data.site?.logo_text||'')}</span>
-          </a>
-          <p>${esc(f.about_text||'')}</p>
-        </div>
-        ${cols}
+  return `<footer class="footer"><div class="container">
+    <div class="footer-top">
+      <div class="footer-about">
+        <a href="#" class="logo"><span class="logo-mark">DC</span><span>${esc(d.site?.logo_text||'')}</span></a>
+        <p>${esc(f.about_text||'')}</p>
+      </div>${cols}
+    </div>
+    <div class="footer-bottom"><div>${esc(f.bottom_left||'')}</div></div>
+  </div></footer>`;
+}
+
+function colorVars(d){
+  const c = (d.site && d.site.colors) || {};
+  const p = c.primary || '#e85d3c';
+  const a = c.accent  || '#ffd43b';
+  const i = c.ink     || '#0a0a0a';
+  const b = c.bg_soft || '#faf7f3';
+  return `<style>:root{--coral-deep:${p};--coral-1:${p};--coral-darker:${p};--yellow:${a};--ink:${i};--bg-soft:${b};}</style>`;
+}
+
+const PREVIEW_BASE_CSS_URL = '/index.html';
+
+async function buildPreviewHTML(){
+  // Fetch the live index.html's <style> block so we don't duplicate ~10KB of CSS here.
+  // Cached after first fetch.
+  if(!buildPreviewHTML._css){
+    try {
+      const r = await fetch(PREVIEW_BASE_CSS_URL);
+      const html = await r.text();
+      const m = html.match(/<style>([\s\S]*?)<\/style>/);
+      buildPreviewHTML._css = m ? m[1] : '';
+    } catch(e){
+      buildPreviewHTML._css = 'body{font-family:sans-serif;padding:40px;color:#333}';
+    }
+  }
+  const baseCss = buildPreviewHTML._css;
+  const sectionsHTML = (data.sections||[]).map(s => {
+    const tpl = previewTemplates[s.type];
+    if(!tpl) return `<div style="padding:20px;background:#ffe;color:#a60">Tipo sconosciuto: ${esc(s.type)}</div>`;
+    try { return tpl(s); } catch(e){ return `<div style="padding:20px;background:#fee;color:#a60">Errore in ${esc(s.type)}: ${esc(e.message)}</div>`; }
+  }).join('');
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,400..500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>body{margin:0}</style></head><body>${renderPreviewNav(data)}<main>${sectionsHTML}</main>${renderPreviewFooter(data)}</body></html>`;
+}
+
+async function updatePreview(){
+  const iframe = document.querySelector('#preview-iframe');
+  if(!iframe) return;
+  iframe.srcdoc = await buildPreviewHTML();
+}
+
+/* =====================================================================
+   FIELD RENDERERS — produce <input>/<textarea>/etc for each field type
+   ===================================================================== */
+function renderField(field, value, path){
+  const [name, label, type, hint, extra] = field;
+  let inputHTML = '';
+
+  if(type === 'text'){
+    inputHTML = `<input class="field-input" type="text" data-path="${path.join('.')}" value="${esc(value||'')}">`;
+  } else if(type === 'textarea'){
+    inputHTML = `<textarea class="field-textarea" data-path="${path.join('.')}">${esc(value||'')}</textarea>`;
+  } else if(type === 'number'){
+    inputHTML = `<input class="field-input field-number" type="number" data-path="${path.join('.')}" value="${value!=null?value:''}">`;
+  } else if(type === 'boolean'){
+    inputHTML = `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer"><input type="checkbox" data-path="${path.join('.')}" ${value?'checked':''} style="width:auto;margin:0"> Attivo</label>`;
+  } else if(type === 'select'){
+    const opts = (extra||[]).map(o => `<option value="${esc(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('');
+    inputHTML = `<select class="field-select" data-path="${path.join('.')}"><option value="">—</option>${opts}</select>`;
+  } else if(type === 'color'){
+    const def = field[3]; // default color
+    const hintTxt = field[4];
+    const v = value || '';
+    const swatchColor = v || def;
+    inputHTML = `<div class="field-color">
+      <div class="field-color-swatch" style="background:${esc(swatchColor)}">
+        <input type="color" value="${esc(swatchColor)}" data-path="${path.join('.')}" data-color>
       </div>
-      <div class="footer-bottom">
-        <div>${esc(f.bottom_left||'')}</div>
+      <input class="field-input field-color-input" type="text" data-path="${path.join('.')}" value="${esc(v)}" placeholder="${esc(def)}">
+      <span class="field-color-default">default ${esc(def)}</span>
+    </div>`;
+    return `<div class="field"><div class="field-label">${esc(label)}</div>${hintTxt?`<p class="field-hint">${esc(hintTxt)}</p>`:''}${inputHTML}</div>`;
+  } else if(type === 'image'){
+    inputHTML = renderImageField(value, path);
+  } else if(type === 'list-text'){
+    inputHTML = renderListText(value||[], path);
+  } else if(type === 'list-object'){
+    inputHTML = renderListObject(value||[], path, extra);
+  }
+
+  return `<div class="field"><div class="field-label">${esc(label)}</div>${hint?`<p class="field-hint">${esc(hint)}</p>`:''}${inputHTML}</div>`;
+}
+
+function renderImageField(value, path){
+  const filename = value ? value.split('/').pop() : '';
+  return `<div class="field-image" data-image-path="${path.join('.')}">
+    <div class="field-image-thumb">
+      ${value?`<img src="${esc(value)}" alt="">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+    </div>
+    <div class="field-image-info">
+      ${value
+        ? `<div class="field-image-name">${esc(filename)}</div><div class="field-image-meta">Caricata sul repo</div>`
+        : `<div class="field-image-name" style="color:var(--ink-light)">Nessuna immagine</div><div class="field-image-meta">Clicca "Carica" per aggiungerla</div>`
+      }
+    </div>
+    <button class="field-image-btn" data-action="upload">Carica</button>
+    ${value?`<button class="field-image-btn icon" data-action="remove" aria-label="Rimuovi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`:''}
+  </div>`;
+}
+
+function renderListText(items, path){
+  const itemsHTML = items.map((it, i) => `
+    <div class="field-list-item" data-list-item="${i}">
+      <div class="field-list-item-drag">
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+      </div>
+      <div class="field-list-item-content">
+        <textarea data-path="${path.join('.')}.${i}">${esc(it||'')}</textarea>
+      </div>
+      <button class="field-list-item-remove" data-list-remove="${i}" data-list-path="${path.join('.')}" aria-label="Rimuovi">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>`).join('');
+  return `<div class="field-list">${itemsHTML}</div>
+    <button class="field-list-add" data-list-add="${path.join('.')}" data-list-type="text">+ Aggiungi</button>`;
+}
+
+function renderListObject(items, path, subSchema){
+  const itemsHTML = items.map((it, i) => {
+    const subFields = (subSchema||[]).map(f => {
+      return renderField(f, it[f[0]], path.concat([i, f[0]]));
+    }).join('');
+    return `<div class="field-list-item" data-list-item="${i}" style="display:block;padding:14px 14px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--line-soft)">
+        <span style="font-size:12px;font-weight:500;color:var(--ink-soft)">Elemento ${i+1}</span>
+        <button class="field-list-item-remove" data-list-remove="${i}" data-list-path="${path.join('.')}" aria-label="Rimuovi">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      <div class="subfields">${subFields}</div>
+    </div>`;
+  }).join('');
+  return `<div class="field-list">${itemsHTML}</div>
+    <button class="field-list-add" data-list-add="${path.join('.')}" data-list-type="object" data-sub-schema='${esc(JSON.stringify(subSchema||[]))}'>+ Aggiungi elemento</button>`;
+}
+
+/* =====================================================================
+   RENDER APP
+   ===================================================================== */
+function renderApp(){
+  const app = document.querySelector('#app');
+  if(!token){
+    app.innerHTML = `<div class="login">
+      <div class="login-card">
+        <div class="login-logo">DC</div>
+        <h1>Editor Studio Campa</h1>
+        <p>Modifica i contenuti del sito. Accedi col tuo GitHub.</p>
+        <button class="login-btn" id="loginBtn">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .3a12 12 0 0 0-3.8 23.4c.6.1.8-.3.8-.6v-2c-3.3.7-4-1.6-4-1.6-.5-1.4-1.3-1.7-1.3-1.7-1.1-.7.1-.7.1-.7 1.2 0 1.9 1.2 1.9 1.2 1.1 1.9 2.8 1.3 3.4 1 .1-.8.4-1.3.8-1.6-2.7-.3-5.5-1.3-5.5-6 0-1.3.5-2.3 1.2-3.2-.1-.3-.5-1.5.1-3.2 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.6 1.7.2 2.9.1 3.2.8.9 1.2 1.9 1.2 3.2 0 4.6-2.8 5.7-5.5 6 .4.4.8 1.1.8 2.2v3.3c0 .3.2.7.8.6A12 12 0 0 0 12 .3"/></svg>
+          Login con GitHub
+        </button>
       </div>
     </div>`;
+    document.querySelector('#loginBtn').onclick = login;
+    return;
+  }
+  if(!data){
+    app.innerHTML = `<div class="login"><div class="login-card"><div class="spinner" style="margin:0 auto 14px"></div><p>Caricamento contenuti…</p></div></div>`;
+    return;
+  }
+  app.innerHTML = `
+    <div class="app">
+      <div class="topbar">
+        <div class="topbar-logo">
+          <span class="topbar-logo-mark">DC</span>
+          <span>Editor Studio Campa</span>
+        </div>
+        <div class="topbar-status" id="statusBar"><span class="dot"></span><span>Salvato</span></div>
+        <div class="topbar-actions">
+          <a class="btn btn-secondary" href="/" target="_blank" rel="noopener">Vedi sito ↗</a>
+          <button class="btn btn-secondary" id="logoutBtn" title="Logout">Esci</button>
+          <button class="btn btn-primary" id="saveBtn">Pubblica</button>
+        </div>
+      </div>
+      <div class="main">
+        <div class="editor" id="editor"></div>
+        <div class="preview">
+          <iframe id="preview-iframe"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toast"></div>
+  `;
+  document.querySelector('#saveBtn').onclick = doSave;
+  document.querySelector('#logoutBtn').onclick = logout;
+  renderEditor();
+  updatePreview();
 }
 
-const PREVIEW_EXTRA_CSS = `
-  <style>
-    [data-section]{
-      position:relative;
-    }
-    [data-section]:hover{
-      outline:2px dashed rgba(232,93,60,.5);
-      outline-offset:-2px;
-    }
-    [data-section]::before{
-      content:"📍 " attr(data-section-label);
-      position:absolute;
-      top:12px; left:12px;
-      z-index:50;
-      background:#0a0a0a;
-      color:#fff;
-      padding:6px 12px;
-      border-radius:999px;
-      font:600 11px/1 "Inter", system-ui, sans-serif;
-      letter-spacing:.02em;
-      opacity:0;
-      transition:opacity .15s;
-      pointer-events:none;
-      box-shadow:0 6px 18px -4px rgba(0,0,0,.4);
-    }
-    [data-section]:hover::before{
-      opacity:1;
-    }
-  </style>
-`;
+function renderEditor(){
+  const editor = document.querySelector('#editor');
+  if(!editor) return;
 
-function renderFullSite(data){
-  let html = colorOverrideCss(data.site?.colors);
-  html += PREVIEW_EXTRA_CSS;
-  html += '<nav class="nav">' + renderNav(data) + '</nav>';
-  html += '<main>';
-  (data.sections||[]).forEach(s => {
-    const tpl = templates[s.type];
-    if(tpl){
-      try { html += tpl(s); }
-      catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
-    } else {
-      html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo sconosciuto: "' + esc(s.type) + '"</div>';
-    }
+  editor.innerHTML = `
+    ${renderBlock('site', '🌐 Impostazioni Generali', 'Titolo, descrizione SEO, logo, colori del sito.', renderSiteBlock())}
+    ${renderBlock('nav', '📋 Menu di navigazione', 'La barra in cima al sito con voci, telefono e bottone Prenota.', renderNavBlock())}
+    ${renderSectionsBlock()}
+    ${renderBlock('footer', '📎 Footer', 'La sezione nera in fondo al sito con link e copyright.', renderFooterBlock())}
+  `;
+
+  attachEditorListeners();
+}
+
+function renderBlock(key, label, hint, body){
+  const isOpen = ui.openObjects.has(key);
+  return `<div class="block ${isOpen?'open':''}" data-block="${key}">
+    <div class="block-header" data-toggle-block="${key}">
+      <div class="block-header-text">${esc(label)}</div>
+      <div class="block-header-hint">${esc(hint)}</div>
+      <span class="block-chevron ${isOpen?'open':''}">▾</span>
+    </div>
+    <div class="block-body">${body}</div>
+  </div>`;
+}
+
+function renderSiteBlock(){
+  data.site = data.site || {};
+  data.site.colors = data.site.colors || {};
+  const main = SITE_SCHEMA.map(f => renderField(f, data.site[f[0]], ['site', f[0]])).join('');
+  const colorsBlock = `<div style="margin-top:18px;padding-top:18px;border-top:0.5px solid var(--line-soft)">
+    <div style="font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px">🎨 Colori del sito</div>
+    <p class="field-hint">Cambia i colori principali del sito. Lascia vuoto per usare il default.</p>
+    <div style="display:flex;flex-direction:column;gap:14px">
+      ${COLORS_SCHEMA.map(f => renderField(f, data.site.colors[f[0]], ['site','colors',f[0]])).join('')}
+    </div>
+  </div>`;
+  return `<div class="section-form-fields">${main}</div>${colorsBlock}`;
+}
+
+function renderNavBlock(){
+  data.nav = data.nav || {};
+  const main = NAV_SCHEMA.map(f => renderField(f, data.nav[f[0]], ['nav', f[0]])).join('');
+  const linksField = renderField(
+    ['links', 'Voci del menu', 'list-object', null, [
+      ['label', 'Testo voce', 'text'],
+      ['href', 'Link', 'text']
+    ]],
+    data.nav.links,
+    ['nav', 'links']
+  );
+  return `<div class="section-form-fields">${linksField}${main}</div>`;
+}
+
+function renderFooterBlock(){
+  data.footer = data.footer || {};
+  const main = FOOTER_SCHEMA.map(f => renderField(f, data.footer[f[0]], ['footer', f[0]])).join('');
+  const colsField = renderField(
+    ['columns', 'Colonne di link', 'list-object', null, [
+      ['title', 'Titolo colonna', 'text'],
+      ['links', 'Link', 'list-object', null, [
+        ['label', 'Testo', 'text'],
+        ['href', 'Link', 'text']
+      ]]
+    ]],
+    data.footer.columns,
+    ['footer', 'columns']
+  );
+  const bottomField = renderField(
+    ['bottom_links', 'Link in basso a destra', 'list-object', null, [
+      ['label', 'Testo', 'text'],
+      ['href', 'Link', 'text']
+    ]],
+    data.footer.bottom_links,
+    ['footer', 'bottom_links']
+  );
+  return `<div class="section-form-fields">${main}${colsField}${bottomField}</div>`;
+}
+
+function renderSectionsBlock(){
+  const sections = data.sections || [];
+  const rows = sections.map((s, i) => {
+    const isExpanded = ui.expandedSection === i;
+    const pillClass = TYPE_LABELS[s.type] ? `pill-${s.type}` : 'pill-big_quote';
+    const label = TYPE_LABELS[s.type] || s.type;
+    const summary = summarize(s);
+    const formHTML = isExpanded ? renderSectionForm(s, i) : '';
+    return `<div class="section-row ${isExpanded?'expanded':''}" data-section-idx="${i}">
+      <div class="section-drag" title="Riordina (futuro)">
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+        <div class="section-drag-row"><div class="section-drag-dot"></div><div class="section-drag-dot"></div></div>
+      </div>
+      <span class="section-pill ${pillClass}">${esc(label)}</span>
+      <span class="section-summary" data-toggle-section="${i}">${esc(summary || TYPE_DESC[s.type] || '')}</span>
+      <div class="section-actions">
+        <button data-move-section="${i}" data-direction="-1" aria-label="Sposta su" ${i===0?'disabled style="opacity:.3"':''}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="18 15 12 9 6 15"/></svg>
+        </button>
+        <button data-move-section="${i}" data-direction="1" aria-label="Sposta giù" ${i===sections.length-1?'disabled style="opacity:.3"':''}>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button data-toggle-section="${i}" aria-label="${isExpanded?'Chiudi':'Apri'}">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="transform:rotate(${isExpanded?'180':'0'}deg);transition:transform .15s"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <button class="danger" data-delete-section="${i}" aria-label="Elimina">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+      ${formHTML?`<div class="section-form" style="grid-column:1 / -1; display:block; margin-top:8px; margin-left:-14px; margin-right:-14px; margin-bottom:-10px;">${formHTML}</div>`:''}
+    </div>`;
+  }).join('');
+
+  return `<div class="sections-block">
+    <div class="sections-header">
+      <div class="sections-header-title">🧩 Sezioni della pagina</div>
+      <div class="sections-count">${sections.length} sezioni · clicca per modificare · usa ▲▼ per riordinare</div>
+    </div>
+    <div class="sections-list">${rows || '<div style="padding:20px;color:var(--ink-light);text-align:center">Nessuna sezione. Aggiungine una qui sotto.</div>'}</div>
+    <div class="add-section-wrap">
+      <div style="position:relative">
+        <button class="add-section" id="addSectionBtn">+ Aggiungi sezione</button>
+        ${ui.addMenuOpen?renderAddMenu():''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderAddMenu(){
+  const items = Object.entries(TYPE_LABELS).map(([type, label]) => `
+    <button data-add-type="${type}">${esc(label)} <span style="color:var(--ink-light);font-size:11.5px;margin-left:auto">${esc(TYPE_DESC[type]||'')}</span></button>
+  `).join('');
+  return `<div class="add-section-menu">${items}</div>`;
+}
+
+function renderSectionForm(section, idx){
+  const schema = SECTION_SCHEMA[section.type];
+  if(!schema) return `<div style="padding:20px;color:var(--ink-light)">Tipo "${esc(section.type)}" sconosciuto.</div>`;
+  const fields = schema.map(f => renderField(f, section[f[0]], ['sections', idx, f[0]])).join('');
+  return `<div class="section-form-fields">${fields}</div>`;
+}
+
+/* =====================================================================
+   EVENT LISTENERS
+   ===================================================================== */
+function attachEditorListeners(){
+  const editor = document.querySelector('#editor');
+
+  // Toggle blocks (Site/Nav/Footer)
+  editor.querySelectorAll('[data-toggle-block]').forEach(el => {
+    el.onclick = () => {
+      const k = el.dataset.toggleBlock;
+      if(ui.openObjects.has(k)) ui.openObjects.delete(k);
+      else ui.openObjects.add(k);
+      renderEditor();
+    };
   });
-  html += '</main>';
-  html += '<footer class="footer">' + renderFooter(data) + '</footer>';
-  return html;
-}
 
-const SitePreview = function(props){
-  let data;
-  try { data = props.entry.getIn(['data']).toJS(); }
-  catch(e){ return h('div', {style:{padding:'40px'}}, 'Errore: ' + e.message); }
-  return h('div', {dangerouslySetInnerHTML: {__html: renderFullSite(data)}});
-};
+  // Toggle sections (chevron, summary, or button)
+  editor.querySelectorAll('[data-toggle-section]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const i = parseInt(el.dataset.toggleSection);
+      ui.expandedSection = (ui.expandedSection === i) ? null : i;
+      renderEditor();
+    };
+  });
 
-CMS.registerPreviewStyle('/admin/preview.css');
-CMS.registerPreviewTemplate('main', SitePreview);
+  // Move sections up/down
+  editor.querySelectorAll('[data-move-section]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const i = parseInt(el.dataset.moveSection);
+      const dir = parseInt(el.dataset.direction);
+      const j = i + dir;
+      if(j<0 || j>=data.sections.length) return;
+      const [moved] = data.sections.splice(i,1);
+      data.sections.splice(j, 0, moved);
+      if(ui.expandedSection === i) ui.expandedSection = j;
+      else if(ui.expandedSection === j) ui.expandedSection = i;
+      markDirty();
+      renderEditor();
+    };
+  });
 
+  // Delete sections
+  editor.querySelectorAll('[data-delete-section]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const i = parseInt(el.dataset.deleteSection);
+      if(!confirm('Eliminare questa sezione? L\'operazione è reversibile solo se non hai ancora pubblicato.')) return;
+      data.sections.splice(i, 1);
+      if(ui.expandedSection === i) ui.expandedSection = null;
+      else if(ui.expandedSection > i) ui.expandedSection--;
+      markDirty();
+      renderEditor();
+    };
+  });
 
-/* ==========================================================
-   ⭐ TAGGER: aggiunge data-section-type=hero/problem/...
-   ai list items, in base al testo del label.
-   ========================================================== */
-const TYPE_MAP = {
-  'Hero': 'hero',
-  'Problema': 'problem',
-  'Chi è il dottore': 'about',
-  'About': 'about',
-  'Card valore': 'value_card',
-  'Card Valore': 'value_card',
-  'Metodo': 'method',
-  'Piramide': 'levels',
-  'Programmi': 'programs',
-  'Audience': 'audience',
-  'Statistiche': 'stats',
-  'Testimonianze': 'testimonials',
-  'Grande citazione': 'big_quote',
-  'Caratteristiche': 'features_card',
-  'Form Contatti': 'cta_form',
-  'Form di Contatto': 'cta_form'
-};
+  // Add section button
+  const addBtn = editor.querySelector('#addSectionBtn');
+  if(addBtn){
+    addBtn.onclick = (e) => {
+      e.stopPropagation();
+      ui.addMenuOpen = !ui.addMenuOpen;
+      renderEditor();
+    };
+  }
+  editor.querySelectorAll('[data-add-type]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const type = el.dataset.addType;
+      const newSection = { type };
+      data.sections = data.sections || [];
+      data.sections.push(newSection);
+      ui.expandedSection = data.sections.length - 1;
+      ui.addMenuOpen = false;
+      markDirty();
+      renderEditor();
+    };
+  });
 
-function tagSectionTypes(){
-  // Classi VERE di Decap 3.x (dal DevTools)
-  const items = document.querySelectorAll('[class*="SortableListItem"], [class*="listControlItem"]');
-  items.forEach(item => {
-    if(item.dataset.sectionType) return;
-    const text = (item.textContent || '').substring(0, 200);
-    for(const [key, type] of Object.entries(TYPE_MAP)){
-      if(text.indexOf(key) >= 0){
-        item.setAttribute('data-section-type', type);
-        return;
+  // Input/textarea/select changes
+  editor.querySelectorAll('[data-path]').forEach(el => {
+    const isCheckbox = el.type === 'checkbox';
+    const isColor = el.hasAttribute('data-color');
+    el.addEventListener(isCheckbox || el.tagName === 'SELECT' ? 'change' : 'input', () => {
+      const path = el.dataset.path.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+      let v;
+      if(isCheckbox) v = el.checked;
+      else if(el.type === 'number') v = el.value === '' ? null : Number(el.value);
+      else v = el.value;
+      setPath(data, path, v);
+      // For color: sync the other input and the swatch
+      if(isColor){
+        const sibling = el.closest('.field-color').querySelector('.field-color-input');
+        if(sibling && sibling !== el) sibling.value = v;
+        const swatch = el.closest('.field-color-swatch');
+        if(swatch) swatch.style.background = v;
+      } else if(el.classList.contains('field-color-input')){
+        const swatch = el.closest('.field-color').querySelector('.field-color-swatch');
+        if(swatch){
+          swatch.style.background = v || swatch.style.background;
+          const picker = swatch.querySelector('input[type="color"]');
+          if(picker && /^#[0-9a-f]{6}$/i.test(v)) picker.value = v;
+        }
       }
+      // For section summary: if the user edited the headline, refresh just the summary text
+      if(path[0] === 'sections' && typeof path[1] === 'number'){
+        const idx = path[1];
+        const row = editor.querySelector(`[data-section-idx="${idx}"]`);
+        if(row){
+          const sum = row.querySelector('.section-summary');
+          if(sum) sum.textContent = summarize(data.sections[idx]) || TYPE_DESC[data.sections[idx].type] || '';
+        }
+      }
+      markDirty();
+    });
+  });
+
+  // List remove
+  editor.querySelectorAll('[data-list-remove]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const listPath = el.dataset.listPath.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+      const idx = parseInt(el.dataset.listRemove);
+      const list = getPath(data, listPath) || [];
+      list.splice(idx, 1);
+      setPath(data, listPath, list);
+      markDirty();
+      renderEditor();
+    };
+  });
+
+  // List add
+  editor.querySelectorAll('[data-list-add]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const listPath = el.dataset.listAdd.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+      const list = getPath(data, listPath) || [];
+      const newItem = el.dataset.listType === 'object' ? {} : '';
+      list.push(newItem);
+      setPath(data, listPath, list);
+      markDirty();
+      renderEditor();
+    };
+  });
+
+  // Image fields
+  editor.querySelectorAll('.field-image').forEach(el => {
+    const path = el.dataset.imagePath.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+    const uploadBtn = el.querySelector('[data-action="upload"]');
+    const removeBtn = el.querySelector('[data-action="remove"]');
+    if(uploadBtn){
+      uploadBtn.onclick = async () => {
+        const input = document.createElement('input');
+        input.type = 'file'; input.accept = 'image/*';
+        input.onchange = async () => {
+          const f = input.files[0]; if(!f) return;
+          uploadBtn.disabled = true;
+          uploadBtn.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:-2px"></span> Carico…';
+          try {
+            const url = await uploadImage(f);
+            setPath(data, path, url);
+            markDirty();
+            renderEditor();
+            showToast('Immagine caricata');
+          } catch(err){
+            uploadBtn.disabled = false; uploadBtn.textContent = 'Carica';
+            showToast('Errore: ' + err.message, 'error');
+          }
+        };
+        input.click();
+      };
+    }
+    if(removeBtn){
+      removeBtn.onclick = () => {
+        setPath(data, path, '');
+        markDirty();
+        renderEditor();
+      };
     }
   });
+
+  // Close add menu when clicking outside
+  if(ui.addMenuOpen){
+    setTimeout(() => {
+      const closeFn = (e) => {
+        if(!e.target.closest('.add-section-menu') && !e.target.closest('#addSectionBtn')){
+          ui.addMenuOpen = false;
+          document.removeEventListener('click', closeFn);
+          renderEditor();
+        }
+      };
+      document.addEventListener('click', closeFn);
+    }, 0);
+  }
 }
 
-// Run periodically — Decap re-renders list often
-setInterval(tagSectionTypes, 1200);
-// Also run on initial DOM mutations
-const observer = new MutationObserver(() => tagSectionTypes());
-observer.observe(document.body, {childList: true, subtree: true});
+/* =====================================================================
+   SAVE FLOW
+   ===================================================================== */
+async function doSave(){
+  if(ui.isSaving) return;
+  ui.isSaving = true;
+  updateStatusBar();
+  document.querySelector('#saveBtn').disabled = true;
+  document.querySelector('#saveBtn').innerHTML = '<span class="spinner"></span> Pubblico…';
+  try {
+    await saveContent();
+    ui.isDirty = false;
+    ui.isSaving = false;
+    document.querySelector('#saveBtn').disabled = false;
+    document.querySelector('#saveBtn').textContent = 'Pubblica';
+    updateStatusBar();
+    showToast('Pubblicato! Netlify aggiorna il sito in 30 secondi.', 'success');
+  } catch(err){
+    ui.isSaving = false;
+    document.querySelector('#saveBtn').disabled = false;
+    document.querySelector('#saveBtn').textContent = 'Pubblica';
+    updateStatusBar();
+    showToast('Errore: ' + err.message, 'error');
+  }
+}
+
+function updateStatusBar(){
+  const bar = document.querySelector('#statusBar');
+  if(!bar) return;
+  bar.classList.remove('dirty','saving','saved');
+  if(ui.isSaving){ bar.classList.add('saving'); bar.querySelector('span:last-child').textContent = 'Pubblicando…'; }
+  else if(ui.isDirty){ bar.classList.add('dirty'); bar.querySelector('span:last-child').textContent = 'Modifiche da pubblicare'; }
+  else { bar.classList.add('saved'); bar.querySelector('span:last-child').textContent = 'Salvato'; }
+}
+
+/* =====================================================================
+   TOAST
+   ===================================================================== */
+function showToast(msg, type){
+  const t = document.querySelector('#toast');
+  if(!t) return alert(msg);
+  t.className = 'toast ' + (type||'');
+  t.textContent = msg;
+  setTimeout(()=>t.classList.add('show'), 10);
+  setTimeout(()=>t.classList.remove('show'), 4000);
+}
+function showError(msg){
+  const app = document.querySelector('#app');
+  const card = app.querySelector('.login-card');
+  if(card){
+    let err = card.querySelector('.login-error');
+    if(!err){ err = document.createElement('div'); err.className = 'login-error'; card.appendChild(err); }
+    err.textContent = msg;
+  } else {
+    showToast(msg, 'error');
+  }
+}
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+async function init(){
+  if(!token){
+    renderApp();
+    return;
+  }
+  renderApp(); // shows loading state
+  try {
+    data = await loadContent();
+    renderApp();
+  } catch(err){
+    if(/Sessione scaduta/.test(err.message)){
+      token = null;
+      renderApp();
+      showError(err.message);
+    } else {
+      const app = document.querySelector('#app');
+      app.innerHTML = `<div class="login"><div class="login-card">
+        <h1>Errore</h1>
+        <p>${esc(err.message)}</p>
+        <button class="login-btn" onclick="location.reload()">Riprova</button>
+      </div></div>`;
+    }
+  }
+}
+
+init();
 </script>
 </body>
 </html>
