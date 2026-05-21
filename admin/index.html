@@ -82,96 +82,51 @@
   }
 
   /* ==========================================================
-     LISTA DELLE SEZIONI — la parte importante
+     LISTA DELLE SEZIONI — design B compatto
      ========================================================== */
 
-  /* Container che contiene tutte le list items delle sezioni */
-  [class*="ListControl"] > [class*="ObjectControl"],
-  [class*="ListControl"] > div > div:first-child {
+  /* Container delle list items: card unica con bordo */
+  [class*="ListControl"] [class*="StyledListItemsArea"],
+  [class*="ListControl"] [class*="StyledItem"] > div > div:first-child {
     background:#fff !important;
     border:0.5px solid #e5e7eb !important;
     border-radius:8px !important;
-    padding:0 !important;
     overflow:hidden !important;
   }
 
-  /* Ogni list item — flat row, niente padding/border decorativi */
-  [class*="StyledListItem"],
-  [class*="ListItem-"],
+  /* ============================================
+     ⭐ FORZIAMO LAYOUT GRID 1-RIGA su ogni item
+     ============================================ */
   [data-rbd-draggable-id] {
+    display:grid !important;
+    grid-template-columns:auto 1fr auto !important;
+    grid-template-areas:"label summary controls" !important;
+    align-items:center !important;
+    gap:12px !important;
+    padding:9px 14px !important;
     background:#fff !important;
     border:0 !important;
     border-bottom:0.5px solid #f0f0f0 !important;
     border-radius:0 !important;
     margin:0 !important;
-    padding:0 !important;
     box-shadow:none !important;
     overflow:visible !important;
+    min-height:0 !important;
     transition:background .1s !important;
   }
-  [class*="StyledListItem"]:last-child,
-  [data-rbd-draggable-id]:last-child {
-    border-bottom:0 !important;
-  }
-  [class*="StyledListItem"]:hover {
-    background:#fafafa !important;
-  }
+  [data-rbd-draggable-id]:last-child { border-bottom:0 !important; }
+  [data-rbd-draggable-id]:hover { background:#fafaf8 !important; }
 
-  /* Top bar di ogni list item (riga cliccabile) */
-  [class*="StyledListItemTopBar"],
-  [class*="ListItemTopBar"] {
-    background:transparent !important;
-    padding:10px 16px !important;
-    border:0 !important;
-    display:flex !important;
-    align-items:center !important;
-    gap:12px !important;
-    cursor:pointer !important;
-  }
-
-  /* Drag handle */
-  [class*="dragHandle"], [class*="DragHandle"], [class*="draghandle"] {
-    color:#c0c0c0 !important;
-    cursor:grab !important;
-    font-size:15px !important;
-  }
-  [class*="dragHandle"] svg, [class*="DragHandle"] svg {
-    width:14px !important; height:14px !important;
-  }
-
-  /* X / remove button */
-  button[class*="StyledRemove"], button[class*="Remove"], [class*="removeButton"] {
-    color:#a0a0a0 !important;
-    background:transparent !important;
-    border:0 !important;
-    padding:4px !important;
-    transition:color .12s !important;
-  }
-  button[class*="StyledRemove"]:hover, button[class*="Remove"]:hover {
-    color:#e85d3c !important;
-  }
-
-  /* CHEVRON — rendiamolo VISIBILE (era il problema) */
-  [class*="StyledListItemTopBar"] svg,
-  [class*="ListItemTopBar"] svg,
-  [class*="collapseButton"] svg,
-  [class*="ToggleButton"] svg {
-    color:#888 !important;
-    opacity:.85 !important;
-    width:14px !important; height:14px !important;
-  }
-  [class*="StyledListItemTopBar"] svg:hover {
-    color:#1a1714 !important;
-    opacity:1 !important;
-  }
-
-  /* Label dentro la top bar → PILL */
-  [class*="StyledListItemTopBar"] > label,
-  [class*="ListItemTopBar"] > label,
-  [class*="StyledListItemTopBar"] > [class*="Label"]:not([class*="ControlLabel"]):not([class*="FieldLabel"]) {
+  /* PILL del tipo (era label) — primo elemento testuale */
+  [data-rbd-draggable-id] > label,
+  [data-rbd-draggable-id] > div > label,
+  [data-rbd-draggable-id] > [class*="StyledLabel"],
+  [data-rbd-draggable-id] > div > [class*="StyledLabel"],
+  [data-rbd-draggable-id] [class*="LabelComponent"]:first-of-type {
+    grid-area:label !important;
     display:inline-flex !important;
     align-items:center !important;
-    gap:6px !important;
+    gap:5px !important;
     padding:3px 9px !important;
     border-radius:6px !important;
     font-size:11.5px !important;
@@ -184,88 +139,153 @@
     line-height:1.4 !important;
     white-space:nowrap !important;
     flex-shrink:0 !important;
+    width:fit-content !important;
+    max-width:200px !important;
   }
 
-  /* COLORI PER TIPO DI SEZIONE */
-  [data-section-type="hero"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="hero"] [class*="ListItemTopBar"] > label {
-    background:#fff5ed !important; color:#c44a2e !important;
-  }
-  [data-section-type="problem"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="problem"] [class*="ListItemTopBar"] > label {
-    background:#fdecec !important; color:#a32d2d !important;
-  }
-  [data-section-type="about"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="about"] [class*="ListItemTopBar"] > label {
-    background:#e1f5ee !important; color:#0f6e56 !important;
-  }
-  [data-section-type="value_card"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="value_card"] [class*="ListItemTopBar"] > label {
-    background:#faeeda !important; color:#854f0b !important;
-  }
-  [data-section-type="method"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="method"] [class*="ListItemTopBar"] > label {
-    background:#e6f1fb !important; color:#185fa5 !important;
-  }
-  [data-section-type="levels"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="levels"] [class*="ListItemTopBar"] > label {
-    background:#eeedfe !important; color:#534ab7 !important;
-  }
-  [data-section-type="programs"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="programs"] [class*="ListItemTopBar"] > label {
-    background:#eaf3de !important; color:#3b6d11 !important;
-  }
-  [data-section-type="audience"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="audience"] [class*="ListItemTopBar"] > label {
-    background:#fbeaf0 !important; color:#993556 !important;
-  }
-  [data-section-type="stats"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="stats"] [class*="ListItemTopBar"] > label {
-    background:#e1f5ee !important; color:#085041 !important;
-  }
-  [data-section-type="testimonials"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="testimonials"] [class*="ListItemTopBar"] > label {
-    background:#faece7 !important; color:#993c1d !important;
-  }
-  [data-section-type="big_quote"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="big_quote"] [class*="ListItemTopBar"] > label {
-    background:#d3d1c7 !important; color:#2c2c2a !important;
-  }
-  [data-section-type="features_card"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="features_card"] [class*="ListItemTopBar"] > label {
-    background:#faeeda !important; color:#633806 !important;
-  }
-  [data-section-type="cta_form"] [class*="StyledListItemTopBar"] > label,
-  [data-section-type="cta_form"] [class*="ListItemTopBar"] > label {
-    background:#d85a30 !important; color:#fff !important;
+  /* TOPBAR (chevron, drag, X) — last col, layout inline */
+  [data-rbd-draggable-id] [class*="StyledListItemTopBar"],
+  [data-rbd-draggable-id] [class*="ListItemTopBar"] {
+    grid-area:controls !important;
+    background:transparent !important;
+    padding:0 !important;
+    margin:0 !important;
+    border:0 !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:8px !important;
+    flex-shrink:0 !important;
+    width:auto !important;
   }
 
-  /* Summary text dopo il pill */
-  [class*="StyledListItemTopBar"] [class*="StyledSummary"],
-  [class*="StyledListItemTopBar"] [class*="Summary"],
-  [class*="ListItemTopBar"] [class*="Summary"] {
+  /* SUMMARY in mezzo */
+  [data-rbd-draggable-id] [class*="StyledSummary"],
+  [data-rbd-draggable-id] [class*="Summary"],
+  [data-rbd-draggable-id] > div > div:nth-child(2):not([class*="TopBar"]):not([class*="Object"]) {
+    grid-area:summary !important;
+    background:transparent !important;
+    padding:0 !important;
+    margin:0 !important;
     font-size:13.5px !important;
     color:#3a3733 !important;
     font-weight:400 !important;
-    margin:0 0 0 4px !important;
     overflow:hidden !important;
     text-overflow:ellipsis !important;
     white-space:nowrap !important;
-    flex:1 !important;
     min-width:0 !important;
   }
 
-  /* Stato ESPANSO — la top bar diventa intestazione */
-  [class*="StyledListItem"]:has([class*="StyledObjectFieldWrapper"]) [class*="StyledListItemTopBar"],
-  [class*="StyledListItem"]:has([class*="ObjectField"]) [class*="StyledListItemTopBar"] {
-    background:#fff !important;
-    border-bottom:0.5px solid #ece9e3 !important;
+  /* ICONE: chevron, drag, X */
+  [data-rbd-draggable-id] svg,
+  [data-rbd-draggable-id] button svg {
+    color:#888 !important;
+    width:14px !important;
+    height:14px !important;
   }
-  /* Body dell'espanso */
-  [class*="StyledListItem"] > [class*="StyledObjectFieldWrapper"],
-  [class*="StyledListItem"] [class*="ObjectControl"] > div:not([class*="TopBar"]) {
+  [data-rbd-draggable-id] button:hover svg { color:#e85d3c !important; }
+  [data-rbd-draggable-id] [class*="dragHandle"],
+  [data-rbd-draggable-id] [class*="DragHandle"] {
+    color:#c0c0c0 !important;
+    cursor:grab !important;
+  }
+
+  /* ============================================
+     COLORI per TIPO — selettori multipli, defensive
+     ============================================ */
+  [data-section-type="hero"] > label,
+  [data-section-type="hero"] > div > label,
+  [data-section-type="hero"] > [class*="StyledLabel"],
+  [data-section-type="hero"] > div > [class*="StyledLabel"] {
+    background:#fff5ed !important; color:#c44a2e !important;
+  }
+  [data-section-type="problem"] > label,
+  [data-section-type="problem"] > div > label,
+  [data-section-type="problem"] > [class*="StyledLabel"],
+  [data-section-type="problem"] > div > [class*="StyledLabel"] {
+    background:#fdecec !important; color:#a32d2d !important;
+  }
+  [data-section-type="about"] > label,
+  [data-section-type="about"] > div > label,
+  [data-section-type="about"] > [class*="StyledLabel"],
+  [data-section-type="about"] > div > [class*="StyledLabel"] {
+    background:#e1f5ee !important; color:#0f6e56 !important;
+  }
+  [data-section-type="value_card"] > label,
+  [data-section-type="value_card"] > div > label,
+  [data-section-type="value_card"] > [class*="StyledLabel"],
+  [data-section-type="value_card"] > div > [class*="StyledLabel"] {
+    background:#faeeda !important; color:#854f0b !important;
+  }
+  [data-section-type="method"] > label,
+  [data-section-type="method"] > div > label,
+  [data-section-type="method"] > [class*="StyledLabel"],
+  [data-section-type="method"] > div > [class*="StyledLabel"] {
+    background:#e6f1fb !important; color:#185fa5 !important;
+  }
+  [data-section-type="levels"] > label,
+  [data-section-type="levels"] > div > label,
+  [data-section-type="levels"] > [class*="StyledLabel"],
+  [data-section-type="levels"] > div > [class*="StyledLabel"] {
+    background:#eeedfe !important; color:#534ab7 !important;
+  }
+  [data-section-type="programs"] > label,
+  [data-section-type="programs"] > div > label,
+  [data-section-type="programs"] > [class*="StyledLabel"],
+  [data-section-type="programs"] > div > [class*="StyledLabel"] {
+    background:#eaf3de !important; color:#3b6d11 !important;
+  }
+  [data-section-type="audience"] > label,
+  [data-section-type="audience"] > div > label,
+  [data-section-type="audience"] > [class*="StyledLabel"],
+  [data-section-type="audience"] > div > [class*="StyledLabel"] {
+    background:#fbeaf0 !important; color:#993556 !important;
+  }
+  [data-section-type="stats"] > label,
+  [data-section-type="stats"] > div > label,
+  [data-section-type="stats"] > [class*="StyledLabel"],
+  [data-section-type="stats"] > div > [class*="StyledLabel"] {
+    background:#e1f5ee !important; color:#085041 !important;
+  }
+  [data-section-type="testimonials"] > label,
+  [data-section-type="testimonials"] > div > label,
+  [data-section-type="testimonials"] > [class*="StyledLabel"],
+  [data-section-type="testimonials"] > div > [class*="StyledLabel"] {
+    background:#faece7 !important; color:#993c1d !important;
+  }
+  [data-section-type="big_quote"] > label,
+  [data-section-type="big_quote"] > div > label,
+  [data-section-type="big_quote"] > [class*="StyledLabel"],
+  [data-section-type="big_quote"] > div > [class*="StyledLabel"] {
+    background:#d3d1c7 !important; color:#2c2c2a !important;
+  }
+  [data-section-type="features_card"] > label,
+  [data-section-type="features_card"] > div > label,
+  [data-section-type="features_card"] > [class*="StyledLabel"],
+  [data-section-type="features_card"] > div > [class*="StyledLabel"] {
+    background:#faeeda !important; color:#633806 !important;
+  }
+  [data-section-type="cta_form"] > label,
+  [data-section-type="cta_form"] > div > label,
+  [data-section-type="cta_form"] > [class*="StyledLabel"],
+  [data-section-type="cta_form"] > div > [class*="StyledLabel"] {
+    background:#d85a30 !important; color:#fff !important;
+  }
+
+  /* Stato ESPANSO: layout torna a colonne quando ci sono input dentro */
+  [data-rbd-draggable-id]:has(input, textarea, select) {
+    display:block !important;
+    grid-template-columns:none !important;
+    padding:0 !important;
+    background:#fff !important;
+  }
+  [data-rbd-draggable-id]:has(input, textarea, select) > * {
+    grid-area:auto !important;
+  }
+  [data-rbd-draggable-id]:has(input, textarea, select) [class*="StyledObjectFieldWrapper"],
+  [data-rbd-draggable-id]:has(input, textarea, select) [class*="ObjectControl"] > div {
     background:#fafaf8 !important;
-    padding:22px 24px !important;
+    padding:18px 22px !important;
+    border-top:0.5px solid #ece9e3 !important;
   }
 
   /* ==========================================================
@@ -780,15 +800,12 @@ const TYPE_MAP = {
 };
 
 function tagSectionTypes(){
-  const items = document.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
+  // Cerco TUTTI gli elementi draggable (react-beautiful-dnd usa questo attributo)
+  const items = document.querySelectorAll('[data-rbd-draggable-id]');
   items.forEach(item => {
     if(item.dataset.sectionType) return;
-    // Cerco il label nella top bar dell'item
-    const topBar = item.querySelector(':scope > [class*="StyledListItemTopBar"], :scope > [class*="ListItemTopBar"], :scope > div > [class*="StyledListItemTopBar"]');
-    if(!topBar) return;
-    const labelEl = topBar.querySelector('label, [class*="StyledLabel"]');
-    if(!labelEl) return;
-    const text = (labelEl.textContent || '').trim();
+    // Match testuale semplice sui primi 200 caratteri del contenuto
+    const text = (item.textContent || '').substring(0, 200);
     for(const [key, type] of Object.entries(TYPE_MAP)){
       if(text.indexOf(key) >= 0){
         item.setAttribute('data-section-type', type);
