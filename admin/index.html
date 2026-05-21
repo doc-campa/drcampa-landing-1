@@ -125,6 +125,14 @@ a { color:inherit; text-decoration:none; }
   margin-left:auto; font-size:11.5px; color:var(--ink-light);
   font-variant-numeric:tabular-nums;
 }
+.editing-info {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:5px 12px; background:var(--coral-soft);
+  border:1px solid var(--coral); border-radius:999px;
+  font-size:12px; font-weight:500; color:var(--coral);
+  max-width:280px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.editing-info.hidden { display:none; }
 .preview-frame {
   flex:1; min-height:0; overflow:auto;
   background:#e9e3d4; padding:20px;
@@ -1397,16 +1405,20 @@ body{margin:0}
 }
 [data-cms-section-idx]:hover::before{opacity:1; transform:translateY(0);}
 
-/* ⭐ Sezione attualmente in modifica (rimane evidenziata sempre) */
+/* ⭐ Sezione attualmente in modifica: bordo coral spesso che si vede sempre */
 [data-cms-section-idx].cms-current{
-  outline:4px solid #e85d3c !important;
-  outline-offset:-4px;
+  isolation:isolate;
 }
-[data-cms-section-idx].cms-current::before{
-  content:"✏️ Stai modificando: " attr(data-cms-section-type) !important;
-  background:#e85d3c !important;
-  opacity:1 !important; transform:translateY(0) !important;
+[data-cms-section-idx].cms-current::after{
+  content:"";
+  position:absolute; inset:0;
+  border:4px solid #e85d3c;
+  pointer-events:none;
+  z-index:9998;
 }
+/* Non mostrare il pill di hover/discovery sulla sezione attualmente selezionata
+   (l'indicazione "stai modificando X" sta nella toolbar dell'editor) */
+[data-cms-section-idx].cms-current::before{ display:none !important; }
 
 [data-cms-section-idx] a, [data-cms-section-idx] button, [data-cms-section-idx] input, [data-cms-section-idx] textarea, [data-cms-section-idx] select{cursor:pointer;}
 </style></head><body>${body}<script>
@@ -1532,6 +1544,8 @@ async function updatePreview(){
 
 /* Send a message to the iframe telling it which section is currently being edited */
 function syncPreviewHighlight(){
+  // Update the parent toolbar badge first (always visible, never overlaps content)
+  updateEditingInfo();
   const iframe = document.querySelector('#preview-iframe');
   if(!iframe || !iframe.contentWindow) return;
   try {
@@ -1540,6 +1554,20 @@ function syncPreviewHighlight(){
       idx: ui.expandedSection
     }, '*');
   } catch(e){}
+}
+
+function updateEditingInfo(){
+  const el = document.querySelector('#editingInfo');
+  if(!el) return;
+  if(ui.expandedSection != null && data && data.sections && data.sections[ui.expandedSection]){
+    const type = data.sections[ui.expandedSection].type;
+    const label = TYPE_LABELS[type] || type;
+    el.innerHTML = '✏️ <span style="color:var(--ink-soft);font-weight:400">Modificando:</span>&nbsp;<strong>' + esc(label) + '</strong>';
+    el.classList.remove('hidden');
+  } else {
+    el.classList.add('hidden');
+    el.textContent = '';
+  }
 }
 
 /* Tell the iframe to scroll to a specific section */
@@ -1711,6 +1739,7 @@ function renderApp(){
                 Mobile
               </button>
             </div>
+            <div class="editing-info hidden" id="editingInfo"></div>
             <div class="viewport-info" id="viewportInfo"></div>
           </div>
           <div class="preview-frame viewport-${ui.viewport}" id="previewFrame">
