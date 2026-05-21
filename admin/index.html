@@ -4,8 +4,393 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editor — Studio Campa</title>
+  <link rel="icon" href="data:,">
 </head>
 <body>
+  <!-- Decap CMS core -->
   <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
+
+  <script>
+  /* ==========================================================
+     HELPERS
+     ========================================================== */
+  function esc(s){
+    if(s==null) return '';
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+  }
+  function img(src, alt){
+    if(!src) return '';
+    return '<img src="' + esc(src) + '" alt="' + esc(alt||'') + '">';
+  }
+
+  /* ==========================================================
+     SECTION TEMPLATES — identici a quelli di index.html
+     ========================================================== */
+  const templates = {
+    hero(s){
+      return `
+        <section class="hero"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="hero-bg">${img(s.bg_image, 'Hero')}</div>
+          ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
+          <div class="container hero-content">
+            <h1>
+              ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+              ${s.headline_main?`${esc(s.headline_main)} `:''}
+              ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+            </h1>
+            <p class="hero-sub">
+              ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
+              ${s.subtitle?esc(s.subtitle):''}
+            </p>
+            ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
+            ${(s.mission_label_strong||s.mission_figure)?`
+              <div class="mission-card">
+                <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
+                <div class="mission-bar">
+                  <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+                  <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+                </div>
+                <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+                <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
+              </div>`:''}
+          </div>
+        </section>`;
+    },
+    problem(s){
+      const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+      const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
+      const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+      const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
+      return `
+        <section class="problem"${s.id?` id="${esc(s.id)}"`:''}>
+          ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
+          <div class="container">
+            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <div class="problem-body">
+              ${intro}
+              ${questions?`<p>${questions}</p>`:''}
+              ${middle}
+              ${quote?`<div class="problem-quote">${quote}</div>`:''}
+              ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
+            </div>
+          </div>
+        </section>`;
+    },
+    about(s){
+      const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
+      return `
+        <section class="about"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container about-grid">
+            <div>
+              <h2>${esc(s.title||'')}</h2>
+              ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+            </div>
+            ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
+            <div class="about-body">
+              ${body}
+              ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
+            </div>
+          </div>
+        </section>`;
+    },
+    value_card(s){
+      const icons = {
+        clock:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M32 18v14l8 4"/></svg>`,
+        chart:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L24 30 L36 38 L52 14"/><polyline points="40 14 52 14 52 26"/></svg>`,
+        shield:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L52 16 V32 C52 44 32 56 32 56 C32 56 12 44 12 32 V16 Z"/></svg>`
+      };
+      const items = (s.items||[]).map(it=>`
+        <div class="value-item">
+          <div class="value-icon">${icons[it.icon]||icons.clock}</div>
+          <h4>${esc(it.title||'')}</h4>
+          ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
+        </div>`).join('');
+      return `
+        <section class="value-section"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="value-card">
+              <h2>${esc(s.title||'')}</h2>
+              <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
+              <div class="value-grid">${items}</div>
+              ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
+            </div>
+          </div>
+        </section>`;
+    },
+    method(s){
+      const cards = (s.cards||[]).map(c=>`
+        <div class="method-card">
+          <div class="method-photo">
+            ${img(c.photo, c.title)}
+            <div class="method-num">${esc(c.num||'')}</div>
+          </div>
+          <div class="method-body">
+            <h3>${esc(c.title||'')}</h3>
+            <p>${esc(c.body||'')}</p>
+          </div>
+        </div>`).join('');
+      return `
+        <section class="method"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="method-head">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
+            </div>
+            <div class="method-grid">${cards}</div>
+          </div>
+        </section>`;
+    },
+    levels(s){
+      const items = (s.levels||[]).map(l=>`
+        <div class="level">
+          <div class="level-tag">${esc(l.tag||'')}</div>
+          <h4>${esc(l.title||'')}</h4>
+          <p>${esc(l.body||'')}</p>
+        </div>`).join('');
+      const labels = s.pyramid_labels||[];
+      return `
+        <section class="levels"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="levels-head">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p class="sub">${esc(s.subtitle||'')}</p>
+            </div>
+            <div class="levels-grid">
+              <div class="pyramid">
+                <div class="tri tri-3"><span class="tri-label">${esc(labels[0]||'')}</span></div>
+                <div class="tri tri-2"><span class="tri-label">${esc(labels[1]||'')}</span></div>
+                <div class="tri tri-1"><span class="tri-label">${esc(labels[2]||'')}</span></div>
+              </div>
+              <div class="levels-list">${items}</div>
+            </div>
+          </div>
+        </section>`;
+    },
+    programs(s){
+      const cards = (s.cards||[]).map(c=>`
+        <div class="program-card ${c.reverse?'reverse':''}">
+          <div class="program-text">
+            ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
+            <h3>${esc(c.title||'')}</h3>
+            ${c.subtitle?`<div class="program-subtitle">${esc(c.subtitle)}</div>`:''}
+            <p>${esc(c.body||'')}</p>
+            ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
+          </div>
+          <div class="program-img">${img(c.photo, c.title)}</div>
+        </div>`).join('');
+      return `
+        <section class="programs"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="programs-head">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p class="sub">${esc(s.subtitle||'')}</p>
+            </div>
+            ${cards}
+          </div>
+        </section>`;
+    },
+    audience(s){
+      const items = (s.items||[]).map(it=>`
+        <div class="audience-item">
+          <div class="audience-photo">${img(it.photo, it.title)}</div>
+          <h4>${esc(it.title||'')}</h4>
+          <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
+        </div>`).join('');
+      return `
+        <section${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="audience-head">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p class="sub">${esc(s.subtitle||'')}</p>
+            </div>
+            <div class="audience-grid">${items}</div>
+          </div>
+        </section>`;
+    },
+    stats(s){
+      const renderRow = (row)=>{
+        if(!row||!row.length) return '';
+        const cells = row.map(c=>`
+          <div class="stat">
+            ${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}
+            <div class="num">${esc(c.num||'')}</div>
+            <div class="lbl">${esc(c.label||'')}</div>
+          </div>`).join('');
+        return `<div class="stats-row">${cells}</div>`;
+      };
+      return `
+        <section class="stats"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="stats-head">
+              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <p class="sub">${esc(s.subtitle||'')}</p>
+            </div>
+            ${renderRow(s.row_a)}
+            ${renderRow(s.row_b)}
+            ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+          </div>
+        </section>`;
+    },
+    testimonials(s){
+      const items = (s.items||[]).map(t=>`
+        <div class="test-card">
+          <div class="test-stars">★★★★★</div>
+          <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
+          <div class="test-author">
+            <div class="test-avatar">${img(t.avatar, t.name)}</div>
+            <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
+          </div>
+        </div>`).join('');
+      return `
+        <section class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="test-head">
+              <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+            </div>
+            <div class="test-grid">${items}</div>
+          </div>
+        </section>`;
+    },
+    big_quote(s){
+      return `
+        <section class="big-quote"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <p class="q">${esc(s.quote||'')}</p>
+            <div class="who">
+              ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
+              <div class="n">${esc(s.author_name||'')}</div>
+            </div>
+          </div>
+        </section>`;
+    },
+    features_card(s){
+      const pills = (s.pills||[]).map(p=>{
+        if(p.special){
+          const t = (p.text||'').split(/\b(VIVERE|VIVI)\b/i);
+          if(t.length===3){
+            return `<div class="pill-item special">${esc(t[0])}<em>${esc(t[1])}</em>${esc(t[2])}</div>`;
+          }
+          return `<div class="pill-item special">${esc(p.text||'')}</div>`;
+        }
+        return `<div class="pill-item">${esc(p.text||'')}</div>`;
+      }).join('');
+      return `
+        <section class="features-section"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="features-card">
+              <h2>${esc(s.title||'')}</h2>
+              <p class="lead">${esc(s.lead||'')}</p>
+              <div class="feature-pills">${pills}</div>
+            </div>
+          </div>
+        </section>`;
+    },
+    cta_form(s){
+      const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
+      return `
+        <section class="cta-section"${s.id?` id="${esc(s.id)}"`:''}>
+          <div class="container">
+            <div class="cta-card">
+              <div class="cta-text">
+                <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+                <p>${esc(s.body||'')}</p>
+                <ul class="cta-perks">${perks}</ul>
+              </div>
+              <div class="form-wrap">
+                <h3>${esc(s.form_title||'Prenota')}</h3>
+                <p class="form-sub">${esc(s.form_subtitle||'')}</p>
+                <p style="color:#888;font-style:italic;font-size:.85rem;text-align:center;margin-top:30px">[ qui appaiono i campi del form sulla landing ]</p>
+              </div>
+            </div>
+          </div>
+        </section>`;
+    }
+  };
+
+  function renderNav(data){
+    const nav = data.nav||{};
+    const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
+    return `
+      <div class="container nav-inner">
+        <a href="#" class="logo">
+          <span class="logo-mark">DC</span>
+          <span>${esc(data.site?.logo_text||'Dr. Campa')}</span>
+        </a>
+        <ul class="nav-links">${links}</ul>
+        <div class="nav-cta">
+          ${nav.phone_label?`<a href="#" class="login">${esc(nav.phone_label)}</a>`:''}
+          ${nav.cta_label?`<a href="#" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+        </div>
+      </div>`;
+  }
+
+  function renderFooter(data){
+    const f = data.footer||{};
+    const cols = (f.columns||[]).map(c=>{
+      const links = (c.links||[]).map(l=>`<li><a href="#">${esc(l.label||'')}</a></li>`).join('');
+      return `<div><h5>${esc(c.title||'')}</h5><ul>${links}</ul></div>`;
+    }).join('');
+    return `
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-about">
+            <a href="#" class="logo">
+              <span class="logo-mark">DC</span>
+              <span>${esc(data.site?.logo_text||'')}</span>
+            </a>
+            <p>${esc(f.about_text||'')}</p>
+          </div>
+          ${cols}
+        </div>
+        <div class="footer-bottom">
+          <div>${esc(f.bottom_left||'')}</div>
+        </div>
+      </div>`;
+  }
+
+  function renderFullSite(data){
+    let html = '<nav class="nav">' + renderNav(data) + '</nav>';
+    html += '<main>';
+    (data.sections||[]).forEach(s => {
+      const tpl = templates[s.type];
+      if(tpl){
+        try { html += tpl(s); }
+        catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore rendering sezione "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
+      } else {
+        html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo di sezione sconosciuto: "' + esc(s.type) + '"</div>';
+      }
+    });
+    html += '</main>';
+    html += '<footer class="footer">' + renderFooter(data) + '</footer>';
+    return html;
+  }
+
+  /* ==========================================================
+     PREVIEW REGISTRATION
+     ========================================================== */
+  // Banner che dice "questa è solo un'anteprima"
+  const PREVIEW_BANNER = `
+    <div style="background:#fff8e6;border-bottom:1px solid #f0d878;padding:10px 16px;font:13px/1.4 system-ui,-apple-system,sans-serif;color:#7a5b00;text-align:center;position:sticky;top:0;z-index:100">
+      <strong>Anteprima dal vivo.</strong> Le modifiche che fai nel pannello a sinistra appaiono qui in tempo reale. Clicca <strong>"Save"</strong> in alto per pubblicarle.
+    </div>
+  `;
+
+  const SitePreview = function(props){
+    let data;
+    try {
+      data = props.entry.getIn(['data']).toJS();
+    } catch(e){
+      return h('div', {style:{padding:'40px',fontFamily:'sans-serif'}}, 'Errore lettura dati: ' + e.message);
+    }
+    const html = PREVIEW_BANNER + renderFullSite(data);
+    return h('div', {dangerouslySetInnerHTML: {__html: html}});
+  };
+
+  // Carica gli stili del sito nell'iframe di anteprima
+  CMS.registerPreviewStyle('/admin/preview.css');
+
+  // Registra il template di anteprima per il file content.json (collection "content", file "main")
+  CMS.registerPreviewTemplate('content', SitePreview);
+  </script>
 </body>
 </html>
