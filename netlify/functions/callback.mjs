@@ -1,4 +1,5 @@
-// Riceve il codice da GitHub, lo scambia con un access token, e lo invia al CMS.
+// Riceve il codice da GitHub, lo scambia con un access token,
+// e lo invia al CMS usando il protocollo handshake di Decap CMS.
 export default async (req) => {
   const url = new URL(req.url);
   const code = url.searchParams.get('code');
@@ -28,9 +29,10 @@ export default async (req) => {
     return new Response(`Errore OAuth: ${data.error_description || data.error || 'sconosciuto'}`, { status: 500 });
   }
 
-  // Restituisci una pagina HTML che invia il token al CMS via postMessage
+  // Payload da inviare al CMS
   const payload = JSON.stringify({ token: data.access_token, provider: 'github' });
 
+  // Pagina HTML che esegue l'handshake con la finestra opener (Decap CMS)
   const html = `<!DOCTYPE html>
 <html lang="it">
 <head>
@@ -48,16 +50,30 @@ export default async (req) => {
   </div>
   <script>
     (function() {
-      const data = ${payload};
-      function send() {
-        if (!window.opener) {
-          document.body.innerHTML = '<p>Errore: questa pagina deve essere aperta come popup dal CMS.</p>';
-          return;
-        }
-        window.opener.postMessage('authorization:github:success:' + JSON.stringify(data), '*');
-        setTimeout(function() { window.close(); }, 600);
+      var data = ${payload};
+      var provider = 'github';
+
+      // Quando l'opener risponde all'handshake, gli mando il token vero
+      function receiveMessage(e) {
+        if (!window.opener) return;
+        window.opener.postMessage(
+          'authorization:' + provider + ':success:' + JSON.stringify(data),
+          e.origin || '*'
+        );
+        setTimeout(function() { window.close(); }, 500);
       }
-      send();
+      window.addEventListener('message', receiveMessage, false);
+
+      // Avvio l'handshake: chiamo l'opener finché non risponde
+      function startHandshake() {
+        if (window.opener) {
+          window.opener.postMessage('authorizing:' + provider, '*');
+        }
+      }
+      startHandshake();
+      var interval = setInterval(startHandshake, 250);
+      // Smetto di insistere dopo 10 secondi
+      setTimeout(function() { clearInterval(interval); }, 10000);
     })();
   </script>
 </body>
