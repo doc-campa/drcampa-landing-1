@@ -82,27 +82,34 @@
   }
 
   /* ==========================================================
-     LISTA DELLE SEZIONI — design B compatto
+     LISTA DELLE SEZIONI — v7 con classi VERE di Decap 3.x
+     Classi vere: ...ListItem-listControlItem-SortableListItem
+                  ...TopBar-StyledListItemTopBar
+                  (nessuna classe "Summary")
      ========================================================== */
 
-  /* Container delle list items: card unica con bordo */
+  /* Container delle list items — card unica */
   [class*="ListControl"] [class*="StyledListItemsArea"],
-  [class*="ListControl"] [class*="StyledItem"] > div > div:first-child {
+  [class*="ListControl"] ul,
+  [class*="ListControl"] > div:has([class*="SortableListItem"]) {
     background:#fff !important;
     border:0.5px solid #e5e7eb !important;
     border-radius:8px !important;
     overflow:hidden !important;
+    padding:0 !important;
   }
 
   /* ============================================
-     ⭐ FORZIAMO LAYOUT GRID 1-RIGA su ogni item
+     ⭐ GRID 1-RIGA per ogni section item
+     Classi VERE: SortableListItem + listControlItem
      ============================================ */
-  [data-rbd-draggable-id] {
+  [class*="SortableListItem"],
+  [class*="listControlItem"] {
     display:grid !important;
     grid-template-columns:auto 1fr auto !important;
-    grid-template-areas:"label summary controls" !important;
+    grid-template-areas:"pill summary controls" !important;
     align-items:center !important;
-    gap:12px !important;
+    gap:14px !important;
     padding:9px 14px !important;
     background:#fff !important;
     border:0 !important;
@@ -113,59 +120,49 @@
     overflow:visible !important;
     min-height:0 !important;
     transition:background .1s !important;
+    width:auto !important;
   }
-  [data-rbd-draggable-id]:last-child { border-bottom:0 !important; }
-  [data-rbd-draggable-id]:hover { background:#fafaf8 !important; }
+  [class*="SortableListItem"]:last-child,
+  [class*="listControlItem"]:last-child {
+    border-bottom:0 !important;
+  }
+  [class*="SortableListItem"]:hover {
+    background:#fafaf8 !important;
+  }
 
-  /* PILL del tipo (era label) — primo elemento testuale */
-  [data-rbd-draggable-id] > label,
-  [data-rbd-draggable-id] > div > label,
-  [data-rbd-draggable-id] > [class*="StyledLabel"],
-  [data-rbd-draggable-id] > div > [class*="StyledLabel"],
-  [data-rbd-draggable-id] [class*="LabelComponent"]:first-of-type {
-    grid-area:label !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    gap:5px !important;
-    padding:3px 9px !important;
-    border-radius:6px !important;
-    font-size:11.5px !important;
-    font-weight:500 !important;
-    text-transform:none !important;
-    letter-spacing:0 !important;
+  /* Primo figlio = il pill del tipo */
+  [class*="SortableListItem"] > *:nth-child(1),
+  [class*="listControlItem"] > *:nth-child(1) {
+    grid-area:pill !important;
+    width:auto !important;
     margin:0 !important;
-    background:#f1efe8 !important;
-    color:#444441 !important;
-    line-height:1.4 !important;
-    white-space:nowrap !important;
-    flex-shrink:0 !important;
-    width:fit-content !important;
-    max-width:200px !important;
-  }
-
-  /* TOPBAR (chevron, drag, X) — last col, layout inline */
-  [data-rbd-draggable-id] [class*="StyledListItemTopBar"],
-  [data-rbd-draggable-id] [class*="ListItemTopBar"] {
-    grid-area:controls !important;
-    background:transparent !important;
     padding:0 !important;
+  }
+
+  /* Secondo figlio = TopBar con chevron, drag, X */
+  [class*="SortableListItem"] > *:nth-child(2),
+  [class*="listControlItem"] > *:nth-child(2) {
+    grid-area:controls !important;
+    width:auto !important;
     margin:0 !important;
+    padding:0 !important;
+    background:transparent !important;
     border:0 !important;
     display:flex !important;
     align-items:center !important;
     gap:8px !important;
     flex-shrink:0 !important;
-    width:auto !important;
   }
 
-  /* SUMMARY in mezzo */
-  [data-rbd-draggable-id] [class*="StyledSummary"],
-  [data-rbd-draggable-id] [class*="Summary"],
-  [data-rbd-draggable-id] > div > div:nth-child(2):not([class*="TopBar"]):not([class*="Object"]) {
+  /* Terzo figlio = il summary text */
+  [class*="SortableListItem"] > *:nth-child(3),
+  [class*="listControlItem"] > *:nth-child(3) {
     grid-area:summary !important;
-    background:transparent !important;
-    padding:0 !important;
+    width:auto !important;
     margin:0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
     font-size:13.5px !important;
     color:#3a3733 !important;
     font-weight:400 !important;
@@ -175,114 +172,104 @@
     min-width:0 !important;
   }
 
+  /* PILL — stile base (grigio default) */
+  [class*="SortableListItem"] > label,
+  [class*="SortableListItem"] > [class*="FieldLabel"],
+  [class*="listControlItem"] > label,
+  [class*="listControlItem"] > [class*="FieldLabel"] {
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:5px !important;
+    padding:3px 9px !important;
+    border-radius:6px !important;
+    font-size:11.5px !important;
+    font-weight:500 !important;
+    text-transform:none !important;
+    letter-spacing:0 !important;
+    background:#f1efe8 !important;
+    color:#444441 !important;
+    line-height:1.4 !important;
+    white-space:nowrap !important;
+    flex-shrink:0 !important;
+    max-width:200px !important;
+  }
+
+  /* COLORI per TIPO — selettori puliti */
+  [data-section-type="hero"] > label,
+  [data-section-type="hero"] > [class*="FieldLabel"] {
+    background:#fff5ed !important; color:#c44a2e !important;
+  }
+  [data-section-type="problem"] > label,
+  [data-section-type="problem"] > [class*="FieldLabel"] {
+    background:#fdecec !important; color:#a32d2d !important;
+  }
+  [data-section-type="about"] > label,
+  [data-section-type="about"] > [class*="FieldLabel"] {
+    background:#e1f5ee !important; color:#0f6e56 !important;
+  }
+  [data-section-type="value_card"] > label,
+  [data-section-type="value_card"] > [class*="FieldLabel"] {
+    background:#faeeda !important; color:#854f0b !important;
+  }
+  [data-section-type="method"] > label,
+  [data-section-type="method"] > [class*="FieldLabel"] {
+    background:#e6f1fb !important; color:#185fa5 !important;
+  }
+  [data-section-type="levels"] > label,
+  [data-section-type="levels"] > [class*="FieldLabel"] {
+    background:#eeedfe !important; color:#534ab7 !important;
+  }
+  [data-section-type="programs"] > label,
+  [data-section-type="programs"] > [class*="FieldLabel"] {
+    background:#eaf3de !important; color:#3b6d11 !important;
+  }
+  [data-section-type="audience"] > label,
+  [data-section-type="audience"] > [class*="FieldLabel"] {
+    background:#fbeaf0 !important; color:#993556 !important;
+  }
+  [data-section-type="stats"] > label,
+  [data-section-type="stats"] > [class*="FieldLabel"] {
+    background:#e1f5ee !important; color:#085041 !important;
+  }
+  [data-section-type="testimonials"] > label,
+  [data-section-type="testimonials"] > [class*="FieldLabel"] {
+    background:#faece7 !important; color:#993c1d !important;
+  }
+  [data-section-type="big_quote"] > label,
+  [data-section-type="big_quote"] > [class*="FieldLabel"] {
+    background:#d3d1c7 !important; color:#2c2c2a !important;
+  }
+  [data-section-type="features_card"] > label,
+  [data-section-type="features_card"] > [class*="FieldLabel"] {
+    background:#faeeda !important; color:#633806 !important;
+  }
+  [data-section-type="cta_form"] > label,
+  [data-section-type="cta_form"] > [class*="FieldLabel"] {
+    background:#d85a30 !important; color:#fff !important;
+  }
+
   /* ICONE: chevron, drag, X */
-  [data-rbd-draggable-id] svg,
-  [data-rbd-draggable-id] button svg {
+  [class*="SortableListItem"] svg,
+  [class*="listControlItem"] svg {
     color:#888 !important;
     width:14px !important;
     height:14px !important;
   }
-  [data-rbd-draggable-id] button:hover svg { color:#e85d3c !important; }
-  [data-rbd-draggable-id] [class*="dragHandle"],
-  [data-rbd-draggable-id] [class*="DragHandle"] {
-    color:#c0c0c0 !important;
-    cursor:grab !important;
-  }
+  [class*="SortableListItem"] button:hover svg { color:#e85d3c !important; }
 
-  /* ============================================
-     COLORI per TIPO — selettori multipli, defensive
-     ============================================ */
-  [data-section-type="hero"] > label,
-  [data-section-type="hero"] > div > label,
-  [data-section-type="hero"] > [class*="StyledLabel"],
-  [data-section-type="hero"] > div > [class*="StyledLabel"] {
-    background:#fff5ed !important; color:#c44a2e !important;
-  }
-  [data-section-type="problem"] > label,
-  [data-section-type="problem"] > div > label,
-  [data-section-type="problem"] > [class*="StyledLabel"],
-  [data-section-type="problem"] > div > [class*="StyledLabel"] {
-    background:#fdecec !important; color:#a32d2d !important;
-  }
-  [data-section-type="about"] > label,
-  [data-section-type="about"] > div > label,
-  [data-section-type="about"] > [class*="StyledLabel"],
-  [data-section-type="about"] > div > [class*="StyledLabel"] {
-    background:#e1f5ee !important; color:#0f6e56 !important;
-  }
-  [data-section-type="value_card"] > label,
-  [data-section-type="value_card"] > div > label,
-  [data-section-type="value_card"] > [class*="StyledLabel"],
-  [data-section-type="value_card"] > div > [class*="StyledLabel"] {
-    background:#faeeda !important; color:#854f0b !important;
-  }
-  [data-section-type="method"] > label,
-  [data-section-type="method"] > div > label,
-  [data-section-type="method"] > [class*="StyledLabel"],
-  [data-section-type="method"] > div > [class*="StyledLabel"] {
-    background:#e6f1fb !important; color:#185fa5 !important;
-  }
-  [data-section-type="levels"] > label,
-  [data-section-type="levels"] > div > label,
-  [data-section-type="levels"] > [class*="StyledLabel"],
-  [data-section-type="levels"] > div > [class*="StyledLabel"] {
-    background:#eeedfe !important; color:#534ab7 !important;
-  }
-  [data-section-type="programs"] > label,
-  [data-section-type="programs"] > div > label,
-  [data-section-type="programs"] > [class*="StyledLabel"],
-  [data-section-type="programs"] > div > [class*="StyledLabel"] {
-    background:#eaf3de !important; color:#3b6d11 !important;
-  }
-  [data-section-type="audience"] > label,
-  [data-section-type="audience"] > div > label,
-  [data-section-type="audience"] > [class*="StyledLabel"],
-  [data-section-type="audience"] > div > [class*="StyledLabel"] {
-    background:#fbeaf0 !important; color:#993556 !important;
-  }
-  [data-section-type="stats"] > label,
-  [data-section-type="stats"] > div > label,
-  [data-section-type="stats"] > [class*="StyledLabel"],
-  [data-section-type="stats"] > div > [class*="StyledLabel"] {
-    background:#e1f5ee !important; color:#085041 !important;
-  }
-  [data-section-type="testimonials"] > label,
-  [data-section-type="testimonials"] > div > label,
-  [data-section-type="testimonials"] > [class*="StyledLabel"],
-  [data-section-type="testimonials"] > div > [class*="StyledLabel"] {
-    background:#faece7 !important; color:#993c1d !important;
-  }
-  [data-section-type="big_quote"] > label,
-  [data-section-type="big_quote"] > div > label,
-  [data-section-type="big_quote"] > [class*="StyledLabel"],
-  [data-section-type="big_quote"] > div > [class*="StyledLabel"] {
-    background:#d3d1c7 !important; color:#2c2c2a !important;
-  }
-  [data-section-type="features_card"] > label,
-  [data-section-type="features_card"] > div > label,
-  [data-section-type="features_card"] > [class*="StyledLabel"],
-  [data-section-type="features_card"] > div > [class*="StyledLabel"] {
-    background:#faeeda !important; color:#633806 !important;
-  }
-  [data-section-type="cta_form"] > label,
-  [data-section-type="cta_form"] > div > label,
-  [data-section-type="cta_form"] > [class*="StyledLabel"],
-  [data-section-type="cta_form"] > div > [class*="StyledLabel"] {
-    background:#d85a30 !important; color:#fff !important;
-  }
-
-  /* Stato ESPANSO: layout torna a colonne quando ci sono input dentro */
-  [data-rbd-draggable-id]:has(input, textarea, select) {
+  /* Stato ESPANSO: layout ritorna a colonne quando ci sono input dentro */
+  [class*="SortableListItem"]:has(input, textarea, select),
+  [class*="listControlItem"]:has(input, textarea, select) {
     display:block !important;
-    grid-template-columns:none !important;
     padding:0 !important;
-    background:#fff !important;
   }
-  [data-rbd-draggable-id]:has(input, textarea, select) > * {
+  [class*="SortableListItem"]:has(input, textarea, select) > *,
+  [class*="listControlItem"]:has(input, textarea, select) > * {
     grid-area:auto !important;
+    width:auto !important;
   }
-  [data-rbd-draggable-id]:has(input, textarea, select) [class*="StyledObjectFieldWrapper"],
-  [data-rbd-draggable-id]:has(input, textarea, select) [class*="ObjectControl"] > div {
+  [class*="SortableListItem"]:has(input, textarea, select) [class*="StyledObjectFieldWrapper"],
+  [class*="SortableListItem"]:has(input, textarea, select) [class*="ObjectControl"] > div {
     background:#fafaf8 !important;
     padding:18px 22px !important;
     border-top:0.5px solid #ece9e3 !important;
@@ -800,11 +787,10 @@ const TYPE_MAP = {
 };
 
 function tagSectionTypes(){
-  // Cerco TUTTI gli elementi draggable (react-beautiful-dnd usa questo attributo)
-  const items = document.querySelectorAll('[data-rbd-draggable-id]');
+  // Classi VERE di Decap 3.x (dal DevTools)
+  const items = document.querySelectorAll('[class*="SortableListItem"], [class*="listControlItem"]');
   items.forEach(item => {
     if(item.dataset.sectionType) return;
-    // Match testuale semplice sui primi 200 caratteri del contenuto
     const text = (item.textContent || '').substring(0, 200);
     for(const [key, type] of Object.entries(TYPE_MAP)){
       if(text.indexOf(key) >= 0){
