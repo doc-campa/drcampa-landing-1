@@ -1,0 +1,361 @@
+# =====================================================================
+# DECAP CMS — configurazione del pannello di amministrazione
+# =====================================================================
+# Questo file definisce COSA il dottore può modificare dal pannello /admin
+# Quando si modifica un campo, le modifiche vengono salvate nel file
+# content.json e committate automaticamente su GitHub.
+# =====================================================================
+
+backend:
+  name: git-gateway
+  branch: main
+
+# Cartella dove vengono caricate le immagini dal pannello
+media_folder: "images"
+public_folder: "/images"
+
+# Lingua del pannello
+locale: 'it'
+
+# Mostra il pulsante "Vedi il sito" in alto a destra
+site_url: /
+display_url: /
+
+collections:
+  # ===================================================================
+  # Una sola "collection" che contiene un solo file: content.json
+  # Il dottore vedrà UNA voce: "Landing page". Cliccandola apre
+  # l'editor per tutto il sito.
+  # ===================================================================
+  - name: "content"
+    label: "Contenuti del sito"
+    delete: false
+    editor:
+      preview: false
+    files:
+      - file: "content.json"
+        name: "main"
+        label: "Landing page"
+        fields:
+
+          # =========================================================
+          # SITO — metadati base
+          # =========================================================
+          - label: "🌐 Impostazioni Generali"
+            name: "site"
+            widget: "object"
+            collapsed: true
+            fields:
+              - {label: "Titolo del sito (compare nel tab del browser)", name: "title", widget: "string"}
+              - {label: "Descrizione del sito (per Google)", name: "meta_description", widget: "text"}
+              - {label: "Testo del logo", name: "logo_text", widget: "string"}
+
+          # =========================================================
+          # MENU
+          # =========================================================
+          - label: "📋 Menu di navigazione"
+            name: "nav"
+            widget: "object"
+            collapsed: true
+            fields:
+              - label: "Voci del menu"
+                name: "links"
+                widget: "list"
+                fields:
+                  - {label: "Testo visibile", name: "label", widget: "string"}
+                  - {label: "Link (es. #studio per la sezione studio)", name: "href", widget: "string"}
+              - {label: "Etichetta link telefono", name: "phone_label", widget: "string", required: false}
+              - {label: "Numero telefono (es. tel:+390200000000)", name: "phone_href", widget: "string", required: false}
+              - {label: "Testo bottone principale", name: "cta_label", widget: "string"}
+              - {label: "Link bottone principale", name: "cta_href", widget: "string"}
+
+          # =========================================================
+          # SEZIONI — la parte più importante
+          # Il dottore può: riordinare (drag & drop), aggiungere,
+          # eliminare e modificare ogni sezione.
+          # =========================================================
+          - label: "🧩 Sezioni della pagina (riordina, aggiungi, elimina)"
+            name: "sections"
+            widget: "list"
+            label_singular: "Sezione"
+            summary: "{{fields.type}} — {{fields.title_a}}{{fields.title}}{{fields.headline_main}}"
+            types:
+
+              # -----------------------------------------------------
+              - label: "Hero (intestazione con sfondo grande)"
+                name: "hero"
+                widget: "object"
+                fields:
+                  - {label: "Immagine di sfondo", name: "bg_image", widget: "image"}
+                  - {label: "Watermark (testo grande in trasparenza)", name: "watermark", widget: "string", required: false}
+                  - {label: "Riga sopra al titolo", name: "headline_pre", widget: "string"}
+                  - {label: "Titolo - parte normale", name: "headline_main", widget: "string"}
+                  - {label: "Titolo - parola evidenziata in giallo", name: "headline_accent", widget: "string"}
+                  - {label: "Sottotitolo - parte in corsivo", name: "subtitle_em", widget: "text", required: false}
+                  - {label: "Sottotitolo - parte normale", name: "subtitle", widget: "text"}
+                  - {label: "Testo bottone (es. Inizia il Tuo Percorso)", name: "cta_label", widget: "string", required: false}
+                  - {label: "Link bottone", name: "cta_href", widget: "string", required: false, default: "#contatti"}
+                  - {label: "Card missione - etichetta in grassetto", name: "mission_label_strong", widget: "string", required: false}
+                  - {label: "Card missione - testo", name: "mission_label_text", widget: "string", required: false}
+                  - {label: "Card missione - percentuale (0-100)", name: "mission_percent", widget: "number", required: false, value_type: "int", min: 0, max: 100}
+                  - {label: "Card missione - numero grande", name: "mission_figure", widget: "string", required: false}
+                  - {label: "Card missione - testo sotto, parte normale", name: "mission_sub_a", widget: "string", required: false}
+                  - {label: "Card missione - testo sotto, parte evidenziata", name: "mission_sub_b", widget: "string", required: false}
+
+              # -----------------------------------------------------
+              - label: "Problema (testo lungo con quote)"
+                name: "problem"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora (per link tipo #studio)", name: "id", widget: "string", required: false}
+                  - {label: "Watermark trasparente", name: "watermark", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata in arancione", name: "title_accent", widget: "string"}
+                  - label: "Paragrafi introduttivi"
+                    name: "intro_paragraphs"
+                    widget: "list"
+                    field: {label: "Paragrafo", name: "p", widget: "text"}
+                  - label: "Domande (in grassetto)"
+                    name: "questions"
+                    widget: "list"
+                    field: {label: "Domanda", name: "q", widget: "string"}
+                  - label: "Paragrafi centrali"
+                    name: "middle_paragraphs"
+                    widget: "list"
+                    field: {label: "Paragrafo", name: "p", widget: "text"}
+                  - label: "Quote evidenziato (bordo arancione)"
+                    name: "quote_lines"
+                    widget: "list"
+                    field: {label: "Riga", name: "line", widget: "text"}
+                  - {label: "Riga finale (centrata, arancione)", name: "final_line", widget: "text", required: false}
+
+              # -----------------------------------------------------
+              - label: "Chi è il dottore (about con foto)"
+                name: "about"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora", name: "id", widget: "string", required: false}
+                  - {label: "Titolo", name: "title", widget: "string"}
+                  - {label: "Lead (sottotitolo)", name: "lead", widget: "text"}
+                  - {label: "Foto", name: "photo", widget: "image"}
+                  - label: "Paragrafi del corpo (puoi usare <strong>testo</strong> per il grassetto)"
+                    name: "body_paragraphs"
+                    widget: "list"
+                    field: {label: "Paragrafo", name: "p", widget: "text"}
+                  - {label: "Callout finale (riquadro evidenziato)", name: "callout", widget: "text", required: false}
+
+              # -----------------------------------------------------
+              - label: "Card Valore (riquadro arancione con 3 vantaggi)"
+                name: "value_card"
+                widget: "object"
+                fields:
+                  - {label: "Titolo", name: "title", widget: "string"}
+                  - {label: "Lead", name: "lead", widget: "text"}
+                  - {label: "Lead - chiusura in grassetto", name: "lead_strong", widget: "string", required: false}
+                  - label: "3 vantaggi"
+                    name: "items"
+                    widget: "list"
+                    max: 3
+                    fields:
+                      - {label: "Icona", name: "icon", widget: "select", options: ["clock", "chart", "shield"]}
+                      - {label: "Titolo", name: "title", widget: "string"}
+                      - {label: "Tag (etichetta in pillola)", name: "tag", widget: "string", required: false}
+                  - {label: "Nota a piè di pagina", name: "footnote", widget: "text", required: false}
+                  - {label: "Nota a piè di pagina - chiusura in grassetto", name: "footnote_strong", widget: "string", required: false}
+
+              # -----------------------------------------------------
+              - label: "Metodo (3 colonne con foto e numeri)"
+                name: "method"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora", name: "id", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Sottotitolo - prima riga", name: "subtitle_a", widget: "text"}
+                  - {label: "Sottotitolo - seconda riga", name: "subtitle_b", widget: "text", required: false}
+                  - {label: "Sottotitolo - chiusura in grassetto", name: "subtitle_strong", widget: "string", required: false}
+                  - label: "Tappe del metodo"
+                    name: "cards"
+                    widget: "list"
+                    fields:
+                      - {label: "Numero (es. 01)", name: "num", widget: "string"}
+                      - {label: "Foto", name: "photo", widget: "image"}
+                      - {label: "Titolo", name: "title", widget: "string"}
+                      - {label: "Descrizione", name: "body", widget: "text"}
+
+              # -----------------------------------------------------
+              - label: "Livelli (piramide a 3 stadi)"
+                name: "levels"
+                widget: "object"
+                fields:
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Sottotitolo", name: "subtitle", widget: "text"}
+                  - label: "I 3 livelli (dal Livello 1 al Livello 3)"
+                    name: "levels"
+                    widget: "list"
+                    fields:
+                      - {label: "Tag (es. Livello 1)", name: "tag", widget: "string"}
+                      - {label: "Titolo", name: "title", widget: "string"}
+                      - {label: "Descrizione", name: "body", widget: "text"}
+                  - label: "Etichette sulla piramide (dal più alto al più basso)"
+                    name: "pyramid_labels"
+                    widget: "list"
+                    field: {label: "Etichetta", name: "label", widget: "string"}
+                  - {label: "Testo di chiusura", name: "footer_a", widget: "text", required: false}
+                  - {label: "Testo di chiusura - parte in grassetto", name: "footer_strong", widget: "string", required: false}
+
+              # -----------------------------------------------------
+              - label: "Programmi (card grandi con foto)"
+                name: "programs"
+                widget: "object"
+                fields:
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Sottotitolo", name: "subtitle", widget: "text"}
+                  - label: "Programmi"
+                    name: "cards"
+                    widget: "list"
+                    fields:
+                      - {label: "Tag in corsivo (es. Studio Campa)", name: "tag", widget: "string", required: false}
+                      - {label: "Titolo", name: "title", widget: "string"}
+                      - {label: "Sottotitolo", name: "subtitle", widget: "string", required: false}
+                      - {label: "Descrizione", name: "body", widget: "text"}
+                      - {label: "Testo del link (es. Prenota Ora →)", name: "link_label", widget: "string", required: false}
+                      - {label: "Link", name: "link_href", widget: "string", required: false, default: "#contatti"}
+                      - {label: "Foto", name: "photo", widget: "image"}
+                      - {label: "Foto a destra del testo?", name: "reverse", widget: "boolean", default: false}
+
+              # -----------------------------------------------------
+              - label: "Audience (a chi è rivolto - 3 colonne)"
+                name: "audience"
+                widget: "object"
+                fields:
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Sottotitolo", name: "subtitle", widget: "text"}
+                  - label: "Tipi di paziente"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - {label: "Foto", name: "photo", widget: "image"}
+                      - {label: "Titolo (es. Donne in Carriera)", name: "title", widget: "string"}
+                      - {label: "Frase d'apertura in grassetto", name: "body_strong", widget: "string"}
+                      - {label: "Resto del paragrafo", name: "body", widget: "text"}
+
+              # -----------------------------------------------------
+              - label: "Statistiche (numeri grandi)"
+                name: "stats"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora", name: "id", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Sottotitolo", name: "subtitle", widget: "text"}
+                  - label: "Riga 1 (es. punteggi)"
+                    name: "row_a"
+                    widget: "list"
+                    fields:
+                      - {label: "Pillola sopra il numero", name: "pill", widget: "string", required: false}
+                      - {label: "Numero grande", name: "num", widget: "string"}
+                      - {label: "Etichetta sotto", name: "label", widget: "text"}
+                  - label: "Riga 2 (es. totali)"
+                    name: "row_b"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - {label: "Pillola sopra il numero", name: "pill", widget: "string", required: false}
+                      - {label: "Numero grande", name: "num", widget: "string"}
+                      - {label: "Etichetta sotto", name: "label", widget: "text"}
+                  - {label: "Nota a piè di pagina", name: "footnote", widget: "text", required: false}
+
+              # -----------------------------------------------------
+              - label: "Testimonianze (card con stelle e avatar)"
+                name: "testimonials"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora", name: "id", widget: "string", required: false}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte in corsivo elegante", name: "title_italic", widget: "string"}
+                  - label: "Testimonianze"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - {label: "Frase iniziale (in grassetto)", name: "text_strong", widget: "text"}
+                      - {label: "Resto del testo", name: "text", widget: "text"}
+                      - {label: "Avatar (foto della persona)", name: "avatar", widget: "image"}
+                      - {label: "Nome", name: "name", widget: "string"}
+
+              # -----------------------------------------------------
+              - label: "Grande citazione (sezione scura)"
+                name: "big_quote"
+                widget: "object"
+                fields:
+                  - {label: "Citazione", name: "quote", widget: "text"}
+                  - {label: "Foto autore", name: "author_photo", widget: "image"}
+                  - {label: "Nome autore", name: "author_name", widget: "string"}
+
+              # -----------------------------------------------------
+              - label: "Card Caratteristiche (arancione con elenco pillole)"
+                name: "features_card"
+                widget: "object"
+                fields:
+                  - {label: "Titolo", name: "title", widget: "string"}
+                  - {label: "Lead", name: "lead", widget: "text"}
+                  - label: "Pillole (caratteristiche)"
+                    name: "pills"
+                    widget: "list"
+                    fields:
+                      - {label: "Testo", name: "text", widget: "string"}
+                      - {label: "Pillola speciale (sfondo diverso)", name: "special", widget: "boolean", default: false}
+
+              # -----------------------------------------------------
+              - label: "Form di contatto (lead generation)"
+                name: "cta_form"
+                widget: "object"
+                fields:
+                  - {label: "ID ancora", name: "id", widget: "string", required: false, default: "contatti"}
+                  - {label: "Titolo - parte normale", name: "title_a", widget: "string"}
+                  - {label: "Titolo - parte evidenziata", name: "title_accent", widget: "string"}
+                  - {label: "Testo principale", name: "body", widget: "text"}
+                  - label: "Bullet (con check arancione)"
+                    name: "perks"
+                    widget: "list"
+                    field: {label: "Bullet", name: "p", widget: "string"}
+                  - {label: "Titolo del form", name: "form_title", widget: "string", default: "Prenota Consulto"}
+                  - {label: "Sottotitolo del form", name: "form_subtitle", widget: "string"}
+                  - label: "Opzioni nel menu Trattamenti"
+                    name: "treatments"
+                    widget: "list"
+                    field: {label: "Trattamento", name: "t", widget: "string"}
+                  - {label: "Etichetta bottone invio", name: "submit_label", widget: "string", default: "Invia Richiesta"}
+                  - {label: "Titolo conferma", name: "success_title", widget: "string", default: "Grazie!"}
+                  - {label: "Messaggio di conferma", name: "success_body", widget: "text"}
+
+          # =========================================================
+          # FOOTER
+          # =========================================================
+          - label: "📎 Footer"
+            name: "footer"
+            widget: "object"
+            collapsed: true
+            fields:
+              - {label: "Testo descrittivo", name: "about_text", widget: "text"}
+              - label: "Colonne di link"
+                name: "columns"
+                widget: "list"
+                fields:
+                  - {label: "Titolo colonna", name: "title", widget: "string"}
+                  - label: "Link"
+                    name: "links"
+                    widget: "list"
+                    fields:
+                      - {label: "Testo", name: "label", widget: "string"}
+                      - {label: "Link", name: "href", widget: "string"}
+              - {label: "Testo basso a sinistra (copyright)", name: "bottom_left", widget: "string"}
+              - label: "Link in basso a destra"
+                name: "bottom_links"
+                widget: "list"
+                fields:
+                  - {label: "Testo", name: "label", widget: "string"}
+                  - {label: "Link", name: "href", widget: "string"}

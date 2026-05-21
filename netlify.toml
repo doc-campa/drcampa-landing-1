@@ -1,0 +1,18 @@
+# Configurazione Netlify per il sito Dr. Campa
+# Questo file dice a Netlify come pubblicare il sito.
+
+[build]
+  publish = "."
+
+# Header anti-cache per content.json e admin
+# (evita che il browser mostri vecchi contenuti dopo le modifiche dal CMS)
+[[headers]]
+  for = "/content.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"

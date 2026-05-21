@@ -1,0 +1,366 @@
+{
+  "site": {
+    "title": "Dr. Domenico Campa — Chirurgia Estetica",
+    "meta_description": "Dr. Domenico Campa — Chirurgia plastica ed estetica. Bellezza autentica, risultati reali, percorsi su misura.",
+    "logo_text": "Dr. Campa"
+  },
+  "nav": {
+    "links": [
+      {"label": "Studio", "href": "#studio"},
+      {"label": "Trattamenti", "href": "#trattamenti"},
+      {"label": "Risultati", "href": "#risultati"},
+      {"label": "Storie", "href": "#storie"},
+      {"label": "Contatti", "href": "#contatti"}
+    ],
+    "phone_label": "Chiama",
+    "phone_href": "tel:+390200000000",
+    "cta_label": "Prenota Consulto",
+    "cta_href": "#contatti"
+  },
+  "sections": [
+    {
+      "type": "hero",
+      "bg_image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80",
+      "watermark": "Dr. Campa",
+      "headline_pre": "Bellezza Autentica. Risultati Reali.",
+      "headline_main": "Scopri la Tua",
+      "headline_accent": "Versione Migliore.",
+      "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
+      "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
+      "cta_label": "Inizia il Tuo Percorso",
+      "cta_href": "#contatti",
+      "mission_label_strong": "LA NOSTRA MISSIONE:",
+      "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
+      "mission_percent": 62,
+      "mission_figure": "6.200+ Percorsi Completati",
+      "mission_sub_a": "Donne e uomini che oggi",
+      "mission_sub_b": "si guardano allo specchio con un sorriso diverso."
+    },
+    {
+      "type": "problem",
+      "id": "studio",
+      "watermark": "Dr. Campa",
+      "title_a": "L'Estetica Non è il Problema.",
+      "title_accent": "La Confusione Lo È.",
+      "intro_paragraphs": [
+        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
+        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
+      ],
+      "questions": [
+        "Ma da dove si parte?",
+        "Quale intervento serve davvero?",
+        "Come si sceglie un chirurgo di cui fidarsi senza esagerare né rinunciare?"
+      ],
+      "middle_paragraphs": [
+        "Si cercano risposte online. Si confrontano cliniche. Si guarda chi costa meno.",
+        "Ma niente di tutto questo aiuta a capire cosa è giusto per te."
+      ],
+      "quote_lines": [
+        "Il vero problema non è l'estetica.",
+        "È la mancanza di ascolto.",
+        "Lo Studio del Dr. Campa nasce per questo: ridurre il rumore, mettere al centro la persona, e costruire un percorso che restituisce armonia — non un volto standardizzato."
+      ],
+      "final_line": "Non si tratta di moda. Si tratta di costruire un'estetica che resta tua."
+    },
+    {
+      "type": "about",
+      "title": "Una chirurgia che mette la persona prima della procedura.",
+      "lead": "L'intelligenza chirurgica avanza a velocità straordinaria. Quello che manca alla maggior parte delle persone non è la tecnologia. È una guida di cui fidarsi.",
+      "photo": "https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&w=1400&q=80",
+      "body_paragraphs": [
+        "<strong>Lo Studio Campa è nato per colmare quel divario.</strong>",
+        "Da oltre vent'anni il Dr. Domenico Campa accompagna pazienti in percorsi di chirurgia estetica e medicina rigenerativa fatti di ascolto, precisione clinica e risultati naturali. Formatosi tra le scuole italiane e i centri d'eccellenza europei, ha trasformato la sua esperienza in un metodo riconosciuto.",
+        "Oggi opera in strutture sanitarie accreditate ed è voce esperta in pubblicazioni nazionali, programmi televisivi e congressi internazionali.",
+        "L'arrivo delle nuove tecnologie e delle tecniche mini-invasive rappresenta un cambiamento strutturale.",
+        "Non una moda. Una nuova era della chirurgia."
+      ],
+      "callout": "Lo Studio Campa è stato costruito per attraversare questo momento in modo diverso."
+    },
+    {
+      "type": "value_card",
+      "title": "Con il Dr. Campa torni protagonista... Della tua immagine.",
+      "lead": "Il mondo della chirurgia estetica non rallenterà e i ritocchi non spariranno. Aspettare non rende le scelte più semplici. Ma con il giusto ascolto, struttura e accompagnamento, il percorso non deve sembrare un salto nel vuoto.",
+      "lead_strong": "Può diventare il momento più consapevole della tua vita.",
+      "items": [
+        {
+          "icon": "clock",
+          "title": "Ritrova sicurezza ogni mattina",
+          "tag": "Risultati visibili"
+        },
+        {
+          "icon": "chart",
+          "title": "Passa da insicura a serena",
+          "tag": "4.1 → 8.7 / 10"
+        },
+        {
+          "icon": "shield",
+          "title": "Mai più dubbi sulla scelta",
+          "tag": "98% Soddisfazione"
+        }
+      ],
+      "footnote": "Non devi capire tutto da sola, né inseguire ogni novità. Hai bisogno di un punto di partenza chiaro, di un metodo costante, e di una guida che restituisca controllo",
+      "footnote_strong": "sul tuo tempo, sulle tue scelte, sul tuo futuro."
+    },
+    {
+      "type": "method",
+      "id": "trattamenti",
+      "title_a": "Il Metodo",
+      "title_accent": "Campa",
+      "subtitle_a": "Un sistema strutturato per una chirurgia che funziona davvero.",
+      "subtitle_b": "La maggior parte degli studi punta sulle tecniche. Sulle protesi più nuove. Sui macchinari di tendenza.",
+      "subtitle_strong": "Il Metodo Campa punta sulla struttura del percorso.",
+      "cards": [
+        {
+          "num": "01",
+          "photo": "https://images.unsplash.com/photo-1573497019418-b400bb3ab074?auto=format&fit=crop&w=900&q=80",
+          "title": "Ascoltare",
+          "body": "Il primo passo non è la chirurgia. È il discernimento. Identifichiamo dove un intervento crea valore reale e dove invece non serve. Questa fase elimina le distrazioni e definisce l'obiettivo."
+        },
+        {
+          "num": "02",
+          "photo": "https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?auto=format&fit=crop&w=900&q=80",
+          "title": "Pianificare",
+          "body": "L'intervento deve essere integrato nella tua vita, non sovrapposto. In questa fase progettiamo tempi, tecnica e recupero in modo che il percorso diventi sostenibile, riducendo dubbi ed eliminando passaggi inutili."
+        },
+        {
+          "num": "03",
+          "photo": "https://images.unsplash.com/photo-1583912267550-d6c2ac3196c0?auto=format&fit=crop&w=900&q=80",
+          "title": "Eseguire",
+          "body": "Il tempo recuperato attraverso una procedura ben strutturata si trasforma in un vantaggio misurabile. È qui che i pazienti smettono di reagire al cambiamento e cominciano a vivere il risultato."
+        }
+      ]
+    },
+    {
+      "type": "levels",
+      "title_a": "La",
+      "title_accent": "Piramide della Cura Estetica",
+      "subtitle": "Un percorso strutturato dalla curiosità alla padronanza.",
+      "levels": [
+        {
+          "tag": "Livello 1",
+          "title": "Consulenza & Prevenzione",
+          "body": "Il punto di partenza. Un colloquio approfondito per capire cosa serve davvero, escludere ciò che non serve, e iniziare un percorso di prevenzione."
+        },
+        {
+          "tag": "Livello 2",
+          "title": "Medicina Estetica Avanzata",
+          "body": "Trattamenti mini-invasivi pensati per integrarsi nella tua quotidianità: filler, biorivitalizzanti, tossina, peeling. Risultati naturali, recupero rapido."
+        },
+        {
+          "tag": "Livello 3",
+          "title": "Chirurgia su Misura",
+          "body": "Interventi chirurgici eseguiti in strutture accreditate, con équipe selezionate. Ogni procedura è calibrata sulla fisionomia e sugli obiettivi del paziente."
+        }
+      ],
+      "pyramid_labels": ["Chirurgia su Misura", "Medicina Estetica Avanzata", "Consulenza & Prevenzione"],
+      "footer_a": "Ogni paziente inizia con la consulenza. Da lì, la medicina estetica diventa un alleato quotidiano. Quando serve, percorsi strutturati evolvono in chirurgia.",
+      "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente."
+    },
+    {
+      "type": "programs",
+      "title_a": "I",
+      "title_accent": "Percorsi",
+      "subtitle": "Tre vie d'ingresso, una sola filosofia.",
+      "cards": [
+        {
+          "tag": "Studio Campa",
+          "title": "Consulto Gratuito",
+          "subtitle": "Il Punto di Partenza",
+          "body": "Un colloquio conoscitivo, senza impegno, dove ascoltiamo le tue esigenze. La consulenza è il momento in cui costruiamo insieme un piano realistico, condividiamo risultati attesi, e definiamo se la chirurgia è davvero la strada giusta — o se non lo è.",
+          "link_label": "Prenota Ora →",
+          "link_href": "#contatti",
+          "photo": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1200&q=80",
+          "reverse": false
+        },
+        {
+          "tag": "Studio Campa",
+          "title": "Percorso Bellezza",
+          "subtitle": "L'Integrazione Quotidiana",
+          "body": "Un programma di medicina estetica strutturato su 12 mesi. Trattamenti mini-invasivi calibrati sulla tua fisionomia, follow-up costanti, accesso prioritario alla segreteria. Pensato per chi vuole prendersi cura di sé in modo continuo, senza interventi chirurgici.",
+          "link_label": "Scopri di Più →",
+          "link_href": "#contatti",
+          "photo": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80",
+          "reverse": true
+        }
+      ]
+    },
+    {
+      "type": "audience",
+      "title_a": "Lo Studio Campa è stato creato per chi vuole",
+      "title_accent": "una bellezza che lavora con te — non contro di te.",
+      "subtitle": "La chirurgia estetica non è più un tabù. È una scelta. L'unica domanda è se la affronti con metodo o se ti perdi a sperimentare.",
+      "items": [
+        {
+          "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
+          "title": "Donne in Carriera",
+          "body_strong": "Sai cosa vuoi.",
+          "body": "Ti serve un percorso pratico, calibrato sui tuoi ritmi e sulle tue priorità — senza compromessi sul risultato."
+        },
+        {
+          "photo": "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?auto=format&fit=crop&w=900&q=80",
+          "title": "Mamme",
+          "body_strong": "Fai tutto per gli altri.",
+          "body": "Lo Studio dovrebbe aiutarti a ritrovare te stessa — semplificando il percorso e rispettando i tuoi tempi familiari."
+        },
+        {
+          "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
+          "title": "Uomini Over 40",
+          "body_strong": "Porti il peso della carriera e della vita.",
+          "body": "La chirurgia maschile è oggi una scelta intelligente, discreta, e mirata. Lo Studio è pronto."
+        }
+      ]
+    },
+    {
+      "type": "stats",
+      "id": "risultati",
+      "title_a": "Risultati Misurabili.",
+      "title_accent": "Bellezza Reale.",
+      "subtitle": "Sicurezza raddoppiata. Tempo recuperato. Risultati osservabili. Lo Studio Campa lavora su numeri verificabili, non su promesse di marketing.",
+      "row_a": [
+        {"pill": "Da 4.1 / 10 a", "num": "8.7 / 10", "label": "Indice medio di sicurezza in sé stessi dopo il percorso"},
+        {"pill": "", "num": "70%", "label": "Pazienti che tornano per il follow-up entro 6 mesi"},
+        {"pill": "", "num": "98%", "label": "Riferisce risultati visibili entro 30 giorni"}
+      ],
+      "row_b": [
+        {"num": "6.230", "label": "Pazienti seguite"},
+        {"num": "2.491", "label": "Interventi eseguiti"},
+        {"num": "20+", "label": "Anni di esperienza"}
+      ],
+      "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
+    },
+    {
+      "type": "testimonials",
+      "id": "storie",
+      "title_a": "Persone Reali —",
+      "title_italic": "Storie Reali",
+      "items": [
+        {
+          "text_strong": "\"Per la prima volta non mi sento a disagio davanti allo specchio.\"",
+          "text": "Mi sento finalmente bene, come se qualcuno mi avesse aiutata a tornare in carreggiata. Era da anni che non mi sentivo così.",
+          "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
+          "name": "Teresa N."
+        },
+        {
+          "text_strong": "\"La svolta è stata costruire il mio percorso, non comprare un intervento.\"",
+          "text": "Il dottore ha smesso di propormi soluzioni generiche e ha iniziato a parlarmi come una persona reale.",
+          "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80",
+          "name": "Federica A."
+        },
+        {
+          "text_strong": "\"La chirurgia non sembra più un mostro impossibile.\"",
+          "text": "Lo Studio mi ha guidato in ogni passo e mi ha dato la sicurezza di costruire cose che pensavo impossibili.",
+          "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
+          "name": "Cristina J."
+        },
+        {
+          "text_strong": "Adesso lo rifarei senza esitare,",
+          "text": "perché qui mi sono sentita ascoltata davvero. Cosa che prima non avrei creduto possibile.",
+          "avatar": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80",
+          "name": "Anna L."
+        },
+        {
+          "text_strong": "Lo Studio Campa è di gran lunga la cosa migliore in cui abbia mai investito.",
+          "text": "Mi sta facendo risparmiare un sacco di insicurezze e rendendo possibile questa nuova versione di me.",
+          "avatar": "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=200&q=80",
+          "name": "Giulia M."
+        },
+        {
+          "text_strong": "È incredibile la sicurezza che ti dà,",
+          "text": "e mi ha dato tanto più tempo per godermi le cose, invece di rincorrerle.",
+          "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
+          "name": "Kerstin J."
+        }
+      ]
+    },
+    {
+      "type": "big_quote",
+      "quote": "\"Grazie team! Siete davvero un cambio di paradigma. Mi avevate promesso di farmi risparmiare almeno 15 ore di insicurezze a settimana — me ne avete risparmiate più di 20, e mi avete dato così tanti strumenti per trasformare aree della mia vita che non riesco a dirvi quanto mi sento fortunata e grata.\"",
+      "author_photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
+      "author_name": "Bex B."
+    },
+    {
+      "type": "features_card",
+      "title": "Cosa Può Fare Per Te un Percorso Strutturato",
+      "lead": "Quando la chirurgia è affrontata con metodo invece che per sperimentazione, i risultati sono infiniti...",
+      "pills": [
+        {"text": "Definire i tuoi obiettivi", "special": false},
+        {"text": "Costruire un piano realistico", "special": false},
+        {"text": "Recuperare sicurezza", "special": false},
+        {"text": "Eliminare le insicurezze", "special": false},
+        {"text": "Pianificare i tempi giusti", "special": false},
+        {"text": "Capire cosa serve davvero", "special": false},
+        {"text": "Sentirti più libera", "special": false},
+        {"text": "Esprimere chi sei", "special": false},
+        {"text": "Programmare il recupero", "special": false},
+        {"text": "Ridurre lo stress", "special": false},
+        {"text": "Vedere risultati naturali", "special": false},
+        {"text": "Restituirti il tempo per VIVERE", "special": true}
+      ]
+    },
+    {
+      "type": "cta_form",
+      "id": "contatti",
+      "title_a": "È il momento. Smetti di sperimentare.",
+      "title_accent": "Inizia.",
+      "body": "Raccontaci cosa stai cercando. Ti ricontatteremo entro 24 ore per organizzare un primo consulto, in studio o in videocall — senza impegno, senza pressione.",
+      "perks": [
+        "Primo colloquio gratuito e senza impegno",
+        "Risposta diretta entro 24 ore lavorative",
+        "Massima riservatezza dei dati",
+        "Consulto online disponibile per pazienti fuori sede"
+      ],
+      "form_title": "Prenota Consulto",
+      "form_subtitle": "Compila il form. Ti contattiamo noi.",
+      "treatments": [
+        "Rinoplastica",
+        "Blefaroplastica",
+        "Mastoplastica",
+        "Liposcultura",
+        "Lifting viso",
+        "Medicina estetica",
+        "Vorrei un consulto generale"
+      ],
+      "submit_label": "Invia Richiesta",
+      "success_title": "Grazie!",
+      "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative."
+    }
+  ],
+  "footer": {
+    "about_text": "Studio di Chirurgia Plastica ed Estetica. Cura della persona, attenzione clinica, risultati pensati per durare nel tempo.",
+    "columns": [
+      {
+        "title": "Trattamenti",
+        "links": [
+          {"label": "Rinoplastica", "href": "#trattamenti"},
+          {"label": "Blefaroplastica", "href": "#trattamenti"},
+          {"label": "Mastoplastica", "href": "#trattamenti"},
+          {"label": "Medicina estetica", "href": "#trattamenti"}
+        ]
+      },
+      {
+        "title": "Studio",
+        "links": [
+          {"label": "Il dottore", "href": "#studio"},
+          {"label": "Risultati", "href": "#risultati"},
+          {"label": "Storie", "href": "#storie"},
+          {"label": "Contatti", "href": "#contatti"}
+        ]
+      },
+      {
+        "title": "Contatti",
+        "links": [
+          {"label": "+39 02 0000000", "href": "tel:+390200000000"},
+          {"label": "info@drcampa.it", "href": "mailto:info@drcampa.it"},
+          {"label": "Instagram", "href": "#"},
+          {"label": "YouTube", "href": "#"}
+        ]
+      }
+    ],
+    "bottom_left": "© 2026 Dr. Domenico Campa — P.IVA 00000000000",
+    "bottom_links": [
+      {"label": "Privacy", "href": "#"},
+      {"label": "Cookie", "href": "#"},
+      {"label": "Note legali", "href": "#"}
+    ]
+  }
+}
