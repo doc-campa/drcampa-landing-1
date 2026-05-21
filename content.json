@@ -2,8 +2,7 @@
   "site": {
     "title": "Dr. Domenico Campa — Chirurgia Estetica",
     "meta_description": "Dr. Domenico Campa — Chirurgia plastica ed estetica. Bellezza autentica, risultati reali, percorsi su misura.",
-    "logo_text": "Dr. Campa",
-    "colors": {}
+    "logo_text": "Dr. Campa"
   },
   "nav": {
     "links": [
@@ -35,7 +34,7 @@
   },
   "sections": [
     {
-      "bg_image": "/images/1779388657019-chatgpt-image-8-mag-2026--11-58-58.png",
+      "bg_image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80",
       "watermark": "Dr. Campa",
       "headline_main": "Scopri la Tua",
       "cta_label": "Inizia il Tuo Percorso",
