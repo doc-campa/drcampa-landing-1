@@ -11,6 +11,7 @@ backend:
   repo: doc-campa/drcampa-landing-1
   branch: main
   base_url: https://gitauth.sveltia.dev
+  auth_endpoint: .netlify/functions/auth
 
 # Cartella dove vengono caricate le immagini dal pannello
 media_folder: "images"
