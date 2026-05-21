@@ -5,249 +5,339 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editor — Studio Campa</title>
   <link rel="icon" href="data:,">
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
-  /* ============================================================
-     CSS PANNELLO  (più aggressivo di v3)
-     ============================================================ */
+  /* ==========================================================
+     PANNELLO — DESIGN B "COMPATTO INLINE"
+     ========================================================== */
 
-  /* Reset di base più forte */
-  body, [class*="App"], [class*="Workflow"], [class*="EditorContainer"] {
-    background:#f7f3ec !important;
-    font-family:"DM Sans", system-ui, -apple-system, sans-serif !important;
+  body, [class*="Workflow"], [class*="EditorContainer"], [class*="EntryEditor"] {
+    background:#fafaf8 !important;
+    font-family:"Inter", system-ui, -apple-system, sans-serif !important;
   }
 
-  /* Header in alto (logo Decap + status) */
-  [class*="AppHeader"], header[class*="AppBar"] {
-    background:#fff !important;
-    border-bottom:1px solid #e7e1d4 !important;
-    box-shadow:0 1px 3px rgba(0,0,0,.04) !important;
-  }
-
-  /* Tutti i label */
+  /* Field labels (ovunque) */
   label, [class*="FieldLabel"], [class*="ControlLabel"] {
-    color:#0a0a0a !important;
-    font-weight:600 !important;
-    font-size:.86rem !important;
+    font-family:"Inter", system-ui, sans-serif !important;
+    font-size:12px !important;
+    font-weight:500 !important;
+    color:#1a1714 !important;
+    margin:0 0 3px 0 !important;
     letter-spacing:0 !important;
-    margin-bottom:8px !important;
-    line-height:1.35 !important;
-    display:block !important;
+    text-transform:none !important;
   }
 
-  /* Hint text */
+  /* Hint text sotto i campi */
   [class*="ControlHint"], [class*="HintText"], [class*="FieldHint"] {
-    color:#5a554d !important;
-    font-size:.82rem !important;
+    font-size:11.5px !important;
+    color:#8a8580 !important;
     font-style:normal !important;
-    line-height:1.5 !important;
-    margin-top:8px !important;
-    padding:6px 12px !important;
-    border-left:3px solid #ff8a5c !important;
-    background:rgba(255,138,92,.06) !important;
-    border-radius:0 6px 6px 0 !important;
+    font-weight:400 !important;
+    line-height:1.4 !important;
+    margin:0 0 7px 0 !important;
+    padding:0 !important;
+    background:transparent !important;
+    border:0 !important;
+    letter-spacing:0 !important;
   }
 
-  /* Input/textarea/select */
-  input[type="text"], input[type="number"], input[type="email"], input[type="url"],
-  input[type="tel"], textarea, select,
-  [class*="ControlContainer"] input,
-  [class*="ControlContainer"] textarea {
-    border:1px solid #d4cab8 !important;
-    border-radius:10px !important;
+  /* Hint dei top-level (object headers) — più visibile */
+  [class*="ObjectControl"] > [class*="Hint"],
+  [class*="ObjectFieldWrapper"] > [class*="Hint"] {
+    padding:6px 12px !important;
+    border-left:2px solid #ff8a5c !important;
+    background:#fff7f1 !important;
+    border-radius:0 6px 6px 0 !important;
+    margin:6px 0 14px !important;
+  }
+
+  /* Input / textarea / select */
+  input[type="text"], input[type="number"], input[type="email"], input[type="url"], input[type="tel"],
+  textarea, select {
+    border:0.5px solid #d5d0c5 !important;
+    border-radius:7px !important;
     background:#fff !important;
-    font-size:.95rem !important;
-    padding:11px 14px !important;
-    font-family:"DM Sans", sans-serif !important;
-    transition:border-color .15s, box-shadow .15s !important;
-    color:#0a0a0a !important;
+    font-size:13.5px !important;
+    font-family:"Inter", system-ui, sans-serif !important;
+    padding:9px 12px !important;
+    color:#1a1714 !important;
     width:100% !important;
+    transition:border-color .12s, box-shadow .12s !important;
   }
   input:focus, textarea:focus, select:focus {
     border-color:#e85d3c !important;
     box-shadow:0 0 0 3px rgba(232,93,60,.15) !important;
     outline:0 !important;
   }
+  textarea { min-height:54px !important; resize:vertical !important; }
 
-  /* ========== TUTTI gli elementi della list (SEZIONI) ========== */
-  /* Cerco di catturare ogni possibile container che Decap usa */
-  [class*="StyledListItem"],
-  [class*="ListItem-"],
-  [class*="ListItemContainer"],
-  div[class*="ListControl"] > div > div,
-  [data-rbd-draggable-id] {
-    background:#fff !important;
-    border:1px solid #e7e1d4 !important;
-    border-radius:14px !important;
-    margin-bottom:10px !important;
-    box-shadow:0 1px 3px rgba(0,0,0,.04) !important;
-    overflow:hidden !important;
-    transition:all .15s !important;
-  }
-  [class*="StyledListItem"]:hover,
-  [class*="ListItem-"]:hover,
-  [data-rbd-draggable-id]:hover {
-    border-color:#ff8a5c !important;
-    box-shadow:0 6px 18px -4px rgba(232,93,60,.18) !important;
-    transform:translateY(-1px) !important;
-  }
-
-  /* TopBar delle list item (chevron + drag + X) */
-  [class*="StyledListItemTopBar"],
-  [class*="ListItemTopBar"],
-  button[class*="StyledListItem"]:first-child,
-  div[class*="StyledListItem"] > button:first-child {
-    background:linear-gradient(180deg, #fafaf7 0%, #f4ede3 100%) !important;
-    border-bottom:1px solid #e7e1d4 !important;
-    padding:10px 16px !important;
-    cursor:pointer !important;
-  }
-
-  /* OBJECT widgets (Impostazioni Generali, Menu, Footer) */
-  [class*="ObjectControl"] > div,
-  [class*="ObjectField"],
+  /* OBJECTS (Impostazioni Generali, Menu, Footer) come card */
+  [class*="ObjectControl"] > [class*="StyledObjectFieldWrapper"],
   [class*="CollapsedObjectControl"] {
     background:#fff !important;
-    border:1px solid #e7e1d4 !important;
-    border-radius:14px !important;
-    padding:0 !important;
+    border:0.5px solid #e5e7eb !important;
+    border-radius:8px !important;
+    padding:14px 18px !important;
     margin-bottom:14px !important;
+  }
+
+  /* ==========================================================
+     LISTA DELLE SEZIONI — la parte importante
+     ========================================================== */
+
+  /* Container che contiene tutte le list items delle sezioni */
+  [class*="ListControl"] > [class*="ObjectControl"],
+  [class*="ListControl"] > div > div:first-child {
+    background:#fff !important;
+    border:0.5px solid #e5e7eb !important;
+    border-radius:8px !important;
+    padding:0 !important;
     overflow:hidden !important;
   }
-  [class*="ObjectFieldHeader"],
-  [class*="CollapsibleHeader"] {
-    background:linear-gradient(180deg, #fff, #fafaf7) !important;
-    padding:14px 18px !important;
-    font-weight:700 !important;
-    font-size:1rem !important;
-    color:#0a0a0a !important;
-    border-bottom:1px solid #e7e1d4 !important;
+
+  /* Ogni list item — flat row, niente padding/border decorativi */
+  [class*="StyledListItem"],
+  [class*="ListItem-"],
+  [data-rbd-draggable-id] {
+    background:#fff !important;
+    border:0 !important;
+    border-bottom:0.5px solid #f0f0f0 !important;
+    border-radius:0 !important;
+    margin:0 !important;
+    padding:0 !important;
+    box-shadow:none !important;
+    overflow:visible !important;
+    transition:background .1s !important;
+  }
+  [class*="StyledListItem"]:last-child,
+  [data-rbd-draggable-id]:last-child {
+    border-bottom:0 !important;
+  }
+  [class*="StyledListItem"]:hover {
+    background:#fafafa !important;
   }
 
-  /* Bottoni primari (Save, Add) */
-  button[class*="PrimaryButton"],
-  [class*="ToolbarButton-saveButton"],
-  [class*="SaveButton"],
-  button[class*="primary"] {
-    background:linear-gradient(135deg, #ff8a5c, #e85d3c) !important;
-    color:#fff !important;
-    border-radius:999px !important;
-    font-weight:600 !important;
-    padding:10px 22px !important;
+  /* Top bar di ogni list item (riga cliccabile) */
+  [class*="StyledListItemTopBar"],
+  [class*="ListItemTopBar"] {
+    background:transparent !important;
+    padding:10px 16px !important;
     border:0 !important;
-    box-shadow:0 6px 14px -4px rgba(232,93,60,.4) !important;
-    transition:transform .15s, box-shadow .15s !important;
+    display:flex !important;
+    align-items:center !important;
+    gap:12px !important;
     cursor:pointer !important;
-  }
-  button[class*="PrimaryButton"]:hover,
-  [class*="ToolbarButton-saveButton"]:hover {
-    transform:translateY(-1px) !important;
-    box-shadow:0 10px 22px -6px rgba(232,93,60,.5) !important;
-  }
-
-  /* "Aggiungi sezione" più visibile */
-  [class*="AddButton"],
-  button[class*="addLabel"],
-  [class*="StyledDropdownButton"] {
-    background:#0a0a0a !important;
-    color:#fff !important;
-    border-radius:999px !important;
-    padding:9px 20px !important;
-    font-weight:600 !important;
-    font-size:.88rem !important;
-    cursor:pointer !important;
-    border:0 !important;
-  }
-  [class*="AddButton"]:hover {
-    background:#e85d3c !important;
   }
 
   /* Drag handle */
-  [class*="dragHandle"], [class*="DragHandle"] {
-    color:#8a8786 !important;
+  [class*="dragHandle"], [class*="DragHandle"], [class*="draghandle"] {
+    color:#c0c0c0 !important;
     cursor:grab !important;
+    font-size:15px !important;
+  }
+  [class*="dragHandle"] svg, [class*="DragHandle"] svg {
+    width:14px !important; height:14px !important;
   }
 
   /* X / remove button */
-  button[class*="StyledRemove"],
-  button[class*="Remove"] {
-    color:#8a8786 !important;
-    transition:color .15s !important;
+  button[class*="StyledRemove"], button[class*="Remove"], [class*="removeButton"] {
+    color:#a0a0a0 !important;
+    background:transparent !important;
+    border:0 !important;
+    padding:4px !important;
+    transition:color .12s !important;
   }
-  button[class*="StyledRemove"]:hover {
+  button[class*="StyledRemove"]:hover, button[class*="Remove"]:hover {
     color:#e85d3c !important;
   }
 
-  /* Color widget — più grande e visibile */
-  [class*="ColorControl"] > div,
+  /* CHEVRON — rendiamolo VISIBILE (era il problema) */
+  [class*="StyledListItemTopBar"] svg,
+  [class*="ListItemTopBar"] svg,
+  [class*="collapseButton"] svg,
+  [class*="ToggleButton"] svg {
+    color:#888 !important;
+    opacity:.85 !important;
+    width:14px !important; height:14px !important;
+  }
+  [class*="StyledListItemTopBar"] svg:hover {
+    color:#1a1714 !important;
+    opacity:1 !important;
+  }
+
+  /* Label dentro la top bar → PILL */
+  [class*="StyledListItemTopBar"] > label,
+  [class*="ListItemTopBar"] > label,
+  [class*="StyledListItemTopBar"] > [class*="Label"]:not([class*="ControlLabel"]):not([class*="FieldLabel"]) {
+    display:inline-flex !important;
+    align-items:center !important;
+    gap:6px !important;
+    padding:3px 9px !important;
+    border-radius:6px !important;
+    font-size:11.5px !important;
+    font-weight:500 !important;
+    text-transform:none !important;
+    letter-spacing:0 !important;
+    margin:0 !important;
+    background:#f1efe8 !important;
+    color:#444441 !important;
+    line-height:1.4 !important;
+    white-space:nowrap !important;
+    flex-shrink:0 !important;
+  }
+
+  /* COLORI PER TIPO DI SEZIONE */
+  [data-section-type="hero"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="hero"] [class*="ListItemTopBar"] > label {
+    background:#fff5ed !important; color:#c44a2e !important;
+  }
+  [data-section-type="problem"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="problem"] [class*="ListItemTopBar"] > label {
+    background:#fdecec !important; color:#a32d2d !important;
+  }
+  [data-section-type="about"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="about"] [class*="ListItemTopBar"] > label {
+    background:#e1f5ee !important; color:#0f6e56 !important;
+  }
+  [data-section-type="value_card"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="value_card"] [class*="ListItemTopBar"] > label {
+    background:#faeeda !important; color:#854f0b !important;
+  }
+  [data-section-type="method"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="method"] [class*="ListItemTopBar"] > label {
+    background:#e6f1fb !important; color:#185fa5 !important;
+  }
+  [data-section-type="levels"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="levels"] [class*="ListItemTopBar"] > label {
+    background:#eeedfe !important; color:#534ab7 !important;
+  }
+  [data-section-type="programs"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="programs"] [class*="ListItemTopBar"] > label {
+    background:#eaf3de !important; color:#3b6d11 !important;
+  }
+  [data-section-type="audience"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="audience"] [class*="ListItemTopBar"] > label {
+    background:#fbeaf0 !important; color:#993556 !important;
+  }
+  [data-section-type="stats"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="stats"] [class*="ListItemTopBar"] > label {
+    background:#e1f5ee !important; color:#085041 !important;
+  }
+  [data-section-type="testimonials"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="testimonials"] [class*="ListItemTopBar"] > label {
+    background:#faece7 !important; color:#993c1d !important;
+  }
+  [data-section-type="big_quote"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="big_quote"] [class*="ListItemTopBar"] > label {
+    background:#d3d1c7 !important; color:#2c2c2a !important;
+  }
+  [data-section-type="features_card"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="features_card"] [class*="ListItemTopBar"] > label {
+    background:#faeeda !important; color:#633806 !important;
+  }
+  [data-section-type="cta_form"] [class*="StyledListItemTopBar"] > label,
+  [data-section-type="cta_form"] [class*="ListItemTopBar"] > label {
+    background:#d85a30 !important; color:#fff !important;
+  }
+
+  /* Summary text dopo il pill */
+  [class*="StyledListItemTopBar"] [class*="StyledSummary"],
+  [class*="StyledListItemTopBar"] [class*="Summary"],
+  [class*="ListItemTopBar"] [class*="Summary"] {
+    font-size:13.5px !important;
+    color:#3a3733 !important;
+    font-weight:400 !important;
+    margin:0 0 0 4px !important;
+    overflow:hidden !important;
+    text-overflow:ellipsis !important;
+    white-space:nowrap !important;
+    flex:1 !important;
+    min-width:0 !important;
+  }
+
+  /* Stato ESPANSO — la top bar diventa intestazione */
+  [class*="StyledListItem"]:has([class*="StyledObjectFieldWrapper"]) [class*="StyledListItemTopBar"],
+  [class*="StyledListItem"]:has([class*="ObjectField"]) [class*="StyledListItemTopBar"] {
+    background:#fff !important;
+    border-bottom:0.5px solid #ece9e3 !important;
+  }
+  /* Body dell'espanso */
+  [class*="StyledListItem"] > [class*="StyledObjectFieldWrapper"],
+  [class*="StyledListItem"] [class*="ObjectControl"] > div:not([class*="TopBar"]) {
+    background:#fafaf8 !important;
+    padding:22px 24px !important;
+  }
+
+  /* ==========================================================
+     BOTTONI
+     ========================================================== */
+
+  /* "Aggiungi sezione" — dashed sottile */
+  [class*="AddButton"], button[class*="addLabel"], [class*="StyledDropdownButton"] {
+    background:transparent !important;
+    color:#5a554d !important;
+    border:0.5px dashed #b0a896 !important;
+    border-radius:6px !important;
+    padding:6px 14px !important;
+    font-size:12.5px !important;
+    font-weight:500 !important;
+    margin-top:8px !important;
+    cursor:pointer !important;
+    transition:all .12s !important;
+  }
+  [class*="AddButton"]:hover, button[class*="addLabel"]:hover {
+    border-color:#e85d3c !important;
+    border-style:solid !important;
+    color:#e85d3c !important;
+    background:#fff7f1 !important;
+  }
+
+  /* Save button in alto a destra */
+  button[class*="ToolbarButton-saveButton"],
+  [class*="SaveButton"],
+  button[class*="primary"] {
+    background:#1a1714 !important;
+    color:#fff !important;
+    border-radius:999px !important;
+    font-weight:500 !important;
+    padding:9px 20px !important;
+    border:0 !important;
+    font-size:13px !important;
+    box-shadow:none !important;
+    cursor:pointer !important;
+    transition:background .12s !important;
+  }
+  button[class*="ToolbarButton-saveButton"]:hover,
+  [class*="SaveButton"]:hover {
+    background:#e85d3c !important;
+  }
+
+  /* Color widget */
+  [class*="ColorControl"] {
+    display:flex !important;
+    align-items:center !important;
+    gap:10px !important;
+  }
+  [class*="ColorControl"] > div:first-child,
   [class*="ColorSwatch"] {
-    width:48px !important;
-    height:48px !important;
-    border-radius:12px !important;
-    border:2px solid #e7e1d4 !important;
-    box-shadow:0 2px 6px rgba(0,0,0,.06) !important;
+    width:36px !important;
+    height:36px !important;
+    border-radius:8px !important;
+    border:0.5px solid #d5d0c5 !important;
     cursor:pointer !important;
   }
 
-  /* Sidebar / collection list */
-  [class*="SidebarContainer"],
-  [class*="MainContainer"] aside {
+  /* File/image preview compatta */
+  [class*="ImageControl"] > div, [class*="FileControl"] > div {
+    border:0.5px solid #d5d0c5 !important;
+    border-radius:8px !important;
+    padding:10px !important;
     background:#fff !important;
-    border-right:1px solid #e7e1d4 !important;
   }
-
-  /* Markdown editor toolbar */
-  [class*="MarkdownToolbar"] {
-    background:#fff !important;
-    border:1px solid #e7e1d4 !important;
-    border-bottom:0 !important;
-    border-radius:10px 10px 0 0 !important;
-  }
-
-  /* Animazione highlight quando una sezione viene aperta dal click in preview */
-  @keyframes pulseHighlight {
-    0%   { box-shadow:0 0 0 0 rgba(232,93,60,.6); }
-    50%  { box-shadow:0 0 0 8px rgba(232,93,60,.0); }
-    100% { box-shadow:0 0 0 0 rgba(232,93,60,0); }
-  }
-  .cms-highlight-pulse {
-    animation:pulseHighlight 1.2s ease-out 1 !important;
-    border-color:#e85d3c !important;
-  }
-
-  /* Banner help "Clicca su una sezione" */
-  .cms-help-banner {
-    position:fixed;
-    top:70px;
-    right:20px;
-    z-index:9999;
-    background:linear-gradient(135deg, #0a0a0a, #2a2622);
-    color:#fff;
-    padding:12px 20px;
-    border-radius:999px;
-    font:600 13px/1.3 "DM Sans", system-ui, sans-serif;
-    box-shadow:0 12px 30px -8px rgba(0,0,0,.5);
-    max-width:340px;
-    opacity:0;
-    transform:translateY(-10px);
-    transition:opacity .3s, transform .3s;
-    pointer-events:none;
-  }
-  .cms-help-banner.show {
-    opacity:1;
-    transform:translateY(0);
-  }
-  .cms-help-banner b { color:#ffd43b; }
   </style>
 </head>
 <body>
 
-<!-- Banner che spiega il click-to-edit -->
-<div class="cms-help-banner" id="cmsHelpBanner">
-  💡 <b>Tip:</b> clicca una sezione nell'anteprima a destra per aprirla qui a sinistra
-</div>
-
-<!-- Decap CMS -->
 <script src="https://unpkg.com/decap-cms@^3.0.0/dist/decap-cms.js"></script>
 
 <script>
@@ -264,10 +354,9 @@ function img(src, alt){
 }
 
 /* ==========================================================
-   COLOR OVERRIDE
+   COLOR OVERRIDE (usato nell'anteprima)
    ========================================================== */
 function colorOverrideCss(colors){
-  // Sempre applico i default se mancano valori, per coerenza
   const def = {primary:'#e85d3c', accent:'#ffd43b', ink:'#0a0a0a', bg_soft:'#faf7f3'};
   const c = Object.assign({}, def, colors||{});
   const rules = [
@@ -282,7 +371,7 @@ function colorOverrideCss(colors){
 }
 
 /* ==========================================================
-   SECTION TEMPLATES — uguali a v3
+   13 SECTION TEMPLATES (preview)
    ========================================================== */
 const templates = {
   hero(s){
@@ -606,60 +695,33 @@ function renderFooter(data){
     </div>`;
 }
 
-/* ==========================================================
-   CSS EXTRA dentro l'anteprima
-   ========================================================== */
 const PREVIEW_EXTRA_CSS = `
   <style>
-    body { cursor:default; }
-
-    /* Banner top dell'anteprima */
-    .preview-banner{
-      background:linear-gradient(135deg, #fff8e6, #fef3c7);
-      border-bottom:1px solid #f0d878;
-      padding:11px 16px;
-      font:13px/1.4 "DM Sans", system-ui, sans-serif;
-      color:#7a5b00;
-      text-align:center;
-      position:sticky;top:0;z-index:100;
-    }
-    .preview-banner b { color:#0a0a0a; }
-
-    /* Ogni sezione è cliccabile */
     [data-section]{
       position:relative;
-      cursor:pointer;
-      transition:outline .15s, outline-offset .15s;
     }
     [data-section]:hover{
-      outline:3px dashed rgba(232,93,60,.6);
-      outline-offset:-3px;
+      outline:2px dashed rgba(232,93,60,.5);
+      outline-offset:-2px;
     }
     [data-section]::before{
-      content:"📍 " attr(data-section-label) " — clicca per modificare";
+      content:"📍 " attr(data-section-label);
       position:absolute;
       top:12px; left:12px;
       z-index:50;
       background:#0a0a0a;
       color:#fff;
-      padding:7px 14px;
+      padding:6px 12px;
       border-radius:999px;
-      font:600 12px/1 "DM Sans", system-ui, sans-serif;
+      font:600 11px/1 "Inter", system-ui, sans-serif;
       letter-spacing:.02em;
       opacity:0;
-      transform:translateY(-6px);
-      transition:opacity .15s, transform .15s;
+      transition:opacity .15s;
       pointer-events:none;
       box-shadow:0 6px 18px -4px rgba(0,0,0,.4);
     }
     [data-section]:hover::before{
       opacity:1;
-      transform:translateY(0);
-    }
-    /* I link e bottoni dentro le sezioni rimangono cliccabili senza triggerare l'edit */
-    [data-section] a, [data-section] button, [data-section] input,
-    [data-section] textarea, [data-section] select {
-      cursor:pointer;
     }
   </style>
 `;
@@ -667,16 +729,15 @@ const PREVIEW_EXTRA_CSS = `
 function renderFullSite(data){
   let html = colorOverrideCss(data.site?.colors);
   html += PREVIEW_EXTRA_CSS;
-  html += `<div class="preview-banner">👆 <b>Clicca su una sezione per modificarla nell'editor</b> — Save in alto a destra per pubblicare</div>`;
   html += '<nav class="nav">' + renderNav(data) + '</nav>';
   html += '<main>';
   (data.sections||[]).forEach(s => {
     const tpl = templates[s.type];
     if(tpl){
       try { html += tpl(s); }
-      catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore rendering sezione "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
+      catch(e){ html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Errore "' + esc(s.type) + '": ' + esc(e.message) + '</div>'; }
     } else {
-      html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo di sezione sconosciuto: "' + esc(s.type) + '"</div>';
+      html += '<div style="padding:20px;background:#ffe;color:#a60;border:1px solid #fc6;margin:10px">Tipo sconosciuto: "' + esc(s.type) + '"</div>';
     }
   });
   html += '</main>';
@@ -684,16 +745,10 @@ function renderFullSite(data){
   return html;
 }
 
-/* ==========================================================
-   PREVIEW REGISTRATION
-   ========================================================== */
 const SitePreview = function(props){
   let data;
-  try {
-    data = props.entry.getIn(['data']).toJS();
-  } catch(e){
-    return h('div', {style:{padding:'40px',fontFamily:'sans-serif'}}, 'Errore lettura dati: ' + e.message);
-  }
+  try { data = props.entry.getIn(['data']).toJS(); }
+  catch(e){ return h('div', {style:{padding:'40px'}}, 'Errore: ' + e.message); }
   return h('div', {dangerouslySetInnerHTML: {__html: renderFullSite(data)}});
 };
 
@@ -702,141 +757,52 @@ CMS.registerPreviewTemplate('main', SitePreview);
 
 
 /* ==========================================================
-   ⭐ CLICK-TO-EDIT
-   Quando l'utente clicca su una sezione nell'anteprima a destra,
-   apriamo la corrispondente sezione nel pannello a sinistra.
+   ⭐ TAGGER: aggiunge data-section-type=hero/problem/...
+   ai list items, in base al testo del label.
    ========================================================== */
-const helpBanner = document.getElementById('cmsHelpBanner');
-let helpShownOnce = false;
+const TYPE_MAP = {
+  'Hero': 'hero',
+  'Problema': 'problem',
+  'Chi è il dottore': 'about',
+  'About': 'about',
+  'Card valore': 'value_card',
+  'Card Valore': 'value_card',
+  'Metodo': 'method',
+  'Piramide': 'levels',
+  'Programmi': 'programs',
+  'Audience': 'audience',
+  'Statistiche': 'stats',
+  'Testimonianze': 'testimonials',
+  'Grande citazione': 'big_quote',
+  'Caratteristiche': 'features_card',
+  'Form Contatti': 'cta_form',
+  'Form di Contatto': 'cta_form'
+};
 
-function showHelpBanner(){
-  if(helpShownOnce) return;
-  helpShownOnce = true;
-  helpBanner.classList.add('show');
-  setTimeout(() => helpBanner.classList.remove('show'), 5000);
-}
-
-function findSectionsList(){
-  // Strategia 1: trova un label/header con il testo "Sezioni della pagina"
-  const allText = document.querySelectorAll('label, [class*="Label"], [class*="Header"]');
-  for(const el of allText){
-    const txt = (el.textContent||'').trim();
-    if(/sezioni della pagina/i.test(txt)){
-      // Risali fino a trovare un parent che contiene più list items
-      let parent = el.parentElement;
-      let depth = 0;
-      while(parent && depth < 20){
-        const items = parent.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
-        if(items.length >= 5){
-          return parent;
-        }
-        parent = parent.parentElement;
-        depth++;
+function tagSectionTypes(){
+  const items = document.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
+  items.forEach(item => {
+    if(item.dataset.sectionType) return;
+    // Cerco il label nella top bar dell'item
+    const topBar = item.querySelector(':scope > [class*="StyledListItemTopBar"], :scope > [class*="ListItemTopBar"], :scope > div > [class*="StyledListItemTopBar"]');
+    if(!topBar) return;
+    const labelEl = topBar.querySelector('label, [class*="StyledLabel"]');
+    if(!labelEl) return;
+    const text = (labelEl.textContent || '').trim();
+    for(const [key, type] of Object.entries(TYPE_MAP)){
+      if(text.indexOf(key) >= 0){
+        item.setAttribute('data-section-type', type);
+        return;
       }
     }
-  }
-
-  // Strategia 2: fallback — la lista più grande nel documento
-  const containers = document.querySelectorAll('div, ul, ol');
-  let biggest = null;
-  let maxCount = 0;
-  containers.forEach(c => {
-    const items = c.querySelectorAll(':scope > [class*="StyledListItem"], :scope > [class*="ListItem-"], :scope > [data-rbd-draggable-id]');
-    if(items.length > maxCount && items.length >= 5){
-      maxCount = items.length;
-      biggest = c;
-    }
-  });
-  return biggest;
-}
-
-function getSectionsListItems(){
-  const container = findSectionsList();
-  if(!container) return [];
-  const all = container.querySelectorAll('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]');
-  // Filtra solo top-level (non annidati)
-  return Array.from(all).filter(item => {
-    let p = item.parentElement;
-    while(p && p !== container){
-      if(p.matches('[class*="StyledListItem"], [class*="ListItem-"], [data-rbd-draggable-id]')) return false;
-      p = p.parentElement;
-    }
-    return true;
   });
 }
 
-function openSectionInEditor(index){
-  const items = getSectionsListItems();
-  if(!items.length){
-    console.warn('[CMS] Non trovo la lista sezioni');
-    return;
-  }
-  const target = items[index];
-  if(!target){
-    console.warn('[CMS] Sezione ' + index + ' non trovata (' + items.length + ' disponibili)');
-    return;
-  }
-
-  // Scrolla in vista
-  target.scrollIntoView({behavior:'smooth', block:'center'});
-
-  // Highlight con pulse
-  target.classList.add('cms-highlight-pulse');
-  setTimeout(() => target.classList.remove('cms-highlight-pulse'), 1500);
-
-  // Clicca la top bar per espandere (se non già espanso)
-  setTimeout(() => {
-    const expandTriggers = [
-      target.querySelector('[class*="StyledListItemTopBar"]'),
-      target.querySelector('[class*="ListItemTopBar"]'),
-      target.querySelector('button'),
-      target.querySelector('[role="button"]')
-    ].filter(Boolean);
-
-    // Determina se è già espanso
-    const hasContent = target.querySelector('input, textarea, [class*="ObjectControl"]');
-    if(!hasContent && expandTriggers[0]){
-      try { expandTriggers[0].click(); }
-      catch(e) { console.warn('[CMS] Click su top bar fallito:', e); }
-    }
-  }, 400);
-}
-
-function setupClickToEdit(){
-  // Trova tutti gli iframe (preview pane)
-  const iframes = document.querySelectorAll('iframe');
-  iframes.forEach(iframe => {
-    if(iframe.dataset.cmsBound === '1') return;
-    let doc;
-    try { doc = iframe.contentDocument; }
-    catch(e) { return; }
-    if(!doc || !doc.body) return;
-
-    iframe.dataset.cmsBound = '1';
-
-    // Event delegation: ascolta tutti i click nell'iframe
-    doc.addEventListener('click', function(e){
-      const sec = e.target.closest('[data-section]');
-      if(!sec) return;
-      // Lascia passare click su link/bottoni/input interni
-      if(e.target.closest('a, button, input, textarea, select, form')) return;
-      e.preventDefault();
-      e.stopPropagation();
-
-      const all = doc.querySelectorAll('[data-section]');
-      const idx = Array.from(all).indexOf(sec);
-      if(idx >= 0){
-        openSectionInEditor(idx);
-      }
-    }, true);
-
-    // Mostra il banner di help al primo iframe loaded
-    setTimeout(showHelpBanner, 800);
-  });
-}
-
-// Riprova periodicamente — il preview iframe viene ricreato spesso
-setInterval(setupClickToEdit, 1500);
+// Run periodically — Decap re-renders list often
+setInterval(tagSectionTypes, 1200);
+// Also run on initial DOM mutations
+const observer = new MutationObserver(() => tagSectionTypes());
+observer.observe(document.body, {childList: true, subtree: true});
 </script>
 </body>
 </html>
