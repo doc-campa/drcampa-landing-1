@@ -6,46 +6,53 @@
   },
   "nav": {
     "links": [
-      {"label": "Studio", "href": "#studio"},
-      {"label": "Trattamenti", "href": "#trattamenti"},
-      {"label": "Risultati", "href": "#risultati"},
-      {"label": "Storie", "href": "#storie"},
-      {"label": "Contatti", "href": "#contatti"}
+      {
+        "label": "Studio",
+        "href": "#studio"
+      },
+      {
+        "label": "Trattamenti",
+        "href": "#trattamenti"
+      },
+      {
+        "label": "Risultati",
+        "href": "#risultati"
+      },
+      {
+        "label": "Storie",
+        "href": "#storie"
+      },
+      {
+        "label": "Contatti",
+        "href": "#contatti"
+      }
     ],
     "phone_label": "Chiama",
     "phone_href": "tel:+390200000000",
-    "cta_label": "Prenota Consulto",
+    "cta_label": "Prenota Consulenza",
     "cta_href": "#contatti"
   },
   "sections": [
     {
-      "type": "hero",
       "bg_image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80",
       "watermark": "Dr. Campa",
-      "headline_pre": "Bellezza Autentica. Risultati Reali.",
       "headline_main": "Scopri la Tua",
-      "headline_accent": "Versione Migliore.",
-      "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
-      "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
       "cta_label": "Inizia il Tuo Percorso",
-      "cta_href": "#contatti",
-      "mission_label_strong": "LA NOSTRA MISSIONE:",
       "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
-      "mission_percent": 62,
-      "mission_figure": "6.200+ Percorsi Completati",
       "mission_sub_a": "Donne e uomini che oggi",
-      "mission_sub_b": "si guardano allo specchio con un sorriso diverso."
+      "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
+      "mission_sub_b": "si guardano allo specchio con un sorriso diverso.",
+      "mission_percent": 62,
+      "headline_accent": "Versione Migliore.",
+      "mission_label_strong": "LA NOSTRA MISSIONE:",
+      "mission_figure": "6.200+ Percorsi Completati",
+      "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
+      "headline_pre": "Bellezza Autentica. Risultati Reali.",
+      "type": "hero",
+      "cta_href": "#contatti"
     },
     {
-      "type": "problem",
-      "id": "studio",
       "watermark": "Dr. Campa",
-      "title_a": "L'Estetica Non è il Problema.",
-      "title_accent": "La Confusione Lo È.",
-      "intro_paragraphs": [
-        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
-        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
-      ],
       "questions": [
         "Ma da dove si parte?",
         "Quale intervento serve davvero?",
@@ -55,6 +62,14 @@
         "Si cercano risposte online. Si confrontano cliniche. Si guarda chi costa meno.",
         "Ma niente di tutto questo aiuta a capire cosa è giusto per te."
       ],
+      "title_accent": "La Confusione Lo È.",
+      "intro_paragraphs": [
+        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
+        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
+      ],
+      "title_a": "L'Estetica Non è il Problema.",
+      "type": "problem",
+      "id": "studio",
       "quote_lines": [
         "Il vero problema non è l'estetica.",
         "È la mancanza di ascolto.",
@@ -152,7 +167,11 @@
           "body": "Interventi chirurgici eseguiti in strutture accreditate, con équipe selezionate. Ogni procedura è calibrata sulla fisionomia e sugli obiettivi del paziente."
         }
       ],
-      "pyramid_labels": ["Chirurgia su Misura", "Medicina Estetica Avanzata", "Consulenza & Prevenzione"],
+      "pyramid_labels": [
+        "Chirurgia su Misura",
+        "Medicina Estetica Avanzata",
+        "Consulenza & Prevenzione"
+      ],
       "footer_a": "Ogni paziente inizia con la consulenza. Da lì, la medicina estetica diventa un alleato quotidiano. Quando serve, percorsi strutturati evolvono in chirurgia.",
       "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente."
     },
@@ -217,14 +236,35 @@
       "title_accent": "Bellezza Reale.",
       "subtitle": "Sicurezza raddoppiata. Tempo recuperato. Risultati osservabili. Lo Studio Campa lavora su numeri verificabili, non su promesse di marketing.",
       "row_a": [
-        {"pill": "Da 4.1 / 10 a", "num": "8.7 / 10", "label": "Indice medio di sicurezza in sé stessi dopo il percorso"},
-        {"pill": "", "num": "70%", "label": "Pazienti che tornano per il follow-up entro 6 mesi"},
-        {"pill": "", "num": "98%", "label": "Riferisce risultati visibili entro 30 giorni"}
+        {
+          "pill": "Da 4.1 / 10 a",
+          "num": "8.7 / 10",
+          "label": "Indice medio di sicurezza in sé stessi dopo il percorso"
+        },
+        {
+          "pill": "",
+          "num": "70%",
+          "label": "Pazienti che tornano per il follow-up entro 6 mesi"
+        },
+        {
+          "pill": "",
+          "num": "98%",
+          "label": "Riferisce risultati visibili entro 30 giorni"
+        }
       ],
       "row_b": [
-        {"num": "6.230", "label": "Pazienti seguite"},
-        {"num": "2.491", "label": "Interventi eseguiti"},
-        {"num": "20+", "label": "Anni di esperienza"}
+        {
+          "num": "6.230",
+          "label": "Pazienti seguite"
+        },
+        {
+          "num": "2.491",
+          "label": "Interventi eseguiti"
+        },
+        {
+          "num": "20+",
+          "label": "Anni di esperienza"
+        }
       ],
       "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
     },
@@ -283,25 +323,57 @@
       "title": "Cosa Può Fare Per Te un Percorso Strutturato",
       "lead": "Quando la chirurgia è affrontata con metodo invece che per sperimentazione, i risultati sono infiniti...",
       "pills": [
-        {"text": "Definire i tuoi obiettivi", "special": false},
-        {"text": "Costruire un piano realistico", "special": false},
-        {"text": "Recuperare sicurezza", "special": false},
-        {"text": "Eliminare le insicurezze", "special": false},
-        {"text": "Pianificare i tempi giusti", "special": false},
-        {"text": "Capire cosa serve davvero", "special": false},
-        {"text": "Sentirti più libera", "special": false},
-        {"text": "Esprimere chi sei", "special": false},
-        {"text": "Programmare il recupero", "special": false},
-        {"text": "Ridurre lo stress", "special": false},
-        {"text": "Vedere risultati naturali", "special": false},
-        {"text": "Restituirti il tempo per VIVERE", "special": true}
+        {
+          "text": "Definire i tuoi obiettivi",
+          "special": false
+        },
+        {
+          "text": "Costruire un piano realistico",
+          "special": false
+        },
+        {
+          "text": "Recuperare sicurezza",
+          "special": false
+        },
+        {
+          "text": "Eliminare le insicurezze",
+          "special": false
+        },
+        {
+          "text": "Pianificare i tempi giusti",
+          "special": false
+        },
+        {
+          "text": "Capire cosa serve davvero",
+          "special": false
+        },
+        {
+          "text": "Sentirti più libera",
+          "special": false
+        },
+        {
+          "text": "Esprimere chi sei",
+          "special": false
+        },
+        {
+          "text": "Programmare il recupero",
+          "special": false
+        },
+        {
+          "text": "Ridurre lo stress",
+          "special": false
+        },
+        {
+          "text": "Vedere risultati naturali",
+          "special": false
+        },
+        {
+          "text": "Restituirti il tempo per VIVERE",
+          "special": true
+        }
       ]
     },
     {
-      "type": "cta_form",
-      "id": "contatti",
-      "title_a": "È il momento. Smetti di sperimentare.",
-      "title_accent": "Inizia.",
       "body": "Raccontaci cosa stai cercando. Ti ricontatteremo entro 24 ore per organizzare un primo consulto, in studio o in videocall — senza impegno, senza pressione.",
       "perks": [
         "Primo colloquio gratuito e senza impegno",
@@ -309,8 +381,12 @@
         "Massima riservatezza dei dati",
         "Consulto online disponibile per pazienti fuori sede"
       ],
-      "form_title": "Prenota Consulto",
+      "submit_label": "Invia Richiesta",
+      "title_accent": "Inizia.",
       "form_subtitle": "Compila il form. Ti contattiamo noi.",
+      "title_a": "È il momento. Smetti di sperimentare.",
+      "type": "cta_form",
+      "id": "contatti",
       "treatments": [
         "Rinoplastica",
         "Blefaroplastica",
@@ -320,8 +396,8 @@
         "Medicina estetica",
         "Vorrei un consulto generale"
       ],
-      "submit_label": "Invia Richiesta",
       "success_title": "Grazie!",
+      "form_title": "Prenota Consulto",
       "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative."
     }
   ],
@@ -331,36 +407,81 @@
       {
         "title": "Trattamenti",
         "links": [
-          {"label": "Rinoplastica", "href": "#trattamenti"},
-          {"label": "Blefaroplastica", "href": "#trattamenti"},
-          {"label": "Mastoplastica", "href": "#trattamenti"},
-          {"label": "Medicina estetica", "href": "#trattamenti"}
+          {
+            "label": "Rinoplastica",
+            "href": "#trattamenti"
+          },
+          {
+            "label": "Blefaroplastica",
+            "href": "#trattamenti"
+          },
+          {
+            "label": "Mastoplastica",
+            "href": "#trattamenti"
+          },
+          {
+            "label": "Medicina estetica",
+            "href": "#trattamenti"
+          }
         ]
       },
       {
         "title": "Studio",
         "links": [
-          {"label": "Il dottore", "href": "#studio"},
-          {"label": "Risultati", "href": "#risultati"},
-          {"label": "Storie", "href": "#storie"},
-          {"label": "Contatti", "href": "#contatti"}
+          {
+            "label": "Il dottore",
+            "href": "#studio"
+          },
+          {
+            "label": "Risultati",
+            "href": "#risultati"
+          },
+          {
+            "label": "Storie",
+            "href": "#storie"
+          },
+          {
+            "label": "Contatti",
+            "href": "#contatti"
+          }
         ]
       },
       {
         "title": "Contatti",
         "links": [
-          {"label": "+39 02 0000000", "href": "tel:+390200000000"},
-          {"label": "info@drcampa.it", "href": "mailto:info@drcampa.it"},
-          {"label": "Instagram", "href": "#"},
-          {"label": "YouTube", "href": "#"}
+          {
+            "label": "+39 02 0000000",
+            "href": "tel:+390200000000"
+          },
+          {
+            "label": "info@drcampa.it",
+            "href": "mailto:info@drcampa.it"
+          },
+          {
+            "label": "Instagram",
+            "href": "#"
+          },
+          {
+            "label": "YouTube",
+            "href": "#"
+          }
         ]
       }
     ],
     "bottom_left": "© 2026 Dr. Domenico Campa — P.IVA 00000000000",
     "bottom_links": [
-      {"label": "Privacy", "href": "#"},
-      {"label": "Cookie", "href": "#"},
-      {"label": "Note legali", "href": "#"}
+      {
+        "label": "Privacy",
+        "href": "#"
+      },
+      {
+        "label": "Cookie",
+        "href": "#"
+      },
+      {
+        "label": "Note legali",
+        "href": "#"
+      }
     ]
   }
 }
