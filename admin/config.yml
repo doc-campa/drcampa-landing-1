@@ -10,6 +10,7 @@ backend:
   name: github
   repo: doc-campa/drcampa-landing-1
   branch: main
+  base_url: https://gitauth.sveltia.dev
 
 # Cartella dove vengono caricate le immagini dal pannello
 media_folder: "images"
