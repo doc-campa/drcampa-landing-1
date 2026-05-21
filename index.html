@@ -742,6 +742,8 @@ async function init(){
       </div>`;
     return;
   }
+
+  // Color override from CMS
   if(data.site && data.site.colors){
     const c = data.site.colors;
     const rules = [];
@@ -750,8 +752,12 @@ async function init(){
     if(c.ink) rules.push('--ink:'+c.ink);
     if(c.bg_soft) rules.push('--bg-soft:'+c.bg_soft);
     if(rules.length){
-      const s = document.createElement('style');
-      s.textContent = ':root{'+rules.join(';')+';}';
+      const styleEl = document.createElement('style');
+      styleEl.textContent = ':root{'+rules.join(';')+';}';
+      document.head.appendChild(styleEl);
+    }
+  }
+
   // Document meta
   document.title = data.site?.title || 'Sito';
   const metaDesc = document.querySelector('meta[name="description"]');
@@ -833,6 +839,5 @@ function initBehaviors(){
 
 init();
 </script>
-  <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
 </body>
 </html>
