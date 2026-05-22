@@ -706,22 +706,44 @@ function summarize(s) {
 /* Field schema for each section type */
 
 /* ===== STILE SEZIONE — controlli universali ===== */
-/* Set di campi che ogni sezione può sovrascrivere. Tutti opzionali. */
-const STYLE_FIELDS = [
-  ['bg', 'Sfondo della sezione', 'color', '', 'Lascia vuoto per usare il colore della palette globale. Compilato = sovrascrive solo questa sezione.'],
-  ['accent', 'Colore accent (titoli, dettagli)', 'color', '', 'Il colore della parola corsiva nel titolo e dei dettagli colorati. Vuoto = palette.'],
-  ['text', 'Colore testo', 'color', '', 'Utile se hai sfondo scuro e vuoi testo chiaro (o viceversa). Vuoto = palette.'],
-  ['scale', 'Scala dei testi', 'select', null, ['', 'compatto', 'normale', 'grande', 'extralarge']]
-];
-/* Le sezioni con "doppio sfondo" (sezione + card/box interna) aggiungono il campo card */
-const STYLE_FIELDS_WITH_CARD = [
-  ...STYLE_FIELDS,
-  ['card', 'Colore della card/box interna', 'color', '', 'Il riquadro colorato dentro la sezione. Es: il riquadro arancione di "Card valore", la card del form.']
-];
+
+/* I colori CORRENTI di ogni tipo di sezione, in modo che i picker
+   si aprano pre-popolati col valore reale invece di vuoti. */
+const SECTION_DEFAULTS = {
+  hero:          { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
+  problem:       { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
+  about:         { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
+  value_card:    { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
+  method:        { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
+  levels:        { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
+  programs:      { bg:'#EFE9DD', accent:'#C8A86B', text:'#1E1E1E' },
+  audience:      { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
+  stats:         { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
+  testimonials:  { bg:'#F5E3DE', accent:'#123C46', text:'#1E1E1E' },
+  big_quote:     { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
+  features_card: { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
+  cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
+  video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' }
+};
+
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
 
+/* Genera lo schema dei campi style per il tipo sezione, con i colori CORRENTI
+   come default pre-popolati nei picker. Cancellando il valore (testo vuoto),
+   l'utente torna alla palette globale. */
 function styleSchemaFor(type){
-  return SECTIONS_WITH_CARD_BG.has(type) ? STYLE_FIELDS_WITH_CARD : STYLE_FIELDS;
+  const d = SECTION_DEFAULTS[type] || {};
+  const fields = [
+    ['bg',     'Sfondo della sezione',         'color', d.bg || '',     'Il colore attuale è pre-compilato. Cambialo, oppure cancellalo per usare la palette globale.'],
+    ['accent', 'Colore accent (titoli, dettagli)', 'color', d.accent || '', 'La parola corsiva del titolo, tag, dettagli colorati.'],
+    ['text',   'Colore testo',                 'color', d.text || '',   'Utile se cambi sfondo: assicurati che il testo resti leggibile.'],
+    ['scale',  'Scala dei testi',              'select', null, ['', 'compatto', 'normale', 'grande', 'extralarge']]
+  ];
+  if(SECTIONS_WITH_CARD_BG.has(type)){
+    // Inserisco il campo card PRIMA dello scale (gruppato con gli altri colori)
+    fields.splice(3, 0, ['card', 'Colore card/box interna', 'color', d.card || '', 'Il riquadro colorato dentro la sezione.']);
+  }
+  return fields;
 }
 
 const SECTION_SCHEMA = {
@@ -2321,19 +2343,29 @@ function renderSectionForm(section, idx){
   const fields = schema.map(f => renderField(f, section[f[0]], ['sections', idx, f[0]])).join('');
   const style = section.style || {};
   const styleSchema = styleSchemaFor(section.type);
+  const defaults = SECTION_DEFAULTS[section.type] || {};
   const styleFields = styleSchema.map(f => renderField(f, style[f[0]], ['sections', idx, 'style', f[0]])).join('');
   const isOpen = ui.styleBlocksOpen && ui.styleBlocksOpen.has(idx);
-  const hasOverrides = !!(style.bg || style.accent || style.text || style.card || (style.scale && style.scale !== '' && style.scale !== 'normale'));
+  // È "personalizzato" se ha un valore DIVERSO dal default della palette
+  const isDiff = (v, def) => v && def && v.toLowerCase() !== def.toLowerCase();
+  const hasOverrides = !!(
+    isDiff(style.bg, defaults.bg) ||
+    isDiff(style.accent, defaults.accent) ||
+    isDiff(style.text, defaults.text) ||
+    isDiff(style.card, defaults.card) ||
+    (style.scale && style.scale !== '' && style.scale !== 'normale')
+  );
   return `<div class="section-form-fields">${fields}</div>
     <div class="section-style-block ${isOpen?'open':''}" data-style-block="${idx}">
       <div class="section-style-toggle" data-toggle-style="${idx}">
         <span>🎨 Stile della sezione</span>
-        <span class="section-style-hint">${hasOverrides ? 'personalizzato' : 'usa palette'}</span>
+        <span class="section-style-hint">${hasOverrides ? 'personalizzato ✏️' : 'usa palette globale'}</span>
         <span class="section-style-chevron">▾</span>
       </div>
       <div class="section-style-body">
         <p class="field-hint" style="margin-bottom:14px">
-          Tutti i campi sono opzionali. Lascia vuoto per usare i colori della palette globale (Impostazioni Generali → Colori).
+          I colori mostrati sono quelli <strong>attuali</strong> della sezione (palette Clinical Luxury).
+          Modificali per personalizzare, oppure <strong>cancella il valore</strong> nel campo testo per tornare al colore di palette globale.
         </p>
         ${styleFields}
       </div>
