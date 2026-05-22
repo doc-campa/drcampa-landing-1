@@ -361,9 +361,10 @@ section[id] { scroll-margin-top:90px; }
 .about { background:var(--white); }
 .about-grid {
   display:grid;
-  grid-template-columns:1fr 1.2fr;
+  grid-template-columns:1fr 1.1fr;
   gap:clamp(40px, 6vw, 80px);
   align-items:start;
+  margin-bottom:clamp(40px, 5vw, 60px);
 }
 .about-grid > div:first-child { padding-top:8px; }
 .about h2 {
@@ -380,20 +381,23 @@ section[id] { scroll-margin-top:90px; }
   box-shadow:var(--shadow-lg);
 }
 .about-photo img { width:100%; height:100%; object-fit:cover; }
+/* Body paragraphs full-width sotto la grid, centrati con max-width tipografico */
 .about-body {
-  grid-column:1; padding-top:32px;
-  font-size:1.05rem; line-height:1.7; color:var(--ink-soft);
+  max-width:760px;
+  margin:0 auto;
+  font-size:1.1rem; line-height:1.75; color:var(--ink-soft);
 }
-.about-body p { margin-bottom:18px; }
+.about-body p { margin-bottom:22px; }
 .about-body .callout {
-  display:block; margin-top:32px;
-  font-family:var(--font-serif); font-style:italic; font-size:1.4rem;
+  display:block; margin-top:36px;
+  font-family:var(--font-serif); font-style:italic; font-size:clamp(1.3rem, 2.2vw, 1.7rem);
   color:var(--coral-deep);
-  padding:24px 0; border-top:1px solid var(--line);
+  padding:28px 0 0; border-top:1px solid var(--line);
+  text-align:left;
+  line-height:1.4;
 }
 @media (max-width:860px) {
   .about-grid { grid-template-columns:1fr; }
-  .about-body { grid-column:auto; padding-top:8px; }
 }
 
 /* ============================================================
@@ -425,7 +429,8 @@ section[id] { scroll-margin-top:90px; }
 }
 .value-card .lead strong { color:var(--white); font-weight:600; }
 .value-grid {
-  display:grid; grid-template-columns:repeat(3, 1fr);
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
   gap:32px;
   position:relative; z-index:1;
 }
@@ -459,9 +464,6 @@ section[id] { scroll-margin-top:90px; }
   font-size:1rem; line-height:1.55; color:rgba(255,255,255,.85);
 }
 .value-footnote strong { color:var(--white); font-weight:600; }
-@media (max-width:760px) {
-  .value-grid { grid-template-columns:1fr; }
-}
 
 /* ============================================================
    METHOD section
@@ -478,8 +480,10 @@ section[id] { scroll-margin-top:90px; }
 }
 .method-head .sub strong { color:var(--ink); font-weight:600; }
 .method-grid {
-  display:grid; grid-template-columns:repeat(3, 1fr);
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
   gap:32px;
+  max-width:1100px; margin:0 auto;
 }
 .method-card {
   background:var(--white);
@@ -512,9 +516,6 @@ section[id] { scroll-margin-top:90px; }
 .method-body { padding:28px; }
 .method-body h3 { margin-bottom:12px; font-size:1.35rem; }
 .method-body p { color:var(--ink-soft); line-height:1.6; }
-@media (max-width:860px) {
-  .method-grid { grid-template-columns:1fr; }
-}
 
 /* ============================================================
    LEVELS / PIRAMIDE
@@ -639,8 +640,10 @@ section[id] { scroll-margin-top:90px; }
 }
 .audience-head .sub { font-size:1.1rem; color:var(--ink-soft); margin-top:20px; }
 .audience-grid {
-  display:grid; grid-template-columns:repeat(3, 1fr);
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
   gap:36px;
+  max-width:1100px; margin:0 auto;
 }
 .audience-item {
   background:var(--white);
@@ -665,9 +668,6 @@ section[id] { scroll-margin-top:90px; }
 .audience-item h4 { padding:24px 24px 0; margin-bottom:10px; font-size:1.2rem; }
 .audience-item p { padding:0 24px 28px; color:var(--ink-soft); line-height:1.6; }
 .audience-item p strong { color:var(--ink); font-weight:600; }
-@media (max-width:860px) {
-  .audience-grid { grid-template-columns:1fr; max-width:480px; margin-left:auto; margin-right:auto; }
-}
 
 /* ============================================================
    STATS
@@ -688,12 +688,17 @@ section[id] { scroll-margin-top:90px; }
 }
 .stats-head .sub { font-size:1.1rem; color:rgba(255,255,255,.7); margin-top:20px; }
 .stats-row {
-  display:grid; grid-template-columns:repeat(4, 1fr);
-  gap:40px;
+  display:flex; flex-wrap:wrap; justify-content:center;
+  gap:clamp(40px, 6vw, 90px);
   margin-bottom:50px;
 }
 .stats-row:last-of-type { margin-bottom:0; }
-.stat { text-align:left; }
+.stat {
+  text-align:center;
+  min-width:160px;
+  max-width:240px;
+  flex:1 1 180px;
+}
 .stat .pill {
   display:inline-block; padding:5px 12px;
   background:var(--coral-deep); color:var(--white);
@@ -717,9 +722,6 @@ section[id] { scroll-margin-top:90px; }
   text-align:center; margin-top:60px;
   font-family:var(--font-serif); font-style:italic; font-size:1.1rem;
   color:rgba(255,255,255,.6);
-}
-@media (max-width:860px) {
-  .stats-row { grid-template-columns:repeat(2, 1fr); gap:32px; }
 }
 
 /* ============================================================
@@ -1179,16 +1181,18 @@ const templates = {
     const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
     return `
       <section class="about"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="container about-grid">
-          <div>
-            <h2>${esc(s.title||'')}</h2>
-            ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+        <div class="container">
+          <div class="about-grid">
+            <div>
+              <h2>${esc(s.title||'')}</h2>
+              ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+            </div>
+            ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
           </div>
-          ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
-          <div class="about-body">
+          ${(body||s.callout)?`<div class="about-body">
             ${body}
             ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
-          </div>
+          </div>`:''}
         </div>
       </section>`;
   },
