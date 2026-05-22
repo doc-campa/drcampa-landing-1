@@ -1210,6 +1210,62 @@ body.js-ready section.fx-in .pyramid .tri-1 { opacity:1; transform:none; transit
     transform:scaleX(1) !important;
   }
 }
+
+/* ============================================================
+   PER-SECTION STYLE OVERRIDES
+   ------------------------------------------------------------
+   Ogni <section> può ricevere variabili inline via il CMS:
+     --section-bg     → sostituisce lo sfondo
+     --section-accent → sostituisce l'accent (parola corsiva, tag, bordi gold)
+     --section-text   → sostituisce il colore del testo
+     --section-card   → sostituisce il colore della card/box interna (solo dove c'è)
+     --text-scale     → moltiplica la dimensione testi della sezione (default 1)
+   Tutte le rule qui sotto fanno fallback alla palette globale se la
+   variabile non è settata. Niente !important: rispettiamo la specificity normale.
+   ============================================================ */
+section[style*="--section-bg"]    { background:var(--section-bg) !important; }
+section[style*="--section-text"]  { color:var(--section-text); }
+section[style*="--text-scale"]    { font-size:calc(17px * var(--text-scale, 1)); }
+section[style*="--text-scale"] h1 { font-size:calc(clamp(2.6rem, 5.5vw, 4.8rem) * var(--text-scale, 1)); }
+section[style*="--text-scale"] h2 { font-size:calc(clamp(2rem, 4vw, 3.2rem) * var(--text-scale, 1)); }
+section[style*="--text-scale"] h3 { font-size:calc(clamp(1.4rem, 2.5vw, 2rem) * var(--text-scale, 1)); }
+
+/* Accent overrides (parola corsiva nei titoli, tag, bordi) */
+section[style*="--section-accent"] .accent,
+section[style*="--section-accent"] .serif-italic { color:var(--section-accent); }
+section[style*="--section-accent"] .level-tag    { color:var(--section-accent); }
+section[style*="--section-accent"] .pill         { background:var(--section-accent); }
+section[style*="--section-accent"] .program-tag,
+section[style*="--section-accent"] .program-subtitle { color:var(--section-accent); }
+section[style*="--section-accent"] .test-stars    { color:var(--section-accent); }
+section[style*="--section-accent"] .mission-bar-fill { background:linear-gradient(90deg, var(--section-accent) 0%, var(--section-accent) 100%); }
+section.problem[style*="--section-accent"] .problem-quote { border-left-color:var(--section-accent); }
+section.problem[style*="--section-accent"] .problem-final { color:var(--section-accent); }
+section.about[style*="--section-accent"] .callout         { color:var(--section-accent); }
+section.audience[style*="--section-accent"] .audience-item:hover { border-color:var(--section-accent); }
+section.testimonials[style*="--section-accent"] .test-card:hover { border-color:var(--section-accent); }
+section.levels[style*="--section-accent"] .level { border-left-color:var(--section-accent); }
+section.method[style*="--section-accent"] .method-num { background:var(--section-accent); }
+section.method[style*="--section-accent"] .method-card:hover { border-color:var(--section-accent); }
+section.programs[style*="--section-accent"] .program-link:hover { color:var(--section-accent); }
+section.video-section[style*="--section-accent"] .video-caption { color:var(--section-accent); }
+section.big-quote[style*="--section-accent"] .av { border-color:var(--section-accent); }
+
+/* Card/box interno per sezioni a doppio sfondo */
+section.value-section[style*="--section-card"] .value-card    { background:var(--section-card); }
+section.features-section[style*="--section-card"] .features-card { background:var(--section-card); }
+section.cta-section[style*="--section-card"] .cta-card         { background:var(--section-card); }
+/* Quando l'utente cambia il bg della Card Valore o Features, anche il gradient va sostituito con solido */
+section.value-section[style*="--section-card"] .value-card::before,
+section.features-section[style*="--section-card"] .features-card::before { display:none; }
+
+/* Quando il colore del testo è impostato manualmente, propaga ai discendenti tipici */
+section[style*="--section-text"] h1,
+section[style*="--section-text"] h2,
+section[style*="--section-text"] h3,
+section[style*="--section-text"] h4,
+section[style*="--section-text"] p,
+section[style*="--section-text"] li { color:inherit; }
 </style>
 </head>
 <body>
@@ -1336,6 +1392,28 @@ function hasVideo(value){
   return !!(value && value.src);
 }
 
+/* Genera attributo style="" con CSS variables locali dalla section.style.
+   Le sezioni che ricevono queste variabili NON le usano hard-coded ma con fallback
+   sulla palette globale via var(--xxx, default). */
+function sectionStyleAttr(s){
+  const st = (s && s.style) || {};
+  const parts = [];
+  if(st.bg)     parts.push(`--section-bg:${st.bg}`);
+  if(st.accent) parts.push(`--section-accent:${st.accent}`);
+  if(st.text)   parts.push(`--section-text:${st.text}`);
+  if(st.card)   parts.push(`--section-card:${st.card}`);
+  const scale = scaleValue(st.scale);
+  if(scale)     parts.push(`--text-scale:${scale}`);
+  return parts.length ? ` style="${parts.join(';')}"` : '';
+}
+function scaleValue(s){
+  if(!s || s === 'normale') return null;
+  if(s === 'compatto')   return '0.88';
+  if(s === 'grande')     return '1.12';
+  if(s === 'extralarge') return '1.25';
+  return null;
+}
+
 /* ==========================================================
    TEMPLATES + RENDERNAV/FOOTER — appended below
    ========================================================== */
@@ -1346,7 +1424,7 @@ const templates = {
       ? video(s.bg_video, {fill:true})
       : img(s.bg_image, 'Hero');
     return `
-      <section class="hero"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="hero"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="hero-bg">${bg}</div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container hero-content reveal">
@@ -1383,7 +1461,7 @@ const templates = {
     const middle = (s.middle_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
     const quote = (s.quote_lines||[]).map(l=>`<p>${richText(l)}</p>`).join('');
     return `
-      <section class="problem"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="problem"${s.id?` id="${esc(s.id)}"`:''}>
         ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1401,7 +1479,7 @@ const templates = {
   about(s){
     const body = (s.body_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
     return `
-      <section class="about"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="about"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="about-grid">
             <div>
@@ -1431,7 +1509,7 @@ const templates = {
         ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
       </div>`).join('');
     return `
-      <section class="value-section"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="value-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="value-card reveal">
             <h2>${esc(s.title||'')}</h2>
@@ -1456,7 +1534,7 @@ const templates = {
         </div>
       </div>`).join('');
     return `
-      <section class="method"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="method"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="method-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1480,7 +1558,7 @@ const templates = {
       </div>`).join('');
     const labels = s.pyramid_labels||[];
     return `
-      <section class="levels"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="levels"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="levels-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1516,7 +1594,7 @@ const templates = {
         <div class="program-img">${img(c.photo, c.title)}</div>
       </div>`).join('');
     return `
-      <section class="programs"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="programs"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="programs-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1535,7 +1613,7 @@ const templates = {
         <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
     return `
-      <section${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="audience"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="audience-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1558,7 +1636,7 @@ const templates = {
       return `<div class="stats-row reveal"${isFirst?'':' style="margin-bottom:0"'}>${cells}</div>`;
     };
     return `
-      <section class="stats"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="stats"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="stats-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1582,7 +1660,7 @@ const templates = {
         </div>
       </div>`).join('');
     return `
-      <section class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="test-head reveal">
             <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
@@ -1594,7 +1672,7 @@ const templates = {
 
   big_quote(s){
     return `
-      <section class="big-quote"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="big-quote"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <p class="q">${richText(s.quote||'')}</p>
           <div class="who">
@@ -1617,7 +1695,7 @@ const templates = {
       return `<div class="pill-item">${richText(p.text||'')}</div>`;
     }).join('');
     return `
-      <section class="features-section"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="features-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="features-card reveal">
             <h2>${esc(s.title||'')}</h2>
@@ -1632,7 +1710,7 @@ const templates = {
     const perks = (s.perks||[]).map(p=>`<li>${richText(p)}</li>`).join('');
     const treatments = (s.treatments||[]).map(t=>`<option>${esc(t)}</option>`).join('');
     return `
-      <section class="cta-section"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="cta-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="cta-card reveal">
             <div class="cta-text">
@@ -1685,7 +1763,7 @@ const templates = {
       ? Object.assign({}, s.video, s.poster ? {poster: s.poster} : {})
       : (s.video ? {src: s.video, controls: true, poster: s.poster} : null);
     return `
-      <section class="video-section"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="video-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           ${(s.title||s.subtitle)?`<div class="video-head">
             ${s.title?`<h2>${esc(s.title)}</h2>`:''}
