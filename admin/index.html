@@ -1226,6 +1226,31 @@ function esc(s){
   if(s == null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* richText: applica formattazione inline sicura su testo che potrebbe contenere
+   markdown semplice o tag inline tipo <strong>, <em>, <br>.
+   Whitelist: **bold**, *italic*, <strong>, <em>, <b>, <i>, <br>. Resto escapeato.
+   IDENTICA alla funzione richText() nella landing — necessaria perché la preview
+   del CMS è un iframe isolato che renderizza autonomamente i template. */
+function richText(s){
+  if(s==null) return '';
+  let out = String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+  out = out
+    .replace(/&lt;(\/?)strong&gt;/gi, '<$1strong>')
+    .replace(/&lt;(\/?)b&gt;/gi, '<$1strong>')
+    .replace(/&lt;(\/?)em&gt;/gi, '<$1em>')
+    .replace(/&lt;(\/?)i&gt;/gi, '<$1em>')
+    .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+  out = out.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/__([^_\n]+)__/g, '<strong>$1</strong>');
+  out = out.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+  out = out.replace(/(^|[^_])_([^_\n]+)_(?!_)/g, '$1<em>$2</em>');
+  return out;
+}
 /* Normalizza un valore immagine (stringa o {desktop, mobile}) e ritorna una URL utilizzabile.
    Nella preview del CMS ritorniamo sempre la versione desktop (la preview è in iframe a varie larghezze). */
 function imageSrc(value){
@@ -1289,28 +1314,28 @@ const previewTemplates = {
           ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
         </h1>
         <p class="hero-sub">
-          ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
-          ${s.subtitle?esc(s.subtitle):''}
+          ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+          ${s.subtitle?richText(s.subtitle):''}
         </p>
         ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
         ${(s.mission_label_strong||s.mission_figure)?`
           <div class="mission-card">
-            <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
+            <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
             <div class="mission-bar">
               <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
               <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
             </div>
             <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-            <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
+            <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
           </div>`:''}
       </div>
     </section>`;
   },
   problem(s){
-    const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-    const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
-    const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-    const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
+    const intro = (s.intro_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
+    const questions = (s.questions||[]).map(q=>`<strong>${richText(q)}</strong>`).join('<br>');
+    const middle = (s.middle_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
+    const quote = (s.quote_lines||[]).map(l=>`<p>${richText(l)}</p>`).join('');
     return `<section class="problem">
       ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container">
@@ -1318,31 +1343,36 @@ const previewTemplates = {
         <div class="problem-body">
           ${intro}${questions?`<p>${questions}</p>`:''}${middle}
           ${quote?`<div class="problem-quote">${quote}</div>`:''}
-          ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
+          ${s.final_line?`<p class="problem-final">${richText(s.final_line)}</p>`:''}
         </div>
       </div>
     </section>`;
   },
   about(s){
-    const body = (s.body_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
+    const body = (s.body_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
     return `<section class="about">
       <div class="container about-grid">
         <div>
           <h2>${esc(s.title||'')}</h2>
-          ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+          ${s.lead?`<p class="about-lead">${richText(s.lead)}</p>`:''}
         </div>
         ${s.photo?`<div class="about-photo">${imgTag(s.photo,'Dr. Campa')}</div>`:''}
         <div class="about-body">
           ${body}
-          ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
+          ${s.callout?`<em class="callout">${richText(s.callout)}</em>`:''}
         </div>
       </div>
     </section>`;
   },
   value_card(s){
+    const icons = {
+      clock:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><circle cx="32" cy="32" r="20"/><path d="M32 18v14l8 4"/></svg>`,
+      chart:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 50 L24 30 L36 38 L52 14"/><polyline points="40 14 52 14 52 26"/></svg>`,
+      shield:`<svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M32 8 L52 16 V32 C52 44 32 56 32 56 C32 56 12 44 12 32 V16 Z"/><polygon points="32 22 35 28 41 29 36 33 37 39 32 36 27 39 28 33 23 29 29 28"/></svg>`
+    };
     const items = (s.items||[]).map(it=>`
       <div class="value-item">
-        <div class="value-icon" data-icon="${esc(it.icon||'clock')}"></div>
+        <div class="value-icon">${icons[it.icon]||icons.clock}</div>
         <h4>${esc(it.title||'')}</h4>
         ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
       </div>`).join('');
@@ -1350,9 +1380,9 @@ const previewTemplates = {
       <div class="container">
         <div class="value-card">
           <h2>${esc(s.title||'')}</h2>
-          <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
+          <p class="lead">${richText(s.lead||'')} <strong>${richText(s.lead_strong||'')}</strong></p>
           <div class="value-grid">${items}</div>
-          ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
+          ${s.footnote?`<p class="value-footnote">${richText(s.footnote)} <strong>${richText(s.footnote_strong||'')}</strong></p>`:''}
         </div>
       </div>
     </section>`;
@@ -1361,13 +1391,13 @@ const previewTemplates = {
     const cards = (s.cards||[]).map(c=>`
       <div class="method-card">
         <div class="method-photo">${imgTag(c.photo, c.title)}<div class="method-num">${esc(c.num||'')}</div></div>
-        <div class="method-body"><h3>${esc(c.title||'')}</h3><p>${esc(c.body||'')}</p></div>
+        <div class="method-body"><h3>${esc(c.title||'')}</h3><p>${richText(c.body||'')}</p></div>
       </div>`).join('');
     return `<section class="method">
       <div class="container">
         <div class="method-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <p class="sub">${esc(s.subtitle_a||'')}<br><br>${esc(s.subtitle_b||'')} <strong>${esc(s.subtitle_strong||'')}</strong></p>
+          <p class="sub">${richText(s.subtitle_a||'')}<br><br>${richText(s.subtitle_b||'')} <strong>${richText(s.subtitle_strong||'')}</strong></p>
         </div>
         <div class="method-grid">${cards}</div>
       </div>
@@ -1378,14 +1408,14 @@ const previewTemplates = {
       <div class="level">
         <div class="level-tag">${esc(l.tag||'')}</div>
         <h4>${esc(l.title||'')}</h4>
-        <p>${esc(l.body||'')}</p>
+        <p>${richText(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
     return `<section class="levels">
       <div class="container">
         <div class="levels-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <p class="sub">${esc(s.subtitle||'')}</p>
+          <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         <div class="levels-grid">
           <div class="pyramid">
@@ -1404,8 +1434,8 @@ const previewTemplates = {
         <div class="program-text">
           ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
           <h3>${esc(c.title||'')}</h3>
-          ${c.subtitle?`<div class="program-subtitle">${esc(c.subtitle)}</div>`:''}
-          <p>${esc(c.body||'')}</p>
+          ${c.subtitle?`<div class="program-subtitle">${richText(c.subtitle)}</div>`:''}
+          <p>${richText(c.body||'')}</p>
           ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
         </div>
         <div class="program-img">${imgTag(c.photo, c.title)}</div>
@@ -1414,7 +1444,7 @@ const previewTemplates = {
       <div class="container">
         <div class="programs-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <p class="sub">${esc(s.subtitle||'')}</p>
+          <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         ${cards}
       </div>
@@ -1425,13 +1455,13 @@ const previewTemplates = {
       <div class="audience-item">
         <div class="audience-photo">${imgTag(it.photo, it.title)}</div>
         <h4>${esc(it.title||'')}</h4>
-        <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
+        <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
     return `<section>
       <div class="container">
         <div class="audience-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <p class="sub">${esc(s.subtitle||'')}</p>
+          <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         <div class="audience-grid">${items}</div>
       </div>
@@ -1447,10 +1477,10 @@ const previewTemplates = {
       <div class="container">
         <div class="stats-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-          <p class="sub">${esc(s.subtitle||'')}</p>
+          <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         ${renderRow(s.row_a)}${renderRow(s.row_b)}
-        ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+        ${s.footnote?`<p class="stats-foot">${richText(s.footnote)}</p>`:''}
       </div>
     </section>`;
   },
@@ -1458,7 +1488,7 @@ const previewTemplates = {
     const items = (s.items||[]).map(t=>`
       <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
+        <p class="test-text"><strong>${richText(t.text_strong||'')}</strong> ${richText(t.text||'')}</p>
         <div class="test-author">
           <div class="test-avatar">${imgTag(t.avatar, t.name)}</div>
           <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
@@ -1476,7 +1506,7 @@ const previewTemplates = {
   big_quote(s){
     return `<section class="big-quote">
       <div class="container">
-        <p class="q">${esc(s.quote||'')}</p>
+        <p class="q">${richText(s.quote||'')}</p>
         <div class="who">
           ${s.author_photo?`<div class="av">${imgTag(s.author_photo, s.author_name)}</div>`:''}
           <div class="n">${esc(s.author_name||'')}</div>
@@ -1493,20 +1523,20 @@ const previewTemplates = {
       <div class="container">
         <div class="features-card">
           <h2>${esc(s.title||'')}</h2>
-          <p class="lead">${esc(s.lead||'')}</p>
+          <p class="lead">${richText(s.lead||'')}</p>
           <div class="feature-pills">${pills}</div>
         </div>
       </div>
     </section>`;
   },
   cta_form(s){
-    const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
+    const perks = (s.perks||[]).map(p=>`<li>${richText(p)}</li>`).join('');
     return `<section class="cta-section">
       <div class="container">
         <div class="cta-card">
           <div class="cta-text">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p>${esc(s.body||'')}</p>
+            <p>${richText(s.body||'')}</p>
             <ul class="cta-perks">${perks}</ul>
           </div>
           <div class="form-wrap">
@@ -1526,7 +1556,7 @@ const previewTemplates = {
           ${s.subtitle?`<p class="sub">${esc(s.subtitle)}</p>`:''}
         </div>`:''}
         <div class="video-block-wrap">${videoTag(s.video, {})}</div>
-        ${s.caption?`<p class="video-block-caption">${esc(s.caption)}</p>`:''}
+        ${s.caption?`<p class="video-block-caption">${richText(s.caption)}</p>`:''}
       </div>
     </section>`;
   }
