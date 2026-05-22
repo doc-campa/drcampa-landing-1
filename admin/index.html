@@ -284,6 +284,34 @@ a { color:inherit; text-decoration:none; }
 .section-row.expanded + .section-form { display:block; }
 .section-form-fields { display:flex; flex-direction:column; gap:18px; }
 
+/* ====== STYLE OVERRIDES BLOCK (per section) ====== */
+.section-style-block {
+  margin-top:22px; padding-top:14px;
+  border-top:0.5px dashed var(--line);
+}
+.section-style-toggle {
+  display:flex; align-items:center; gap:10px;
+  padding:8px 0; cursor:pointer; user-select:none;
+  font-size:13px; font-weight:500;
+  transition:opacity .15s;
+}
+.section-style-toggle:hover { opacity:.7; }
+.section-style-toggle > span:first-child { flex-shrink:0; }
+.section-style-hint {
+  flex:1; font-size:11.5px; color:var(--ink-light); font-weight:400;
+  font-style:italic;
+}
+.section-style-chevron {
+  color:var(--ink-light); transition:transform .25s var(--ease-spring);
+  display:inline-block; line-height:1;
+}
+.section-style-block.open .section-style-chevron { transform:rotate(180deg); }
+.section-style-body {
+  display:none; padding-top:14px;
+  flex-direction:column; gap:16px;
+}
+.section-style-block.open .section-style-body { display:flex; }
+
 .field { display:block; }
 .field-label {
   font-size:12px; font-weight:500; color:var(--ink); margin-bottom:3px;
@@ -676,6 +704,26 @@ function summarize(s) {
 }
 
 /* Field schema for each section type */
+
+/* ===== STILE SEZIONE — controlli universali ===== */
+/* Set di campi che ogni sezione può sovrascrivere. Tutti opzionali. */
+const STYLE_FIELDS = [
+  ['bg', 'Sfondo della sezione', 'color', '', 'Lascia vuoto per usare il colore della palette globale. Compilato = sovrascrive solo questa sezione.'],
+  ['accent', 'Colore accent (titoli, dettagli)', 'color', '', 'Il colore della parola corsiva nel titolo e dei dettagli colorati. Vuoto = palette.'],
+  ['text', 'Colore testo', 'color', '', 'Utile se hai sfondo scuro e vuoi testo chiaro (o viceversa). Vuoto = palette.'],
+  ['scale', 'Scala dei testi', 'select', null, ['', 'compatto', 'normale', 'grande', 'extralarge']]
+];
+/* Le sezioni con "doppio sfondo" (sezione + card/box interna) aggiungono il campo card */
+const STYLE_FIELDS_WITH_CARD = [
+  ...STYLE_FIELDS,
+  ['card', 'Colore della card/box interna', 'color', '', 'Il riquadro colorato dentro la sezione. Es: il riquadro arancione di "Card valore", la card del form.']
+];
+const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
+
+function styleSchemaFor(type){
+  return SECTIONS_WITH_CARD_BG.has(type) ? STYLE_FIELDS_WITH_CARD : STYLE_FIELDS;
+}
+
 const SECTION_SCHEMA = {
   hero: [
     ['bg_image', 'Immagine di sfondo', 'image', 'Carica versione desktop (orizzontale, 1920px) e opzionalmente mobile (verticale, 800px).'],
@@ -880,6 +928,7 @@ let token = sessionStorage.getItem('gh_token') || null;
 let ui = {
   expandedSection: null,
   openObjects: new Set(['sections']),
+  styleBlocksOpen: new Set(), // indices of sections whose 🎨 Stile block is open
   isDirty: false,
   isSaving: false,
   addMenuOpen: false,
@@ -1298,13 +1347,35 @@ function videoTag(value, opts){
   return `<video src="${esc(url)}" ${attrs} ${fillAttrs}></video>`;
 }
 
+/* Genera attributo style="" con CSS variables locali dalla section.style.
+   Le variabili sono: --section-bg, --section-accent, --section-text, --section-card, --text-scale.
+   I template della landing/preview leggono queste variabili e fallback sulla palette globale. */
+function sectionStyleAttr(s){
+  const st = (s && s.style) || {};
+  const parts = [];
+  if(st.bg)     parts.push(`--section-bg:${st.bg}`);
+  if(st.accent) parts.push(`--section-accent:${st.accent}`);
+  if(st.text)   parts.push(`--section-text:${st.text}`);
+  if(st.card)   parts.push(`--section-card:${st.card}`);
+  const scale = scaleValue(st.scale);
+  if(scale)     parts.push(`--text-scale:${scale}`);
+  return parts.length ? ` style="${parts.join(';')}"` : '';
+}
+function scaleValue(s){
+  if(!s || s === 'normale') return null;
+  if(s === 'compatto')   return '0.88';
+  if(s === 'grande')     return '1.12';
+  if(s === 'extralarge') return '1.25';
+  return null;
+}
+
 /* =====================================================================
    PREVIEW TEMPLATES (copied from index.html)
    ===================================================================== */
 const previewTemplates = {
   hero(s){
     const hasVideo = s.bg_video && (typeof s.bg_video === 'object' ? s.bg_video.src : s.bg_video);
-    return `<section class="hero">
+    return `<section${sectionStyleAttr(s)} class="hero">
       <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, 'Hero')}</div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container hero-content">
@@ -1336,7 +1407,7 @@ const previewTemplates = {
     const questions = (s.questions||[]).map(q=>`<strong>${richText(q)}</strong>`).join('<br>');
     const middle = (s.middle_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
     const quote = (s.quote_lines||[]).map(l=>`<p>${richText(l)}</p>`).join('');
-    return `<section class="problem">
+    return `<section${sectionStyleAttr(s)} class="problem">
       ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container">
         <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1350,7 +1421,7 @@ const previewTemplates = {
   },
   about(s){
     const body = (s.body_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
-    return `<section class="about">
+    return `<section${sectionStyleAttr(s)} class="about">
       <div class="container about-grid">
         <div>
           <h2>${esc(s.title||'')}</h2>
@@ -1376,7 +1447,7 @@ const previewTemplates = {
         <h4>${esc(it.title||'')}</h4>
         ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
       </div>`).join('');
-    return `<section class="value-section">
+    return `<section${sectionStyleAttr(s)} class="value-section">
       <div class="container">
         <div class="value-card">
           <h2>${esc(s.title||'')}</h2>
@@ -1393,7 +1464,7 @@ const previewTemplates = {
         <div class="method-photo">${imgTag(c.photo, c.title)}<div class="method-num">${esc(c.num||'')}</div></div>
         <div class="method-body"><h3>${esc(c.title||'')}</h3><p>${richText(c.body||'')}</p></div>
       </div>`).join('');
-    return `<section class="method">
+    return `<section${sectionStyleAttr(s)} class="method">
       <div class="container">
         <div class="method-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1411,7 +1482,7 @@ const previewTemplates = {
         <p>${richText(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
-    return `<section class="levels">
+    return `<section${sectionStyleAttr(s)} class="levels">
       <div class="container">
         <div class="levels-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1440,7 +1511,7 @@ const previewTemplates = {
         </div>
         <div class="program-img">${imgTag(c.photo, c.title)}</div>
       </div>`).join('');
-    return `<section class="programs">
+    return `<section${sectionStyleAttr(s)} class="programs">
       <div class="container">
         <div class="programs-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1457,7 +1528,7 @@ const previewTemplates = {
         <h4>${esc(it.title||'')}</h4>
         <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
-    return `<section>
+    return `<section${sectionStyleAttr(s)} class="audience">
       <div class="container">
         <div class="audience-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1473,7 +1544,7 @@ const previewTemplates = {
       const cells = row.map(c=>`<div class="stat">${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}<div class="num">${esc(c.num||'')}</div><div class="lbl">${esc(c.label||'')}</div></div>`).join('');
       return `<div class="stats-row">${cells}</div>`;
     };
-    return `<section class="stats">
+    return `<section${sectionStyleAttr(s)} class="stats">
       <div class="container">
         <div class="stats-head">
           <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
@@ -1494,7 +1565,7 @@ const previewTemplates = {
           <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
         </div>
       </div>`).join('');
-    return `<section class="testimonials">
+    return `<section${sectionStyleAttr(s)} class="testimonials">
       <div class="container">
         <div class="test-head">
           <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
@@ -1504,7 +1575,7 @@ const previewTemplates = {
     </section>`;
   },
   big_quote(s){
-    return `<section class="big-quote">
+    return `<section${sectionStyleAttr(s)} class="big-quote">
       <div class="container">
         <p class="q">${richText(s.quote||'')}</p>
         <div class="who">
@@ -1519,7 +1590,7 @@ const previewTemplates = {
       const cls = p.special ? 'pill-item special' : 'pill-item';
       return `<div class="${cls}">${esc(p.text||'')}</div>`;
     }).join('');
-    return `<section class="features-section">
+    return `<section${sectionStyleAttr(s)} class="features-section">
       <div class="container">
         <div class="features-card">
           <h2>${esc(s.title||'')}</h2>
@@ -1531,7 +1602,7 @@ const previewTemplates = {
   },
   cta_form(s){
     const perks = (s.perks||[]).map(p=>`<li>${richText(p)}</li>`).join('');
-    return `<section class="cta-section">
+    return `<section${sectionStyleAttr(s)} class="cta-section">
       <div class="container">
         <div class="cta-card">
           <div class="cta-text">
@@ -1549,7 +1620,7 @@ const previewTemplates = {
     </section>`;
   },
   video_block(s){
-    return `<section class="video-block">
+    return `<section${sectionStyleAttr(s)} class="video-block">
       <div class="container">
         ${(s.title||s.subtitle)?`<div class="video-block-head">
           ${s.title?`<h2>${esc(s.title)}</h2>`:''}
@@ -2248,7 +2319,25 @@ function renderSectionForm(section, idx){
   const schema = SECTION_SCHEMA[section.type];
   if(!schema) return `<div style="padding:20px;color:var(--ink-light)">Tipo "${esc(section.type)}" sconosciuto.</div>`;
   const fields = schema.map(f => renderField(f, section[f[0]], ['sections', idx, f[0]])).join('');
-  return `<div class="section-form-fields">${fields}</div>`;
+  const style = section.style || {};
+  const styleSchema = styleSchemaFor(section.type);
+  const styleFields = styleSchema.map(f => renderField(f, style[f[0]], ['sections', idx, 'style', f[0]])).join('');
+  const isOpen = ui.styleBlocksOpen && ui.styleBlocksOpen.has(idx);
+  const hasOverrides = !!(style.bg || style.accent || style.text || style.card || (style.scale && style.scale !== '' && style.scale !== 'normale'));
+  return `<div class="section-form-fields">${fields}</div>
+    <div class="section-style-block ${isOpen?'open':''}" data-style-block="${idx}">
+      <div class="section-style-toggle" data-toggle-style="${idx}">
+        <span>🎨 Stile della sezione</span>
+        <span class="section-style-hint">${hasOverrides ? 'personalizzato' : 'usa palette'}</span>
+        <span class="section-style-chevron">▾</span>
+      </div>
+      <div class="section-style-body">
+        <p class="field-hint" style="margin-bottom:14px">
+          Tutti i campi sono opzionali. Lascia vuoto per usare i colori della palette globale (Impostazioni Generali → Colori).
+        </p>
+        ${styleFields}
+      </div>
+    </div>`;
 }
 
 /* =====================================================================
@@ -2281,6 +2370,19 @@ function attachEditorListeners(){
         setTimeout(() => scrollPreviewToSection(i), 60);
       }
       syncPreviewHighlight();
+    };
+  });
+
+  // Toggle 🎨 Stile blocks
+  editor.querySelectorAll('[data-toggle-style]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      const i = parseInt(el.dataset.toggleStyle);
+      if(ui.styleBlocksOpen.has(i)) ui.styleBlocksOpen.delete(i);
+      else ui.styleBlocksOpen.add(i);
+      // Toggle in-place, no full re-render needed
+      const block = editor.querySelector(`[data-style-block="${i}"]`);
+      if(block) block.classList.toggle('open');
     };
   });
 
