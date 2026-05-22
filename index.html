@@ -1214,58 +1214,104 @@ body.js-ready section.fx-in .pyramid .tri-1 { opacity:1; transform:none; transit
 /* ============================================================
    PER-SECTION STYLE OVERRIDES
    ------------------------------------------------------------
-   Ogni <section> può ricevere variabili inline via il CMS:
-     --section-bg     → sostituisce lo sfondo
-     --section-accent → sostituisce l'accent (parola corsiva, tag, bordi gold)
-     --section-text   → sostituisce il colore del testo
-     --section-card   → sostituisce il colore della card/box interna (solo dove c'è)
-     --text-scale     → moltiplica la dimensione testi della sezione (default 1)
-   Tutte le rule qui sotto fanno fallback alla palette globale se la
-   variabile non è settata. Niente !important: rispettiamo la specificity normale.
+   Ogni <section> può ricevere CSS variabili inline tramite il CMS:
+     --section-bg       → sfondo della sezione
+     --section-accent   → accent (parola corsiva, tag, bordi gold, dettagli)
+     --section-text     → colore principale del testo
+     --section-card     → colore della card/box interna (solo sezioni che ne hanno una)
+     --size-title       → moltiplicatore dimensione h2 grande (default 1)
+     --size-subtitle    → moltiplicatore dimensione sottotitoli/lead/h3/h4 (default 1)
+     --size-body        → moltiplicatore dimensione paragrafi e liste (default 1)
+   Le regole usano fallback alla palette globale via var(--xxx, default).
    ============================================================ */
-section[style*="--section-bg"]    { background:var(--section-bg) !important; }
-section[style*="--section-text"]  { color:var(--section-text); }
-section[style*="--text-scale"]    { font-size:calc(17px * var(--text-scale, 1)); }
-section[style*="--text-scale"] h1 { font-size:calc(clamp(2.6rem, 5.5vw, 4.8rem) * var(--text-scale, 1)); }
-section[style*="--text-scale"] h2 { font-size:calc(clamp(2rem, 4vw, 3.2rem) * var(--text-scale, 1)); }
-section[style*="--text-scale"] h3 { font-size:calc(clamp(1.4rem, 2.5vw, 2rem) * var(--text-scale, 1)); }
 
-/* Accent overrides (parola corsiva nei titoli, tag, bordi) */
-section[style*="--section-accent"] .accent,
-section[style*="--section-accent"] .serif-italic { color:var(--section-accent); }
-section[style*="--section-accent"] .level-tag    { color:var(--section-accent); }
-section[style*="--section-accent"] .pill         { background:var(--section-accent); }
-section[style*="--section-accent"] .program-tag,
-section[style*="--section-accent"] .program-subtitle { color:var(--section-accent); }
-section[style*="--section-accent"] .test-stars    { color:var(--section-accent); }
-section[style*="--section-accent"] .mission-bar-fill { background:linear-gradient(90deg, var(--section-accent) 0%, var(--section-accent) 100%); }
-section.problem[style*="--section-accent"] .problem-quote { border-left-color:var(--section-accent); }
-section.problem[style*="--section-accent"] .problem-final { color:var(--section-accent); }
-section.about[style*="--section-accent"] .callout         { color:var(--section-accent); }
-section.audience[style*="--section-accent"] .audience-item:hover { border-color:var(--section-accent); }
-section.testimonials[style*="--section-accent"] .test-card:hover { border-color:var(--section-accent); }
-section.levels[style*="--section-accent"] .level { border-left-color:var(--section-accent); }
-section.method[style*="--section-accent"] .method-num { background:var(--section-accent); }
-section.method[style*="--section-accent"] .method-card:hover { border-color:var(--section-accent); }
-section.programs[style*="--section-accent"] .program-link:hover { color:var(--section-accent); }
-section.video-section[style*="--section-accent"] .video-caption { color:var(--section-accent); }
-section.big-quote[style*="--section-accent"] .av { border-color:var(--section-accent); }
+/* === SFONDI === */
+section[style*="--section-bg"] { background:var(--section-bg) !important; }
+/* Quando si cambia il bg, sopprimo i gradient sovrapposti (::before) per non oscurarlo */
+section.hero[style*="--section-bg"]::before,
+section.value-section[style*="--section-bg"] .value-card::before,
+section.features-section[style*="--section-bg"] .features-card::before,
+section.big-quote[style*="--section-bg"]::before { background:none !important; opacity:.1; }
 
-/* Card/box interno per sezioni a doppio sfondo */
-section.value-section[style*="--section-card"] .value-card    { background:var(--section-card); }
-section.features-section[style*="--section-card"] .features-card { background:var(--section-card); }
-section.cta-section[style*="--section-card"] .cta-card         { background:var(--section-card); }
-/* Quando l'utente cambia il bg della Card Valore o Features, anche il gradient va sostituito con solido */
-section.value-section[style*="--section-card"] .value-card::before,
-section.features-section[style*="--section-card"] .features-card::before { display:none; }
-
-/* Quando il colore del testo è impostato manualmente, propaga ai discendenti tipici */
+/* === COLORE TESTO === */
+section[style*="--section-text"] { color:var(--section-text) !important; }
 section[style*="--section-text"] h1,
 section[style*="--section-text"] h2,
 section[style*="--section-text"] h3,
 section[style*="--section-text"] h4,
 section[style*="--section-text"] p,
-section[style*="--section-text"] li { color:inherit; }
+section[style*="--section-text"] li,
+section[style*="--section-text"] .lead,
+section[style*="--section-text"] .sub,
+section[style*="--section-text"] .program-text p { color:var(--section-text) !important; }
+
+/* === ACCENT (titoli colorati, tag, dettagli) === */
+section[style*="--section-accent"] .accent,
+section[style*="--section-accent"] .serif-italic,
+section[style*="--section-accent"] .level-tag,
+section[style*="--section-accent"] .program-tag,
+section[style*="--section-accent"] .program-subtitle,
+section[style*="--section-accent"] .test-stars { color:var(--section-accent) !important; }
+section[style*="--section-accent"] .pill          { background:var(--section-accent) !important; }
+section[style*="--section-accent"] .mission-bar-fill { background:var(--section-accent) !important; }
+section.problem[style*="--section-accent"] .problem-quote { border-left-color:var(--section-accent) !important; }
+section.problem[style*="--section-accent"] .problem-final { color:var(--section-accent) !important; }
+section.about[style*="--section-accent"] .callout { color:var(--section-accent) !important; }
+section.audience[style*="--section-accent"] .audience-item:hover,
+section.testimonials[style*="--section-accent"] .test-card:hover,
+section.method[style*="--section-accent"] .method-card:hover { border-color:var(--section-accent) !important; }
+section.levels[style*="--section-accent"] .level { border-left-color:var(--section-accent) !important; }
+section.method[style*="--section-accent"] .method-num { background:var(--section-accent) !important; }
+section.programs[style*="--section-accent"] .program-link { color:var(--section-accent) !important; }
+section.video-section[style*="--section-accent"] .video-caption { color:var(--section-accent) !important; }
+section.big-quote[style*="--section-accent"] .av { border-color:var(--section-accent) !important; }
+section.cta-section[style*="--section-accent"] .cta-perks li::before,
+section.cta-section[style*="--section-accent"] .btn-primary { background:var(--section-accent) !important; border-color:var(--section-accent) !important; }
+
+/* === CARD/BOX INTERNA (sezioni a doppio sfondo) === */
+section.value-section[style*="--section-card"] .value-card,
+section.features-section[style*="--section-card"] .features-card { background:var(--section-card) !important; }
+section.cta-section[style*="--section-card"] .form-wrap { background:var(--section-card) !important; }
+section.value-section[style*="--section-card"] .value-card::before,
+section.features-section[style*="--section-card"] .features-card::before { display:none; }
+
+/* === DIMENSIONI TESTI (3 moltiplicatori separati) === */
+/* Titolo principale h2 grande */
+section[style*="--size-title"] h2 {
+  font-size:calc(clamp(2rem, 4vw, 3.2rem) * var(--size-title, 1)) !important;
+}
+section[style*="--size-title"] .hero-content h1,
+section[style*="--size-title"] h1 {
+  font-size:calc(clamp(2.6rem, 5.5vw, 4.8rem) * var(--size-title, 1)) !important;
+}
+
+/* Sottotitoli/lead/h3/h4 */
+section[style*="--size-subtitle"] h3,
+section[style*="--size-subtitle"] h4 {
+  font-size:calc(clamp(1.2rem, 2vw, 1.6rem) * var(--size-subtitle, 1)) !important;
+}
+section[style*="--size-subtitle"] .lead,
+section[style*="--size-subtitle"] .sub,
+section[style*="--size-subtitle"] .hero-sub,
+section[style*="--size-subtitle"] .program-subtitle,
+section[style*="--size-subtitle"] .problem-final,
+section[style*="--size-subtitle"] .stats-foot,
+section[style*="--size-subtitle"] .video-caption {
+  font-size:calc(1.1rem * var(--size-subtitle, 1)) !important;
+}
+
+/* Paragrafi e liste (corpo testo) */
+section[style*="--size-body"] p,
+section[style*="--size-body"] li,
+section[style*="--size-body"] .test-text,
+section[style*="--size-body"] .audience-item p,
+section[style*="--size-body"] .method-body p,
+section[style*="--size-body"] .level p,
+section[style*="--size-body"] .problem-body p,
+section[style*="--size-body"] .program-text p {
+  font-size:calc(1rem * var(--size-body, 1)) !important;
+  line-height:1.6;
+}
 </style>
 </head>
 <body>
@@ -1398,15 +1444,17 @@ function hasVideo(value){
 function sectionStyleAttr(s){
   const st = (s && s.style) || {};
   const parts = [];
-  if(st.bg)     parts.push(`--section-bg:${st.bg}`);
-  if(st.accent) parts.push(`--section-accent:${st.accent}`);
-  if(st.text)   parts.push(`--section-text:${st.text}`);
-  if(st.card)   parts.push(`--section-card:${st.card}`);
-  const scale = scaleValue(st.scale);
-  if(scale)     parts.push(`--text-scale:${scale}`);
+  if(st.bg)            parts.push(`--section-bg:${st.bg}`);
+  if(st.accent)        parts.push(`--section-accent:${st.accent}`);
+  if(st.text)          parts.push(`--section-text:${st.text}`);
+  if(st.card)          parts.push(`--section-card:${st.card}`);
+  if(st.size_title)    parts.push(`--size-title:${st.size_title}`);
+  if(st.size_subtitle) parts.push(`--size-subtitle:${st.size_subtitle}`);
+  if(st.size_body)     parts.push(`--size-body:${st.size_body}`);
   return parts.length ? ` style="${parts.join(';')}"` : '';
 }
 function scaleValue(s){
+  // Deprecated, kept for backward compat con vecchi content.json
   if(!s || s === 'normale') return null;
   if(s === 'compatto')   return '0.88';
   if(s === 'grande')     return '1.12';
