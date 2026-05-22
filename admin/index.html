@@ -282,9 +282,7 @@ a { color:inherit; text-decoration:none; }
   display:none;
 }
 .section-row.expanded + .section-form { display:block; }
-.section-form-fields { display:flex; flex-direction:column; gap:18px; min-width:0; }
-
-.field { display:block; min-width:0; }
+.section-form-fields { display:flex; flex-direction:column; gap:18px; }
 
 /* ====== STYLE OVERRIDES BLOCK (per section) ====== */
 .section-style-block {
@@ -314,6 +312,7 @@ a { color:inherit; text-decoration:none; }
 }
 .section-style-block.open .section-style-body { display:flex; }
 
+.field { display:block; }
 .field-label {
   font-size:12px; font-weight:500; color:var(--ink); margin-bottom:3px;
   display:flex; align-items:center; gap:6px;
@@ -370,11 +369,9 @@ a { color:inherit; text-decoration:none; }
 /* ====== IMAGE PAIR (Desktop + Mobile) ====== */
 .field-image-pair {
   display:flex; flex-direction:column; gap:8px;
-  min-width:0; /* permette al pair di restringersi dentro flex parent */
 }
 .field-image-pair .field-image {
   padding-top:30px; /* spazio per il label */
-  min-width:0;
 }
 .field-image-variant-label {
   position:absolute; top:8px; left:12px;
@@ -649,33 +646,6 @@ a { color:inherit; text-decoration:none; }
 
 /* ====== PREVIEW PANEL hover hints (set inside iframe via injected CSS) ====== */
 /* (these go into the iframe srcdoc, see PREVIEW_HOVER_CSS in JS) */
-
-/* ====== RESPONSIVE LAYOUT ====== */
-/* Su schermi sotto 1200px riduco la larghezza dell'editor per dare più spazio al preview */
-@media (max-width: 1300px) {
-  .editor { flex:0 0 42%; max-width:520px; padding:18px 20px 60px; }
-}
-@media (max-width: 1100px) {
-  .editor { flex:0 0 45%; max-width:460px; padding:16px 18px 50px; }
-}
-/* Sotto i 900px (tablet/mobile) impilo editor + preview verticalmente */
-@media (max-width: 900px) {
-  .main { flex-direction:column; }
-  .editor {
-    flex:0 0 auto; max-width:none; width:100%;
-    max-height:50vh; border-right:0;
-    border-bottom:1px solid var(--line);
-  }
-  .preview { flex:1; min-height:50vh; }
-  /* Header più compatto su mobile */
-  .header { padding:8px 12px; }
-  .editor-title { font-size:13px; }
-}
-@media (max-width: 600px) {
-  .editor { padding:12px 14px 40px; }
-  .header-actions { gap:6px; }
-  .header-actions .btn { padding:6px 10px; font-size:12px; }
-}
 </style>
 </head>
 <body>
@@ -735,67 +705,23 @@ function summarize(s) {
 
 /* Field schema for each section type */
 
-/* ===== STILE SEZIONE — controlli per sezione ===== */
-
-/* I colori di default di ogni tipo di sezione.
-   Questi sono i valori CORRENTI della palette Clinical Luxury.
-   Vengono pre-popolati nei color picker così l'utente vede subito
-   il colore attuale e può modificarlo direttamente. */
-const SECTION_DEFAULTS = {
-  hero:          { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
-  problem:       { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
-  about:         { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
-  value_card:    { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
-  method:        { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
-  levels:        { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
-  programs:      { bg:'#EFE9DD', accent:'#C8A86B', text:'#1E1E1E' },
-  audience:      { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
-  stats:         { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
-  testimonials:  { bg:'#F5E3DE', accent:'#123C46', text:'#1E1E1E' },
-  big_quote:     { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
-  features_card: { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
-  cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
-  video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' }
-};
-
-/* Le opzioni di dimensione: percentuali sensate.
-   Stored value sono numeri (per JSON pulito), label utente in % */
-const SIZE_OPTIONS = [
-  ['',     '— Default (100%)'],
-  ['0.70', '70% — Molto piccolo'],
-  ['0.85', '85% — Piccolo'],
-  ['1.00', '100% — Normale'],
-  ['1.15', '115% — Grande'],
-  ['1.30', '130% — Molto grande'],
-  ['1.50', '150% — Enorme']
+/* ===== STILE SEZIONE — controlli universali ===== */
+/* Set di campi che ogni sezione può sovrascrivere. Tutti opzionali. */
+const STYLE_FIELDS = [
+  ['bg', 'Sfondo della sezione', 'color', '', 'Lascia vuoto per usare il colore della palette globale. Compilato = sovrascrive solo questa sezione.'],
+  ['accent', 'Colore accent (titoli, dettagli)', 'color', '', 'Il colore della parola corsiva nel titolo e dei dettagli colorati. Vuoto = palette.'],
+  ['text', 'Colore testo', 'color', '', 'Utile se hai sfondo scuro e vuoi testo chiaro (o viceversa). Vuoto = palette.'],
+  ['scale', 'Scala dei testi', 'select', null, ['', 'compatto', 'normale', 'grande', 'extralarge']]
 ];
-
-/* Set di campi che ogni sezione può sovrascrivere. Tutti opzionali.
-   Default popolati dinamicamente in renderField in base al tipo sezione. */
-function buildStyleSchema(type){
-  const d = SECTION_DEFAULTS[type] || {};
-  const fields = [
-    ['bg',     'Sfondo della sezione',         'color',       d.bg || '',     'Il colore attuale è pre-popolato. Modificalo per cambiarlo, o cancellalo per tornare al default della palette.'],
-    ['accent', 'Colore accent (titoli, dettagli)', 'color',   d.accent || '', 'Il colore della parola corsiva nei titoli, dei tag, dei dettagli colorati.'],
-    ['text',   'Colore del testo',             'color',       d.text || '',   'Utile se cambi sfondo: assicurati che il testo sia leggibile.']
-  ];
-  // Card interna solo per sezioni a doppio sfondo
-  if(SECTIONS_WITH_CARD_BG.has(type)){
-    fields.push(['card', 'Colore card/box interna', 'color', d.card || '', 'Il riquadro colorato dentro la sezione (es. la card scura di "Card valore").']);
-  }
-  // Dimensioni testo — 3 select separati
-  fields.push(
-    ['size_title',    'Dimensione TITOLO principale',  'size-select', '', 'Il titolone della sezione (h2 grande).'],
-    ['size_subtitle', 'Dimensione SOTTOTITOLO',        'size-select', '', 'I sottotitoli, lead, h3, h4 della sezione.'],
-    ['size_body',     'Dimensione PARAGRAFI',          'size-select', '', 'Il corpo del testo (paragrafi, liste, didascalie).']
-  );
-  return fields;
-}
-
+/* Le sezioni con "doppio sfondo" (sezione + card/box interna) aggiungono il campo card */
+const STYLE_FIELDS_WITH_CARD = [
+  ...STYLE_FIELDS,
+  ['card', 'Colore della card/box interna', 'color', '', 'Il riquadro colorato dentro la sezione. Es: il riquadro arancione di "Card valore", la card del form.']
+];
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
 
 function styleSchemaFor(type){
-  return buildStyleSchema(type);
+  return SECTIONS_WITH_CARD_BG.has(type) ? STYLE_FIELDS_WITH_CARD : STYLE_FIELDS;
 }
 
 const SECTION_SCHEMA = {
@@ -1421,21 +1347,21 @@ function videoTag(value, opts){
   return `<video src="${esc(url)}" ${attrs} ${fillAttrs}></video>`;
 }
 
-/* Genera attributo style="" con CSS variables locali dalla section.style. */
+/* Genera attributo style="" con CSS variables locali dalla section.style.
+   Le variabili sono: --section-bg, --section-accent, --section-text, --section-card, --text-scale.
+   I template della landing/preview leggono queste variabili e fallback sulla palette globale. */
 function sectionStyleAttr(s){
   const st = (s && s.style) || {};
   const parts = [];
-  if(st.bg)            parts.push(`--section-bg:${st.bg}`);
-  if(st.accent)        parts.push(`--section-accent:${st.accent}`);
-  if(st.text)          parts.push(`--section-text:${st.text}`);
-  if(st.card)          parts.push(`--section-card:${st.card}`);
-  if(st.size_title)    parts.push(`--size-title:${st.size_title}`);
-  if(st.size_subtitle) parts.push(`--size-subtitle:${st.size_subtitle}`);
-  if(st.size_body)     parts.push(`--size-body:${st.size_body}`);
+  if(st.bg)     parts.push(`--section-bg:${st.bg}`);
+  if(st.accent) parts.push(`--section-accent:${st.accent}`);
+  if(st.text)   parts.push(`--section-text:${st.text}`);
+  if(st.card)   parts.push(`--section-card:${st.card}`);
+  const scale = scaleValue(st.scale);
+  if(scale)     parts.push(`--text-scale:${scale}`);
   return parts.length ? ` style="${parts.join(';')}"` : '';
 }
 function scaleValue(s){
-  // Kept for backward compat
   if(!s || s === 'normale') return null;
   if(s === 'compatto')   return '0.88';
   if(s === 'grande')     return '1.12';
@@ -1761,23 +1687,15 @@ const PREVIEW_BASE_CSS_URL = '/index.html';
 async function ensurePreviewBaseCss(){
   if(!ensurePreviewBaseCss._css){
     try {
-      // Cache bust con timestamp così se la landing viene aggiornata, la preview prende il nuovo CSS
-      // (senza dover hard-refreshare il CMS)
-      const r = await fetch(PREVIEW_BASE_CSS_URL + '?_=' + Date.now(), {cache: 'no-store'});
+      const r = await fetch(PREVIEW_BASE_CSS_URL);
       const html = await r.text();
-      // Match TUTTI i blocchi <style> e li concatena (gestisce CSS in più style tag)
-      const matches = [...html.matchAll(/<style>([\s\S]*?)<\/style>/g)];
-      ensurePreviewBaseCss._css = matches.map(m => m[1]).join('\n');
+      const m = html.match(/<style>([\s\S]*?)<\/style>/);
+      ensurePreviewBaseCss._css = m ? m[1] : '';
     } catch(e){
       ensurePreviewBaseCss._css = 'body{font-family:sans-serif;padding:40px;color:#333}';
     }
   }
   return ensurePreviewBaseCss._css;
-}
-
-/* Forza re-fetch del CSS della landing — utile dopo che l'utente ha pubblicato modifiche */
-function invalidatePreviewBaseCss(){
-  ensurePreviewBaseCss._css = null;
 }
 
 function renderPreviewBody(){
@@ -2007,9 +1925,6 @@ function renderField(field, value, path){
   } else if(type === 'select'){
     const opts = (extra||[]).map(o => `<option value="${esc(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('');
     inputHTML = `<select class="field-select" data-path="${path.join('.')}"><option value="">—</option>${opts}</select>`;
-  } else if(type === 'size-select'){
-    const opts = SIZE_OPTIONS.map(([v, label]) => `<option value="${esc(v)}" ${v===(value||'')?'selected':''}>${esc(label)}</option>`).join('');
-    inputHTML = `<select class="field-select field-size-select" data-path="${path.join('.')}">${opts}</select>`;
   } else if(type === 'color'){
     const def = field[3]; // default color
     const hintTxt = field[4];
@@ -2199,10 +2114,6 @@ function renderApp(){
         </div>
         <div class="topbar-status" id="statusBar"><span class="dot"></span><span>Salvato</span></div>
         <div class="topbar-actions">
-          <button class="btn btn-secondary" id="refreshPreviewBtn" title="Forza aggiornamento anteprima (utile dopo che hai pubblicato modifiche al sito)">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15A9 9 0 1 1 5.64 5.64L23 10"/></svg>
-            Ricarica anteprima
-          </button>
           <a class="btn btn-secondary" href="/" target="_blank" rel="noopener">Vedi sito ↗</a>
           <button class="btn btn-secondary" id="historyBtn" title="Storico modifiche">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/><path d="M12 7v5l3 2"/></svg>
@@ -2244,12 +2155,6 @@ function renderApp(){
   document.querySelector('#saveBtn').onclick = doSave;
   document.querySelector('#logoutBtn').onclick = logout;
   document.querySelector('#historyBtn').onclick = openHistory;
-  document.querySelector('#refreshPreviewBtn').onclick = async () => {
-    invalidatePreviewBaseCss();
-    previewInitialized = false;
-    await updatePreview();
-    showToast('Anteprima ricaricata');
-  };
   // Wire viewport buttons
   document.querySelectorAll('#viewportButtons button').forEach(btn => {
     btn.onclick = () => setViewport(btn.dataset.viewport);
@@ -2416,29 +2321,19 @@ function renderSectionForm(section, idx){
   const fields = schema.map(f => renderField(f, section[f[0]], ['sections', idx, f[0]])).join('');
   const style = section.style || {};
   const styleSchema = styleSchemaFor(section.type);
-  const defaults = SECTION_DEFAULTS[section.type] || {};
   const styleFields = styleSchema.map(f => renderField(f, style[f[0]], ['sections', idx, 'style', f[0]])).join('');
   const isOpen = ui.styleBlocksOpen && ui.styleBlocksOpen.has(idx);
-  // Conta solo i campi davvero personalizzati (valore esiste E diverso da default/normale)
-  const hasOverrides = !!(
-    (style.bg && style.bg.toLowerCase() !== (defaults.bg||'').toLowerCase()) ||
-    (style.accent && style.accent.toLowerCase() !== (defaults.accent||'').toLowerCase()) ||
-    (style.text && style.text.toLowerCase() !== (defaults.text||'').toLowerCase()) ||
-    (style.card && style.card.toLowerCase() !== (defaults.card||'').toLowerCase()) ||
-    style.size_title || style.size_subtitle || style.size_body
-  );
+  const hasOverrides = !!(style.bg || style.accent || style.text || style.card || (style.scale && style.scale !== '' && style.scale !== 'normale'));
   return `<div class="section-form-fields">${fields}</div>
     <div class="section-style-block ${isOpen?'open':''}" data-style-block="${idx}">
       <div class="section-style-toggle" data-toggle-style="${idx}">
         <span>🎨 Stile della sezione</span>
-        <span class="section-style-hint">${hasOverrides ? 'personalizzato ✏️' : 'usa palette globale'}</span>
+        <span class="section-style-hint">${hasOverrides ? 'personalizzato' : 'usa palette'}</span>
         <span class="section-style-chevron">▾</span>
       </div>
       <div class="section-style-body">
         <p class="field-hint" style="margin-bottom:14px">
-          I colori mostrati sono quelli <strong>attuali</strong> della sezione. Modificali per personalizzare,
-          oppure <strong>cancella il valore</strong> nel campo testo per tornare al colore di default della palette.
-          Le dimensioni testo sono moltiplicatori sopra/sotto il 100%.
+          Tutti i campi sono opzionali. Lascia vuoto per usare i colori della palette globale (Impostazioni Generali → Colori).
         </p>
         ${styleFields}
       </div>
