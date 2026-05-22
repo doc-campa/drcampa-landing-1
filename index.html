@@ -237,10 +237,13 @@ section[id] { scroll-margin-top:90px; }
 }
 .hero-content {
   position:relative; z-index:3;
-  max-width:920px;
+  width:100%;
   color:var(--white);
 }
-.hero-content h1 { color:var(--white); }
+.hero-content h1 {
+  color:var(--white);
+  max-width:18ch;
+}
 .hero-content h1 .accent {
   color:var(--yellow);
   font-family:var(--font-serif);
@@ -266,7 +269,7 @@ section[id] { scroll-margin-top:90px; }
   line-height:1.55;
   color:rgba(255,255,255,.85);
   margin:28px 0 36px;
-  max-width:680px;
+  max-width:620px;
 }
 .hero-sub .em {
   color:var(--white); font-weight:400;
@@ -325,8 +328,9 @@ section[id] { scroll-margin-top:90px; }
 }
 .problem .container { position:relative; z-index:1; }
 .problem h2 {
-  max-width:18ch;
-  margin-bottom:60px;
+  max-width:22ch;
+  margin:0 auto 60px;
+  text-align:center;
 }
 .problem h2 .accent {
   color:var(--coral-deep);
@@ -733,6 +737,7 @@ section[id] { scroll-margin-top:90px; }
 .test-grid {
   display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
   gap:24px;
+  max-width:1100px; margin:0 auto;
 }
 .test-card {
   background:var(--white);
@@ -935,13 +940,14 @@ section[id] { scroll-margin-top:90px; }
 }
 .footer .logo { color:var(--white); margin-bottom:18px; }
 .footer-top {
-  display:grid; grid-template-columns:1.4fr repeat(auto-fit, minmax(140px, 1fr));
-  gap:48px;
+  display:grid;
+  grid-template-columns:1.6fr 1fr 1fr 1fr;
+  gap:60px 40px;
   padding-bottom:60px;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
 .footer-about p {
-  margin-top:14px; line-height:1.6; max-width:380px;
+  margin-top:14px; line-height:1.6; max-width:320px;
   color:rgba(255,255,255,.65);
 }
 .footer-top h5 {
@@ -963,8 +969,13 @@ section[id] { scroll-margin-top:90px; }
 }
 .footer-bottom a { color:rgba(255,255,255,.6); transition:color .2s; }
 .footer-bottom a:hover { color:var(--white); }
-@media (max-width:760px) {
+@media (max-width:1024px) {
+  .footer-top { grid-template-columns:1fr 1fr; gap:48px 32px; }
+  .footer-about { grid-column:1 / -1; margin-bottom:8px; }
+}
+@media (max-width:560px) {
   .footer-top { grid-template-columns:1fr; gap:36px; padding-bottom:36px; }
+  .footer-about { grid-column:auto; }
 }
 
 /* ============================================================
