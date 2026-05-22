@@ -655,7 +655,7 @@ const TYPE_DESC = {
   hero: 'Intestazione a tutto schermo',
   problem: 'Testo lungo + citazione',
   about: 'About con foto',
-  value_card: 'Riquadro arancione con 3 vantaggi',
+  value_card: 'Riquadro petrol con 3 vantaggi',
   method: '3 colonne con foto e numeri',
   levels: 'Piramide con 3 livelli',
   programs: 'Card grandi con foto',
@@ -683,28 +683,28 @@ const SECTION_SCHEMA = {
     ['watermark', 'Watermark (testo gigante in trasparenza)', 'text'],
     ['headline_pre', 'Riga sopra il titolo', 'text', 'Es: "Bellezza Autentica. Risultati Reali."'],
     ['headline_main', 'Titolo grande - parte normale', 'text'],
-    ['headline_accent', 'Titolo grande - parola GIALLA evidenziata', 'text', 'La parola in giallo con il segno disegnato sotto.'],
+    ['headline_accent', 'Titolo grande - parola ACCENT evidenziata (corsivo gold)', 'text', 'La parola in corsivo gold con il segno sottolineato sotto.'],
     ['subtitle_em', 'Sottotitolo - parte in corsivo', 'textarea'],
     ['subtitle', 'Sottotitolo - parte normale', 'textarea'],
-    ['cta_label', 'Testo del bottone giallo', 'text'],
+    ['cta_label', 'Testo del bottone CTA giallo / accent', 'text'],
     ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti"'],
     ['mission_label_strong', 'Card missione - etichetta', 'text', 'Lascia tutti i campi mission vuoti per nascondere la card.'],
     ['mission_label_text', 'Card missione - testo descrittivo', 'text'],
     ['mission_percent', 'Card missione - percentuale (0-100)', 'number'],
     ['mission_figure', 'Card missione - numero grande', 'text'],
     ['mission_sub_a', 'Card missione - testo finale (parte normale)', 'text'],
-    ['mission_sub_b', 'Card missione - testo finale (parte arancione)', 'text']
+    ['mission_sub_b', 'Card missione - testo finale (parte evidenziata)', 'text']
   ],
   problem: [
     ['id', 'ID per link interni', 'text', 'Es: "studio" per linkare con #studio dal menu.'],
     ['watermark', 'Watermark trasparente', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['intro_paragraphs', 'Paragrafi introduttivi', 'list-text'],
     ['questions', 'Domande in grassetto', 'list-text'],
     ['middle_paragraphs', 'Paragrafi centrali', 'list-text'],
-    ['quote_lines', 'Citazione evidenziata (bordo arancione)', 'list-text'],
-    ['final_line', 'Riga finale arancione', 'text']
+    ['quote_lines', 'Citazione evidenziata (bordo gold)', 'list-text'],
+    ['final_line', 'Riga finale colorata (accent)', 'text']
   ],
   about: [
     ['id', 'ID per link interni', 'text'],
@@ -712,11 +712,11 @@ const SECTION_SCHEMA = {
     ['lead', 'Sottotitolo (lead)', 'textarea', 'La frase introduttiva sotto al titolo, in grigio.'],
     ['photo', 'Foto del dottore', 'image', 'Consigliata orizzontale, 1600×1000px, JPG sotto 500 KB.'],
     ['body_paragraphs', 'Paragrafi del corpo', 'list-text', 'Aggiungi un blocco per ogni paragrafo.'],
-    ['callout', 'Callout finale (opzionale)', 'text', 'Frase corta evidenziata in arancione a fine sezione.']
+    ['callout', 'Callout finale (opzionale)', 'text', 'Frase corta evidenziata (colore accent) a fine sezione.']
   ],
   value_card: [
     ['id', 'ID per link interni', 'text'],
-    ['title', 'Titolo grande (bianco su arancione)', 'text'],
+    ['title', 'Titolo grande (bianco su petrol)', 'text'],
     ['lead', 'Lead - prima parte', 'text'],
     ['lead_strong', 'Lead - parte in grassetto', 'text'],
     ['items', 'I 3 vantaggi', 'list-object', null, [
@@ -730,7 +730,7 @@ const SECTION_SCHEMA = {
   method: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['subtitle_a', 'Sottotitolo - prima parte', 'textarea'],
     ['subtitle_b', 'Sottotitolo - seconda parte', 'textarea'],
     ['subtitle_strong', 'Sottotitolo - parte grassetto', 'text'],
@@ -744,7 +744,7 @@ const SECTION_SCHEMA = {
   levels: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['subtitle', 'Sottotitolo', 'textarea'],
     ['levels', 'I 3 livelli (top→bottom)', 'list-object', null, [
       ['tag', 'Tag (es. "LIVELLO BASE")', 'text'],
@@ -756,7 +756,7 @@ const SECTION_SCHEMA = {
   programs: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['subtitle', 'Sottotitolo', 'textarea'],
     ['cards', 'Programmi', 'list-object', null, [
       ['tag', 'Tag (corsivo)', 'text'],
@@ -771,7 +771,7 @@ const SECTION_SCHEMA = {
   audience: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['subtitle', 'Sottotitolo', 'textarea'],
     ['items', 'Tipi di paziente', 'list-object', null, [
       ['photo', 'Foto', 'image'],
@@ -783,7 +783,7 @@ const SECTION_SCHEMA = {
   stats: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['subtitle', 'Sottotitolo', 'textarea'],
     ['row_a', 'Riga 1 di statistiche', 'list-object', null, [
       ['pill', 'Pillola sopra (opzionale)', 'text'],
@@ -826,9 +826,9 @@ const SECTION_SCHEMA = {
   cta_form: [
     ['id', 'ID per link interni', 'text'],
     ['title_a', 'Titolo - parte normale', 'text'],
-    ['title_accent', 'Titolo - parte ARANCIONE', 'text'],
+    ['title_accent', 'Titolo - parte ACCENT (corsivo colorato)', 'text'],
     ['body', 'Paragrafo introduttivo', 'textarea'],
-    ['perks', 'Bullet point con check arancione', 'list-text'],
+    ['perks', 'Bullet point con check petrol+gold', 'list-text'],
     ['form_title', 'Titolo del box del form', 'text'],
     ['form_subtitle', 'Sottotitolo del form', 'text'],
     ['treatments', 'Opzioni del menu "Cosa ti interessa"', 'list-text'],
@@ -853,16 +853,16 @@ const SITE_SCHEMA = [
 ];
 
 const COLORS_SCHEMA = [
-  ['primary', 'Colore principale (arancione brand)', 'color', '#e85d3c', 'Compare in: bottoni primari, titoli evidenziati, card grandi, link.'],
-  ['accent', 'Colore accento (giallo)', 'color', '#ffd43b', 'Il giallo dell\'hero (parola sottolineata) e nei bottoni gialli.'],
-  ['ink', 'Colore testo principale', 'color', '#0a0a0a', 'Il nero del testo principale e dello sfondo footer/citazione.'],
-  ['bg_soft', 'Sfondo soft (beige chiaro)', 'color', '#faf7f3', 'Sezioni con sfondo leggero (Problema, Metodo, ecc.).']
+  ['primary', 'Colore principale (Deep Petrol)', 'color', '#123C46', 'Il colore brand: nav, bottoni primari, sezioni autorevolezza (Stats, Big Quote, Footer), titoli evidenziati.'],
+  ['accent', 'Colore accento (Champagne Gold)', 'color', '#C8A86B', 'Dettaglio luxury: parola corsiva del titolo hero con underline, tag, stelle testimonianze, dettagli sottili.'],
+  ['ink', 'Colore testo principale (Charcoal)', 'color', '#1E1E1E', 'Il colore del testo principale. Più morbido del nero assoluto.'],
+  ['bg_soft', 'Sfondo soft (Warm Ivory)', 'color', '#F7F3EC', 'Lo sfondo generale della landing. Bianco caldo, accogliente, non sterile.']
 ];
 
 const NAV_SCHEMA = [
   ['phone_label', 'Testo del numero', 'text', 'Es: "Chiama 06.123.456"'],
   ['phone_href', 'Link tel: del numero', 'text', 'Es: "tel:+390612345"'],
-  ['cta_label', 'Testo del bottone arancione', 'text'],
+  ['cta_label', 'Testo del bottone CTA (es. "Prenota Consulenza")', 'text'],
   ['cta_href', 'Link del bottone', 'text']
 ];
 
@@ -1566,11 +1566,19 @@ function colorVars(d){
 }
 function colorVarsRules(d){
   const c = (d.site && d.site.colors) || {};
-  const p = c.primary || '#e85d3c';
-  const a = c.accent  || '#ffd43b';
-  const i = c.ink     || '#0a0a0a';
-  const b = c.bg_soft || '#faf7f3';
-  return `:root{--coral-deep:${p};--coral-1:${p};--coral-darker:${p};--yellow:${a};--ink:${i};--bg-soft:${b};}`;
+  // Default Clinical Luxury palette
+  const p = c.primary || '#123C46';   // Deep Petrol
+  const a = c.accent  || '#C8A86B';   // Champagne Gold
+  const i = c.ink     || '#1E1E1E';   // Charcoal
+  const b = c.bg_soft || '#F7F3EC';   // Warm Ivory
+  // Emetto sia le variabili nuove (--petrol, --gold) che gli alias legacy
+  // (--coral-deep, --yellow, --bg-soft) usati ancora da alcuni template
+  return `:root{
+    --petrol:${p};--coral-deep:${p};--coral-1:${p};--coral-darker:${p};
+    --gold:${a};--yellow:${a};
+    --ink:${i};
+    --ivory:${b};--bg-soft:${b};
+  }`;
 }
 
 const PREVIEW_BASE_CSS_URL = '/index.html';
