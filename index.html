@@ -1229,6 +1229,41 @@ function esc(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+/* richText: applica formattazione inline sicura su testo che potrebbe contenere
+   markdown semplice o tag inline tipo <strong>, <em>, <br>, <a href="...">.
+   Prima fa escape COMPLETO, poi sblocca SOLO un set ristretto e sicuro di tag/markdown:
+   - **bold**, __bold__ → <strong>
+   - *italic*, _italic_ → <em>
+   - <strong>, </strong>, <b>, </b> → reso come strong
+   - <em>, </em>, <i>, </i> → reso come em
+   - <br>, <br/> → newline
+   - newline doppio → spazio (preserva paragrafi tramite altri meccanismi)
+   Tutto il resto resta escapeato. */
+function richText(s){
+  if(s==null) return '';
+  // Prima escape totale
+  let out = String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+  // Sblocco tag whitelisted (vengono dall'utente, escapeati prima → ora li ri-attiviamo)
+  out = out
+    .replace(/&lt;(\/?)strong&gt;/gi, '<$1strong>')
+    .replace(/&lt;(\/?)b&gt;/gi, '<$1strong>')
+    .replace(/&lt;(\/?)em&gt;/gi, '<$1em>')
+    .replace(/&lt;(\/?)i&gt;/gi, '<$1em>')
+    .replace(/&lt;br\s*\/?&gt;/gi, '<br>');
+  // Markdown semplice
+  // ** bold ** (greedy a singola riga)
+  out = out.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  out = out.replace(/__([^_\n]+)__/g, '<strong>$1</strong>');
+  // * italic * — match solo se NON è subito accanto a un altro * (evita conflitti con bold già sostituito)
+  out = out.replace(/(^|[^*])\*([^*\n]+)\*(?!\*)/g, '$1<em>$2</em>');
+  out = out.replace(/(^|[^_])_([^_\n]+)_(?!_)/g, '$1<em>$2</em>');
+  return out;
+}
+
 /* Genera tag <img> o <picture> con responsive desktop/mobile.
    `src` può essere:
    - stringa: viene usata sia su desktop che mobile (retro-compat)
@@ -1321,7 +1356,7 @@ const templates = {
             ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
           </h1>
           <p class="hero-sub">
-            ${s.subtitle_em?`<span class="em">${esc(s.subtitle_em)}</span> `:''}
+            ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
             ${s.subtitle?esc(s.subtitle):''}
           </p>
           ${s.cta_label?`
@@ -1330,23 +1365,23 @@ const templates = {
             </div>`:''}
           ${(s.mission_label_strong||s.mission_figure)?`
             <div class="mission-card">
-              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${esc(s.mission_label_text||'')}</div>
+              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
               <div class="mission-bar">
                 <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
                 <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
               </div>
               <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-              <div class="mission-sub">${esc(s.mission_sub_a||'')} <span class="hl">${esc(s.mission_sub_b||'')}</span></div>
+              <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
             </div>`:''}
         </div>
       </section>`;
   },
 
   problem(s){
-    const intro = (s.intro_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-    const questions = (s.questions||[]).map(q=>`<strong>${esc(q)}</strong>`).join('<br>');
-    const middle = (s.middle_paragraphs||[]).map(p=>`<p>${esc(p)}</p>`).join('');
-    const quote = (s.quote_lines||[]).map(l=>`<p>${esc(l)}</p>`).join('');
+    const intro = (s.intro_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
+    const questions = (s.questions||[]).map(q=>`<strong>${richText(q)}</strong>`).join('<br>');
+    const middle = (s.middle_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
+    const quote = (s.quote_lines||[]).map(l=>`<p>${richText(l)}</p>`).join('');
     return `
       <section class="problem"${s.id?` id="${esc(s.id)}"`:''}>
         ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
@@ -1357,27 +1392,27 @@ const templates = {
             ${questions?`<p>${questions}</p>`:''}
             ${middle}
             ${quote?`<div class="problem-quote">${quote}</div>`:''}
-            ${s.final_line?`<p class="problem-final">${esc(s.final_line)}</p>`:''}
+            ${s.final_line?`<p class="problem-final">${richText(s.final_line)}</p>`:''}
           </div>
         </div>
       </section>`;
   },
 
   about(s){
-    const body = (s.body_paragraphs||[]).map(p=>`<p>${p}</p>`).join('');
+    const body = (s.body_paragraphs||[]).map(p=>`<p>${richText(p)}</p>`).join('');
     return `
       <section class="about"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="about-grid">
             <div>
               <h2>${esc(s.title||'')}</h2>
-              ${s.lead?`<p class="about-lead">${esc(s.lead)}</p>`:''}
+              ${s.lead?`<p class="about-lead">${richText(s.lead)}</p>`:''}
             </div>
             ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
           </div>
           ${(body||s.callout)?`<div class="about-body">
             ${body}
-            ${s.callout?`<em class="callout">${esc(s.callout)}</em>`:''}
+            ${s.callout?`<em class="callout">${richText(s.callout)}</em>`:''}
           </div>`:''}
         </div>
       </section>`;
@@ -1400,9 +1435,9 @@ const templates = {
         <div class="container">
           <div class="value-card reveal">
             <h2>${esc(s.title||'')}</h2>
-            <p class="lead">${esc(s.lead||'')} <strong>${esc(s.lead_strong||'')}</strong></p>
+            <p class="lead">${richText(s.lead||'')} <strong>${richText(s.lead_strong||'')}</strong></p>
             <div class="value-grid">${items}</div>
-            ${s.footnote?`<p class="value-footnote">${esc(s.footnote)} <strong>${esc(s.footnote_strong||'')}</strong></p>`:''}
+            ${s.footnote?`<p class="value-footnote">${richText(s.footnote)} <strong>${richText(s.footnote_strong||'')}</strong></p>`:''}
           </div>
         </div>
       </section>`;
@@ -1417,7 +1452,7 @@ const templates = {
         </div>
         <div class="method-body">
           <h3>${esc(c.title||'')}</h3>
-          <p>${esc(c.body||'')}</p>
+          <p>${richText(c.body||'')}</p>
         </div>
       </div>`).join('');
     return `
@@ -1426,9 +1461,9 @@ const templates = {
           <div class="method-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
             <p class="sub">
-              ${esc(s.subtitle_a||'')}<br><br>
-              ${esc(s.subtitle_b||'')}
-              <strong>${esc(s.subtitle_strong||'')}</strong>
+              ${richText(s.subtitle_a||'')}<br><br>
+              ${richText(s.subtitle_b||'')}
+              <strong>${richText(s.subtitle_strong||'')}</strong>
             </p>
           </div>
           <div class="method-grid reveal">${cards}</div>
@@ -1441,7 +1476,7 @@ const templates = {
       <div class="level">
         <div class="level-tag">${esc(l.tag||'')}</div>
         <h4>${esc(l.title||'')}</h4>
-        <p>${esc(l.body||'')}</p>
+        <p>${richText(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
     return `
@@ -1449,7 +1484,7 @@ const templates = {
         <div class="container">
           <div class="levels-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
+            <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           <div class="levels-grid">
             <div class="pyramid">
@@ -1474,8 +1509,8 @@ const templates = {
         <div class="program-text">
           ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
           <h3>${esc(c.title||'')}</h3>
-          ${c.subtitle?`<div class="program-subtitle">${esc(c.subtitle)}</div>`:''}
-          <p>${esc(c.body||'')}</p>
+          ${c.subtitle?`<div class="program-subtitle">${richText(c.subtitle)}</div>`:''}
+          <p>${richText(c.body||'')}</p>
           ${c.link_label?`<a href="${esc(c.link_href||'#')}" class="program-link">${esc(c.link_label)}</a>`:''}
         </div>
         <div class="program-img">${img(c.photo, c.title)}</div>
@@ -1485,7 +1520,7 @@ const templates = {
         <div class="container">
           <div class="programs-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
+            <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           ${cards}
         </div>
@@ -1497,14 +1532,14 @@ const templates = {
       <div class="audience-item">
         <div class="audience-photo">${img(it.photo, it.title)}</div>
         <h4>${esc(it.title||'')}</h4>
-        <p><strong>${esc(it.body_strong||'')}</strong> ${esc(it.body||'')}</p>
+        <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
     return `
       <section${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="audience-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
+            <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           <div class="audience-grid">${items}</div>
         </div>
@@ -1527,11 +1562,11 @@ const templates = {
         <div class="container">
           <div class="stats-head reveal">
             <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-            <p class="sub">${esc(s.subtitle||'')}</p>
+            <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           ${renderRow(s.row_a, true)}
           ${renderRow(s.row_b, false)}
-          ${s.footnote?`<p class="stats-foot">${esc(s.footnote)}</p>`:''}
+          ${s.footnote?`<p class="stats-foot">${richText(s.footnote)}</p>`:''}
         </div>
       </section>`;
   },
@@ -1540,7 +1575,7 @@ const templates = {
     const items = (s.items||[]).map(t=>`
       <div class="test-card">
         <div class="test-stars">★★★★★</div>
-        <p class="test-text"><strong>${esc(t.text_strong||'')}</strong> ${esc(t.text||'')}</p>
+        <p class="test-text"><strong>${richText(t.text_strong||'')}</strong> ${richText(t.text||'')}</p>
         <div class="test-author">
           <div class="test-avatar">${img(t.avatar, t.name)}</div>
           <div class="test-name">${esc(t.name||'')} <span class="verified">✓</span></div>
@@ -1561,7 +1596,7 @@ const templates = {
     return `
       <section class="big-quote"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
-          <p class="q">${esc(s.quote||'')}</p>
+          <p class="q">${richText(s.quote||'')}</p>
           <div class="who">
             ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
             <div class="n">${esc(s.author_name||'')}</div>
@@ -1575,18 +1610,18 @@ const templates = {
       if(p.special){
         const t = (p.text||'').split(/\b(VIVERE|VIVI)\b/i);
         if(t.length===3){
-          return `<div class="pill-item special">${esc(t[0])}<em>${esc(t[1])}</em>${esc(t[2])}</div>`;
+          return `<div class="pill-item special">${richText(t[0])}<em>${esc(t[1])}</em>${richText(t[2])}</div>`;
         }
-        return `<div class="pill-item special">${esc(p.text||'')}</div>`;
+        return `<div class="pill-item special">${richText(p.text||'')}</div>`;
       }
-      return `<div class="pill-item">${esc(p.text||'')}</div>`;
+      return `<div class="pill-item">${richText(p.text||'')}</div>`;
     }).join('');
     return `
       <section class="features-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="features-card reveal">
             <h2>${esc(s.title||'')}</h2>
-            <p class="lead">${esc(s.lead||'')}</p>
+            <p class="lead">${richText(s.lead||'')}</p>
             <div class="feature-pills">${pills}</div>
           </div>
         </div>
@@ -1594,7 +1629,7 @@ const templates = {
   },
 
   cta_form(s){
-    const perks = (s.perks||[]).map(p=>`<li>${esc(p)}</li>`).join('');
+    const perks = (s.perks||[]).map(p=>`<li>${richText(p)}</li>`).join('');
     const treatments = (s.treatments||[]).map(t=>`<option>${esc(t)}</option>`).join('');
     return `
       <section class="cta-section"${s.id?` id="${esc(s.id)}"`:''}>
@@ -1602,7 +1637,7 @@ const templates = {
           <div class="cta-card reveal">
             <div class="cta-text">
               <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
-              <p>${esc(s.body||'')}</p>
+              <p>${richText(s.body||'')}</p>
               <ul class="cta-perks">${perks}</ul>
             </div>
             <div class="form-wrap">
@@ -1636,7 +1671,7 @@ const templates = {
               </form>
               <div class="form-success" id="formSuccess">
                 <h4>${esc(s.success_title||'Grazie!')}</h4>
-                <p>${esc(s.success_body||'')}</p>
+                <p>${richText(s.success_body||'')}</p>
               </div>
             </div>
           </div>
@@ -1654,10 +1689,10 @@ const templates = {
         <div class="container">
           ${(s.title||s.subtitle)?`<div class="video-head">
             ${s.title?`<h2>${esc(s.title)}</h2>`:''}
-            ${s.subtitle?`<p class="sub">${esc(s.subtitle)}</p>`:''}
+            ${s.subtitle?`<p class="sub">${richText(s.subtitle)}</p>`:''}
           </div>`:''}
           <div class="video-wrap">${video(videoValue, {})}</div>
-          ${s.caption?`<p class="video-caption">${esc(s.caption)}</p>`:''}
+          ${s.caption?`<p class="video-caption">${richText(s.caption)}</p>`:''}
         </div>
       </section>`;
   }
