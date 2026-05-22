@@ -309,6 +309,7 @@ a { color:inherit; text-decoration:none; }
 .field-image {
   display:flex; gap:12px; align-items:center; padding:10px;
   background:#fff; border:0.5px solid #d5d0c5; border-radius:8px;
+  position:relative;
 }
 .field-image-thumb {
   width:74px; height:50px; border-radius:5px; background:#d4cab8;
@@ -330,11 +331,70 @@ a { color:inherit; text-decoration:none; }
 .field-image-btn {
   padding:6px 12px; font-size:12px; border:0.5px solid #d5d0c5;
   border-radius:6px; background:#fff; color:var(--ink);
+  transition:all .15s var(--ease-out);
 }
-.field-image-btn:hover { border-color:var(--ink-light); }
+.field-image-btn:hover { border-color:var(--ink); }
 .field-image-btn.icon { padding:6px; }
 .field-image-btn.icon:hover { color:var(--red); border-color:#fcc; }
 .field-image-uploading { color:var(--ink-light); font-style:italic; font-size:12px; }
+
+/* ====== IMAGE PAIR (Desktop + Mobile) ====== */
+.field-image-pair {
+  display:flex; flex-direction:column; gap:8px;
+}
+.field-image-pair .field-image {
+  padding-top:30px; /* spazio per il label */
+}
+.field-image-variant-label {
+  position:absolute; top:8px; left:12px;
+  font-size:10.5px; font-weight:600; color:var(--ink-soft);
+  letter-spacing:.04em; text-transform:uppercase;
+  background:var(--bg-warm); padding:2px 8px; border-radius:4px;
+  line-height:1.3;
+}
+
+/* ====== VIDEO FIELD ====== */
+.field-video {
+  display:grid;
+  grid-template-columns:120px 1fr auto;
+  gap:14px; align-items:start; padding:12px;
+  background:#fff; border:0.5px solid #d5d0c5; border-radius:8px;
+}
+.field-video-thumb {
+  width:120px; height:75px; border-radius:6px; background:#1a1714;
+  display:flex; align-items:center; justify-content:center;
+  color:#888; overflow:hidden; position:relative;
+}
+.field-video-thumb svg { width:24px; height:24px; }
+.field-video-thumb video {
+  pointer-events:none;
+}
+.field-video-thumb::after {
+  content:""; position:absolute; inset:0;
+  background:linear-gradient(180deg, transparent 0%, transparent 60%, rgba(0,0,0,.4) 100%);
+  pointer-events:none;
+}
+.field-video-info { min-width:0; }
+.field-video-name {
+  font-size:12.5px; color:var(--ink); font-weight:500;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+.field-video-meta { font-size:11px; color:var(--ink-light); margin-top:2px; }
+.field-video-opts {
+  display:flex; flex-wrap:wrap; gap:6px 14px; margin-top:10px;
+}
+.field-video-opts label {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:11.5px; color:var(--ink-soft); cursor:pointer;
+  user-select:none;
+}
+.field-video-opts input[type="checkbox"] {
+  width:13px; height:13px; margin:0; cursor:pointer;
+  accent-color:var(--coral);
+}
+.field-video-actions {
+  display:flex; flex-direction:column; gap:6px; align-items:flex-end;
+}
 
 /* ====== COLOR PICKER ====== */
 .field-color {
@@ -436,6 +496,7 @@ a { color:inherit; text-decoration:none; }
 .pill-big_quote { background:#d3d1c7; color:#2c2c2a; }
 .pill-features_card { background:#faeeda; color:#633806; }
 .pill-cta_form { background:#d85a30; color:#fff; }
+.pill-video_block { background:#2a2a2a; color:#fff; }
 
 /* ====== TOAST ====== */
 .toast {
@@ -586,7 +647,8 @@ const TYPE_LABELS = {
   testimonials: '⭐ Testimonianze',
   big_quote: '🎤 Grande citazione',
   features_card: '✅ Caratteristiche',
-  cta_form: '📩 Form Contatti'
+  cta_form: '📩 Form Contatti',
+  video_block: '🎬 Video'
 };
 
 const TYPE_DESC = {
@@ -602,7 +664,8 @@ const TYPE_DESC = {
   testimonials: 'Recensioni di pazienti',
   big_quote: 'Sezione scura con citazione',
   features_card: 'Pillole arancioni',
-  cta_form: 'Form di contatto finale'
+  cta_form: 'Form di contatto finale',
+  video_block: 'Sezione con video grande'
 };
 
 function summarize(s) {
@@ -615,7 +678,8 @@ function summarize(s) {
 /* Field schema for each section type */
 const SECTION_SCHEMA = {
   hero: [
-    ['bg_image', 'Immagine di sfondo', 'image', 'Sfondo a tutto schermo. Idealmente orizzontale, almeno 1920px.'],
+    ['bg_image', 'Immagine di sfondo', 'image', 'Carica versione desktop (orizzontale, 1920px) e opzionalmente mobile (verticale, 800px).'],
+    ['bg_video', 'Video di sfondo (sostituisce immagine)', 'video', 'MP4 o WebM, max 5-10MB. Se caricato, sostituisce l\'immagine. Suggerito: muted + autoplay + loop.'],
     ['watermark', 'Watermark (testo gigante in trasparenza)', 'text'],
     ['headline_pre', 'Riga sopra il titolo', 'text', 'Es: "Bellezza Autentica. Risultati Reali."'],
     ['headline_main', 'Titolo grande - parte normale', 'text'],
@@ -771,6 +835,14 @@ const SECTION_SCHEMA = {
     ['submit_label', 'Etichetta bottone invio', 'text'],
     ['success_title', 'Titolo schermata conferma', 'text'],
     ['success_body', 'Messaggio di conferma', 'textarea']
+  ],
+  video_block: [
+    ['id', 'ID per link interni', 'text'],
+    ['title', 'Titolo sopra il video (opzionale)', 'text'],
+    ['subtitle', 'Sottotitolo (opzionale)', 'textarea'],
+    ['video', 'Video', 'video', 'Il video da mostrare. MP4 o WebM consigliati.'],
+    ['poster', 'Immagine di anteprima (poster)', 'image', 'Mostrata prima del play. Carica desktop e mobile.'],
+    ['caption', 'Didascalia sotto il video (opzionale)', 'text']
   ]
 };
 
@@ -912,15 +984,33 @@ async function saveContent(){
 }
 
 async function uploadImage(file){
+  return uploadAsset(file, 'images');
+}
+
+async function uploadVideo(file){
+  return uploadAsset(file, 'videos');
+}
+
+/* Carica un file binario (immagine o video) nel repo GitHub.
+   `folder` è 'images' o 'videos'. Ritorna il path con leading slash da salvare nel JSON. */
+async function uploadAsset(file, folder){
+  // GitHub API ha un limite di 100MB per file ma la base64 raddoppia il peso.
+  // Per i video chiediamo conferma sopra i 25MB per evitare crash.
+  if(folder === 'videos' && file.size > 25 * 1024 * 1024){
+    const mb = (file.size / 1024 / 1024).toFixed(1);
+    if(!confirm(`Il video pesa ${mb} MB. File grandi rallentano molto il sito (raccomandato sotto i 10 MB) e potrebbero non caricarsi via GitHub API. Procedere?`)){
+      throw new Error('Upload annullato');
+    }
+  }
   const buf = await file.arrayBuffer();
   let binary = '';
   const bytes = new Uint8Array(buf);
   for(let i=0; i<bytes.length; i++) binary += String.fromCharCode(bytes[i]);
   const b64 = btoa(binary);
   const safeName = file.name.replace(/[^a-zA-Z0-9.\-]/g, '-').toLowerCase();
-  const path = `images/${Date.now()}-${safeName}`;
+  const path = `${folder}/${Date.now()}-${safeName}`;
   const body = {
-    message: `Add image ${safeName}`,
+    message: `Add ${folder === 'videos' ? 'video' : 'image'} ${safeName}`,
     content: b64,
     branch: BRANCH
   };
@@ -928,7 +1018,6 @@ async function uploadImage(file){
     method: 'PUT',
     body: body
   });
-  // Return the path the site will use to fetch this image
   return '/' + path;
 }
 
@@ -1137,9 +1226,51 @@ function esc(s){
   if(s == null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+/* Normalizza un valore immagine (stringa o {desktop, mobile}) e ritorna una URL utilizzabile.
+   Nella preview del CMS ritorniamo sempre la versione desktop (la preview è in iframe a varie larghezze). */
+function imageSrc(value){
+  if(!value) return '';
+  if(typeof value === 'object') return value.desktop || value.mobile || '';
+  return value;
+}
+/* Per la preview del CMS le URL vanno fatte risolvere via raw.githubusercontent
+   (visto che l'iframe gira sul dominio admin) */
+function previewSrc(value){
+  const s = imageSrc(value);
+  if(!s) return '';
+  if(/^(https?:|data:|blob:)/i.test(s)) return s;
+  const path = s.startsWith('/') ? s.slice(1) : s;
+  return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${path}`;
+}
 function imgTag(src, alt){
+  const url = previewSrc(src);
+  if(!url) return '';
+  return `<img src="${esc(url)}" alt="${esc(alt||'')}">`;
+}
+/* Genera tag <video> per la preview. Accetta stringa (URL) o oggetto {src, autoplay, loop, muted, controls, poster} */
+function videoTag(value, opts){
+  if(!value) return '';
+  let v;
+  if(typeof value === 'string') v = {src:value};
+  else v = value;
+  const src = v.src || '';
   if(!src) return '';
-  return `<img src="${esc(src)}" alt="${esc(alt||'')}">`;
+  const url = previewSrc(src);
+  const posterUrl = v.poster ? previewSrc(v.poster) : '';
+  opts = opts || {};
+  const cls = opts.className || '';
+  const fillAttrs = opts.fill ? 'style="width:100%;height:100%;object-fit:cover"' : 'style="width:100%;height:auto"';
+  const attrs = [
+    v.autoplay ? 'autoplay' : '',
+    v.loop ? 'loop' : '',
+    v.muted || v.autoplay ? 'muted' : '', // autoplay implica muted
+    v.controls ? 'controls' : '',
+    'playsinline',
+    'preload="metadata"',
+    posterUrl ? `poster="${esc(posterUrl)}"` : '',
+    cls ? `class="${esc(cls)}"` : ''
+  ].filter(Boolean).join(' ');
+  return `<video src="${esc(url)}" ${attrs} ${fillAttrs}></video>`;
 }
 
 /* =====================================================================
@@ -1147,8 +1278,9 @@ function imgTag(src, alt){
    ===================================================================== */
 const previewTemplates = {
   hero(s){
+    const hasVideo = s.bg_video && (typeof s.bg_video === 'object' ? s.bg_video.src : s.bg_video);
     return `<section class="hero">
-      <div class="hero-bg">${imgTag(s.bg_image, 'Hero')}</div>
+      <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, 'Hero')}</div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container hero-content">
         <h1>
@@ -1383,6 +1515,18 @@ const previewTemplates = {
             <p style="color:#888;font-style:italic;text-align:center;margin-top:30px">[ form lead sulla landing ]</p>
           </div>
         </div>
+      </div>
+    </section>`;
+  },
+  video_block(s){
+    return `<section class="video-block">
+      <div class="container">
+        ${(s.title||s.subtitle)?`<div class="video-block-head">
+          ${s.title?`<h2>${esc(s.title)}</h2>`:''}
+          ${s.subtitle?`<p class="sub">${esc(s.subtitle)}</p>`:''}
+        </div>`:''}
+        <div class="video-block-wrap">${videoTag(s.video, {})}</div>
+        ${s.caption?`<p class="video-block-caption">${esc(s.caption)}</p>`:''}
       </div>
     </section>`;
   }
@@ -1687,6 +1831,8 @@ function renderField(field, value, path){
     return `<div class="field"><div class="field-label">${esc(label)}</div>${hintTxt?`<p class="field-hint">${esc(hintTxt)}</p>`:''}${inputHTML}</div>`;
   } else if(type === 'image'){
     inputHTML = renderImageField(value, path);
+  } else if(type === 'video'){
+    inputHTML = renderVideoField(value, path);
   } else if(type === 'list-text'){
     inputHTML = renderListText(value||[], path);
   } else if(type === 'list-object'){
@@ -1698,29 +1844,93 @@ function renderField(field, value, path){
 
 /* Trasforma un path relativo dell'immagine (es. "/images/foo.jpg") nella URL
    raw.githubusercontent.com, che è disponibile IMMEDIATAMENTE dopo upload
-   (senza aspettare il rebuild Netlify). URL già assolute (http/https/data:) restano. */
+   (senza aspettare il rebuild Netlify). URL già assolute (http/https/data:) restano.
+   Se value è un oggetto {desktop, mobile}, ritorna la URL del desktop. */
 function previewImageUrl(value){
   if(!value) return '';
+  // Supporto formato oggetto {desktop, mobile}
+  if(typeof value === 'object'){
+    return previewImageUrl(value.desktop || value.mobile || '');
+  }
   if(/^(https?:|data:|blob:)/i.test(value)) return value;
   const path = value.startsWith('/') ? value.slice(1) : value;
   return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${path}`;
 }
 
+/* Estrae la URL desktop e mobile da un valore image (stringa o oggetto). */
+function imageVariants(value){
+  if(!value) return {desktop:'', mobile:''};
+  if(typeof value === 'string') return {desktop:value, mobile:''};
+  return {
+    desktop: value.desktop || '',
+    mobile: value.mobile || ''
+  };
+}
+
 function renderImageField(value, path){
-  const filename = value ? value.split('/').pop() : '';
-  const thumbUrl = previewImageUrl(value);
-  return `<div class="field-image" data-image-path="${path.join('.')}">
+  const variants = imageVariants(value);
+  const pathStr = path.join('.');
+  return `<div class="field-image-pair" data-image-path="${pathStr}">
+    ${renderImageSlot('desktop', '🖥️ Desktop', variants.desktop, pathStr)}
+    ${renderImageSlot('mobile', '📱 Mobile (opzionale)', variants.mobile, pathStr)}
+  </div>`;
+}
+
+function renderImageSlot(variant, label, url, parentPath){
+  const filename = url ? url.split('/').pop() : '';
+  const thumbUrl = previewImageUrl(url);
+  return `<div class="field-image" data-image-variant="${variant}" data-image-parent="${parentPath}">
+    <div class="field-image-variant-label">${label}</div>
     <div class="field-image-thumb">
-      ${value?`<img src="${esc(thumbUrl)}" alt="" onerror="this.style.display='none'">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+      ${url
+        ? `<img src="${esc(thumbUrl)}" alt="" onerror="this.style.display='none'">`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`
+      }
     </div>
     <div class="field-image-info">
-      ${value
-        ? `<div class="field-image-name">${esc(filename)}</div><div class="field-image-meta">Caricata sul repo</div>`
-        : `<div class="field-image-name" style="color:var(--ink-light)">Nessuna immagine</div><div class="field-image-meta">Clicca "Carica" per aggiungerla</div>`
+      ${url
+        ? `<div class="field-image-name">${esc(filename)}</div><div class="field-image-meta">Caricata</div>`
+        : `<div class="field-image-name" style="color:var(--ink-light)">${variant === 'mobile' ? 'Usa desktop se vuoto' : 'Nessuna immagine'}</div><div class="field-image-meta">Clicca per caricare</div>`
       }
     </div>
     <button class="field-image-btn" data-action="upload">Carica</button>
-    ${value?`<button class="field-image-btn icon" data-action="remove" aria-label="Rimuovi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`:''}
+    ${url?`<button class="field-image-btn icon" data-action="remove" aria-label="Rimuovi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/></svg></button>`:''}
+  </div>`;
+}
+
+/* Nuovo: video field renderer */
+function renderVideoField(value, path){
+  const pathStr = path.join('.');
+  // Value può essere: stringa (URL del video) o oggetto {src, poster, autoplay, loop, muted, controls}
+  let v;
+  if(typeof value === 'string') v = {src:value, autoplay:false, loop:false, muted:false, controls:true};
+  else v = value || {};
+  const src = v.src || '';
+  const poster = v.poster || '';
+  const filename = src ? src.split('/').pop() : '';
+  const previewUrl = previewImageUrl(src);
+
+  return `<div class="field-video" data-video-path="${pathStr}">
+    <div class="field-video-thumb">
+      ${src
+        ? `<video src="${esc(previewUrl)}" ${poster?`poster="${esc(previewImageUrl(poster))}"`:''} muted preload="metadata" style="width:100%;height:100%;object-fit:cover" onerror="this.style.display='none'"></video>`
+        : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>`
+      }
+    </div>
+    <div class="field-video-info">
+      <div class="field-video-name">${src ? esc(filename) : 'Nessun video caricato'}</div>
+      <div class="field-video-meta">${src ? 'Video caricato' : 'MP4 o WebM, max 5MB consigliato'}</div>
+      <div class="field-video-opts">
+        <label><input type="checkbox" data-video-opt="autoplay" data-video-parent="${pathStr}" ${v.autoplay?'checked':''}> Autoplay</label>
+        <label><input type="checkbox" data-video-opt="loop" data-video-parent="${pathStr}" ${v.loop?'checked':''}> Loop</label>
+        <label><input type="checkbox" data-video-opt="muted" data-video-parent="${pathStr}" ${v.muted?'checked':''}> Muted</label>
+        <label><input type="checkbox" data-video-opt="controls" data-video-parent="${pathStr}" ${v.controls?'checked':''}> Controlli</label>
+      </div>
+    </div>
+    <div class="field-video-actions">
+      <button class="field-image-btn" data-action="upload-video">${src ? 'Sostituisci' : 'Carica'}</button>
+      ${src?`<button class="field-image-btn icon" data-action="remove-video" aria-label="Rimuovi"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg></button>`:''}
+    </div>
   </div>`;
 }
 
@@ -2203,11 +2413,43 @@ function attachEditorListeners(){
     };
   });
 
-  // Image fields
+  // ============================================================
+  // IMAGE FIELDS (coppia desktop + mobile)
+  // ============================================================
   editor.querySelectorAll('.field-image').forEach(el => {
-    const path = el.dataset.imagePath.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+    const parentPath = el.dataset.imageParent;
+    if(!parentPath) return; // i campi vecchi senza variant li ignoriamo (non dovrebbero esistere)
+    const variant = el.dataset.imageVariant || 'desktop';
+    const path = parentPath.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
     const uploadBtn = el.querySelector('[data-action="upload"]');
     const removeBtn = el.querySelector('[data-action="remove"]');
+
+    /* Imposta SOLO la chiave variant del valore immagine.
+       Mantiene retro-compatibilità: se il valore corrente è stringa, lo migra
+       a oggetto {desktop, mobile} prima di scrivere. */
+    function setVariant(newUrl){
+      const cur = getPath(data, path);
+      let next;
+      if(typeof cur === 'string'){
+        // Migra: la vecchia stringa era il desktop
+        next = {desktop: cur, mobile: ''};
+      } else if(cur && typeof cur === 'object'){
+        next = {desktop: cur.desktop || '', mobile: cur.mobile || ''};
+      } else {
+        next = {desktop: '', mobile: ''};
+      }
+      next[variant] = newUrl;
+      // Se entrambi vuoti, salviamo stringa vuota (cleaner)
+      if(!next.desktop && !next.mobile){
+        setPath(data, path, '');
+      } else if(!next.mobile && variant === 'desktop'){
+        // Solo desktop → salviamo stringa per retro-compat
+        setPath(data, path, next.desktop);
+      } else {
+        setPath(data, path, next);
+      }
+    }
+
     if(uploadBtn){
       uploadBtn.onclick = async () => {
         const input = document.createElement('input');
@@ -2218,10 +2460,10 @@ function attachEditorListeners(){
           uploadBtn.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:-2px"></span> Carico…';
           try {
             const url = await uploadImage(f);
-            setPath(data, path, url);
+            setVariant(url);
             markDirty();
             renderEditor();
-            showToast('Immagine caricata');
+            showToast('Immagine ' + (variant === 'mobile' ? 'mobile' : 'desktop') + ' caricata');
           } catch(err){
             uploadBtn.disabled = false; uploadBtn.textContent = 'Carica';
             showToast('Errore: ' + err.message, 'error');
@@ -2232,11 +2474,82 @@ function attachEditorListeners(){
     }
     if(removeBtn){
       removeBtn.onclick = () => {
-        setPath(data, path, '');
+        setVariant('');
         markDirty();
         renderEditor();
       };
     }
+  });
+
+  // ============================================================
+  // VIDEO FIELDS
+  // ============================================================
+  editor.querySelectorAll('.field-video').forEach(el => {
+    const pathStr = el.dataset.videoPath;
+    const path = pathStr.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+    const uploadBtn = el.querySelector('[data-action="upload-video"]');
+    const removeBtn = el.querySelector('[data-action="remove-video"]');
+
+    function readVideo(){
+      const cur = getPath(data, path);
+      if(typeof cur === 'string') return {src:cur, autoplay:false, loop:false, muted:false, controls:true};
+      return cur && typeof cur === 'object' ? Object.assign({src:'', autoplay:false, loop:false, muted:false, controls:true}, cur) : {src:'', autoplay:false, loop:false, muted:false, controls:true};
+    }
+    function writeVideo(v){
+      if(!v.src){
+        setPath(data, path, '');
+      } else {
+        setPath(data, path, v);
+      }
+    }
+
+    if(uploadBtn){
+      uploadBtn.onclick = async () => {
+        const input = document.createElement('input');
+        input.type = 'file'; input.accept = 'video/mp4,video/webm,video/quicktime';
+        input.onchange = async () => {
+          const f = input.files[0]; if(!f) return;
+          uploadBtn.disabled = true;
+          uploadBtn.innerHTML = '<span class="spinner" style="width:12px;height:12px;border-width:1.5px;display:inline-block;vertical-align:-2px"></span> Carico…';
+          try {
+            const url = await uploadVideo(f);
+            const v = readVideo();
+            v.src = url;
+            writeVideo(v);
+            markDirty();
+            renderEditor();
+            showToast('Video caricato');
+          } catch(err){
+            uploadBtn.disabled = false; uploadBtn.textContent = 'Carica';
+            if(err.message !== 'Upload annullato') showToast('Errore: ' + err.message, 'error');
+          }
+        };
+        input.click();
+      };
+    }
+    if(removeBtn){
+      removeBtn.onclick = () => {
+        writeVideo({src:'', autoplay:false, loop:false, muted:false, controls:true});
+        markDirty();
+        renderEditor();
+      };
+    }
+  });
+
+  // Video options checkboxes (autoplay/loop/muted/controls)
+  editor.querySelectorAll('[data-video-opt]').forEach(cb => {
+    cb.addEventListener('change', () => {
+      const pathStr = cb.dataset.videoParent;
+      const opt = cb.dataset.videoOpt;
+      const path = pathStr.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+      let cur = getPath(data, path);
+      if(typeof cur === 'string') cur = {src:cur, autoplay:false, loop:false, muted:false, controls:true};
+      cur = Object.assign({src:'', autoplay:false, loop:false, muted:false, controls:true}, cur || {});
+      cur[opt] = cb.checked;
+      setPath(data, path, cur);
+      markDirty();
+      schedulePreviewUpdate();
+    });
   });
 
   // Close add menu when clicking outside
