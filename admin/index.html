@@ -951,6 +951,8 @@ function openSectionFromPreview(idx){
   ui.expandedSection = idx;
   renderEditor();
   setTimeout(() => scrollEditorToSection(idx), 60);
+  // Aggiorna badge "Modificando" nella toolbar + bordo coral nell'iframe
+  syncPreviewHighlight();
 }
 
 // Listen to messages from the preview iframe
@@ -1694,11 +1696,22 @@ function renderField(field, value, path){
   return `<div class="field"><div class="field-label">${esc(label)}</div>${hint?`<p class="field-hint">${esc(hint)}</p>`:''}${inputHTML}</div>`;
 }
 
+/* Trasforma un path relativo dell'immagine (es. "/images/foo.jpg") nella URL
+   raw.githubusercontent.com, che è disponibile IMMEDIATAMENTE dopo upload
+   (senza aspettare il rebuild Netlify). URL già assolute (http/https/data:) restano. */
+function previewImageUrl(value){
+  if(!value) return '';
+  if(/^(https?:|data:|blob:)/i.test(value)) return value;
+  const path = value.startsWith('/') ? value.slice(1) : value;
+  return `https://raw.githubusercontent.com/${REPO_OWNER}/${REPO_NAME}/${BRANCH}/${path}`;
+}
+
 function renderImageField(value, path){
   const filename = value ? value.split('/').pop() : '';
+  const thumbUrl = previewImageUrl(value);
   return `<div class="field-image" data-image-path="${path.join('.')}">
     <div class="field-image-thumb">
-      ${value?`<img src="${esc(value)}" alt="">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
+      ${value?`<img src="${esc(thumbUrl)}" alt="" onerror="this.style.display='none'">`:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>`}
     </div>
     <div class="field-image-info">
       ${value
