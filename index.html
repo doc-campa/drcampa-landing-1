@@ -263,11 +263,16 @@ section[id] { scroll-margin-top:90px; }
   color:var(--ivory);
 }
 .hero-bg { position:absolute; inset:0; z-index:0; }
-.hero-bg img {
+.hero-bg img, .hero-bg video, .hero-bg picture {
   width:100%; height:100%; object-fit:cover;
+  display:block;
+}
+.hero-bg img, .hero-bg video {
   opacity:.5;
   filter:saturate(.9);
 }
+.hero-bg picture img { opacity:1; /* la opacità del picture la mettiamo sul wrapper */ }
+.hero-bg picture { opacity:.5; filter:saturate(.9); }
 .hero::before {
   content:""; position:absolute; inset:0; z-index:1;
   background:linear-gradient(180deg, rgba(18,60,70,.4) 0%, rgba(18,60,70,.25) 50%, rgba(13,46,54,.85) 100%);
@@ -997,6 +1002,39 @@ section[id] { scroll-margin-top:90px; }
 }
 
 /* ============================================================
+   VIDEO BLOCK section
+   ============================================================ */
+.video-section { background:var(--ivory); }
+.video-head {
+  text-align:center; max-width:780px; margin:0 auto 50px;
+}
+.video-head h2 { margin-bottom:18px; }
+.video-head .sub {
+  font-size:1.1rem; line-height:1.6; color:var(--ink-soft);
+}
+.video-wrap {
+  max-width:1100px; margin:0 auto;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-xl);
+  background:var(--petrol);
+  aspect-ratio:16/9;
+  position:relative;
+}
+.video-wrap video {
+  width:100%; height:100%; object-fit:cover;
+  display:block;
+}
+.video-caption {
+  text-align:center; margin-top:24px;
+  font-family:var(--font-serif); font-style:italic;
+  color:var(--ink-soft); font-size:1.05rem;
+}
+@media (max-width:860px) {
+  .video-wrap { aspect-ratio:4/5; border-radius:var(--radius); }
+}
+
+/* ============================================================
    FOOTER
    ============================================================ */
 .footer {
@@ -1190,9 +1228,77 @@ function esc(s){
   if(s==null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* Genera tag <img> o <picture> con responsive desktop/mobile.
+   `src` può essere:
+   - stringa: viene usata sia su desktop che mobile (retro-compat)
+   - oggetto {desktop, mobile}: il browser sceglie la versione tramite <picture>+<source>
+*/
 function img(src, alt, cls){
   if(!src) return '';
-  return `<img src="${esc(src)}" alt="${esc(alt||'')}"${cls?` class="${cls}"`:''}>`;
+  let desktop, mobile;
+  if(typeof src === 'object'){
+    desktop = src.desktop || src.mobile || '';
+    mobile = src.mobile || '';
+  } else {
+    desktop = src;
+    mobile = '';
+  }
+  if(!desktop && !mobile) return '';
+  const useDesktop = desktop || mobile;
+  const classAttr = cls ? ` class="${cls}"` : '';
+  const altAttr = ` alt="${esc(alt||'')}"`;
+  // Se c'è solo desktop (o solo mobile), niente <picture>: usiamo <img> diretto
+  if(!mobile || !desktop || desktop === mobile){
+    return `<img src="${esc(useDesktop)}"${altAttr}${classAttr}>`;
+  }
+  // Doppia versione: <picture> con sorgente mobile sotto 768px
+  return `<picture>
+    <source media="(max-width:768px)" srcset="${esc(mobile)}">
+    <img src="${esc(desktop)}"${altAttr}${classAttr}>
+  </picture>`;
+}
+
+/* Genera tag <video> dato un valore video.
+   `value` può essere stringa (src) o oggetto {src, poster, autoplay, loop, muted, controls}. */
+function video(value, opts){
+  if(!value) return '';
+  let v;
+  if(typeof value === 'string') v = {src:value};
+  else v = value;
+  if(!v.src) return '';
+  opts = opts || {};
+  const cls = opts.className || '';
+  const inlineStyle = opts.fill
+    ? 'width:100%;height:100%;object-fit:cover'
+    : 'width:100%;height:auto';
+  // Per il poster, supporto anche oggetto {desktop, mobile}
+  let posterUrl = '';
+  if(v.poster){
+    if(typeof v.poster === 'object'){
+      posterUrl = v.poster.desktop || v.poster.mobile || '';
+    } else {
+      posterUrl = v.poster;
+    }
+  }
+  const attrs = [
+    v.autoplay ? 'autoplay' : '',
+    v.loop ? 'loop' : '',
+    (v.muted || v.autoplay) ? 'muted' : '',
+    v.controls ? 'controls' : '',
+    'playsinline',
+    'preload="metadata"',
+    posterUrl ? `poster="${esc(posterUrl)}"` : '',
+    cls ? `class="${esc(cls)}"` : ''
+  ].filter(Boolean).join(' ');
+  return `<video src="${esc(v.src)}" ${attrs} style="${inlineStyle}"></video>`;
+}
+
+/* Helper: verifica se un valore video ha effettivamente un src */
+function hasVideo(value){
+  if(!value) return false;
+  if(typeof value === 'string') return !!value;
+  return !!(value && value.src);
 }
 
 /* ==========================================================
@@ -1201,9 +1307,12 @@ function img(src, alt, cls){
 const templates = {
 
   hero(s){
+    const bg = hasVideo(s.bg_video)
+      ? video(s.bg_video, {fill:true})
+      : img(s.bg_image, 'Hero');
     return `
       <section class="hero"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="hero-bg">${img(s.bg_image, 'Hero')}</div>
+        <div class="hero-bg">${bg}</div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container hero-content reveal">
           <h1>
@@ -1531,6 +1640,24 @@ const templates = {
               </div>
             </div>
           </div>
+        </div>
+      </section>`;
+  },
+
+  video_block(s){
+    // Costruisco un valore video derivato con poster da s.poster
+    const videoValue = (typeof s.video === 'object' && s.video)
+      ? Object.assign({}, s.video, s.poster ? {poster: s.poster} : {})
+      : (s.video ? {src: s.video, controls: true, poster: s.poster} : null);
+    return `
+      <section class="video-section"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          ${(s.title||s.subtitle)?`<div class="video-head">
+            ${s.title?`<h2>${esc(s.title)}</h2>`:''}
+            ${s.subtitle?`<p class="sub">${esc(s.subtitle)}</p>`:''}
+          </div>`:''}
+          <div class="video-wrap">${video(videoValue, {})}</div>
+          ${s.caption?`<p class="video-caption">${esc(s.caption)}</p>`:''}
         </div>
       </section>`;
   }
