@@ -30,7 +30,7 @@
     ],
     "phone_label": "Chiama",
     "phone_href": "tel:+390200000000",
-    "cta_label": "Prenota Consulenza",
+    "cta_label": "prenota",
     "cta_href": "#contatti"
   },
   "sections": [
