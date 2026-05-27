@@ -2,8 +2,7 @@
   "site": {
     "title": "Dr. Domenico Campa — Chirurgia Estetica",
     "meta_description": "Dr. Domenico Campa — Chirurgia plastica ed estetica. Bellezza autentica, risultati reali, percorsi su misura.",
-    "logo_text": "Dr. Campa",
-    "colors": {}
+    "logo_text": "Dr. Campa"
   },
   "nav": {
     "links": [
@@ -30,32 +29,38 @@
     ],
     "phone_label": "Chiama",
     "phone_href": "tel:+390200000000",
-    "cta_label": "prenota",
+    "cta_label": "Prenota Consulto",
     "cta_href": "#contatti"
   },
   "sections": [
     {
-      "bg_image": "/images/1779888383106-sfondo-1.jpg",
-      "watermark": "",
-      "headline_main": "Scopri la Tua",
-      "cta_label": "Inizia il Tuo Percorso",
-      "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
-      "mission_sub_a": "Donne e uomini che oggi",
-      "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
-      "mission_sub_b": "si guardano allo specchio con un sorriso diverso.",
-      "mission_percent": 62,
-      "headline_accent": "Versione Migliore.",
-      "mission_label_strong": "LA NOSTRA MISSIONE:",
-      "mission_figure": "6.200+ Percorsi Completati",
-      "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
-      "headline_pre": "Bellezza Autentica. Risultati Reali.",
       "type": "hero",
+      "bg_image": "https://images.unsplash.com/photo-1576091160550-2173dba999ef?auto=format&fit=crop&w=2000&q=80",
+      "watermark": "Dr. Campa",
+      "headline_pre": "Bellezza Autentica. Risultati Reali.",
+      "headline_main": "Scopri la Tua",
+      "headline_accent": "Versione Migliore.",
+      "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
+      "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
+      "cta_label": "Inizia il Tuo Percorso",
       "cta_href": "#contatti",
-      "video_player_url": "https://www.youtube.com/watch?v=zzW5diBkeB4",
-      "video_player_label": "scopri"
+      "mission_label_strong": "LA NOSTRA MISSIONE:",
+      "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
+      "mission_percent": 62,
+      "mission_figure": "6.200+ Percorsi Completati",
+      "mission_sub_a": "Donne e uomini che oggi",
+      "mission_sub_b": "si guardano allo specchio con un sorriso diverso."
     },
     {
+      "type": "problem",
+      "id": "studio",
       "watermark": "Dr. Campa",
+      "title_a": "L'Estetica Non è il Problema.",
+      "title_accent": "La Confusione Lo È.",
+      "intro_paragraphs": [
+        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
+        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
+      ],
       "questions": [
         "Ma da dove si parte?",
         "Quale intervento serve davvero?",
@@ -65,14 +70,6 @@
         "Si cercano risposte online. Si confrontano cliniche. Si guarda chi costa meno.",
         "Ma niente di tutto questo aiuta a capire cosa è giusto per te."
       ],
-      "title_accent": "La Confusione Lo È.",
-      "intro_paragraphs": [
-        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
-        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
-      ],
-      "title_a": "L'Estetica Non è il Problema.",
-      "type": "problem",
-      "id": "studio",
       "quote_lines": [
         "Il vero problema non è l'estetica.",
         "È la mancanza di ascolto.",
@@ -84,7 +81,7 @@
       "type": "about",
       "title": "Una chirurgia che mette la persona prima della procedura.",
       "lead": "L'intelligenza chirurgica avanza a velocità straordinaria. Quello che manca alla maggior parte delle persone non è la tecnologia. È una guida di cui fidarsi.",
-      "photo": "/images/1779888491923-a1-p5a7086.webp",
+      "photo": "https://images.unsplash.com/photo-1612531386530-97286d97c2d2?auto=format&fit=crop&w=1400&q=80",
       "body_paragraphs": [
         "<strong>Lo Studio Campa è nato per colmare quel divario.</strong>",
         "Da oltre vent'anni il Dr. Domenico Campa accompagna pazienti in percorsi di chirurgia estetica e medicina rigenerativa fatti di ascolto, precisione clinica e risultati naturali. Formatosi tra le scuole italiane e i centri d'eccellenza europei, ha trasformato la sua esperienza in un metodo riconosciuto.",
@@ -240,7 +237,7 @@
       "subtitle": "Sicurezza raddoppiata. Tempo recuperato. Risultati osservabili. Lo Studio Campa lavora su numeri verificabili, non su promesse di marketing.",
       "row_a": [
         {
-          "pill": "",
+          "pill": "Da 4.1 / 10 a",
           "num": "8.7 / 10",
           "label": "Indice medio di sicurezza in sé stessi dopo il percorso"
         },
@@ -273,47 +270,69 @@
     },
     {
       "type": "testimonials",
-      "id": "storie",
-      "title_a": "Persone Reali —",
-      "title_italic": "Storie Reali",
+      "id": "recensioni",
+      "title_a": "Storie vere,",
+      "title_italic": "risultati reali.",
       "items": [
         {
-          "text_strong": "\"Per la prima volta non mi sento a disagio davanti allo specchio.\"",
-          "text": "Mi sento finalmente bene, come se qualcuno mi avesse aiutata a tornare in carreggiata. Era da anni che non mi sentivo così.",
-          "avatar": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80",
-          "name": "Teresa N."
+          "name": "Claudia Leonardi",
+          "date": "3 mesi fa",
+          "text_strong": "Prima esperienza dal doc Campa positivissima!",
+          "text": "Dottore super professionale ma soprattutto una persona squisita. Le ragazze dello staff gentilissime, sono davvero soddisfatta del risultato ottenuto, ve lo consiglio vivamente."
         },
         {
-          "text_strong": "\"La svolta è stata costruire il mio percorso, non comprare un intervento.\"",
-          "text": "Il dottore ha smesso di propormi soluzioni generiche e ha iniziato a parlarmi come una persona reale.",
-          "avatar": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=200&q=80",
-          "name": "Federica A."
+          "name": "Bruna Tarantino",
+          "date": "5 mesi fa",
+          "text_strong": "Dott. Domenico Campa: un nome, una garanzia.",
+          "text": "Professionalità, precisione e umanità sono solo alcune delle qualità che lo distinguono. Lo studio è sempre accogliente e curato in ogni dettaglio."
         },
         {
-          "text_strong": "\"La chirurgia non sembra più un mostro impossibile.\"",
-          "text": "Lo Studio mi ha guidato in ogni passo e mi ha dato la sicurezza di costruire cose che pensavo impossibili.",
-          "avatar": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80",
-          "name": "Cristina J."
+          "name": "Grazia Pisani",
+          "date": "7 mesi fa",
+          "text_strong": "",
+          "text": "Ho effettuato un filler correttivo dal dottor Campa, sono stata da lui per la prima volta. Che dire, lui e il suo staff sono molto dolci e gentili, sanno metterti a tuo agio dal primo momento. Risultato naturale ed elegante."
         },
         {
-          "text_strong": "Adesso lo rifarei senza esitare,",
-          "text": "perché qui mi sono sentita ascoltata davvero. Cosa che prima non avrei creduto possibile.",
-          "avatar": "https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?auto=format&fit=crop&w=200&q=80",
-          "name": "Anna L."
+          "name": "Nunzia Landolfo",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Sono stata per la prima volta dal dottore ed inizialmente, a causa di un percorso non andato al meglio in passato, avevo non poche remore. Il dottor Campa e il suo staff mi hanno messo subito a mio agio. Risultato eccellente."
         },
         {
-          "text_strong": "Lo Studio Campa è di gran lunga la cosa migliore in cui abbia mai investito.",
-          "text": "Mi sta facendo risparmiare un sacco di insicurezze e rendendo possibile questa nuova versione di me.",
-          "avatar": "https://images.unsplash.com/photo-1607746882042-944635dfe10e?auto=format&fit=crop&w=200&q=80",
-          "name": "Giulia M."
+          "name": "Lucrezia Stacchini",
+          "date": "5 mesi fa",
+          "text_strong": "Impossibile descrivere il dottore e il suo staff con una parola.",
+          "text": "Dico solo che da quando li ho conosciuti mi fido solo di loro. Personale attento al dettaglio e percorso clinico curato in ogni passaggio."
         },
         {
-          "text_strong": "È incredibile la sicurezza che ti dà,",
-          "text": "e mi ha dato tanto più tempo per godermi le cose, invece di rincorrerle.",
-          "avatar": "https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&w=200&q=80",
-          "name": "Kerstin J."
+          "name": "Sara Esposito",
+          "date": "3 mesi fa",
+          "text_strong": "",
+          "text": "Mi sono affidata al Dottor Campa per un filler alle labbra e non potrei essere più felice della scelta fatta. Fin dalla prima visita mi sono sentita ascoltata e seguita con attenzione. Risultato naturale e armonioso."
+        },
+        {
+          "name": "Felicya Salcino",
+          "date": "3 mesi fa",
+          "text_strong": "A parer mio è il migliore in assoluto.",
+          "text": "Oltre ad essere super professionale è anche simpaticissimo e ti mette subito a tuo agio. Lo staff è gentile e accogliente, lo consiglio senza esitazioni."
+        },
+        {
+          "name": "Federica Raimo",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Oggi posso sorridere alla vita con gratitudine e serenità, ed è grazie al Dottor Campa. Non esistono davvero parole sufficienti per descrivere la sua straordinaria professionalità e umanità."
+        },
+        {
+          "name": "Valentina De Liso",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Il dottor Campa ha trasformato una semplice iniezione in un momento sorprendentemente speciale: preciso, delicato e con un senso estetico che fa sentire subito a proprio agio."
         }
-      ]
+      ],
+      "subtitle": "Le testimonianze dei pazienti dello Studio Campa, pubblicate direttamente su **Google**. Tutte verificate.",
+      "reviews_rating": "5,0",
+      "reviews_count": "2.219",
+      "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa"
     },
     {
       "type": "big_quote",
@@ -377,6 +396,10 @@
       ]
     },
     {
+      "type": "cta_form",
+      "id": "contatti",
+      "title_a": "È il momento. Smetti di sperimentare.",
+      "title_accent": "Inizia.",
       "body": "Raccontaci cosa stai cercando. Ti ricontatteremo entro 24 ore per organizzare un primo consulto, in studio o in videocall — senza impegno, senza pressione.",
       "perks": [
         "Primo colloquio gratuito e senza impegno",
@@ -384,12 +407,8 @@
         "Massima riservatezza dei dati",
         "Consulto online disponibile per pazienti fuori sede"
       ],
-      "submit_label": "Invia Richiesta",
-      "title_accent": "Inizia.",
+      "form_title": "Prenota Consulto",
       "form_subtitle": "Compila il form. Ti contattiamo noi.",
-      "title_a": "È il momento. Smetti di sperimentare.",
-      "type": "cta_form",
-      "id": "contatti",
       "treatments": [
         "Rinoplastica",
         "Blefaroplastica",
@@ -399,8 +418,8 @@
         "Medicina estetica",
         "Vorrei un consulto generale"
       ],
+      "submit_label": "Invia Richiesta",
       "success_title": "Grazie!",
-      "form_title": "Prenota Consulto",
       "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative."
     }
   ],
@@ -484,39 +503,6 @@
       {
         "label": "Note legali",
         "href": "#"
-      }
-    ]
-  },
-  "topbar": {
-    "enabled": true,
-    "items": [
-      {
-        "label": "5,0 · 2.219 recensioni Google",
-        "href": "https://www.google.com/search?q=dottore+domenico+campa",
-        "new_tab": true,
-        "icon": "star",
-        "google_brand": true,
-        "strong_part": "2.219"
-      },
-      {
-        "label": "",
-        "icon": ""
-      },
-      {
-        "label": "🔥 85 persone hanno prenotato negli ultimi 7 giorni",
-        "icon": "dot",
-        "strong_part": "85"
-      },
-      {
-        "label": "Iscriviti alla newsletter",
-        "href": "#newsletter",
-        "icon": "newsletter"
-      },
-      {
-        "label": "Prenota subito",
-        "href": "https://calendly.com/",
-        "new_tab": true,
-        "icon": "calendar"
       }
     ]
   }
