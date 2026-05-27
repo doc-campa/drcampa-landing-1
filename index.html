@@ -374,14 +374,25 @@ section[id] { scroll-margin-top:90px; }
   outline-offset:4px;
 }
 
-/* Mobile: testo sopra, video sotto, full-width, aspect ratio meno verticale */
+/* Mobile: testo+video impilati e RIORDINATI: titolo → video → info → CTA */
 @media (max-width:860px){
   .hero.has-video-player .hero-content {
     grid-template-columns:1fr;
-    gap:36px;
+    gap:0; /* lo spacing lo controllano i margini dei singoli pezzi */
+    row-gap:28px;
   }
-  /* L'order già impostato sopra (text=1, player=2) tiene il testo per primo */
+  /* `display:contents` appiattisce hero-text dentro il grid genitore,
+     così i suoi figli (titolo, info, cta) diventano grid items con loro `order`. */
+  .hero.has-video-player .hero-text { display:contents; }
+  .hero.has-video-player .hero-title       { order:1; }
+  .hero.has-video-player .hero-video-card  { order:2; }
+  .hero.has-video-player .hero-info        { order:3; }
+  .hero.has-video-player .hero-cta         { order:4; margin-top:8px; }
+
   .hero-video-trigger { aspect-ratio:16/10; }
+  /* Spaziatura interna ridotta su mobile */
+  .hero-info .hero-sub { margin-top:0; }
+  .hero-info .mission-card { margin-top:28px; }
 }
 
 /* ====== VIDEO MODAL ====== */
@@ -1577,7 +1588,6 @@ const templates = {
     const bg = hasVideo(s.bg_video)
       ? video(s.bg_video, {fill:true})
       : img(s.bg_image, 'Hero');
-    // Video player module (a sinistra del testo)
     const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
     const playerPoster = s.video_player_poster || s.bg_image;
     const playerHtml = hasPlayer ? `
@@ -1596,6 +1606,33 @@ const templates = {
           </div>
         </button>
       </div>` : '';
+    // I pezzi del testo li tengo separati così su mobile posso riordinarli
+    // (titolo → video → info → CTA in fondo) tramite CSS `order`.
+    const titleHtml = `
+      <h1 class="hero-title">
+        ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+        ${s.headline_main?`${esc(s.headline_main)} `:''}
+        ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+      </h1>`;
+    const subHtml = (s.subtitle_em || s.subtitle) ? `
+      <p class="hero-sub">
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+        ${s.subtitle?esc(s.subtitle):''}
+      </p>` : '';
+    const missionHtml = (s.mission_label_strong||s.mission_figure) ? `
+      <div class="mission-card">
+        <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
+        <div class="mission-bar">
+          <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+          <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+        </div>
+        <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+        <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
+      </div>` : '';
+    const ctaHtml = s.cta_label ? `
+      <div class="hero-cta">
+        <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a>
+      </div>` : '';
     return `
       <section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="hero-bg">${bg}</div>
@@ -1603,29 +1640,12 @@ const templates = {
         <div class="container hero-content reveal">
           ${playerHtml}
           <div class="hero-text">
-            <h1>
-              ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-              ${s.headline_main?`${esc(s.headline_main)} `:''}
-              ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-            </h1>
-            <p class="hero-sub">
-              ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-              ${s.subtitle?esc(s.subtitle):''}
-            </p>
-            ${s.cta_label?`
-              <div class="hero-cta">
-                <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a>
-              </div>`:''}
-            ${(s.mission_label_strong||s.mission_figure)?`
-              <div class="mission-card">
-                <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
-                <div class="mission-bar">
-                  <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-                  <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-                </div>
-                <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-                <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
-              </div>`:''}
+            ${titleHtml}
+            <div class="hero-info">
+              ${subHtml}
+              ${missionHtml}
+            </div>
+            ${ctaHtml}
           </div>
         </div>
       </section>`;
