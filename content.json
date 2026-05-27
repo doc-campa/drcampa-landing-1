@@ -513,7 +513,7 @@
         "icon": "newsletter"
       },
       {
-        "label": "Prenota subito su Calendly",
+        "label": "Prenota subito",
         "href": "https://calendly.com/",
         "new_tab": true,
         "icon": "calendar"
