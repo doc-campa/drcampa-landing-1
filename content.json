@@ -43,7 +43,7 @@
       "headline_accent": "Versione Migliore.",
       "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
       "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
-      "cta_label": "Inizia il Tuo Percorso",
+      "cta_label": "Prenota consulenza 149€",
       "cta_href": "#contatti",
       "mission_label_strong": "LA NOSTRA MISSIONE:",
       "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
@@ -51,7 +51,13 @@
       "mission_figure": "6.200+ Percorsi Completati",
       "mission_sub_a": "Donne e uomini che oggi",
       "mission_sub_b": "si guardano allo specchio con un sorriso diverso.",
-      "video_player_url": "https://www.youtube.com/watch?v=M9eIIRinGp8"
+      "video_player_url": "https://www.youtube.com/watch?v=M9eIIRinGp8",
+      "cta_price_compare": "250€",
+      "cta_secondary_label": "Ti richiamiamo noi",
+      "cta_secondary_href": "#contatti",
+      "cta_secondary_hint": "Chiamata gratuita per informazioni, senza impegno.",
+      "cta_tertiary_label": "Oppure prenota direttamente",
+      "cta_tertiary_href": "https://calendly.com/"
     },
     {
       "type": "problem",
@@ -335,6 +341,31 @@
       "reviews_rating": "5,0",
       "reviews_count": "2.219",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa"
+    },
+    {
+      "type": "before_after",
+      "id": "risultati-prima-dopo",
+      "title_a": "Risultati",
+      "title_italic": "che parlano da soli.",
+      "subtitle": "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato in ogni fase: pre-operatorio, intervento, follow-up a 7-30-90-365 giorni.",
+      "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
+      "items": [
+        {
+          "title": "Rinoplastica funzionale ed estetica",
+          "description": "Correzione del dorso e affinamento punta. Risultato a 6 mesi dall'intervento.",
+          "after_label": "Dopo 6 mesi"
+        },
+        {
+          "title": "Mastoplastica additiva",
+          "description": "Protesi anatomiche, accesso peri-areolare. Risultato a 3 mesi dall'intervento.",
+          "after_label": "Dopo 3 mesi"
+        },
+        {
+          "title": "Filler labbra correttivo",
+          "description": "Riempimento con acido ialuronico reticolato. Risultato immediato e naturale.",
+          "after_label": "Dopo il trattamento"
+        }
+      ]
     },
     {
       "type": "big_quote",
