@@ -589,7 +589,78 @@ html.no-topbar .hero { padding-top:130px; }
 .hero-sub .em {
   color:var(--ivory); font-weight:400;
 }
-.hero-cta { display:flex; gap:14px; flex-wrap:wrap; }
+.hero-cta {
+  display:flex; flex-direction:column;
+  gap:14px;
+  align-items:flex-start;
+}
+.hero-cta-row {
+  display:flex; gap:14px; flex-wrap:wrap;
+  align-items:stretch;
+}
+/* Primary: gold pieno, prezzo barrato accanto */
+.hero-cta-primary {
+  display:inline-flex; align-items:center; gap:12px;
+}
+.cta-price-strike {
+  font-size:.85em; opacity:.6; text-decoration:line-through;
+  font-weight:500;
+  text-decoration-thickness:1.5px;
+  letter-spacing:.01em;
+}
+/* Secondary: outline gold, percorso "Ti richiamo gratis" */
+.btn-outline-gold {
+  background:transparent;
+  color:var(--ivory);
+  border:1.5px solid rgba(200,168,107,.55);
+  padding:14px 26px;
+  border-radius:999px;
+  font-weight:500;
+  letter-spacing:.005em;
+  transition:background .25s var(--ease-out), border-color .25s, transform .25s var(--ease-spring), color .2s;
+  cursor:pointer;
+  display:inline-flex; align-items:center; justify-content:center;
+  text-decoration:none;
+  font-size:.98rem;
+}
+.btn-outline-gold:hover {
+  background:var(--gold);
+  border-color:var(--gold);
+  color:var(--petrol-darker);
+  transform:translateY(-2px);
+}
+.btn-outline-gold.btn-large { padding:16px 30px; font-size:1.02rem; }
+
+/* Hint sotto i 2 bottoni: piccola frase descrittiva */
+.hero-cta-hint {
+  font-size:.82rem;
+  color:rgba(247,243,236,.65);
+  letter-spacing:.01em;
+  margin-top:-4px;
+  margin-left:4px;
+}
+
+/* Tertiary: link sottotitolo, ancora più discreto, percorso power-user */
+.hero-cta-tertiary {
+  display:inline-flex; align-items:center;
+  margin-top:4px;
+  font-size:.88rem;
+  color:rgba(247,243,236,.78);
+  text-decoration:none;
+  letter-spacing:.005em;
+  border-bottom:1px solid rgba(200,168,107,.22);
+  padding-bottom:3px;
+  transition:color .2s, border-color .2s;
+}
+.hero-cta-tertiary:hover {
+  color:var(--gold);
+  border-color:var(--gold);
+}
+
+@media (max-width:600px){
+  .hero-cta-row { flex-direction:column; align-items:stretch; }
+  .hero-cta-row .btn-large { width:100%; justify-content:center; }
+}
 
 /* Mission card */
 .mission-card {
@@ -1100,9 +1171,24 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .test-card-head {
   display:flex; align-items:center; gap:12px; margin-bottom:14px;
 }
+.test-avatar-wrap {
+  position:relative;
+  width:44px; height:44px;
+  flex-shrink:0;
+}
+.test-avatar-badge {
+  position:absolute;
+  bottom:-3px; right:-3px;
+  width:18px; height:18px;
+  background:#fff;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  box-shadow:0 1px 3px rgba(0,0,0,.18);
+  border:1.5px solid #fff;
+}
+.test-avatar-badge svg { width:11px; height:11px; }
 .test-avatar {
   width:44px; height:44px; border-radius:50%; overflow:hidden;
-  flex-shrink:0;
   display:flex; align-items:center; justify-content:center;
   font-weight:600; font-size:1.05rem; color:#fff;
   letter-spacing:.01em;
@@ -1347,6 +1433,120 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 @media (max-width:860px) {
   .video-wrap { aspect-ratio:4/5; border-radius:var(--radius); }
+}
+
+/* ============================================================
+   BEFORE / AFTER
+   ============================================================ */
+.before-after {
+  padding:90px 0;
+  background:var(--bg-soft);
+}
+.ba-head { text-align:center; max-width:780px; margin:0 auto 50px; }
+.ba-head h2 .serif-italic { color:var(--petrol); }
+.ba-subtitle {
+  margin:14px auto 0; max-width:600px;
+  color:var(--ink-soft); font-size:1.02rem; line-height:1.55;
+}
+.ba-grid {
+  display:grid; grid-template-columns:repeat(auto-fit, minmax(360px, 1fr));
+  gap:32px; max-width:1180px; margin:0 auto;
+}
+.ba-card {
+  background:#fff;
+  border-radius:18px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  transition:transform .4s var(--ease-spring), box-shadow .4s;
+}
+.ba-card:hover {
+  transform:translateY(-4px);
+  box-shadow:0 18px 36px -16px rgba(18,60,70,.18);
+}
+.ba-card-head {
+  padding:22px 24px 6px;
+}
+.ba-card-head h3 {
+  font-size:1.15rem; font-weight:500; color:var(--ink);
+  margin:0 0 6px;
+  letter-spacing:-.005em;
+}
+.ba-card-head p {
+  color:var(--ink-soft); font-size:.92rem; line-height:1.55;
+  margin:0;
+}
+.ba-compare {
+  position:relative;
+  aspect-ratio:4/3;
+  overflow:hidden;
+  user-select:none;
+  touch-action:none;
+  cursor:ew-resize;
+  background:#0d2e36;
+}
+.ba-image {
+  position:absolute; inset:0;
+  pointer-events:none;
+}
+.ba-image img, .ba-image picture {
+  width:100%; height:100%; object-fit:cover;
+  display:block;
+}
+.ba-placeholder {
+  width:100%; height:100%;
+  background:linear-gradient(135deg, #2a4d54, #1b3a40);
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  color:rgba(247,243,236,.4); gap:10px;
+  font-size:.85rem;
+}
+.ba-label {
+  position:absolute; top:14px;
+  padding:5px 12px;
+  font-size:.74rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+  border-radius:999px;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+}
+.ba-label-before {
+  left:14px;
+  background:rgba(13,46,54,.78);
+  color:rgba(247,243,236,.95);
+  border:1px solid rgba(247,243,236,.2);
+}
+.ba-label-after {
+  right:14px;
+  background:rgba(200,168,107,.92);
+  color:#0d2e36;
+  border:1px solid rgba(200,168,107,.5);
+}
+.ba-handle {
+  position:absolute; top:0; bottom:0;
+  width:0; transform:translateX(-50%);
+  pointer-events:none;
+}
+.ba-handle-line {
+  position:absolute; left:50%; top:0; bottom:0;
+  width:2px; background:#fff;
+  transform:translateX(-50%);
+  box-shadow:0 0 10px rgba(0,0,0,.4);
+}
+.ba-handle-grip {
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%,-50%);
+  width:44px; height:44px;
+  background:#fff;
+  border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  color:var(--petrol);
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  pointer-events:auto;
+  cursor:ew-resize;
+  transition:transform .25s var(--ease-spring);
+}
+.ba-handle-grip:hover { transform:translate(-50%,-50%) scale(1.08); }
+.ba-disclaimer {
+  text-align:center; margin:50px auto 0; max-width:680px;
+  color:var(--ink-light); font-size:.82rem; line-height:1.55;
+  font-style:italic;
 }
 
 /* ============================================================
@@ -1780,9 +1980,29 @@ const templates = {
         <div class="mission-figure">${esc(s.mission_figure||'')}</div>
         <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
       </div>` : '';
-    const ctaHtml = s.cta_label ? `
+    // Blocco CTA a 3 percorsi
+    const hasSecondary = !!(s.cta_secondary_label && String(s.cta_secondary_label).trim());
+    const hasTertiary  = !!(s.cta_tertiary_label  && String(s.cta_tertiary_label).trim());
+    const hasPrimary   = !!(s.cta_label && String(s.cta_label).trim());
+    const ctaHtml = hasPrimary ? `
       <div class="hero-cta">
-        <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a>
+        <div class="hero-cta-row">
+          <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large hero-cta-primary">
+            ${esc(s.cta_label)}
+            ${s.cta_price_compare?`<span class="cta-price-strike">${esc(s.cta_price_compare)}</span>`:''}
+          </a>
+          ${hasSecondary?`
+            <a href="${esc(s.cta_secondary_href||'#contatti')}" class="btn btn-outline-gold btn-large hero-cta-secondary">
+              ${esc(s.cta_secondary_label)}
+            </a>` : ''}
+        </div>
+        ${(hasSecondary && s.cta_secondary_hint)?`
+          <div class="hero-cta-hint">${esc(s.cta_secondary_hint)}</div>` : ''}
+        ${hasTertiary?`
+          <a href="${esc(s.cta_tertiary_href||'#')}" class="hero-cta-tertiary" ${s.cta_tertiary_href && s.cta_tertiary_href.startsWith('http')?'target="_blank" rel="noopener"':''}>
+            ${esc(s.cta_tertiary_label)}
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:5px;vertical-align:-2px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>` : ''}
       </div>` : '';
     return `
       <section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
@@ -2012,9 +2232,11 @@ const templates = {
       let h = 0; for(let i=0; i<nameTrim.length; i++) h = (h*31 + nameTrim.charCodeAt(i)) >>> 0;
       const avatarColors = ['#5B7C7F','#9B6B5C','#7B6A8C','#8C9B6B','#B68C5C','#4F6B7C','#7C5C8C','#5C8C7C'];
       const bg = avatarColors[h % avatarColors.length];
-      const avatarHtml = t.avatar
+      const avatarInner = t.avatar
         ? `<div class="test-avatar has-photo">${img(t.avatar, nameTrim)}</div>`
         : `<div class="test-avatar initial" style="background:${bg}">${esc(initial)}</div>`;
+      // Wrapper con il mini-badge Google sovrapposto in basso a destra (come fa il vero Google)
+      const avatarHtml = `<div class="test-avatar-wrap">${avatarInner}<span class="test-avatar-badge" aria-label="Recensione Google">${googleLogo}</span></div>`;
       return `
       <div class="test-card">
         <div class="test-card-head">
@@ -2156,6 +2378,49 @@ const templates = {
           </div>`:''}
           <div class="video-wrap">${video(videoValue, {})}</div>
           ${s.caption?`<p class="video-caption">${richText(s.caption)}</p>`:''}
+        </div>
+      </section>`;
+  },
+
+  before_after(s){
+    const items = (s.items||[]).map((it, idx)=>{
+      // Se manca una delle due foto, mostriamo placeholder grigio con icona
+      const beforeHtml = it.before_image
+        ? img(it.before_image, 'Prima')
+        : `<div class="ba-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Foto in caricamento</span></div>`;
+      const afterHtml = it.after_image
+        ? img(it.after_image, 'Dopo')
+        : `<div class="ba-placeholder"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Foto in caricamento</span></div>`;
+      return `
+      <div class="ba-card" data-ba-slider data-idx="${idx}">
+        ${it.title?`<div class="ba-card-head"><h3>${esc(it.title)}</h3>${it.description?`<p>${richText(it.description)}</p>`:''}</div>`:''}
+        <div class="ba-compare" aria-label="Confronto prima e dopo">
+          <div class="ba-image ba-after">
+            ${afterHtml}
+            <span class="ba-label ba-label-after">${esc(it.after_label||'Dopo')}</span>
+          </div>
+          <div class="ba-image ba-before" style="clip-path:polygon(0 0, 50% 0, 50% 100%, 0 100%)">
+            ${beforeHtml}
+            <span class="ba-label ba-label-before">Prima</span>
+          </div>
+          <div class="ba-handle" style="left:50%">
+            <div class="ba-handle-line"></div>
+            <div class="ba-handle-grip" aria-hidden="true">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/><polyline points="9 6 15 12 9 18" style="transform:translateX(-2px)"/></svg>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }).join('');
+    return `
+      <section${sectionStyleAttr(s)} class="before-after"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="ba-head reveal">
+            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+            ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
+          </div>
+          <div class="ba-grid">${items}</div>
+          ${s.disclaimer?`<p class="ba-disclaimer">${richText(s.disclaimer)}</p>`:''}
         </div>
       </section>`;
   }
@@ -2443,6 +2708,50 @@ function initTopbarRotator(){
   }, 4000);
 }
 
+/* ==========================================================
+   BEFORE / AFTER SLIDERS
+   Drag laterale per scoprire prima/dopo. Funziona con mouse + touch.
+   ========================================================== */
+function initBeforeAfterSliders(){
+  document.querySelectorAll('[data-ba-slider]').forEach(slider => {
+    const compare = slider.querySelector('.ba-compare');
+    const before  = slider.querySelector('.ba-before');
+    const handle  = slider.querySelector('.ba-handle');
+    if(!compare || !before || !handle) return;
+
+    let dragging = false;
+
+    function setPosition(clientX){
+      const rect = compare.getBoundingClientRect();
+      let x = clientX - rect.left;
+      x = Math.max(0, Math.min(rect.width, x));
+      const pct = (x / rect.width) * 100;
+      before.style.clipPath = `polygon(0 0, ${pct}% 0, ${pct}% 100%, 0 100%)`;
+      handle.style.left = `${pct}%`;
+    }
+
+    function onMove(e){
+      if(!dragging) return;
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(x);
+    }
+    function onUp(){ dragging = false; document.body.style.userSelect = ''; }
+    function onDown(e){
+      dragging = true;
+      document.body.style.userSelect = 'none';
+      const x = e.touches ? e.touches[0].clientX : e.clientX;
+      setPosition(x);
+    }
+
+    compare.addEventListener('mousedown', onDown);
+    compare.addEventListener('touchstart', onDown, {passive:true});
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('touchmove', onMove, {passive:true});
+    document.addEventListener('mouseup', onUp);
+    document.addEventListener('touchend', onUp);
+  });
+}
+
 function initBehaviors(){
 
   // ---- VIDEO MODAL ----
@@ -2450,6 +2759,9 @@ function initBehaviors(){
 
   // ---- TOPBAR ROTATOR (una voce alla volta, ogni 4 secondi) ----
   initTopbarRotator();
+
+  // ---- BEFORE/AFTER SLIDERS ----
+  initBeforeAfterSliders();
 
   // ---- Sticky nav scrolled state + hide on scroll-down ----
   const nav = document.getElementById('nav');
