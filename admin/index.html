@@ -891,14 +891,19 @@ const SECTION_SCHEMA = {
     ['footnote', 'Nota in fondo (corsivo)', 'text']
   ],
   testimonials: [
-    ['id', 'ID per link interni', 'text'],
+    ['id', 'ID per link interni', 'text', 'Es: "recensioni" per linkare con #recensioni dal menu.'],
     ['title_a', 'Titolo - parte normale', 'text'],
     ['title_italic', 'Titolo - parte in corsivo', 'text'],
+    ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Una frase di apertura sotto al titolo. Es: "Le testimonianze reali dei pazienti dello Studio Campa, pubblicate su Google."'],
+    ['reviews_rating', 'Voto medio (es. "5,0")', 'text'],
+    ['reviews_count', 'Numero recensioni totali (es. "2.219")', 'text', 'Se compilato, mostra il badge Google con voto e conteggio sopra alle card.'],
+    ['reviews_link', 'Link a tutte le recensioni Google', 'text', 'URL della SERP Google con le recensioni del dottore. Il badge diventa cliccabile.'],
     ['items', 'Testimonianze', 'list-object', null, [
-      ['text_strong', 'Testo - prima frase grassetta', 'text'],
+      ['name', 'Nome del paziente', 'text', 'Es: "Claudia Leonardi"'],
+      ['date', 'Data ("3 mesi fa")', 'text', 'Patina di credibilità Google. Es: "3 mesi fa", "5 mesi fa".'],
+      ['text_strong', 'Testo - prima frase grassetta (opzionale)', 'text', 'Lascia vuoto se la recensione non ha una frase di apertura particolare.'],
       ['text', 'Testo - resto della testimonianza', 'textarea'],
-      ['avatar', 'Foto del paziente (tonda)', 'image'],
-      ['name', 'Nome del paziente', 'text']
+      ['avatar', 'Foto del paziente (tonda, opzionale)', 'image', 'Se non caricata, viene mostrata l\'iniziale del nome su sfondo colorato (come fa Google).']
     ]]
   ],
   big_quote: [
