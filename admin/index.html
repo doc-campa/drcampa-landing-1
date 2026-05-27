@@ -1416,32 +1416,37 @@ const previewTemplates = {
           </div>
         </div>
       </div>` : '';
+    const titleHtml = `
+      <h1 class="hero-title">
+        ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+        ${s.headline_main?`${esc(s.headline_main)} `:''}
+        ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+      </h1>`;
+    const subHtml = (s.subtitle_em || s.subtitle) ? `
+      <p class="hero-sub">
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+        ${s.subtitle?richText(s.subtitle):''}
+      </p>` : '';
+    const missionHtml = (s.mission_label_strong||s.mission_figure) ? `
+      <div class="mission-card">
+        <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
+        <div class="mission-bar">
+          <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+          <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+        </div>
+        <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+        <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
+      </div>` : '';
+    const ctaHtml = s.cta_label ? `<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>` : '';
     return `<section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}">
       <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, 'Hero')}</div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container hero-content">
         ${playerHtml}
         <div class="hero-text">
-          <h1>
-            ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-            ${s.headline_main?`${esc(s.headline_main)} `:''}
-            ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-          </h1>
-          <p class="hero-sub">
-            ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-            ${s.subtitle?richText(s.subtitle):''}
-          </p>
-          ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
-          ${(s.mission_label_strong||s.mission_figure)?`
-            <div class="mission-card">
-              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
-              <div class="mission-bar">
-                <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-                <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-              </div>
-              <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-              <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
-            </div>`:''}
+          ${titleHtml}
+          <div class="hero-info">${subHtml}${missionHtml}</div>
+          ${ctaHtml}
         </div>
       </div>
     </section>`;
