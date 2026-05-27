@@ -951,6 +951,27 @@ const NAV_SCHEMA = [
   ['cta_href', 'Link del bottone', 'text']
 ];
 
+const TOPBAR_SCHEMA = [
+  ['enabled', 'Mostra la barra in alto', 'boolean', 'Se attiva, mostra la barra sticky scura sopra alla nav con le voci sotto.'],
+  ['items', 'Voci della barra (in ordine)', 'list-object', null, [
+    ['label', 'Testo della voce', 'text', 'Es: "5,0 · 2.219 recensioni Google" oppure "Chirurgo Plastico, Napoli"'],
+    ['href', 'Link (opzionale)', 'text', 'Se inserito, la voce diventa cliccabile. Es: link recensioni Google, ancora #newsletter, link Calendly.'],
+    ['new_tab', 'Apri in nuova scheda', 'boolean', 'Consigliato per link esterni (es. Google).'],
+    ['icon', 'Icona (opzionale)', 'select', null, [
+      ['', '— Nessuna —'],
+      ['star', '★ Stelle (giallo)'],
+      ['dot', '🔴 Pallino pulsante (urgency)'],
+      ['fire', '🔥 Fiamma (hot)'],
+      ['newsletter', '📬 Newsletter'],
+      ['calendar', '📅 Calendario'],
+      ['phone', '📞 Telefono'],
+      ['check', '✓ Spunta']
+    ]],
+    ['google_brand', 'Evidenzia parola "Google" con i colori brand', 'boolean', 'Solo per la voce delle recensioni Google.'],
+    ['strong_part', 'Parte del testo da mettere in grassetto', 'text', 'Es: "5,0" o "2.219". Verrà evidenziato in bold colore ivory.']
+  ]]
+];
+
 const FOOTER_SCHEMA = [
   ['about_text', 'Testo descrittivo accanto al logo', 'textarea'],
   ['bottom_left', 'Copyright (in basso a sinistra)', 'text']
@@ -1999,8 +2020,17 @@ function renderField(field, value, path){
   } else if(type === 'boolean'){
     inputHTML = `<label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--ink-soft);cursor:pointer"><input type="checkbox" data-path="${path.join('.')}" ${value?'checked':''} style="width:auto;margin:0"> Attivo</label>`;
   } else if(type === 'select'){
-    const opts = (extra||[]).map(o => `<option value="${esc(o)}" ${o===value?'selected':''}>${esc(o)}</option>`).join('');
-    inputHTML = `<select class="field-select" data-path="${path.join('.')}"><option value="">—</option>${opts}</select>`;
+    // Le opzioni possono essere stringhe ['a','b'] o tuple [['a','Label A'],['b','Label B']]
+    const opts = (extra||[]).map(o => {
+      let val, lbl;
+      if(Array.isArray(o)){ val = o[0]; lbl = o[1]; }
+      else { val = o; lbl = o; }
+      return `<option value="${esc(val)}" ${val===value?'selected':''}>${esc(lbl)}</option>`;
+    }).join('');
+    // Se la prima opzione è già "vuoto/—", non aggiungiamo il placeholder duplicato
+    const hasEmpty = (extra||[]).some(o => (Array.isArray(o) ? o[0] : o) === '');
+    const placeholder = hasEmpty ? '' : '<option value="">—</option>';
+    inputHTML = `<select class="field-select" data-path="${path.join('.')}">${placeholder}${opts}</select>`;
   } else if(type === 'color'){
     const def = field[3]; // default color
     const hintTxt = field[4];
@@ -2274,6 +2304,7 @@ function renderEditor(){
 
   editor.innerHTML = `
     ${renderBlock('site', '🌐 Impostazioni Generali', 'Titolo, descrizione SEO, logo, colori del sito.', renderSiteBlock())}
+    ${renderBlock('topbar', '⭐ Barra sticky in alto', 'La barra scura sopra alla nav: recensioni Google, urgency, newsletter. Sempre visibile.', renderTopbarBlock())}
     ${renderBlock('nav', '📋 Menu di navigazione', 'La barra in cima al sito con voci, telefono e bottone Prenota.', renderNavBlock())}
     ${renderSectionsBlock()}
     ${renderBlock('footer', '📎 Footer', 'La sezione nera in fondo al sito con link e copyright.', renderFooterBlock())}
@@ -2320,6 +2351,12 @@ function renderNavBlock(){
     ['nav', 'links']
   );
   return `<div class="section-form-fields">${linksField}${main}</div>`;
+}
+
+function renderTopbarBlock(){
+  data.topbar = data.topbar || { enabled:true, items:[] };
+  const fields = TOPBAR_SCHEMA.map(f => renderField(f, data.topbar[f[0]], ['topbar', f[0]])).join('');
+  return `<div class="section-form-fields">${fields}</div>`;
 }
 
 function renderFooterBlock(){
