@@ -751,6 +751,9 @@ const SECTION_SCHEMA = {
     ['bg_image', 'Immagine di sfondo', 'image', 'Carica versione desktop (orizzontale, 1920px) e opzionalmente mobile (verticale, 800px).'],
     ['bg_video', 'Video di sfondo (sostituisce immagine)', 'video', 'MP4 o WebM, max 5-10MB. Se caricato, sostituisce l\'immagine. Suggerito: muted + autoplay + loop.'],
     ['watermark', 'Watermark (testo gigante in trasparenza)', 'text'],
+    ['video_player_url', 'Video player (a sinistra del testo) - URL', 'text', 'Incolla un link YouTube (https://youtu.be/...) o Vimeo (https://vimeo.com/...) o l\'URL diretto di un file .mp4. Se vuoto, il player non viene mostrato.'],
+    ['video_player_poster', 'Video player - Immagine di anteprima (poster)', 'image', 'L\'immagine mostrata prima del play. Se vuoto, si usa l\'immagine di sfondo.'],
+    ['video_player_label', 'Video player - Etichetta sopra il bottone play', 'text', 'Es: "Guarda il video", "Storia di una paziente". Se vuoto, nessuna etichetta.'],
     ['headline_pre', 'Riga sopra il titolo', 'text', 'Es: "Bellezza Autentica. Risultati Reali."'],
     ['headline_main', 'Titolo grande - parte normale', 'text'],
     ['headline_accent', 'Titolo grande - parola ACCENT evidenziata (corsivo gold)', 'text', 'La parola in corsivo gold con il segno sottolineato sotto.'],
@@ -1397,30 +1400,49 @@ function scaleValue(s){
 const previewTemplates = {
   hero(s){
     const hasVideo = s.bg_video && (typeof s.bg_video === 'object' ? s.bg_video.src : s.bg_video);
-    return `<section${sectionStyleAttr(s)} class="hero">
+    const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
+    const playerPoster = s.video_player_poster || s.bg_image;
+    const playerHtml = hasPlayer ? `
+      <div class="hero-video-card">
+        <div class="hero-video-trigger">
+          <div class="hero-video-poster">${imgTag(playerPoster, '') || '<div class="hero-video-poster-fallback"></div>'}</div>
+          <div class="hero-video-overlay"></div>
+          ${s.video_player_label?`<div class="hero-video-label">${esc(s.video_player_label)}</div>`:''}
+          <div class="hero-video-play">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(200,168,107,.4)" stroke-width="1"/>
+              <path d="M26 22 L44 32 L26 42 Z" fill="#123C46"/>
+            </svg>
+          </div>
+        </div>
+      </div>` : '';
+    return `<section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}">
       <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, 'Hero')}</div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container hero-content">
-        <h1>
-          ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-          ${s.headline_main?`${esc(s.headline_main)} `:''}
-          ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-        </h1>
-        <p class="hero-sub">
-          ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-          ${s.subtitle?richText(s.subtitle):''}
-        </p>
-        ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
-        ${(s.mission_label_strong||s.mission_figure)?`
-          <div class="mission-card">
-            <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
-            <div class="mission-bar">
-              <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-              <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-            </div>
-            <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-            <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
-          </div>`:''}
+        ${playerHtml}
+        <div class="hero-text">
+          <h1>
+            ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+            ${s.headline_main?`${esc(s.headline_main)} `:''}
+            ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+          </h1>
+          <p class="hero-sub">
+            ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+            ${s.subtitle?richText(s.subtitle):''}
+          </p>
+          ${s.cta_label?`<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>`:''}
+          ${(s.mission_label_strong||s.mission_figure)?`
+            <div class="mission-card">
+              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
+              <div class="mission-bar">
+                <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+                <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+              </div>
+              <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+              <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
+            </div>`:''}
+        </div>
       </div>
     </section>`;
   },
