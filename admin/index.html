@@ -967,13 +967,13 @@ const TOPBAR_SCHEMA = [
     ['new_tab', 'Apri in nuova scheda', 'boolean', 'Consigliato per link esterni (es. Google).'],
     ['icon', 'Icona (opzionale)', 'select', null, [
       ['', '— Nessuna —'],
-      ['star', '★ Stelle (giallo)'],
-      ['dot', '🔴 Pallino pulsante (urgency)'],
-      ['fire', '🔥 Fiamma (hot)'],
-      ['newsletter', '📬 Newsletter'],
-      ['calendar', '📅 Calendario'],
-      ['phone', '📞 Telefono'],
-      ['check', '✓ Spunta']
+      ['star', 'Stelle (recensioni)'],
+      ['dot', 'Pallino pulsante (urgency)'],
+      ['fire', 'Fiamma (hot)'],
+      ['newsletter', 'Busta (newsletter)'],
+      ['calendar', 'Calendario'],
+      ['phone', 'Telefono'],
+      ['check', 'Spunta (conferma)']
     ]],
     ['google_brand', 'Evidenzia parola "Google" con i colori brand', 'boolean', 'Solo per la voce delle recensioni Google.'],
     ['strong_part', 'Parte del testo da mettere in grassetto', 'text', 'Es: "5,0" o "2.219". Verrà evidenziato in bold colore ivory.']
@@ -1738,6 +1738,18 @@ const previewTemplates = {
   }
 };
 
+function previewTopbarIconSvg(name){
+  const S = (path, sw) => `<svg class="topbar-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw||1.8}" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">${path}</svg>`;
+  switch(name){
+    case 'newsletter': return S('<rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3,7 12,13 21,7"/>');
+    case 'calendar':   return S('<rect x="3" y="5" width="18" height="16" rx="2"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="8" y1="3" x2="8" y2="7"/><line x1="16" y1="3" x2="16" y2="7"/>');
+    case 'phone':      return S('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/>');
+    case 'fire':       return S('<path d="M12 22c4 0 7-3 7-7 0-2-1-4-3-5 0 2-1 3-2 3 0-3-2-5-2-8 0 0-7 4-7 10a7 7 0 0 0 7 7z"/>');
+    case 'check':      return S('<polyline points="20 6 9 17 4 12"/>');
+    default: return '';
+  }
+}
+
 function renderPreviewTopbar(d){
   const tb = d.topbar||{};
   if(tb.enabled === false) return '';
@@ -1750,11 +1762,7 @@ function renderPreviewTopbar(d){
     let inner = '';
     if(item.icon === 'star') inner = `<span class="topbar-star">★★★★★</span>`;
     else if(item.icon === 'dot') inner = `<span class="topbar-dot" aria-hidden="true"></span>`;
-    else if(item.icon === 'newsletter') inner = `<span class="topbar-icon">📬</span>`;
-    else if(item.icon === 'calendar') inner = `<span class="topbar-icon">📅</span>`;
-    else if(item.icon === 'phone') inner = `<span class="topbar-icon">📞</span>`;
-    else if(item.icon === 'fire') inner = `<span class="topbar-icon">🔥</span>`;
-    else if(item.icon === 'check') inner = `<span class="topbar-icon">✓</span>`;
+    else if(item.icon) inner = `<span class="topbar-icon">${previewTopbarIconSvg(item.icon)}</span>`;
     let label = esc(item.label||'');
     if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
     if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
@@ -1879,7 +1887,7 @@ body{margin:0}
 
 /* ====== TOPBAR (inline preview styles, indipendenti dalla landing live) ====== */
 .topbar {
-  position:relative; z-index:101;
+  position:fixed; top:0; left:0; right:0; z-index:101;
   background:linear-gradient(90deg, #0D2E36 0%, #123C46 100%);
   color:#F7F3EC;
   border-bottom:1px solid rgba(200,168,107,.15);
@@ -1888,6 +1896,10 @@ body{margin:0}
   display:flex; align-items:center; justify-content:center;
   overflow:hidden;
 }
+/* La preview ha la nav già con position:fixed top:0; con la topbar la spingo giù */
+.nav { top:36px !important; }
+/* Spazio sotto alla topbar per non sovrapporre il primo contenuto */
+body { padding-top:36px; }
 .topbar-track {
   position:relative;
   width:100%; height:100%;
@@ -1916,6 +1928,7 @@ body{margin:0}
   -webkit-text-fill-color:transparent; color:transparent;
 }
 .topbar-item .topbar-icon { display:inline-flex; align-items:center; color:#C8A86B; }
+.topbar-icon-svg { display:block; flex-shrink:0; }
 .topbar-item .topbar-dot {
   display:inline-block; width:6px; height:6px;
   border-radius:50%; background:#dc2626;
@@ -2465,7 +2478,7 @@ function renderTopbarBlock(){
           icon: ''
         },
         {
-          label: '🔥 85 persone hanno prenotato negli ultimi 7 giorni',
+          label: '85 persone hanno prenotato negli ultimi 7 giorni',
           icon: 'dot',
           strong_part: '85'
         },
