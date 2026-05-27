@@ -292,6 +292,155 @@ section[id] { scroll-margin-top:90px; }
   width:100%;
   color:var(--ivory);
 }
+/* Quando c'è il video player a sinistra, layout 2-col */
+.hero.has-video-player .hero-content {
+  display:grid;
+  grid-template-columns:minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap:clamp(36px, 5vw, 72px);
+  align-items:center;
+}
+.hero .hero-text { min-width:0; }
+
+/* ====== HERO VIDEO PLAYER CARD ====== */
+.hero-video-card {
+  position:relative;
+  width:100%;
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  box-shadow:0 28px 64px -16px rgba(0,0,0,.55), 0 8px 24px -8px rgba(200,168,107,.18);
+  border:1px solid rgba(200,168,107,.25);
+  background:var(--petrol);
+}
+.hero-video-trigger {
+  position:relative;
+  display:block;
+  width:100%;
+  aspect-ratio:4/5;
+  border:0;
+  padding:0;
+  background:transparent;
+  cursor:pointer;
+  overflow:hidden;
+  border-radius:var(--radius-lg);
+}
+.hero-video-poster {
+  position:absolute; inset:0;
+}
+.hero-video-poster img,
+.hero-video-poster picture {
+  width:100%; height:100%; object-fit:cover;
+  transition:transform .8s var(--ease-spring), filter .4s var(--ease-out);
+}
+.hero-video-poster-fallback {
+  width:100%; height:100%;
+  background:linear-gradient(135deg, var(--petrol), var(--petrol-darker));
+}
+.hero-video-overlay {
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(18,60,70,.18) 0%, rgba(18,60,70,.05) 40%, rgba(13,46,54,.55) 100%);
+  transition:opacity .35s var(--ease-out);
+}
+.hero-video-label {
+  position:absolute; top:20px; left:22px;
+  font-size:.78rem; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
+  color:var(--ivory);
+  background:rgba(18,60,70,.6);
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  padding:7px 14px;
+  border-radius:999px;
+  border:1px solid rgba(200,168,107,.3);
+}
+.hero-video-play {
+  position:absolute;
+  left:50%; top:50%;
+  transform:translate(-50%, -50%);
+  width:clamp(64px, 12%, 90px);
+  height:clamp(64px, 12%, 90px);
+  transition:transform .35s var(--ease-spring), filter .3s var(--ease-out);
+  filter:drop-shadow(0 12px 24px rgba(0,0,0,.4));
+}
+.hero-video-play svg { width:100%; height:100%; display:block; }
+.hero-video-trigger:hover .hero-video-poster img,
+.hero-video-trigger:hover .hero-video-poster picture { transform:scale(1.05); }
+.hero-video-trigger:hover .hero-video-play { transform:translate(-50%, -50%) scale(1.08); }
+.hero-video-trigger:hover .hero-video-overlay { opacity:.85; }
+.hero-video-trigger:active .hero-video-play { transform:translate(-50%, -50%) scale(.96); transition-duration:.08s; }
+.hero-video-trigger:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:4px;
+}
+
+/* Mobile: video sopra al testo, full-width, aspect ratio meno verticale */
+@media (max-width:860px){
+  .hero.has-video-player .hero-content {
+    grid-template-columns:1fr;
+    gap:36px;
+  }
+  .hero-video-trigger { aspect-ratio:16/10; }
+}
+
+/* ====== VIDEO MODAL ====== */
+.video-modal {
+  position:fixed; inset:0; z-index:9999;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(10, 22, 26, .85);
+  backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px);
+  padding:clamp(20px, 4vw, 60px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity .25s var(--ease-out);
+}
+.video-modal.open {
+  opacity:1;
+  pointer-events:auto;
+}
+.video-modal-content {
+  position:relative;
+  width:100%;
+  max-width:1200px;
+  aspect-ratio:16/9;
+  background:#000;
+  border-radius:var(--radius);
+  overflow:hidden;
+  box-shadow:0 30px 80px rgba(0,0,0,.6);
+  transform:scale(.94);
+  transition:transform .35s var(--ease-spring);
+}
+.video-modal.open .video-modal-content { transform:scale(1); }
+.video-modal-content iframe,
+.video-modal-content video {
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  border:0;
+  display:block;
+}
+.video-modal-close {
+  position:absolute;
+  top:-50px; right:-2px;
+  width:38px; height:38px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(247,243,236,.1);
+  color:var(--ivory);
+  border:1px solid rgba(247,243,236,.25);
+  border-radius:50%;
+  cursor:pointer;
+  transition:background .2s, transform .25s var(--ease-spring), border-color .2s;
+}
+.video-modal-close:hover {
+  background:rgba(247,243,236,.2);
+  transform:scale(1.1);
+  border-color:var(--gold);
+}
+.video-modal-close:focus-visible {
+  outline:2px solid var(--gold);
+  outline-offset:3px;
+}
+@media (max-width:600px){
+  .video-modal-close {
+    top:-44px; right:0;
+  }
+}
+
 .hero-content h1 {
   color:var(--ivory);
   max-width:18ch;
@@ -1423,34 +1572,56 @@ const templates = {
     const bg = hasVideo(s.bg_video)
       ? video(s.bg_video, {fill:true})
       : img(s.bg_image, 'Hero');
+    // Video player module (a sinistra del testo)
+    const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
+    const playerPoster = s.video_player_poster || s.bg_image;
+    const playerHtml = hasPlayer ? `
+      <div class="hero-video-card reveal">
+        <button class="hero-video-trigger" type="button"
+          data-video-modal="${esc(s.video_player_url)}"
+          aria-label="Apri il video">
+          <div class="hero-video-poster">${img(playerPoster, '') || '<div class="hero-video-poster-fallback"></div>'}</div>
+          <div class="hero-video-overlay"></div>
+          ${s.video_player_label?`<div class="hero-video-label">${esc(s.video_player_label)}</div>`:''}
+          <div class="hero-video-play" aria-hidden="true">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(200,168,107,.4)" stroke-width="1"/>
+              <path d="M26 22 L44 32 L26 42 Z" fill="#123C46"/>
+            </svg>
+          </div>
+        </button>
+      </div>` : '';
     return `
-      <section${sectionStyleAttr(s)} class="hero"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="hero-bg">${bg}</div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container hero-content reveal">
-          <h1>
-            ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-            ${s.headline_main?`${esc(s.headline_main)} `:''}
-            ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
-          </h1>
-          <p class="hero-sub">
-            ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-            ${s.subtitle?esc(s.subtitle):''}
-          </p>
-          ${s.cta_label?`
-            <div class="hero-cta">
-              <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a>
-            </div>`:''}
-          ${(s.mission_label_strong||s.mission_figure)?`
-            <div class="mission-card">
-              <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
-              <div class="mission-bar">
-                <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-                <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-              </div>
-              <div class="mission-figure">${esc(s.mission_figure||'')}</div>
-              <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
-            </div>`:''}
+          ${playerHtml}
+          <div class="hero-text">
+            <h1>
+              ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
+              ${s.headline_main?`${esc(s.headline_main)} `:''}
+              ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+            </h1>
+            <p class="hero-sub">
+              ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+              ${s.subtitle?esc(s.subtitle):''}
+            </p>
+            ${s.cta_label?`
+              <div class="hero-cta">
+                <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a>
+              </div>`:''}
+            ${(s.mission_label_strong||s.mission_figure)?`
+              <div class="mission-card">
+                <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
+                <div class="mission-bar">
+                  <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+                  <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+                </div>
+                <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+                <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
+              </div>`:''}
+          </div>
         </div>
       </section>`;
   },
@@ -1896,9 +2067,93 @@ async function init(){
 }
 
 /* ==========================================================
+   VIDEO MODAL — apre un video YouTube/Vimeo/MP4 in overlay
+   ========================================================== */
+function videoEmbedUrl(rawUrl){
+  if(!rawUrl) return null;
+  const url = String(rawUrl).trim();
+  // YouTube — supporto vari formati
+  let m = url.match(/(?:youtube\.com\/(?:watch\?v=|embed\/|v\/)|youtu\.be\/)([\w-]{6,})/);
+  if(m){
+    return {type:'iframe', src:`https://www.youtube.com/embed/${m[1]}?autoplay=1&rel=0`};
+  }
+  // Vimeo
+  m = url.match(/vimeo\.com\/(?:video\/)?(\d+)/);
+  if(m){
+    return {type:'iframe', src:`https://player.vimeo.com/video/${m[1]}?autoplay=1`};
+  }
+  // File diretti (mp4, webm, mov)
+  if(/\.(mp4|webm|mov|m4v)(\?|$)/i.test(url)){
+    return {type:'video', src:url};
+  }
+  // Default: assumiamo iframe (anche per altri embed)
+  return {type:'iframe', src:url};
+}
+
+function initVideoModal(){
+  // Crea il modal una sola volta nel DOM
+  let modal = document.getElementById('videoModal');
+  if(!modal){
+    modal = document.createElement('div');
+    modal.id = 'videoModal';
+    modal.className = 'video-modal';
+    modal.innerHTML = `
+      <div class="video-modal-content" role="dialog" aria-modal="true" aria-label="Video player">
+        <button class="video-modal-close" type="button" aria-label="Chiudi video">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round">
+            <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+          </svg>
+        </button>
+        <div class="video-modal-inner"></div>
+      </div>`;
+    document.body.appendChild(modal);
+  }
+  const inner = modal.querySelector('.video-modal-inner');
+  const closeBtn = modal.querySelector('.video-modal-close');
+
+  function open(rawUrl){
+    const parsed = videoEmbedUrl(rawUrl);
+    if(!parsed) return;
+    if(parsed.type === 'iframe'){
+      inner.innerHTML = `<iframe src="${parsed.src}" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen></iframe>`;
+    } else {
+      inner.innerHTML = `<video src="${parsed.src}" controls autoplay playsinline></video>`;
+    }
+    modal.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close(){
+    modal.classList.remove('open');
+    document.body.style.overflow = '';
+    // Rimuovo dopo l'animazione per fermare la riproduzione
+    setTimeout(() => { inner.innerHTML = ''; }, 300);
+  }
+
+  // Wire triggers (i bottoni con data-video-modal)
+  document.querySelectorAll('[data-video-modal]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.preventDefault();
+      open(btn.dataset.videoModal);
+    });
+  });
+
+  // Close: click sull'overlay (non sul content), bottone X, tasto ESC
+  closeBtn.addEventListener('click', close);
+  modal.addEventListener('click', e => {
+    if(e.target === modal) close();
+  });
+  document.addEventListener('keydown', e => {
+    if(e.key === 'Escape' && modal.classList.contains('open')) close();
+  });
+}
+
+/* ==========================================================
    BEHAVIORS — safe animation system + nav + form
    ========================================================== */
 function initBehaviors(){
+
+  // ---- VIDEO MODAL ----
+  initVideoModal();
 
   // ---- Sticky nav scrolled state + hide on scroll-down ----
   const nav = document.getElementById('nav');
