@@ -187,43 +187,39 @@ section[id] { scroll-margin-top:90px; }
    ============================================================ */
 
 /* ========== TOPBAR STICKY (sub-header sopra la nav) ==========
-   Bar scura con scorrimento orizzontale di voci chiave:
-   - Recensioni Google 5,0 / 2.219 (link diretto alla SERP)
-   - Categoria/città
-   - Urgency
-   - Newsletter
-   - Calendly
+   Bar scura: mostra UNA voce alla volta, fade ogni 4 secondi.
+   Stesso comportamento su desktop e mobile.
    Sempre visibile su scroll (NON si nasconde come la nav). */
 .topbar {
   position:fixed; top:0; left:0; right:0; z-index:101;
-  background:linear-gradient(90deg, var(--petrol-darker, #0e2f37) 0%, var(--petrol, #123C46) 100%);
+  background:linear-gradient(90deg, var(--petrol-darker, #0D2E36) 0%, var(--petrol, #123C46) 100%);
   color:var(--ivory);
   border-bottom:1px solid rgba(200,168,107,.15);
-  font-size:.78rem; letter-spacing:.01em;
+  font-size:.82rem; letter-spacing:.01em;
   height:36px;
-  display:flex; align-items:center;
+  display:flex; align-items:center; justify-content:center;
   overflow:hidden;
 }
 .topbar-track {
-  display:flex; align-items:center; gap:0;
-  white-space:nowrap;
-  width:100%;
+  position:relative;
+  width:100%; height:100%;
 }
 .topbar-item {
-  display:inline-flex; align-items:center; gap:6px;
-  padding:0 22px;
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%, -50%);
+  display:inline-flex; align-items:center; gap:8px;
   color:rgba(247,243,236,.92);
   text-decoration:none;
-  position:relative;
-  transition:color .2s var(--ease-out);
+  opacity:0;
+  white-space:nowrap;
+  pointer-events:none;
+  transition:opacity .5s ease;
   font-weight:400;
+  max-width:calc(100% - 32px);
 }
-.topbar-item + .topbar-item::before {
-  content:'';
-  position:absolute; left:0; top:50%;
-  width:1px; height:14px;
-  margin-top:-7px;
-  background:rgba(200,168,107,.22);
+.topbar-item.is-active {
+  opacity:1;
+  pointer-events:auto;
 }
 .topbar-item.is-link { cursor:pointer; }
 .topbar-item.is-link:hover { color:var(--gold); }
@@ -237,7 +233,6 @@ section[id] { scroll-margin-top:90px; }
 }
 .topbar-item .topbar-icon {
   display:inline-flex; align-items:center; justify-content:center;
-  width:14px; height:14px;
   color:var(--gold);
 }
 .topbar-item .topbar-dot {
@@ -250,28 +245,8 @@ section[id] { scroll-margin-top:90px; }
   0%, 100% { box-shadow:0 0 0 0 rgba(220,38,38,.6); }
   50% { box-shadow:0 0 0 6px rgba(220,38,38,0); }
 }
-
-/* Desktop (>=900px): voci STATICHE, distribuite */
-@media (min-width:900px){
-  .topbar-track {
-    justify-content:center;
-    max-width:1400px; margin:0 auto;
-    padding:0 24px;
-  }
-}
-/* Mobile (<900px): TICKER scorrevole infinito */
-@media (max-width:899px){
+@media (max-width:600px){
   .topbar { font-size:.74rem; height:34px; }
-  .topbar-track {
-    animation:topbar-scroll 38s linear infinite;
-    width:max-content;
-  }
-  .topbar:hover .topbar-track { animation-play-state:paused; }
-  .topbar-item { padding:0 16px; }
-}
-@keyframes topbar-scroll {
-  from { transform:translateX(0); }
-  to   { transform:translateX(-50%); }
 }
 
 /* La nav viene spinta sotto la topbar */
@@ -2119,8 +2094,8 @@ function renderTopbar(data){
     if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
     return `<${tag} class="${cls}"${attrs}>${inner}${label}</${tag}>`;
   }).join('');
-  // Per il ticker mobile, duplichiamo il contenuto così l'animazione translateX(-50%) loopa senza tagli
-  return `<div class="topbar-track">${items}${items}</div>`;
+  // Una voce alla volta in rotazione (gestita dal JS init), niente duplicazione
+  return `<div class="topbar-track">${items}</div>`;
 }
 
 function renderNav(data){
@@ -2342,10 +2317,30 @@ function initVideoModal(){
 /* ==========================================================
    BEHAVIORS — safe animation system + nav + form
    ========================================================== */
+/* ==========================================================
+   TOPBAR ROTATOR — fa scorrere le voci della topbar
+   una alla volta, ogni 4 secondi, con fade.
+   ========================================================== */
+function initTopbarRotator(){
+  const items = document.querySelectorAll('.topbar-item');
+  if(!items.length) return;
+  let current = 0;
+  items[0].classList.add('is-active');
+  if(items.length < 2) return; // se c'è solo una voce, rimane fissa
+  setInterval(() => {
+    items[current].classList.remove('is-active');
+    current = (current + 1) % items.length;
+    items[current].classList.add('is-active');
+  }, 4000);
+}
+
 function initBehaviors(){
 
   // ---- VIDEO MODAL ----
   initVideoModal();
+
+  // ---- TOPBAR ROTATOR (una voce alla volta, ogni 4 secondi) ----
+  initTopbarRotator();
 
   // ---- Sticky nav scrolled state + hide on scroll-down ----
   const nav = document.getElementById('nav');
