@@ -3,7 +3,8 @@
     "title": "Dr. Domenico Campa — Chirurgia Estetica",
     "meta_description": "Dr. Domenico Campa — Chirurgia plastica ed estetica. Bellezza autentica, risultati reali, percorsi su misura.",
     "logo_text": "Dr. Campa",
-    "colors": {}
+    "colors": {},
+    "logo_url": "https://www.domenicocampa.it/wp-content/uploads/logo-sito-domenico.svg"
   },
   "nav": {
     "links": [
@@ -150,6 +151,223 @@
           "photo": "https://images.unsplash.com/photo-1583912267550-d6c2ac3196c0?auto=format&fit=crop&w=900&q=80",
           "title": "Eseguire",
           "body": "Il tempo recuperato attraverso una procedura ben strutturata si trasforma in un vantaggio misurabile. È qui che i pazienti smettono di reagire al cambiamento e cominciano a vivere il risultato."
+        }
+      ]
+    },
+    {
+      "type": "treatments_list",
+      "id": "trattamenti",
+      "title_a": "Trattamenti",
+      "title_italic": "su misura.",
+      "subtitle": "Tutti gli interventi e trattamenti dello Studio Campa, organizzati per area di intervento. Ogni percorso inizia con la consulenza personalizzata.",
+      "footer_note": "Ogni trattamento è preceduto da una consulenza personalizzata (149€) per valutare insieme l'approccio più indicato. Preventivo dettagliato condiviso dopo la visita.",
+      "categories": [
+        {
+          "name": "Viso",
+          "icon": "face",
+          "description": "Chirurgia e medicina estetica per l'area del viso: profilo, occhi, fronte, contorni.",
+          "treatments": [
+            {
+              "name": "Rinoplastica",
+              "href": "https://www.domenicocampa.it/intervento/rinoplastica"
+            },
+            {
+              "name": "Profiloplastica",
+              "href": ""
+            },
+            {
+              "name": "Blefaroplastica",
+              "href": ""
+            },
+            {
+              "name": "Lifting viso",
+              "href": ""
+            },
+            {
+              "name": "Lifting fronte",
+              "href": ""
+            },
+            {
+              "name": "Lifting sopracciglio",
+              "href": ""
+            },
+            {
+              "name": "Otoplastica",
+              "href": ""
+            },
+            {
+              "name": "Correzione sorriso gengivale",
+              "href": ""
+            },
+            {
+              "name": "Liposuzione area sottomento",
+              "href": ""
+            },
+            {
+              "name": "Correzione doppio mento con fili di trazione",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Seno",
+          "icon": "breast",
+          "description": "Interventi sul seno con tecniche calibrate sull'anatomia di ogni paziente.",
+          "treatments": [
+            {
+              "name": "Mastoplastica additiva",
+              "href": ""
+            },
+            {
+              "name": "Mastoplastica riduttiva",
+              "href": ""
+            },
+            {
+              "name": "Mastopessi con protesi",
+              "href": ""
+            },
+            {
+              "name": "Mastopessi senza protesi",
+              "href": ""
+            },
+            {
+              "name": "Mammella tuberosa",
+              "href": ""
+            },
+            {
+              "name": "Correzione asimmetrie mammarie",
+              "href": ""
+            },
+            {
+              "name": "Correzione capezzoli introflessi",
+              "href": ""
+            },
+            {
+              "name": "Ginecomastia (uomo)",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Corpo",
+          "icon": "body",
+          "description": "Rimodellamento del torace, dell'addome e degli arti superiori.",
+          "treatments": [
+            {
+              "name": "Addominoplastica",
+              "href": ""
+            },
+            {
+              "name": "Mini-Addominoplastica",
+              "href": ""
+            },
+            {
+              "name": "Liposuzione addome e fianchi",
+              "href": ""
+            },
+            {
+              "name": "Brachioplastica (lifting braccia)",
+              "href": ""
+            },
+            {
+              "name": "Lipofilling",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Cosce e Glutei",
+          "icon": "legs",
+          "description": "Modellamento e rivitalizzazione di cosce, glutei e polpacci.",
+          "treatments": [
+            {
+              "name": "Liposuzione cosce e polpacci",
+              "href": ""
+            },
+            {
+              "name": "Lifting cosce",
+              "href": ""
+            },
+            {
+              "name": "Lifting glutei",
+              "href": ""
+            },
+            {
+              "name": "Aumento glutei",
+              "href": ""
+            },
+            {
+              "name": "Filler glutei",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Medicina Estetica",
+          "icon": "syringe",
+          "description": "Trattamenti mini-invasivi senza chirurgia: filler, botox, ringiovanimento.",
+          "treatments": [
+            {
+              "name": "Filler labbra",
+              "href": ""
+            },
+            {
+              "name": "Lip flip",
+              "href": ""
+            },
+            {
+              "name": "Filler solchi naso-genieni",
+              "href": ""
+            },
+            {
+              "name": "Rinofiller",
+              "href": ""
+            },
+            {
+              "name": "Trattamento zigomi",
+              "href": ""
+            },
+            {
+              "name": "Correzione occhiaie",
+              "href": ""
+            },
+            {
+              "name": "Foxy Eyes",
+              "href": ""
+            },
+            {
+              "name": "Trattamento rughe della fronte",
+              "href": ""
+            },
+            {
+              "name": "Trattamento zampe di gallina",
+              "href": ""
+            },
+            {
+              "name": "Trattamento rughe periorali",
+              "href": ""
+            },
+            {
+              "name": "Trattamento iperidrosi con Botox®",
+              "href": ""
+            },
+            {
+              "name": "Ringiovanimento cutaneo",
+              "href": ""
+            },
+            {
+              "name": "Resurfacing viso",
+              "href": ""
+            },
+            {
+              "name": "Inestetismi e lesioni cutanee",
+              "href": ""
+            },
+            {
+              "name": "Peli superflui (epilazione)",
+              "href": ""
+            }
+          ]
         }
       ]
     },
