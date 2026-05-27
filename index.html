@@ -292,17 +292,30 @@ section[id] { scroll-margin-top:90px; }
   width:100%;
   color:var(--ivory);
 }
-/* Quando c'è il video player, layout 2-col con TESTO A SINISTRA e PLAYER A DESTRA.
-   Nel template HTML il player viene prima del testo (per ordini logici/SEO),
-   ma con `order` CSS lo spostiamo a destra. */
+/* Quando c'è il video player, layout 2-col su desktop:
+   Riga 1 → titolo (sx) | video player (dx, occupa anche il primo "spazio respiro")
+   Riga 2 → sottotitolo + mission card (sx) | CTA bottone Prenota (dx)
+
+   Usiamo `display:contents` su .hero-text per "appiattire" i suoi figli dentro
+   il grid genitore, così possiamo piazzarli individualmente nelle colonne.
+*/
 .hero.has-video-player .hero-content {
   display:grid;
   grid-template-columns:minmax(0, 1.15fr) minmax(0, 0.85fr);
-  gap:clamp(36px, 5vw, 72px);
-  align-items:center;
+  column-gap:clamp(36px, 5vw, 72px);
+  row-gap:32px;
+  align-items:start;
 }
-.hero.has-video-player .hero-text       { order:1; min-width:0; }
-.hero.has-video-player .hero-video-card { order:2; }
+.hero.has-video-player .hero-text { display:contents; }
+
+/* Colonna sinistra */
+.hero.has-video-player .hero-title { grid-column:1; grid-row:1; min-width:0; }
+.hero.has-video-player .hero-info  { grid-column:1; grid-row:2; min-width:0; }
+
+/* Colonna destra: video sopra (allineato col titolo), CTA sotto (allineata con la mission) */
+.hero.has-video-player .hero-video-card { grid-column:2; grid-row:1; min-width:0; align-self:start; }
+.hero.has-video-player .hero-cta        { grid-column:2; grid-row:2; min-width:0; align-self:start; margin-top:8px; }
+
 .hero .hero-text { min-width:0; }
 
 /* ====== HERO VIDEO PLAYER CARD ====== */
@@ -378,12 +391,18 @@ section[id] { scroll-margin-top:90px; }
 @media (max-width:860px){
   .hero.has-video-player .hero-content {
     grid-template-columns:1fr;
-    gap:0; /* lo spacing lo controllano i margini dei singoli pezzi */
+    grid-template-rows:none;
+    gap:0;
     row-gap:28px;
   }
-  /* `display:contents` appiattisce hero-text dentro il grid genitore,
-     così i suoi figli (titolo, info, cta) diventano grid items con loro `order`. */
-  .hero.has-video-player .hero-text { display:contents; }
+  /* Reset dei posizionamenti desktop (grid-column/grid-row) — tutto torna in col 1 */
+  .hero.has-video-player .hero-title,
+  .hero.has-video-player .hero-info,
+  .hero.has-video-player .hero-video-card,
+  .hero.has-video-player .hero-cta {
+    grid-column:1; grid-row:auto;
+  }
+  /* Riordino con order */
   .hero.has-video-player .hero-title       { order:1; }
   .hero.has-video-player .hero-video-card  { order:2; }
   .hero.has-video-player .hero-info        { order:3; }
