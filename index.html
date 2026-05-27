@@ -292,13 +292,17 @@ section[id] { scroll-margin-top:90px; }
   width:100%;
   color:var(--ivory);
 }
-/* Quando c'è il video player a sinistra, layout 2-col */
+/* Quando c'è il video player, layout 2-col con TESTO A SINISTRA e PLAYER A DESTRA.
+   Nel template HTML il player viene prima del testo (per ordini logici/SEO),
+   ma con `order` CSS lo spostiamo a destra. */
 .hero.has-video-player .hero-content {
   display:grid;
-  grid-template-columns:minmax(0, 0.85fr) minmax(0, 1.15fr);
+  grid-template-columns:minmax(0, 1.15fr) minmax(0, 0.85fr);
   gap:clamp(36px, 5vw, 72px);
   align-items:center;
 }
+.hero.has-video-player .hero-text       { order:1; min-width:0; }
+.hero.has-video-player .hero-video-card { order:2; }
 .hero .hero-text { min-width:0; }
 
 /* ====== HERO VIDEO PLAYER CARD ====== */
@@ -370,12 +374,13 @@ section[id] { scroll-margin-top:90px; }
   outline-offset:4px;
 }
 
-/* Mobile: video sopra al testo, full-width, aspect ratio meno verticale */
+/* Mobile: testo sopra, video sotto, full-width, aspect ratio meno verticale */
 @media (max-width:860px){
   .hero.has-video-player .hero-content {
     grid-template-columns:1fr;
     gap:36px;
   }
+  /* L'order già impostato sopra (text=1, player=2) tiene il testo per primo */
   .hero-video-trigger { aspect-ratio:16/10; }
 }
 
