@@ -697,7 +697,8 @@ const TYPE_LABELS = {
   features_card: '✅ Caratteristiche',
   cta_form: '📩 Form Contatti',
   video_block: '🎬 Video',
-  before_after: '🔄 Prima / Dopo'
+  before_after: '🔄 Prima / Dopo',
+  treatments_list: '🗂️ Lista trattamenti'
 };
 
 const TYPE_DESC = {
@@ -715,7 +716,8 @@ const TYPE_DESC = {
   features_card: 'Pillole arancioni',
   cta_form: 'Form di contatto finale',
   video_block: 'Sezione con video grande',
-  before_after: 'Foto prima/dopo con slider e disclaimer'
+  before_after: 'Foto prima/dopo con slider e disclaimer',
+  treatments_list: 'Lista trattamenti organizzati per categoria'
 };
 
 function summarize(s) {
@@ -746,7 +748,8 @@ const SECTION_DEFAULTS = {
   features_card: { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
   cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
   video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' },
-  before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' }
+  before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
+  treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -964,13 +967,40 @@ const SECTION_SCHEMA = {
       ['after_image', 'Foto DOPO', 'image'],
       ['after_label', 'Etichetta sotto al dopo (es. "Dopo 6 mesi")', 'text', 'Lascia vuoto per usare semplicemente "Dopo".']
     ]]
+  ],
+  treatments_list: [
+    ['id', 'ID per link interni', 'text', 'Es: "trattamenti".'],
+    ['title_a', 'Titolo - parte normale', 'text', 'Es: "Trattamenti"'],
+    ['title_italic', 'Titolo - parte in corsivo', 'text', 'Es: "su misura"'],
+    ['subtitle', 'Sottotitolo descrittivo', 'textarea'],
+    ['footer_note', 'Nota a piè di sezione (opzionale)', 'textarea', 'Es: "Ogni trattamento è preceduto da consulenza personalizzata. Preventivo dettagliato dopo la visita."'],
+    ['categories', 'Categorie di trattamenti', 'list-object', null, [
+      ['name', 'Nome categoria (es. "Viso")', 'text'],
+      ['icon', 'Icona della categoria', 'select', null, [
+        ['', '— Nessuna —'],
+        ['face', 'Viso'],
+        ['breast', 'Seno'],
+        ['body', 'Corpo'],
+        ['legs', 'Cosce e Glutei'],
+        ['syringe', 'Medicina Estetica (siringa)'],
+        ['heart', 'Cuore'],
+        ['shield', 'Scudo'],
+        ['sparkle', 'Stella/scintilla']
+      ]],
+      ['description', 'Descrizione breve della categoria (opzionale)', 'textarea', 'Es: "Interventi e trattamenti per l\'area del viso."'],
+      ['treatments', 'Lista trattamenti di questa categoria', 'list-object', null, [
+        ['name', 'Nome trattamento (es. "Rinoplastica")', 'text'],
+        ['href', 'Link a pagina dettaglio (opzionale)', 'text', 'Es: URL della pagina del trattamento sul sito principale.']
+      ]]
+    ]]
   ]
 };
 
 const SITE_SCHEMA = [
   ['title', 'Titolo della pagina (browser/Google)', 'text', 'Es: "Dr. Domenico Campa — Chirurgo Plastico"'],
   ['meta_description', 'Descrizione SEO', 'textarea', 'La frase che appare in Google. 150-160 caratteri ideali.'],
-  ['logo_text', 'Testo accanto al logo', 'text', 'Es: "Dr. Campa"']
+  ['logo_url', 'Logo (immagine SVG/PNG)', 'image', 'Carica il logo del dottore. SVG consigliato per nitidezza. Se vuoto, viene mostrato un cerchio gold con le iniziali (DC). L\'URL ufficiale del logo del Dr. Campa è: https://www.domenicocampa.it/wp-content/uploads/logo-sito-domenico.svg'],
+  ['logo_text', 'Testo accanto al logo (lascia vuoto se il logo include già il nome)', 'text', 'Es: "Dr. Campa". Lascia vuoto se il tuo logo grafico contiene già il nome.']
 ];
 
 const COLORS_SCHEMA = [
@@ -1785,6 +1815,25 @@ const previewTemplates = {
         </div>
         <div class="ba-grid">${items}</div>
         ${s.disclaimer?`<p class="ba-disclaimer">${richText(s.disclaimer)}</p>`:''}
+      </div>
+    </section>`;
+  },
+  treatments_list(s){
+    const cats = s.categories || [];
+    const tabs = cats.map((c,i) => `<button class="tl-tab${i===0?' is-active':''}">${esc(c.name||'')}</button>`).join('');
+    const panels = cats.map((c,i) => {
+      const treatments = (c.treatments||[]).map(t => `<span class="tl-treatment"><span class="tl-treatment-icon">✓</span><span class="tl-treatment-name">${esc(t.name||'')}</span></span>`).join('');
+      return `<div class="tl-panel${i===0?' is-active':''}">${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}<div class="tl-treatments-grid">${treatments}</div></div>`;
+    }).join('');
+    return `<section${sectionStyleAttr(s)} class="treatments-list">
+      <div class="container">
+        <div class="tl-head">
+          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          ${s.subtitle?`<p class="tl-subtitle">${richText(s.subtitle)}</p>`:''}
+        </div>
+        <div class="tl-tabs">${tabs}</div>
+        <div class="tl-panels">${panels}</div>
+        ${s.footer_note?`<p class="tl-footer-note">${richText(s.footer_note)}</p>`:''}
       </div>
     </section>`;
   }
