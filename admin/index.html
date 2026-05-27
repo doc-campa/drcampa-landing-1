@@ -696,7 +696,8 @@ const TYPE_LABELS = {
   big_quote: '🎤 Grande citazione',
   features_card: '✅ Caratteristiche',
   cta_form: '📩 Form Contatti',
-  video_block: '🎬 Video'
+  video_block: '🎬 Video',
+  before_after: '🔄 Prima / Dopo'
 };
 
 const TYPE_DESC = {
@@ -713,7 +714,8 @@ const TYPE_DESC = {
   big_quote: 'Sezione scura con citazione',
   features_card: 'Pillole arancioni',
   cta_form: 'Form di contatto finale',
-  video_block: 'Sezione con video grande'
+  video_block: 'Sezione con video grande',
+  before_after: 'Foto prima/dopo con slider e disclaimer'
 };
 
 function summarize(s) {
@@ -743,7 +745,8 @@ const SECTION_DEFAULTS = {
   big_quote:     { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
   features_card: { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
   cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
-  video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' }
+  video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' },
+  before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -779,8 +782,14 @@ const SECTION_SCHEMA = {
     ['headline_accent', 'Titolo grande - parola ACCENT evidenziata (corsivo gold)', 'text', 'La parola in corsivo gold con il segno sottolineato sotto.'],
     ['subtitle_em', 'Sottotitolo - parte in corsivo', 'textarea'],
     ['subtitle', 'Sottotitolo - parte normale', 'textarea'],
-    ['cta_label', 'Testo del bottone CTA giallo / accent', 'text'],
-    ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti"'],
+    ['cta_label', 'CTA principale - testo (es. "Prenota consulenza 149€")', 'text'],
+    ['cta_href', 'CTA principale - link', 'text', 'Es: "#contatti" oppure URL Calendly.'],
+    ['cta_price_compare', 'CTA principale - prezzo barrato (es. "250€")', 'text', 'Mostra un prezzo barrato accanto al bottone per evidenziare il valore. Lascia vuoto per non mostrarlo.'],
+    ['cta_secondary_label', 'CTA secondaria - testo (es. "Ti richiamiamo noi")', 'text', 'Bottone outline, percorso "lead caldo". Lascia vuoto per nascondere.'],
+    ['cta_secondary_href', 'CTA secondaria - link', 'text', 'Es: "#richiamo" oppure ancora al form.'],
+    ['cta_secondary_hint', 'CTA secondaria - frase sotto (es. "Chiamata gratuita per info")', 'text'],
+    ['cta_tertiary_label', 'CTA terziaria - testo (es. "Prenota direttamente su Calendly")', 'text', 'Link testuale sotto i bottoni, percorso power-user. Lascia vuoto per nascondere.'],
+    ['cta_tertiary_href', 'CTA terziaria - link (es. URL Calendly)', 'text'],
     ['mission_label_strong', 'Card missione - etichetta', 'text', 'Lascia tutti i campi mission vuoti per nascondere la card.'],
     ['mission_label_text', 'Card missione - testo descrittivo', 'text'],
     ['mission_percent', 'Card missione - percentuale (0-100)', 'number'],
@@ -941,6 +950,20 @@ const SECTION_SCHEMA = {
     ['video', 'Video', 'video', 'Il video da mostrare. MP4 o WebM consigliati.'],
     ['poster', 'Immagine di anteprima (poster)', 'image', 'Mostrata prima del play. Carica desktop e mobile.'],
     ['caption', 'Didascalia sotto il video (opzionale)', 'text']
+  ],
+  before_after: [
+    ['id', 'ID per link interni', 'text', 'Es: "risultati" per linkare con #risultati dal menu.'],
+    ['title_a', 'Titolo - parte normale', 'text', 'Es: "Risultati"'],
+    ['title_italic', 'Titolo - parte in corsivo', 'text', 'Es: "che parlano da soli"'],
+    ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Es: "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato."'],
+    ['disclaimer', 'Disclaimer in basso (opzionale)', 'textarea', 'Es: "Le immagini sono pubblicate con consenso esplicito dei pazienti ai sensi del DPR n. 137/2012. Ogni caso clinico è unico: i risultati possono variare."'],
+    ['items', 'Casi prima/dopo', 'list-object', null, [
+      ['title', 'Titolo del caso (es. "Rinoplastica - Paziente di 32 anni")', 'text'],
+      ['description', 'Breve descrizione (1-2 frasi, opzionale)', 'textarea', 'Es: "Correzione del dorso e affinamento punta. Risultato a 6 mesi dall\'intervento."'],
+      ['before_image', 'Foto PRIMA', 'image'],
+      ['after_image', 'Foto DOPO', 'image'],
+      ['after_label', 'Etichetta sotto al dopo (es. "Dopo 6 mesi")', 'text', 'Lascia vuoto per usare semplicemente "Dopo".']
+    ]]
   ]
 };
 
@@ -1738,6 +1761,30 @@ const previewTemplates = {
         </div>`:''}
         <div class="video-block-wrap">${videoTag(s.video, {})}</div>
         ${s.caption?`<p class="video-block-caption">${richText(s.caption)}</p>`:''}
+      </div>
+    </section>`;
+  },
+  before_after(s){
+    const items = (s.items||[]).map(it => {
+      const before = it.before_image ? imgTag(it.before_image, 'Prima') : '<div class="ba-placeholder">Foto Prima</div>';
+      const after  = it.after_image ? imgTag(it.after_image, 'Dopo') : '<div class="ba-placeholder">Foto Dopo</div>';
+      return `<div class="ba-card">
+        ${it.title?`<div class="ba-card-head"><h3>${esc(it.title)}</h3>${it.description?`<p>${richText(it.description)}</p>`:''}</div>`:''}
+        <div class="ba-compare">
+          <div class="ba-image ba-after">${after}<span class="ba-label ba-label-after">${esc(it.after_label||'Dopo')}</span></div>
+          <div class="ba-image ba-before" style="clip-path:polygon(0 0, 50% 0, 50% 100%, 0 100%)">${before}<span class="ba-label ba-label-before">Prima</span></div>
+          <div class="ba-handle" style="left:50%"><div class="ba-handle-line"></div><div class="ba-handle-grip"></div></div>
+        </div>
+      </div>`;
+    }).join('');
+    return `<section${sectionStyleAttr(s)} class="before-after">
+      <div class="container">
+        <div class="ba-head">
+          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
+        </div>
+        <div class="ba-grid">${items}</div>
+        ${s.disclaimer?`<p class="ba-disclaimer">${richText(s.disclaimer)}</p>`:''}
       </div>
     </section>`;
   }
