@@ -1738,6 +1738,31 @@ const previewTemplates = {
   }
 };
 
+function renderPreviewTopbar(d){
+  const tb = d.topbar||{};
+  if(tb.enabled === false) return '';
+  const validItems = (tb.items||[]).filter(it => it && it.label && String(it.label).trim());
+  if(!validItems.length) return '';
+  const items = validItems.map(item => {
+    const isLink = !!item.href;
+    const tag = isLink ? 'a' : 'span';
+    const cls = `topbar-item ${isLink?'is-link':''}`;
+    let inner = '';
+    if(item.icon === 'star') inner = `<span class="topbar-star">★★★★★</span>`;
+    else if(item.icon === 'dot') inner = `<span class="topbar-dot" aria-hidden="true"></span>`;
+    else if(item.icon === 'newsletter') inner = `<span class="topbar-icon">📬</span>`;
+    else if(item.icon === 'calendar') inner = `<span class="topbar-icon">📅</span>`;
+    else if(item.icon === 'phone') inner = `<span class="topbar-icon">📞</span>`;
+    else if(item.icon === 'fire') inner = `<span class="topbar-icon">🔥</span>`;
+    else if(item.icon === 'check') inner = `<span class="topbar-icon">✓</span>`;
+    let label = esc(item.label||'');
+    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
+    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
+    return `<${tag} class="${cls}">${inner}${label}</${tag}>`;
+  }).join('');
+  return `<div class="topbar"><div class="topbar-track">${items}</div></div>`;
+}
+
 function renderPreviewNav(d){
   const nav = d.nav||{};
   const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
@@ -1814,7 +1839,7 @@ function renderPreviewBody(){
     }
     return `<div data-cms-section-idx="${i}" data-cms-section-type="${esc(s.type)}">${inner}</div>`;
   }).join('');
-  return renderPreviewNav(data) + '<main>' + sectionsHTML + '</main>' + renderPreviewFooter(data);
+  return renderPreviewTopbar(data) + renderPreviewNav(data) + '<main>' + sectionsHTML + '</main>' + renderPreviewFooter(data);
 }
 
 async function buildInitialPreviewHTML(){
@@ -1851,8 +1876,68 @@ body{margin:0}
 [data-cms-section-idx].cms-current::before{ display:none !important; }
 
 [data-cms-section-idx] a, [data-cms-section-idx] button, [data-cms-section-idx] input, [data-cms-section-idx] textarea, [data-cms-section-idx] select{cursor:pointer;}
+
+/* ====== TOPBAR (inline preview styles, indipendenti dalla landing live) ====== */
+.topbar {
+  position:relative; z-index:101;
+  background:linear-gradient(90deg, #0D2E36 0%, #123C46 100%);
+  color:#F7F3EC;
+  border-bottom:1px solid rgba(200,168,107,.15);
+  font-size:.78rem; letter-spacing:.01em;
+  height:36px;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+}
+.topbar-track {
+  position:relative;
+  width:100%; height:100%;
+  display:flex; align-items:center; justify-content:center;
+}
+.topbar-item {
+  position:absolute; left:50%; top:50%;
+  transform:translate(-50%, -50%);
+  display:inline-flex; align-items:center; gap:8px;
+  color:rgba(247,243,236,.92);
+  text-decoration:none;
+  opacity:0;
+  white-space:nowrap;
+  pointer-events:none;
+  transition:opacity .5s ease;
+}
+.topbar-item.is-active { opacity:1; pointer-events:auto; }
+.topbar-item.is-link { cursor:pointer; }
+.topbar-item.is-link:hover { color:#C8A86B; }
+.topbar-item .topbar-star { color:#C8A86B; font-size:.95em; }
+.topbar-item .topbar-strong { font-weight:600; color:#F7F3EC; }
+.topbar-item .topbar-google {
+  font-weight:500;
+  background:linear-gradient(90deg, #4285F4, #EA4335 30%, #FBBC04 60%, #34A853 90%);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.topbar-item .topbar-icon { display:inline-flex; align-items:center; color:#C8A86B; }
+.topbar-item .topbar-dot {
+  display:inline-block; width:6px; height:6px;
+  border-radius:50%; background:#dc2626;
+  animation:tb-pulse 1.6s ease-in-out infinite;
+}
+@keyframes tb-pulse {
+  0%, 100% { box-shadow:0 0 0 0 rgba(220,38,38,.6); }
+  50% { box-shadow:0 0 0 6px rgba(220,38,38,0); }
+}
 </style></head><body>${body}<script>
 (function(){
+  // ====== TOPBAR ROTATION: una voce alla volta, ogni 4 secondi ======
+  var topbarItems = document.querySelectorAll('.topbar-item');
+  if(topbarItems.length){
+    var current = 0;
+    topbarItems[0].classList.add('is-active');
+    setInterval(function(){
+      topbarItems[current].classList.remove('is-active');
+      current = (current + 1) % topbarItems.length;
+      topbarItems[current].classList.add('is-active');
+    }, 4000);
+  }
   // Click on a section → tell parent editor to open it
   document.addEventListener('click', function(e){
     var sec = e.target.closest('[data-cms-section-idx]');
@@ -2397,6 +2482,9 @@ function renderTopbarBlock(){
         }
       ]
     };
+    // Marca come dirty così quando l'utente fa Pubblica, la topbar viene salvata
+    ui.isDirty = true;
+    setTimeout(updateStatusBar, 0);
   }
   const fields = TOPBAR_SCHEMA.map(f => renderField(f, data.topbar[f[0]], ['topbar', f[0]])).join('');
   return `<div class="section-form-fields">${fields}</div>`;
