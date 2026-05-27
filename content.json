@@ -44,7 +44,7 @@
       "headline_accent": "Versione Migliore.",
       "subtitle_em": "È il momento di smettere di sognare e iniziare a vivere.",
       "subtitle": "Lo Studio del Dr. Domenico Campa accompagna donne e uomini in percorsi di chirurgia estetica costruiti sull'ascolto, sulla precisione clinica e sul rispetto della naturalezza.",
-      "cta_label": "Prenota consulenza 149€",
+      "cta_label": "Prenota consulenza 249€",
       "cta_href": "#contatti",
       "mission_label_strong": "LA NOSTRA MISSIONE:",
       "mission_label_text": "RIDARE FIDUCIA A 10.000 PERSONE ENTRO IL 2027.",
@@ -53,12 +53,12 @@
       "mission_sub_a": "Donne e uomini che oggi",
       "mission_sub_b": "si guardano allo specchio con un sorriso diverso.",
       "video_player_url": "https://www.youtube.com/watch?v=M9eIIRinGp8",
-      "cta_price_compare": "250€",
-      "cta_secondary_label": "Ti richiamiamo noi",
+      "cta_price_compare": "400€",
+      "cta_secondary_label": "",
       "cta_secondary_href": "#contatti",
       "cta_secondary_hint": "Chiamata gratuita per informazioni, senza impegno.",
-      "cta_tertiary_label": "Oppure prenota direttamente",
-      "cta_tertiary_href": "https://calendly.com/"
+      "cta_tertiary_label": "",
+      "cta_tertiary_href": ""
     },
     {
       "type": "problem",
@@ -783,7 +783,7 @@
         "icon": "newsletter"
       },
       {
-        "label": "Prenota subito su Calendly",
+        "label": "Prenota Subito",
         "href": "https://calendly.com/",
         "new_tab": true,
         "icon": "calendar"
