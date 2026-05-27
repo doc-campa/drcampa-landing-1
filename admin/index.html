@@ -481,7 +481,7 @@ a { color:inherit; text-decoration:none; }
 
 /* Sub-fields (nested objects in lists) */
 .subfields {
-  display:grid; grid-template-columns:1fr 1fr; gap:12px;
+  display:grid; grid-template-columns:minmax(0, 1fr) minmax(0, 1fr); gap:12px;
   width:100%;
 }
 .subfields .field-textarea { grid-column:1 / -1; }
