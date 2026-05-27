@@ -199,11 +199,19 @@ a { color:inherit; text-decoration:none; }
 }
 .block-header {
   display:flex; align-items:center; padding:14px 18px; cursor:pointer;
-  user-select:none; gap:10px;
+  user-select:none; gap:14px;
+  min-width:0;
 }
 .block-header:hover { background:#fafaf7; }
-.block-header-text { flex:1; font-weight:500; font-size:14px; }
-.block-header-hint { color:var(--ink-light); font-size:12px; font-weight:400; }
+.block-header-text {
+  flex:0 0 auto; font-weight:500; font-size:14px;
+  white-space:nowrap;
+}
+.block-header-hint {
+  color:var(--ink-light); font-size:12px; font-weight:400;
+  flex:1; min-width:0;
+  overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
 .block-chevron {
   color:var(--ink-light); transition:transform .3s var(--ease-spring);
   display:inline-block; line-height:1;
@@ -2354,7 +2362,42 @@ function renderNavBlock(){
 }
 
 function renderTopbarBlock(){
-  data.topbar = data.topbar || { enabled:true, items:[] };
+  // Default precompilato: 5 voci ottimali per conversione (recensioni, città, urgency, newsletter, calendly)
+  if(!data.topbar){
+    data.topbar = {
+      enabled: true,
+      items: [
+        {
+          label: '5,0 · 2.219 recensioni Google',
+          href: 'https://www.google.com/search?q=dottore+domenico+campa',
+          new_tab: true,
+          icon: 'star',
+          google_brand: true,
+          strong_part: '2.219'
+        },
+        {
+          label: 'Chirurgo Plastico · Napoli',
+          icon: ''
+        },
+        {
+          label: '🔥 85 persone hanno prenotato negli ultimi 7 giorni',
+          icon: 'dot',
+          strong_part: '85'
+        },
+        {
+          label: 'Iscriviti alla newsletter',
+          href: '#newsletter',
+          icon: 'newsletter'
+        },
+        {
+          label: 'Prenota subito su Calendly',
+          href: 'https://calendly.com/',
+          new_tab: true,
+          icon: 'calendar'
+        }
+      ]
+    };
+  }
   const fields = TOPBAR_SCHEMA.map(f => renderField(f, data.topbar[f[0]], ['topbar', f[0]])).join('');
   return `<div class="section-form-fields">${fields}</div>`;
 }
