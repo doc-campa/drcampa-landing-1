@@ -185,8 +185,104 @@ section[id] { scroll-margin-top:90px; }
 /* ============================================================
    NAV
    ============================================================ */
+
+/* ========== TOPBAR STICKY (sub-header sopra la nav) ==========
+   Bar scura con scorrimento orizzontale di voci chiave:
+   - Recensioni Google 5,0 / 2.219 (link diretto alla SERP)
+   - Categoria/città
+   - Urgency
+   - Newsletter
+   - Calendly
+   Sempre visibile su scroll (NON si nasconde come la nav). */
+.topbar {
+  position:fixed; top:0; left:0; right:0; z-index:101;
+  background:linear-gradient(90deg, var(--petrol-darker, #0e2f37) 0%, var(--petrol, #123C46) 100%);
+  color:var(--ivory);
+  border-bottom:1px solid rgba(200,168,107,.15);
+  font-size:.78rem; letter-spacing:.01em;
+  height:36px;
+  display:flex; align-items:center;
+  overflow:hidden;
+}
+.topbar-track {
+  display:flex; align-items:center; gap:0;
+  white-space:nowrap;
+  width:100%;
+}
+.topbar-item {
+  display:inline-flex; align-items:center; gap:6px;
+  padding:0 22px;
+  color:rgba(247,243,236,.92);
+  text-decoration:none;
+  position:relative;
+  transition:color .2s var(--ease-out);
+  font-weight:400;
+}
+.topbar-item + .topbar-item::before {
+  content:'';
+  position:absolute; left:0; top:50%;
+  width:1px; height:14px;
+  margin-top:-7px;
+  background:rgba(200,168,107,.22);
+}
+.topbar-item.is-link { cursor:pointer; }
+.topbar-item.is-link:hover { color:var(--gold); }
+.topbar-item .topbar-star { color:var(--gold); font-size:.95em; }
+.topbar-item .topbar-strong { font-weight:600; color:var(--ivory); }
+.topbar-item .topbar-google {
+  font-weight:500;
+  background:linear-gradient(90deg, #4285F4, #EA4335 30%, #FBBC04 60%, #34A853 90%);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.topbar-item .topbar-icon {
+  display:inline-flex; align-items:center; justify-content:center;
+  width:14px; height:14px;
+  color:var(--gold);
+}
+.topbar-item .topbar-dot {
+  display:inline-block; width:6px; height:6px;
+  border-radius:50%; background:#dc2626;
+  margin-right:4px;
+  animation:topbar-pulse 1.6s ease-in-out infinite;
+}
+@keyframes topbar-pulse {
+  0%, 100% { box-shadow:0 0 0 0 rgba(220,38,38,.6); }
+  50% { box-shadow:0 0 0 6px rgba(220,38,38,0); }
+}
+
+/* Desktop (>=900px): voci STATICHE, distribuite */
+@media (min-width:900px){
+  .topbar-track {
+    justify-content:center;
+    max-width:1400px; margin:0 auto;
+    padding:0 24px;
+  }
+}
+/* Mobile (<900px): TICKER scorrevole infinito */
+@media (max-width:899px){
+  .topbar { font-size:.74rem; height:34px; }
+  .topbar-track {
+    animation:topbar-scroll 38s linear infinite;
+    width:max-content;
+  }
+  .topbar:hover .topbar-track { animation-play-state:paused; }
+  .topbar-item { padding:0 16px; }
+}
+@keyframes topbar-scroll {
+  from { transform:translateX(0); }
+  to   { transform:translateX(-50%); }
+}
+
+/* La nav viene spinta sotto la topbar */
+.nav { top:36px !important; }
+@media (max-width:899px){ .nav { top:34px !important; } }
+
+/* ============================================================
+   NAV
+   ============================================================ */
 .nav {
-  position:fixed; top:0; left:0; right:0; z-index:100;
+  position:fixed; left:0; right:0; z-index:100;
   padding:18px 0;
   background:rgba(247,243,236,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
@@ -256,7 +352,7 @@ section[id] { scroll-margin-top:90px; }
    HERO
    ============================================================ */
 .hero {
-  min-height:100vh; padding:130px 0 80px;
+  min-height:100vh; padding:166px 0 80px; /* +36px per topbar */
   display:flex; align-items:center;
   position:relative; overflow:hidden;
   background:var(--petrol);
@@ -1454,6 +1550,7 @@ section[style*="--section-text"] li { color:inherit; }
 </head>
 <body>
 
+<div class="topbar" id="topbar"></div>
 <nav class="nav" id="nav"></nav>
 
 <main id="app" class="app-loading">Caricamento sito…</main>
@@ -1990,6 +2087,37 @@ const templates = {
       </section>`;
   }
 };
+function renderTopbar(data){
+  const tb = data.topbar||{};
+  if(!tb.enabled && !(tb.items||[]).length) return '';
+  const items = (tb.items||[]).map(item => {
+    if(!item || !item.label) return '';
+    const isLink = !!item.href;
+    const tag = isLink ? 'a' : 'span';
+    const attrs = isLink
+      ? ` href="${esc(item.href)}"${item.new_tab?' target="_blank" rel="noopener"':''}`
+      : '';
+    const cls = `topbar-item ${isLink?'is-link':''}`;
+    // Helpers visivi: stelle, dot urgency, Google gradient, icone
+    let inner = '';
+    if(item.icon === 'star') inner = `<span class="topbar-star">★★★★★</span>`;
+    else if(item.icon === 'dot') inner = `<span class="topbar-dot" aria-hidden="true"></span>`;
+    else if(item.icon === 'newsletter') inner = `<span class="topbar-icon">📬</span>`;
+    else if(item.icon === 'calendar') inner = `<span class="topbar-icon">📅</span>`;
+    else if(item.icon === 'phone') inner = `<span class="topbar-icon">📞</span>`;
+    else if(item.icon === 'fire') inner = `<span class="topbar-icon">🔥</span>`;
+    else if(item.icon === 'check') inner = `<span class="topbar-icon">✓</span>`;
+    // Label con grassetto e gradient google se richiesto
+    let label = esc(item.label||'');
+    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
+    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
+    return `<${tag} class="${cls}"${attrs}>${inner}${label}</${tag}>`;
+  }).filter(Boolean).join('');
+  if(!items) return '';
+  // Per il ticker mobile, duplichiamo il contenuto così l'animazione translateX(-50%) loopa senza tagli
+  return `<div class="topbar-track">${items}${items}</div>`;
+}
+
 function renderNav(data){
   const nav = data.nav||{};
   const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
@@ -2087,6 +2215,10 @@ async function init(){
     inj.textContent = css;
     document.head.appendChild(inj);
   }
+
+  // Render TOPBAR (sub-header sticky con recensioni Google + altre voci chiave)
+  const topbar = document.getElementById('topbar');
+  if(topbar) topbar.innerHTML = renderTopbar(data);
 
   // Render NAV
   const nav = document.getElementById('nav');
