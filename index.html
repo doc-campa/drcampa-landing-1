@@ -278,6 +278,10 @@ section[id] { scroll-margin-top:90px; }
 .nav { top:36px !important; }
 @media (max-width:899px){ .nav { top:34px !important; } }
 
+/* Se la topbar è vuota / disabilitata, la nav torna in cima e l'hero non ha padding extra */
+html.no-topbar .nav { top:0 !important; }
+html.no-topbar .hero { padding-top:130px; }
+
 /* ============================================================
    NAV
    ============================================================ */
@@ -2089,9 +2093,11 @@ const templates = {
 };
 function renderTopbar(data){
   const tb = data.topbar||{};
-  if(!tb.enabled && !(tb.items||[]).length) return '';
-  const items = (tb.items||[]).map(item => {
-    if(!item || !item.label) return '';
+  // Mostriamo la topbar solo se non è esplicitamente disabilitata E ha almeno un item con label valida
+  if(tb.enabled === false) return '';
+  const validItems = (tb.items||[]).filter(it => it && it.label && String(it.label).trim());
+  if(!validItems.length) return '';
+  const items = validItems.map(item => {
     const isLink = !!item.href;
     const tag = isLink ? 'a' : 'span';
     const attrs = isLink
@@ -2112,8 +2118,7 @@ function renderTopbar(data){
     if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
     if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
     return `<${tag} class="${cls}"${attrs}>${inner}${label}</${tag}>`;
-  }).filter(Boolean).join('');
-  if(!items) return '';
+  }).join('');
   // Per il ticker mobile, duplichiamo il contenuto così l'animazione translateX(-50%) loopa senza tagli
   return `<div class="topbar-track">${items}${items}</div>`;
 }
@@ -2217,8 +2222,19 @@ async function init(){
   }
 
   // Render TOPBAR (sub-header sticky con recensioni Google + altre voci chiave)
+  // Se non ci sono items, nascondiamo totalmente la barra e ripristiniamo il top della nav.
   const topbar = document.getElementById('topbar');
-  if(topbar) topbar.innerHTML = renderTopbar(data);
+  if(topbar){
+    const tbHTML = renderTopbar(data);
+    if(tbHTML){
+      topbar.innerHTML = tbHTML;
+      topbar.classList.add('topbar-visible');
+    } else {
+      topbar.innerHTML = '';
+      topbar.style.display = 'none';
+      document.documentElement.classList.add('no-topbar');
+    }
+  }
 
   // Render NAV
   const nav = document.getElementById('nav');
