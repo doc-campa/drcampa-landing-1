@@ -486,5 +486,38 @@
         "href": "#"
       }
     ]
+  },
+  "topbar": {
+    "enabled": true,
+    "items": [
+      {
+        "label": "5,0 · 2.219 recensioni Google",
+        "href": "https://www.google.com/search?q=dottore+domenico+campa",
+        "new_tab": true,
+        "icon": "star",
+        "google_brand": true,
+        "strong_part": "2.219"
+      },
+      {
+        "label": "Chirurgo Plastico · Napoli",
+        "icon": ""
+      },
+      {
+        "label": "🔥 85 persone hanno prenotato negli ultimi 7 giorni",
+        "icon": "dot",
+        "strong_part": "85"
+      },
+      {
+        "label": "Iscriviti alla newsletter",
+        "href": "#newsletter",
+        "icon": "newsletter"
+      },
+      {
+        "label": "Prenota subito su Calendly",
+        "href": "https://calendly.com/",
+        "new_tab": true,
+        "icon": "calendar"
+      }
+    ]
   }
 }
