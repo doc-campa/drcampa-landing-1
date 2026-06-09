@@ -269,14 +269,13 @@ html.no-topbar .hero { padding-top:130px; }
   padding:18px 0;
   background:rgba(247,243,236,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
-  transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out), transform .4s var(--ease-out);
+  transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 .nav.scrolled {
   padding:12px 0;
   background:rgba(247,243,236,.95);
   box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(18,60,70,.08);
 }
-.nav.hidden { transform:translateY(-100%); }
 /* Grid a 3 colonne: logo | menu (sempre al centro) | cta.
    Le 2 colonne laterali hanno la stessa larghezza (1fr) così il menu resta
    perfettamente centrato indipendentemente da quanto è largo logo o CTA. */
@@ -3009,17 +3008,12 @@ function initBehaviors(){
   // ---- TREATMENTS TABS ----
   initTreatmentsTabs();
 
-  // ---- Sticky nav scrolled state + hide on scroll-down ----
+  // ---- Sticky nav: solo stato "scrolled" per restringere la nav,
+  //      NESSUN hide-on-scroll-down (la CTA Prenota deve essere sempre visibile)
   const nav = document.getElementById('nav');
   if(nav){
-    let lastY = 0;
     window.addEventListener('scroll', () => {
-      const y = window.scrollY;
-      nav.classList.toggle('scrolled', y > 30);
-      // Hide on scroll down past 200px, show on scroll up
-      if(y > 200 && y > lastY + 6) nav.classList.add('hidden');
-      else if(y < lastY - 6) nav.classList.remove('hidden');
-      lastY = y;
+      nav.classList.toggle('scrolled', window.scrollY > 30);
     }, {passive:true});
 
     const toggle = document.getElementById('mobileToggle');
