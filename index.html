@@ -205,8 +205,8 @@ section[id] { scroll-margin-top:90px; }
   background:linear-gradient(90deg, var(--petrol-darker, #0D2E36) 0%, var(--petrol, #123C46) 100%);
   color:var(--ivory);
   border-bottom:1px solid rgba(200,168,107,.15);
-  font-size:.82rem; letter-spacing:.01em;
-  height:36px;
+  font-size:.92rem; letter-spacing:.015em;
+  height:44px;
   display:flex; align-items:center; justify-content:center;
   overflow:hidden;
 }
@@ -259,19 +259,19 @@ section[id] { scroll-margin-top:90px; }
   50% { box-shadow:0 0 0 6px rgba(220,38,38,0); }
 }
 @media (max-width:600px){
-  .topbar { font-size:.74rem; height:34px; }
+  .topbar { font-size:.8rem; height:40px; }
 }
 
 /* La nav viene spinta sotto la topbar */
-.nav { top:36px !important; }
-@media (max-width:899px){ .nav { top:34px !important; } }
+.nav { top:44px !important; }
+@media (max-width:600px){ .nav { top:40px !important; } }
 
 /* Se la topbar è vuota / disabilitata, la nav torna in cima e l'hero non ha padding extra */
 html.no-topbar .nav { top:0 !important; }
 html.no-topbar .hero { padding-top:190px; }
-@media (max-width:860px){ html.no-topbar .hero { padding-top:320px; } }
-@media (max-width:600px){ html.no-topbar .hero { padding-top:360px; } }
-@media (max-width:420px){ html.no-topbar .hero { padding-top:390px; } }
+@media (max-width:860px){ html.no-topbar .hero { padding-top:160px; } }
+@media (max-width:600px){ html.no-topbar .hero { padding-top:160px; } }
+@media (max-width:420px){ html.no-topbar .hero { padding-top:150px; } }
 
 /* ============================================================
    NAV
@@ -397,13 +397,13 @@ html.no-topbar .hero { padding-top:190px; }
   color:var(--ivory);
 }
 @media (max-width:860px){
-  .hero { padding:360px 0 80px; }
+  .hero { padding:120px 0 80px; }
 }
 @media (max-width:600px){
-  .hero { padding:400px 0 70px; }
+  .hero { padding:110px 0 70px; }
 }
 @media (max-width:420px){
-  .hero { padding:430px 0 70px; }
+  .hero { padding:100px 0 70px; }
 }
 .hero-bg { position:absolute; inset:0; z-index:0; }
 .hero-bg img, .hero-bg video, .hero-bg picture {
@@ -547,18 +547,24 @@ html.no-topbar .hero { padding-top:190px; }
   }
   /* Riordino con order */
   .hero.has-video-player .hero-title       { order:1; }
-  .hero.has-video-player .hero-video-card  { order:2; margin-top:80px; }
+  .hero.has-video-player .hero-video-card  { order:2; margin-top:30px; }
   .hero.has-video-player .hero-info        { order:3; }
   .hero.has-video-player .hero-cta         { order:4; margin-top:8px; }
 
-  /* Su mobile il titolo va a DESTRA e su larghezza limitata
-     per stare su 3 righe senza coprire i volti nella foto */
+  /* Su mobile il titolo va a DESTRA, nello spazio tra le due teste della foto
+     di sfondo. Dimensione ridotta perché su 3 righe occupi solo il quadrante
+     in alto a destra, lasciando libero il volto del dottore (in alto-sx) e
+     quello della paziente (più in basso). Il margin-top lo posiziona
+     nello spazio scuro fra le due teste. */
   .hero.has-video-player .hero-title {
     text-align:right;
     margin-left:auto;
-    max-width:75%;
+    margin-top:18vh;
+    max-width:62%;
   }
   .hero.has-video-player .hero-title h1 {
+    font-size:clamp(1.8rem, 5.5vw, 2.6rem);
+    line-height:1.06;
     max-width:none;
     margin-left:auto;
   }
@@ -574,9 +580,8 @@ html.no-topbar .hero { padding-top:190px; }
 }
 
 @media (max-width:600px){
-  /* Più gap fra titolo e video su mobile stretto per far respirare la foto */
-  .hero.has-video-player .hero-video-card { margin-top:120px; }
-  .hero.has-video-player .hero-title { max-width:80%; }
+  .hero.has-video-player .hero-title { max-width:68%; margin-top:16vh; }
+  .hero.has-video-player .hero-title h1 { font-size:clamp(1.65rem, 6.5vw, 2.2rem); }
 }
 
 /* ====== VIDEO MODAL ====== */
@@ -2689,7 +2694,7 @@ function treatmentIconSvg(name){
 /* Helper: ritorna l'SVG inline per ogni tipo di icona della topbar.
    Tutte 14×14, stroke 1.8, color currentColor (eredita dal contenitore). */
 function topbarIconSvg(name){
-  const S = (path, opts) => `<svg class="topbar-icon-svg" viewBox="0 0 24 24" fill="${opts&&opts.fill||'none'}" stroke="${opts&&opts.fill?'none':'currentColor'}" stroke-width="${opts&&opts.sw||1.8}" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">${path}</svg>`;
+  const S = (path, opts) => `<svg class="topbar-icon-svg" viewBox="0 0 24 24" fill="${opts&&opts.fill||'none'}" stroke="${opts&&opts.fill?'none':'currentColor'}" stroke-width="${opts&&opts.sw||1.8}" stroke-linecap="round" stroke-linejoin="round" width="16" height="16">${path}</svg>`;
   switch(name){
     case 'newsletter':
       return S('<rect x="3" y="5" width="18" height="14" rx="2"/><polyline points="3,7 12,13 21,7"/>');
