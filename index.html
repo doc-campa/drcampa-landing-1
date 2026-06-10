@@ -158,13 +158,13 @@ section[id] { scroll-margin-top:90px; }
    ============================================================ */
 .btn {
   display:inline-flex; align-items:center; justify-content:center; gap:.55em;
-  padding:13px 26px;
+  padding:10px 26px;
   font-family:var(--font-display);
-  font-size:1.02rem;
+  font-size:1rem;
   font-weight:400;
   letter-spacing:.06em;
   text-transform:uppercase;
-  border-radius:6px;
+  border-radius:999px;
   transition:transform .3s var(--ease-spring), background .25s var(--ease-out), color .25s var(--ease-out), box-shadow .3s var(--ease-out), border-color .25s var(--ease-out);
   cursor:pointer;
   white-space:nowrap;
@@ -250,13 +250,13 @@ section[id] { scroll-margin-top:90px; }
 }
 .topbar-item .topbar-dot {
   display:inline-block; width:6px; height:6px;
-  border-radius:50%; background:#dc2626;
+  border-radius:50%; background:#22c55e;
   margin-right:4px;
   animation:topbar-pulse 1.6s ease-in-out infinite;
 }
 @keyframes topbar-pulse {
-  0%, 100% { box-shadow:0 0 0 0 rgba(220,38,38,.6); }
-  50% { box-shadow:0 0 0 6px rgba(220,38,38,0); }
+  0%, 100% { box-shadow:0 0 0 0 rgba(34,197,94,.6); }
+  50% { box-shadow:0 0 0 6px rgba(34,197,94,0); }
 }
 @media (max-width:600px){
   .topbar { font-size:.8rem; height:40px; }
@@ -278,13 +278,13 @@ html.no-topbar .hero { padding-top:190px; }
    ============================================================ */
 .nav {
   position:fixed; left:0; right:0; z-index:100;
-  padding:10px 0;
+  padding:6px 0;
   background:rgba(247,243,236,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
   transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 .nav.scrolled {
-  padding:6px 0;
+  padding:3px 0;
   background:rgba(247,243,236,.95);
   box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(18,60,70,.08);
 }
@@ -704,11 +704,11 @@ html.no-topbar .hero { padding-top:190px; }
   background:transparent;
   color:var(--ivory);
   border:1.5px solid rgba(200,168,107,.55);
-  padding:13px 26px;
-  border-radius:6px;
+  padding:10px 26px;
+  border-radius:999px;
   font-family:var(--font-display);
   font-weight:400;
-  font-size:1.02rem;
+  font-size:1rem;
   letter-spacing:.06em;
   text-transform:uppercase;
   transition:background .25s var(--ease-out), border-color .25s, transform .25s var(--ease-spring), color .2s;
