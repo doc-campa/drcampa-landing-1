@@ -269,7 +269,9 @@ section[id] { scroll-margin-top:90px; }
 
 /* Se la topbar è vuota / disabilitata, la nav torna in cima e l'hero non ha padding extra */
 html.no-topbar .nav { top:0 !important; }
-html.no-topbar .hero { padding-top:130px; }
+html.no-topbar .hero { padding-top:190px; }
+@media (max-width:860px){ html.no-topbar .hero { padding-top:240px; } }
+@media (max-width:600px){ html.no-topbar .hero { padding-top:260px; } }
 
 /* ============================================================
    NAV
@@ -388,11 +390,18 @@ html.no-topbar .hero { padding-top:130px; }
    HERO
    ============================================================ */
 .hero {
-  min-height:100vh; padding:166px 0 80px; /* +36px per topbar */
+  min-height:100vh; padding:230px 0 100px; /* 36px topbar + nav compatta + respiro per la foto */
   display:flex; align-items:center;
   position:relative; overflow:hidden;
   background:var(--petrol);
   color:var(--ivory);
+}
+@media (max-width:860px){
+  /* Su mobile vogliamo vedere bene la foto di sfondo prima che il titolo entri in scena */
+  .hero { padding:280px 0 80px; }
+}
+@media (max-width:600px){
+  .hero { padding:300px 0 70px; }
 }
 .hero-bg { position:absolute; inset:0; z-index:0; }
 .hero-bg img, .hero-bg video, .hero-bg picture {
