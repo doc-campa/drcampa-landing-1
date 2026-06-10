@@ -1941,7 +1941,8 @@ const PREVIEW_BASE_CSS_URL = '/index.html';
 async function ensurePreviewBaseCss(){
   if(!ensurePreviewBaseCss._css){
     try {
-      const r = await fetch(PREVIEW_BASE_CSS_URL);
+      // Cache-bust: ogni sessione editor scarica una copia fresca della landing
+      const r = await fetch(PREVIEW_BASE_CSS_URL + '?_t=' + Date.now());
       const html = await r.text();
       const m = html.match(/<style>([\s\S]*?)<\/style>/);
       ensurePreviewBaseCss._css = m ? m[1] : '';
@@ -1969,7 +1970,7 @@ function renderPreviewBody(){
 async function buildInitialPreviewHTML(){
   const baseCss = await ensurePreviewBaseCss();
   const body = renderPreviewBody();
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300..800;1,9..40,400..500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>
 body{margin:0}
 [data-cms-section-idx]{position:relative; cursor:pointer;}
 [data-cms-section-idx]:hover{outline:3px dashed rgba(232,93,60,.55); outline-offset:-3px;}
