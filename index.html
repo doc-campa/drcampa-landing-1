@@ -109,13 +109,12 @@ input, textarea, select { font:inherit; }
    TYPOGRAPHY
    ============================================================ */
 h1, h2, h3 {
-  font-family:var(--font-display);
-  font-weight:400;
-  line-height:1.02;
-  letter-spacing:.005em;
+  font-family:var(--font-sans);
+  font-weight:800;
+  line-height:1.04;
+  letter-spacing:-.025em;
   margin:0;
   color:var(--ink);
-  text-transform:uppercase;
 }
 h4, h5 {
   font-family:var(--font-sans);
@@ -124,9 +123,9 @@ h4, h5 {
   margin:0;
   color:var(--ink);
 }
-h1 { font-size:clamp(3.4rem, 8.4vw, 7rem); letter-spacing:.005em; }
-h2 { font-size:clamp(2.6rem, 6vw, 4.6rem); letter-spacing:.01em; }
-h3 { font-size:clamp(1.7rem, 3vw, 2.5rem); letter-spacing:.015em; }
+h1 { font-size:clamp(2.8rem, 7.2vw, 6rem); font-weight:800; letter-spacing:-.035em; }
+h2 { font-size:clamp(2.1rem, 5vw, 4rem); letter-spacing:-.03em; }
+h3 { font-size:clamp(1.4rem, 2.4vw, 2.1rem); letter-spacing:-.02em; }
 h4 { font-size:1.15rem; font-weight:600; letter-spacing:-.01em; }
 h5 { font-size:.85rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-light); margin:0 0 14px; }
 p { margin:0; }
@@ -270,8 +269,9 @@ section[id] { scroll-margin-top:90px; }
 /* Se la topbar è vuota / disabilitata, la nav torna in cima e l'hero non ha padding extra */
 html.no-topbar .nav { top:0 !important; }
 html.no-topbar .hero { padding-top:190px; }
-@media (max-width:860px){ html.no-topbar .hero { padding-top:240px; } }
-@media (max-width:600px){ html.no-topbar .hero { padding-top:260px; } }
+@media (max-width:860px){ html.no-topbar .hero { padding-top:320px; } }
+@media (max-width:600px){ html.no-topbar .hero { padding-top:360px; } }
+@media (max-width:420px){ html.no-topbar .hero { padding-top:390px; } }
 
 /* ============================================================
    NAV
@@ -390,18 +390,20 @@ html.no-topbar .hero { padding-top:190px; }
    HERO
    ============================================================ */
 .hero {
-  min-height:100vh; padding:230px 0 100px; /* 36px topbar + nav compatta + respiro per la foto */
+  min-height:100vh; padding:230px 0 100px;
   display:flex; align-items:center;
   position:relative; overflow:hidden;
   background:var(--petrol);
   color:var(--ivory);
 }
 @media (max-width:860px){
-  /* Su mobile vogliamo vedere bene la foto di sfondo prima che il titolo entri in scena */
-  .hero { padding:280px 0 80px; }
+  .hero { padding:360px 0 80px; }
 }
 @media (max-width:600px){
-  .hero { padding:300px 0 70px; }
+  .hero { padding:400px 0 70px; }
+}
+@media (max-width:420px){
+  .hero { padding:430px 0 70px; }
 }
 .hero-bg { position:absolute; inset:0; z-index:0; }
 .hero-bg img, .hero-bg video, .hero-bg picture {
