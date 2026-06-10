@@ -698,7 +698,8 @@ const TYPE_LABELS = {
   cta_form: '📩 Form Contatti',
   video_block: '🎬 Video',
   before_after: '🔄 Prima / Dopo',
-  treatments_list: '🗂️ Lista trattamenti'
+  treatments_list: '🗂️ Lista trattamenti',
+  spacer: '⬜ Spazio / Separatore'
 };
 
 const TYPE_DESC = {
@@ -717,7 +718,8 @@ const TYPE_DESC = {
   cta_form: 'Form di contatto finale',
   video_block: 'Sezione con video grande',
   before_after: 'Foto prima/dopo con slider e disclaimer',
-  treatments_list: 'Lista trattamenti organizzati per categoria'
+  treatments_list: 'Lista trattamenti organizzati per categoria',
+  spacer: 'Spazio vuoto regolabile tra le sezioni'
 };
 
 function summarize(s) {
@@ -749,7 +751,8 @@ const SECTION_DEFAULTS = {
   cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
   video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' },
   before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
-  treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' }
+  treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
+  spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -780,6 +783,7 @@ const SECTION_SCHEMA = {
     ['video_player_url', 'Video player (a sinistra del testo) - URL', 'text', 'Incolla un link YouTube (https://youtu.be/...) o Vimeo (https://vimeo.com/...) o l\'URL diretto di un file .mp4. Se vuoto, il player non viene mostrato.'],
     ['video_player_poster', 'Video player - Immagine di anteprima (poster)', 'image', 'L\'immagine mostrata prima del play. Se vuoto, si usa l\'immagine di sfondo.'],
     ['video_player_label', 'Video player - Etichetta sopra il bottone play', 'text', 'Es: "Guarda il video", "Storia di una paziente". Se vuoto, nessuna etichetta.'],
+    ['mobile_title_gap', 'Mobile: spazio sopra il video (px)', 'number', 'Solo su smartphone. Distanza tra il titolo e il video, in pixel. Default 30. Aumenta (es. 120) per far vedere più foto di sfondo prima del video.'],
     ['headline_pre', 'Riga sopra il titolo', 'text', 'Es: "Bellezza Autentica. Risultati Reali."'],
     ['headline_main', 'Titolo grande - parte normale', 'text'],
     ['headline_accent', 'Titolo grande - parola ACCENT evidenziata (corsivo gold)', 'text', 'La parola in corsivo gold con il segno sottolineato sotto.'],
@@ -992,6 +996,16 @@ const SECTION_SCHEMA = {
         ['name', 'Nome trattamento (es. "Rinoplastica")', 'text'],
         ['href', 'Link a pagina dettaglio (opzionale)', 'text', 'Es: URL della pagina del trattamento sul sito principale.']
       ]]
+    ]]
+  ],
+  spacer: [
+    ['height_desktop', 'Altezza su Desktop (px)', 'number', 'Spazio vuoto su schermi grandi. Es: 80. Default 60.'],
+    ['height_mobile', 'Altezza su Mobile (px)', 'number', 'Spazio vuoto su smartphone. Es: 40. Se vuoto usa lo stesso valore del desktop.'],
+    ['show_line', 'Mostra una linea divisoria al centro', 'select', null, [
+      ['', 'No, solo spazio vuoto'],
+      ['line', 'Sì, linea sottile'],
+      ['dot', 'Sì, pallino centrale'],
+      ['gold', 'Sì, trattino gold (decorativo)']
     ]]
   ]
 };
@@ -1836,6 +1850,19 @@ const previewTemplates = {
         ${s.footer_note?`<p class="tl-footer-note">${richText(s.footer_note)}</p>`:''}
       </div>
     </section>`;
+  },
+  spacer(s){
+    const hd = (s.height_desktop !== undefined && s.height_desktop !== null && String(s.height_desktop).trim() !== '') ? Number(s.height_desktop) : 60;
+    const hm = (s.height_mobile !== undefined && s.height_mobile !== null && String(s.height_mobile).trim() !== '') ? Number(s.height_mobile) : hd;
+    let divider = '';
+    if(s.show_line === 'line') divider = '<span class="spacer-line"></span>';
+    else if(s.show_line === 'dot') divider = '<span class="spacer-dot"></span>';
+    else if(s.show_line === 'gold') divider = '<span class="spacer-gold"></span>';
+    // Nel preview mostro un'indicazione visiva leggera così l'editor "vede" lo spazio
+    return `<div class="spacer-block spacer-block-preview" style="--sp-d:${hd}px; --sp-m:${hm}px">
+      ${divider}
+      <span class="spacer-preview-badge">Spazio ${hd}px${hm!==hd?` · mobile ${hm}px`:''}</span>
+    </div>`;
   }
 };
 
@@ -2001,6 +2028,21 @@ body{margin:0}
 [data-cms-section-idx].cms-current::before{ display:none !important; }
 
 [data-cms-section-idx] a, [data-cms-section-idx] button, [data-cms-section-idx] input, [data-cms-section-idx] textarea, [data-cms-section-idx] select{cursor:pointer;}
+/* Spacer nel preview: sfondo a righe diagonali tenui + badge, così l'editor "vede" lo spazio vuoto */
+.spacer-block-preview{
+  position:relative;
+  background-image:repeating-linear-gradient(45deg, rgba(18,60,70,.04) 0, rgba(18,60,70,.04) 8px, transparent 8px, transparent 16px);
+  outline:1px dashed rgba(18,60,70,.18); outline-offset:-1px;
+}
+.spacer-preview-badge{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  background:rgba(18,60,70,.8); color:#fff;
+  font:600 11px/1 "Inter", system-ui, sans-serif; letter-spacing:.02em;
+  padding:5px 12px; border-radius:999px; white-space:nowrap;
+}
+.spacer-block-preview .spacer-line,
+.spacer-block-preview .spacer-dot,
+.spacer-block-preview .spacer-gold{ opacity:.35; }
 
 /* ====== TOPBAR (inline preview styles, indipendenti dalla landing live) ====== */
 .topbar {
