@@ -547,7 +547,7 @@ html.no-topbar .hero { padding-top:190px; }
   }
   /* Riordino con order */
   .hero.has-video-player .hero-title       { order:1; }
-  .hero.has-video-player .hero-video-card  { order:2; margin-top:30px; }
+  .hero.has-video-player .hero-video-card  { order:2; margin-top:var(--mobile-video-gap, 30px); }
   .hero.has-video-player .hero-info        { order:3; }
   .hero.has-video-player .hero-cta         { order:4; margin-top:8px; }
 
@@ -1643,6 +1643,31 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 
 /* ============================================================
+   SPACER / SEPARATORE (spazio regolabile tra le sezioni)
+   ============================================================ */
+.spacer-block {
+  height:var(--sp-d, 60px);
+  display:flex; align-items:center; justify-content:center;
+  width:100%;
+}
+@media (max-width:768px){
+  .spacer-block { height:var(--sp-m, 40px); }
+}
+.spacer-line {
+  width:min(80%, 1100px); height:1px;
+  background:var(--line, #E5DDD0);
+}
+.spacer-dot {
+  width:6px; height:6px; border-radius:50%;
+  background:var(--gold, #C8A86B);
+  opacity:.6;
+}
+.spacer-gold {
+  width:48px; height:3px; border-radius:2px;
+  background:var(--gold, #C8A86B);
+}
+
+/* ============================================================
    TREATMENTS LIST (tabs + grid per categoria)
    ============================================================ */
 .treatments-list {
@@ -2152,8 +2177,11 @@ const templates = {
       : img(s.bg_image, 'Hero');
     const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
     const playerPoster = s.video_player_poster || s.bg_image;
+    // Spazio sopra il video su mobile (px), gestibile dall'editor. Default 30.
+    const mobileGap = (s.mobile_title_gap !== undefined && s.mobile_title_gap !== null && String(s.mobile_title_gap).trim() !== '')
+      ? Number(s.mobile_title_gap) : 30;
     const playerHtml = hasPlayer ? `
-      <div class="hero-video-card reveal">
+      <div class="hero-video-card reveal" style="--mobile-video-gap:${mobileGap}px">
         <button class="hero-video-trigger" type="button"
           data-video-modal="${esc(s.video_player_url)}"
           aria-label="Apri il video">
@@ -2673,6 +2701,19 @@ const templates = {
           ${s.footer_note?`<p class="tl-footer-note">${richText(s.footer_note)}</p>`:''}
         </div>
       </section>`;
+  },
+
+  spacer(s){
+    const hd = (s.height_desktop !== undefined && s.height_desktop !== null && String(s.height_desktop).trim() !== '') ? Number(s.height_desktop) : 60;
+    const hm = (s.height_mobile !== undefined && s.height_mobile !== null && String(s.height_mobile).trim() !== '') ? Number(s.height_mobile) : hd;
+    let divider = '';
+    if(s.show_line === 'line') divider = '<span class="spacer-line"></span>';
+    else if(s.show_line === 'dot') divider = '<span class="spacer-dot"></span>';
+    else if(s.show_line === 'gold') divider = '<span class="spacer-gold"></span>';
+    return `
+      <div class="spacer-block" style="--sp-d:${hd}px; --sp-m:${hm}px"${s.id?` id="${esc(s.id)}"`:''}>
+        ${divider}
+      </div>`;
   }
 };
 
