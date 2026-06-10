@@ -64,7 +64,8 @@
       "style": {
         "scale": "compatto"
       },
-      "video_player_poster": "/images/1781114052617-img-0408-1.jpg"
+      "video_player_poster": "/images/1781114052617-img-0408-1.jpg",
+      "mobile_title_gap": 150
     },
     {
       "type": "problem",
