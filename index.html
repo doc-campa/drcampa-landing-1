@@ -547,14 +547,36 @@ html.no-topbar .hero { padding-top:190px; }
   }
   /* Riordino con order */
   .hero.has-video-player .hero-title       { order:1; }
-  .hero.has-video-player .hero-video-card  { order:2; }
+  .hero.has-video-player .hero-video-card  { order:2; margin-top:80px; }
   .hero.has-video-player .hero-info        { order:3; }
   .hero.has-video-player .hero-cta         { order:4; margin-top:8px; }
+
+  /* Su mobile il titolo va a DESTRA e su larghezza limitata
+     per stare su 3 righe senza coprire i volti nella foto */
+  .hero.has-video-player .hero-title {
+    text-align:right;
+    margin-left:auto;
+    max-width:75%;
+  }
+  .hero.has-video-player .hero-title h1 {
+    max-width:none;
+    margin-left:auto;
+  }
+  /* Anche l'accento (corsivo gold) deve allinearsi a destra */
+  .hero.has-video-player .hero-title h1 .accent::after {
+    left:auto; right:0;
+  }
 
   .hero-video-trigger { aspect-ratio:16/10; }
   /* Spaziatura interna ridotta su mobile */
   .hero-info .hero-sub { margin-top:0; }
   .hero-info .mission-card { margin-top:28px; }
+}
+
+@media (max-width:600px){
+  /* Più gap fra titolo e video su mobile stretto per far respirare la foto */
+  .hero.has-video-player .hero-video-card { margin-top:120px; }
+  .hero.has-video-player .hero-title { max-width:80%; }
 }
 
 /* ====== VIDEO MODAL ====== */
