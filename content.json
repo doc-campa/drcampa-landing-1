@@ -39,7 +39,7 @@
   "sections": [
     {
       "type": "hero",
-      "bg_image": "/images/1781110687954-copertina-2.jpg",
+      "bg_image": "/images/1781114045941-copertina-2.jpg",
       "watermark": "",
       "headline_pre": "Bellezza Autentica. Risultati Reali.",
       "headline_main": "Scopri la Tua",
@@ -63,7 +63,8 @@
       "cta_tertiary_href": "",
       "style": {
         "scale": "compatto"
-      }
+      },
+      "video_player_poster": "/images/1781114052617-img-0408-1.jpg"
     },
     {
       "type": "problem",
