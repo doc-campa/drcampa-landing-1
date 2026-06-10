@@ -9,7 +9,7 @@
 <link rel="icon" href="data:,">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    DESIGN TOKENS
@@ -60,6 +60,7 @@
   /* ====== TYPOGRAPHY ====== */
   --font-sans:"Inter", system-ui, -apple-system, sans-serif;
   --font-serif:"Instrument Serif", Georgia, serif;
+  --font-display:"Bebas Neue", "Inter", system-ui, sans-serif;
   --maxw:1280px;
   --gutter:clamp(20px, 5vw, 64px);
   --section-y:clamp(80px, 12vw, 160px);
@@ -107,17 +108,25 @@ input, textarea, select { font:inherit; }
 /* ============================================================
    TYPOGRAPHY
    ============================================================ */
-h1, h2, h3, h4, h5 {
+h1, h2, h3 {
+  font-family:var(--font-display);
+  font-weight:400;
+  line-height:1.02;
+  letter-spacing:.005em;
+  margin:0;
+  color:var(--ink);
+  text-transform:uppercase;
+}
+h4, h5 {
   font-family:var(--font-sans);
-  font-weight:700;
-  line-height:1.04;
-  letter-spacing:-.025em;
+  font-weight:600;
+  line-height:1.2;
   margin:0;
   color:var(--ink);
 }
-h1 { font-size:clamp(2.8rem, 7.2vw, 6rem); font-weight:700; letter-spacing:-.035em; }
-h2 { font-size:clamp(2.1rem, 5vw, 4rem); letter-spacing:-.03em; }
-h3 { font-size:clamp(1.4rem, 2.4vw, 2.1rem); }
+h1 { font-size:clamp(3.4rem, 8.4vw, 7rem); letter-spacing:.005em; }
+h2 { font-size:clamp(2.6rem, 6vw, 4.6rem); letter-spacing:.01em; }
+h3 { font-size:clamp(1.7rem, 3vw, 2.5rem); letter-spacing:.015em; }
 h4 { font-size:1.15rem; font-weight:600; letter-spacing:-.01em; }
 h5 { font-size:.85rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-light); margin:0 0 14px; }
 p { margin:0; }
@@ -150,11 +159,13 @@ section[id] { scroll-margin-top:90px; }
    ============================================================ */
 .btn {
   display:inline-flex; align-items:center; justify-content:center; gap:.55em;
-  padding:15px 28px;
-  font-family:var(--font-sans);
-  font-size:.95rem;
-  font-weight:600;
-  border-radius:999px;
+  padding:13px 26px;
+  font-family:var(--font-display);
+  font-size:1.02rem;
+  font-weight:400;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  border-radius:6px;
   transition:transform .3s var(--ease-spring), background .25s var(--ease-out), color .25s var(--ease-out), box-shadow .3s var(--ease-out), border-color .25s var(--ease-out);
   cursor:pointer;
   white-space:nowrap;
@@ -180,7 +191,7 @@ section[id] { scroll-margin-top:90px; }
   background:var(--gold-deeper); color:var(--ivory);
   box-shadow:var(--shadow-gold);
 }
-.btn-large { padding:19px 34px; font-size:1rem; }
+.btn-large { padding:16px 32px; font-size:1.08rem; letter-spacing:.07em; }
 
 /* ============================================================
    NAV
@@ -226,10 +237,9 @@ section[id] { scroll-margin-top:90px; }
 .topbar-item .topbar-star { color:var(--gold); font-size:.95em; }
 .topbar-item .topbar-strong { font-weight:600; color:var(--ivory); }
 .topbar-item .topbar-google {
-  font-weight:500;
-  background:linear-gradient(90deg, #4285F4, #EA4335 30%, #FBBC04 60%, #34A853 90%);
-  -webkit-background-clip:text; background-clip:text;
-  -webkit-text-fill-color:transparent; color:transparent;
+  font-weight:600;
+  color:var(--ivory);
+  letter-spacing:.005em;
 }
 .topbar-item .topbar-icon {
   display:inline-flex; align-items:center; justify-content:center;
@@ -266,13 +276,13 @@ html.no-topbar .hero { padding-top:130px; }
    ============================================================ */
 .nav {
   position:fixed; left:0; right:0; z-index:100;
-  padding:18px 0;
+  padding:10px 0;
   background:rgba(247,243,236,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
   transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 .nav.scrolled {
-  padding:12px 0;
+  padding:6px 0;
   background:rgba(247,243,236,.95);
   box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(18,60,70,.08);
 }
@@ -308,7 +318,7 @@ html.no-topbar .hero { padding-top:130px; }
 }
 /* Variante con immagine: nessun box colorato, l'immagine fa tutto */
 .logo-mark.logo-mark-img {
-  width:auto; height:38px; padding:0;
+  width:auto; height:32px; padding:0;
   background:transparent;
   border-radius:0;
   box-shadow:none;
@@ -321,7 +331,7 @@ html.no-topbar .hero { padding-top:130px; }
   max-width:200px;
   object-fit:contain;
 }
-.nav.scrolled .logo-mark.logo-mark-img { height:34px; }
+.nav.scrolled .logo-mark.logo-mark-img { height:28px; }
 /* Nel footer (sfondo scuro) potrebbe servire un filtro per logo scuri */
 .footer .logo-mark.logo-mark-img img { filter:brightness(0) invert(1); opacity:.95; }
 .logo:hover .logo-mark {
@@ -330,13 +340,22 @@ html.no-topbar .hero { padding-top:130px; }
 }
 .logo:hover .logo-mark.logo-mark-img { transform:scale(1.04); border:0; }
 .logo-text {
-  font-weight:700; letter-spacing:-.015em;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:1.2rem;
+  letter-spacing:.04em;
+  text-transform:uppercase;
 }
 .nav-links {
-  display:flex; gap:32px; list-style:none; margin:0; padding:0;
+  display:flex; gap:28px; list-style:none; margin:0; padding:0;
 }
 .nav-links a {
-  font-size:.92rem; font-weight:500; color:var(--ink-soft);
+  font-family:var(--font-display);
+  font-size:1.02rem;
+  font-weight:400;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
   position:relative;
   transition:color .2s;
 }
@@ -647,15 +666,17 @@ html.no-topbar .hero { padding-top:130px; }
   background:transparent;
   color:var(--ivory);
   border:1.5px solid rgba(200,168,107,.55);
-  padding:14px 26px;
-  border-radius:999px;
-  font-weight:500;
-  letter-spacing:.005em;
+  padding:13px 26px;
+  border-radius:6px;
+  font-family:var(--font-display);
+  font-weight:400;
+  font-size:1.02rem;
+  letter-spacing:.06em;
+  text-transform:uppercase;
   transition:background .25s var(--ease-out), border-color .25s, transform .25s var(--ease-spring), color .2s;
   cursor:pointer;
   display:inline-flex; align-items:center; justify-content:center;
   text-decoration:none;
-  font-size:.98rem;
 }
 .btn-outline-gold:hover {
   background:var(--gold);
@@ -663,7 +684,7 @@ html.no-topbar .hero { padding-top:130px; }
   color:var(--petrol-darker);
   transform:translateY(-2px);
 }
-.btn-outline-gold.btn-large { padding:16px 30px; font-size:1.02rem; }
+.btn-outline-gold.btn-large { padding:16px 32px; font-size:1.08rem; letter-spacing:.07em; }
 
 /* Hint sotto i 2 bottoni: piccola frase descrittiva */
 .hero-cta-hint {
