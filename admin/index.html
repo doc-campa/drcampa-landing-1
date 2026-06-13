@@ -1051,6 +1051,10 @@ const SECTION_SCHEMA = {
   ],
   booking_ladder: [
     ['id', 'ID per link interni', 'text', 'Es: "prenota". Per linkare questa sezione dai bottoni.'],
+    ['layout', 'Disposizione dei livelli', 'select', null, [
+      ['rows', 'Uno sotto l\'altro (righe larghe)'],
+      ['columns', 'Affiancati (colonne / pricing)']
+    ]],
     ['eyebrow', 'Sopra-titolo (piccolo, in alto)', 'text', 'Es: "L\'ULTIMO PASSO È IL PIÙ IMPORTANTE".'],
     ['title_a', 'Titolo (prima parte)', 'text', 'Es: "Scegli Come".'],
     ['title_accent', 'Titolo (parte in corsivo/oro)', 'text', 'Es: "Iniziare Oggi.".'],
@@ -2008,7 +2012,7 @@ const previewTemplates = {
         </div>
       </div>`;
     }).join('');
-    return `<section${sectionStyleAttr(s)} class="booking-ladder">
+    return `<section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}">
       <div class="container">
         <div class="bl-head">
           ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
