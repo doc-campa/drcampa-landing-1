@@ -1755,7 +1755,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .sb-logo {
   display:inline-flex; align-items:center; justify-content:center;
 }
-.sb-logo img {
+.sb-logo img, .sb-logo .sb-logo-img {
   max-height:64px; max-width:180px;
   width:auto; height:auto;
   object-fit:contain;
@@ -1765,11 +1765,11 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   opacity:.78;
   transition:opacity .25s ease, transform .25s ease;
 }
-.sb-logo:hover img { opacity:1; transform:translateY(-2px); }
+.sb-logo:hover img, .sb-logo:hover .sb-logo-img { opacity:1; transform:translateY(-2px); }
 @media (max-width:600px){
   .sb-logos-block { margin-top:40px; padding-top:32px; }
   .sb-logos-grid { gap:28px 36px; }
-  .sb-logo img { max-height:48px; max-width:130px; }
+  .sb-logo img, .sb-logo .sb-logo-img { max-height:48px; max-width:130px; }
 }
 
 /* ============================================================
@@ -2873,7 +2873,7 @@ const templates = {
     const logos = (s.logos||[]).filter(l => l && l.image);
     if(s.logos_title || logos.length){
       const logoItems = logos.map(l => {
-        const imgTag = `<img src="${esc(imageSrc(l.image))}" alt="${esc(l.alt||'')}" loading="lazy">`;
+        const imgTag = img(l.image, l.alt||'', 'sb-logo-img');
         return l.href
           ? `<a class="sb-logo" href="${esc(l.href)}" target="_blank" rel="noopener">${imgTag}</a>`
           : `<div class="sb-logo">${imgTag}</div>`;
