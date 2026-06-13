@@ -710,6 +710,7 @@
     {
       "type": "booking_ladder",
       "id": "prenota",
+      "layout": "columns",
       "eyebrow": "L'ULTIMO PASSO È IL PIÙ IMPORTANTE",
       "title_a": "Scegli Come",
       "title_accent": "Iniziare Oggi.",
