@@ -1882,8 +1882,10 @@ const previewTemplates = {
   },
   stats_band(s){
     const items = (s.items||[]).filter(it => it && (it.number || it.label)).map(it => {
-      const rawNum = String(it.number||'').replace(/[^\d]/g, '');
-      const shown = rawNum ? parseInt(rawNum,10).toLocaleString('it-IT') : '0';
+      const raw = String(it.number||'').trim();
+      const isDecimal = raw.includes(',') || raw.includes('.');
+      const intVal = raw.replace(/[^\d]/g, '');
+      const shown = isDecimal ? raw : (intVal ? parseInt(intVal,10).toLocaleString('it-IT') : '0');
       return `<div class="sb-item">
         <div class="sb-number">
           ${it.prefix?`<span class="sb-affix sb-prefix">${esc(it.prefix)}</span>`:''}
