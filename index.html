@@ -2287,14 +2287,14 @@ const templates = {
     // (titolo → video → info → CTA in fondo) tramite CSS `order`.
     const titleHtml = `
       <h1 class="hero-title">
-        ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-        ${s.headline_main?`${esc(s.headline_main)} `:''}
-        ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+        ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
+        ${s.headline_main?`${richText(s.headline_main)} `:''}
+        ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
       </h1>`;
     const subHtml = (s.subtitle_em || s.subtitle) ? `
       <p class="hero-sub">
         ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-        ${s.subtitle?esc(s.subtitle):''}
+        ${s.subtitle?richText(s.subtitle):''}
       </p>` : '';
     const missionHtml = (s.mission_label_strong||s.mission_figure) ? `
       <div class="mission-card">
@@ -2303,7 +2303,7 @@ const templates = {
           <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
           <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
         </div>
-        <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+        <div class="mission-figure">${richText(s.mission_figure||'')}</div>
         <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
       </div>` : '';
     // Blocco CTA a 3 percorsi
@@ -2357,7 +2357,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="problem"${s.id?` id="${esc(s.id)}"`:''}>
         ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <div class="problem-body">
             ${intro}
             ${questions?`<p>${questions}</p>`:''}
@@ -2376,7 +2376,7 @@ const templates = {
         <div class="container">
           <div class="about-grid">
             <div>
-              <h2>${esc(s.title||'')}</h2>
+              <h2>${richText(s.title||'')}</h2>
               ${s.lead?`<p class="about-lead">${richText(s.lead)}</p>`:''}
             </div>
             ${s.photo?`<div class="about-photo">${img(s.photo,'Dr. Campa')}</div>`:''}
@@ -2398,14 +2398,14 @@ const templates = {
     const items = (s.items||[]).map(it=>`
       <div class="value-item">
         <div class="value-icon">${icons[it.icon]||icons.clock}</div>
-        <h4>${esc(it.title||'')}</h4>
-        ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
+        <h4>${richText(it.title||'')}</h4>
+        ${it.tag?`<span class="value-tag">${richText(it.tag)}</span>`:''}
       </div>`).join('');
     return `
       <section${sectionStyleAttr(s)} class="value-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="value-card reveal">
-            <h2>${esc(s.title||'')}</h2>
+            <h2>${richText(s.title||'')}</h2>
             <p class="lead">${richText(s.lead||'')} <strong>${richText(s.lead_strong||'')}</strong></p>
             <div class="value-grid">${items}</div>
             ${s.footnote?`<p class="value-footnote">${richText(s.footnote)} <strong>${richText(s.footnote_strong||'')}</strong></p>`:''}
@@ -2422,7 +2422,7 @@ const templates = {
           <div class="method-num">${esc(c.num||'')}</div>
         </div>
         <div class="method-body">
-          <h3>${esc(c.title||'')}</h3>
+          <h3>${richText(c.title||'')}</h3>
           <p>${richText(c.body||'')}</p>
         </div>
       </div>`).join('');
@@ -2430,7 +2430,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="method"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="method-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p class="sub">
               ${richText(s.subtitle_a||'')}<br><br>
               ${richText(s.subtitle_b||'')}
@@ -2445,8 +2445,8 @@ const templates = {
   levels(s){
     const items = (s.levels||[]).map(l=>`
       <div class="level">
-        <div class="level-tag">${esc(l.tag||'')}</div>
-        <h4>${esc(l.title||'')}</h4>
+        <div class="level-tag">${richText(l.tag||'')}</div>
+        <h4>${richText(l.title||'')}</h4>
         <p>${richText(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
@@ -2454,7 +2454,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="levels"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="levels-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           <div class="levels-grid">
@@ -2467,8 +2467,8 @@ const templates = {
           </div>
           ${(s.footer_a||s.footer_strong)?`
             <p style="text-align:center;max-width:760px;margin:60px auto 0;color:var(--ink-soft);font-size:1rem">
-              ${esc(s.footer_a||'')}<br><br>
-              <strong>${esc(s.footer_strong||'')}</strong>
+              ${richText(s.footer_a||'')}<br><br>
+              <strong>${richText(s.footer_strong||'')}</strong>
             </p>`:''}
         </div>
       </section>`;
@@ -2478,8 +2478,8 @@ const templates = {
     const cards = (s.cards||[]).map(c=>`
       <div class="program-card ${c.reverse?'reverse':''}">
         <div class="program-text">
-          ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
-          <h3>${esc(c.title||'')}</h3>
+          ${c.tag?`<div class="program-tag">${richText(c.tag)}</div>`:''}
+          <h3>${richText(c.title||'')}</h3>
           ${c.subtitle?`<div class="program-subtitle">${richText(c.subtitle)}</div>`:''}
           <p>${richText(c.body||'')}</p>
           ${c.link_label?`<a href="${esc(c.link_href||'#')}" class="program-link">${esc(c.link_label)}</a>`:''}
@@ -2490,7 +2490,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="programs"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="programs-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           ${cards}
@@ -2502,14 +2502,14 @@ const templates = {
     const items = (s.items||[]).map(it=>`
       <div class="audience-item">
         <div class="audience-photo">${img(it.photo, it.title)}</div>
-        <h4>${esc(it.title||'')}</h4>
+        <h4>${richText(it.title||'')}</h4>
         <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
     return `
       <section${sectionStyleAttr(s)} class="audience"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="audience-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           <div class="audience-grid">${items}</div>
@@ -2522,9 +2522,9 @@ const templates = {
       if(!row||!row.length) return '';
       const cells = row.map(c=>`
         <div class="stat">
-          ${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}
+          ${c.pill?`<div class="pill">${richText(c.pill)}</div>`:''}
           <div class="num">${esc(c.num||'')}</div>
-          <div class="lbl">${esc(c.label||'')}</div>
+          <div class="lbl">${richText(c.label||'')}</div>
         </div>`).join('');
       return `<div class="stats-row reveal"${isFirst?'':' style="margin-bottom:0"'}>${cells}</div>`;
     };
@@ -2532,7 +2532,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="stats"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="stats-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p class="sub">${richText(s.subtitle||'')}</p>
           </div>
           ${renderRow(s.row_a, true)}
@@ -2594,7 +2594,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="test-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
             ${s.subtitle?`<p class="test-subtitle">${richText(s.subtitle)}</p>`:''}
             ${badgeHtml}
           </div>
@@ -2610,7 +2610,7 @@ const templates = {
           <p class="q">${richText(s.quote||'')}</p>
           <div class="who">
             ${s.author_photo?`<div class="av">${img(s.author_photo, s.author_name)}</div>`:''}
-            <div class="n">${esc(s.author_name||'')}</div>
+            <div class="n">${richText(s.author_name||'')}</div>
           </div>
         </div>
       </section>`;
@@ -2631,7 +2631,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="features-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="features-card reveal">
-            <h2>${esc(s.title||'')}</h2>
+            <h2>${richText(s.title||'')}</h2>
             <p class="lead">${richText(s.lead||'')}</p>
             <div class="feature-pills">${pills}</div>
           </div>
@@ -2647,13 +2647,13 @@ const templates = {
         <div class="container">
           <div class="cta-card reveal">
             <div class="cta-text">
-              <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+              <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
               <p>${richText(s.body||'')}</p>
               <ul class="cta-perks">${perks}</ul>
             </div>
             <div class="form-wrap">
-              <h3>${esc(s.form_title||'Prenota')}</h3>
-              <p class="form-sub">${esc(s.form_subtitle||'')}</p>
+              <h3>${richText(s.form_title||'Prenota')}</h3>
+              <p class="form-sub">${richText(s.form_subtitle||'')}</p>
               <form id="leadForm" novalidate>
                 <div class="field-row">
                   <div class="field"><label>Nome</label><input type="text" name="firstName" required></div>
@@ -2699,7 +2699,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="video-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           ${(s.title||s.subtitle)?`<div class="video-head">
-            ${s.title?`<h2>${esc(s.title)}</h2>`:''}
+            ${s.title?`<h2>${richText(s.title)}</h2>`:''}
             ${s.subtitle?`<p class="sub">${richText(s.subtitle)}</p>`:''}
           </div>`:''}
           <div class="video-wrap">${video(videoValue, {})}</div>
@@ -2742,7 +2742,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="before-after"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="ba-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
             ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
           </div>
           <div class="ba-grid">${items}</div>
@@ -2780,7 +2780,7 @@ const templates = {
       <section${sectionStyleAttr(s)} class="treatments-list" data-treatments-list${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="tl-head reveal">
-            <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
             ${s.subtitle?`<p class="tl-subtitle">${richText(s.subtitle)}</p>`:''}
           </div>
           <div class="tl-tabs" role="tablist">${tabs}</div>
@@ -2819,7 +2819,7 @@ const templates = {
             <span class="sb-count"${countAttr}>${shown}</span>
             ${it.suffix?`<span class="sb-affix sb-suffix">${esc(it.suffix)}</span>`:''}
           </div>
-          ${it.label?`<div class="sb-label">${esc(it.label)}</div>`:''}
+          ${it.label?`<div class="sb-label">${richText(it.label)}</div>`:''}
         </div>`;
     }).join('');
     const labelSizeCls = s.label_size ? ` sb-labelsize-${s.label_size}` : '';
