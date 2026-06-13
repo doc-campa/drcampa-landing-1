@@ -100,17 +100,17 @@
       "logos_title": "LE SOCIETÀ SCIENTIFICHE",
       "logos": [
         {
-          "image": "/images/1781332934506-logo-aicpre-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781332937830-logo-sicpre-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781332942246-logo-asps-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         }
@@ -706,6 +706,93 @@
           "special": true
         }
       ]
+    },
+    {
+      "type": "booking_ladder",
+      "id": "prenota",
+      "eyebrow": "L'ULTIMO PASSO È IL PIÙ IMPORTANTE",
+      "title_a": "Scegli Come",
+      "title_accent": "Iniziare Oggi.",
+      "subtitle": "Dal primo messaggio gratuito su WhatsApp fino all'esperienza completa in studio con il Dr. Campa, c'è un punto d'ingresso giusto per te. **L'unico vero errore è non fare il primo passo.**",
+      "urgency": "⚡ I posti in studio sono limitati ogni mese — le agende si chiudono in fretta.",
+      "tiers": [
+        {
+          "badge": "ESPERIENZA COMPLETA",
+          "name": "Consulto dal vivo con il Dr. Campa",
+          "who": "Dr. Domenico Campa",
+          "format": "In studio · Napoli",
+          "value_line": "Il massimo livello di accesso: il chirurgo, faccia a faccia, dedicato solo a te e al tuo percorso. La valutazione più completa e personalizzata che puoi avere.",
+          "price": "300€",
+          "scarcity": "Posti limitati ogni mese",
+          "cta_label": "Prenota con il Dr. Campa",
+          "cta_href": "#contatti",
+          "icon": "crown",
+          "featured": true,
+          "free": false
+        },
+        {
+          "badge": "",
+          "name": "Video consulenza con Campa o Mansi",
+          "who": "Dr. Campa o Dr. Mansi",
+          "format": "Online · comodamente da casa",
+          "value_line": "La stessa competenza clinica, in videochiamata. Perfetta se vivi fuori Napoli o vuoi iniziare subito, senza spostarti.",
+          "price": "200€",
+          "scarcity": "",
+          "cta_label": "Prenota la video consulenza",
+          "cta_href": "#contatti",
+          "icon": "video",
+          "featured": false,
+          "free": false
+        },
+        {
+          "badge": "",
+          "name": "Consulto dal vivo con il Dr. Mansi",
+          "who": "Dr. Mansi",
+          "format": "In studio · Napoli",
+          "value_line": "Una valutazione clinica completa di persona con il Dr. Mansi: un punto di partenza concreto per il tuo percorso.",
+          "price": "190€",
+          "scarcity": "",
+          "cta_label": "Prenota con il Dr. Mansi",
+          "cta_href": "#contatti",
+          "icon": "user",
+          "featured": false,
+          "free": false
+        },
+        {
+          "badge": "INIZIA SENZA SPENDERE",
+          "name": "Video call con una Beauty Consultant",
+          "who": "Le nostre Beauty Consultant",
+          "format": "Online · colloquio conoscitivo",
+          "value_line": "Un primo colloquio senza impegno per capire da dove partire e quale percorso fa per te. Zero costi, zero pressione.",
+          "price": "Gratis",
+          "scarcity": "",
+          "cta_label": "Prenota la call gratuita",
+          "cta_href": "#contatti",
+          "icon": "chat",
+          "featured": false,
+          "free": true
+        },
+        {
+          "badge": "RISPOSTA IN GIORNATA",
+          "name": "Scrivici su WhatsApp",
+          "who": "Segreteria Studio Campa",
+          "format": "Chat · veloce e diretta",
+          "value_line": "Hai solo una domanda? Scrivici ora. È il modo più semplice e leggero per fare il primo passo, proprio oggi.",
+          "price": "Gratis",
+          "scarcity": "",
+          "cta_label": "Scrivi su WhatsApp",
+          "cta_href": "https://wa.me/39XXXXXXXXXX",
+          "icon": "whatsapp",
+          "featured": false,
+          "free": true
+        }
+      ],
+      "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
+      "style": {
+        "bg": "#0D2E36",
+        "accent": "#C8A86B",
+        "text": "#F7F3EC"
+      }
     },
     {
       "type": "cta_form",
