@@ -2272,6 +2272,21 @@ section[style*="--section-text"] li { color:inherit; }
 }
 .bl-tier-format { font-size:.85rem; opacity:.7; }
 .bl-value { font-size:.92rem; line-height:1.5; margin:10px 0 0; opacity:.9; }
+.bl-features {
+  list-style:none; margin:16px 0 0; padding:0;
+  display:flex; flex-direction:column; gap:9px;
+  width:100%; text-align:left;
+}
+.bl-features li {
+  display:flex; gap:9px; align-items:flex-start;
+  font-size:.88rem; line-height:1.4; opacity:.94;
+}
+.bl-features li .bl-check {
+  width:17px; height:17px; flex-shrink:0; margin-top:1px;
+  color:var(--section-accent, var(--gold));
+}
+.bl-tier.is-featured .bl-features li .bl-check { color:var(--petrol-darker); }
+.bl-tier.is-free .bl-features li .bl-check { color:#86efac; }
 .bl-scarcity {
   display:inline-flex; align-items:center; gap:6px;
   margin-top:10px; font-size:.82rem; font-weight:700;
@@ -2366,7 +2381,12 @@ section[style*="--section-text"] li { color:inherit; }
   flex-direction:column; align-items:center; text-align:center;
   width:100%; margin-top:auto; padding-top:18px; gap:14px;
 }
-.booking-ladder.bl-columns .bl-cta { width:100%; justify-content:center; }
+.booking-ladder.bl-columns .bl-cta {
+  width:100%; justify-content:center;
+  white-space:normal; line-height:1.2;
+  border-radius:16px; padding:13px 18px;
+  font-size:.92rem;
+}
 .booking-ladder.bl-columns .bl-scarcity { margin-left:auto; margin-right:auto; }
 @media (max-width:760px){
   /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
@@ -3126,6 +3146,7 @@ const templates = {
   },
 
   booking_ladder(s){
+    const checkSvg = '<svg class="bl-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
       const isFeatured = !!t.featured;
       const isFree = !!t.free;
@@ -3133,6 +3154,10 @@ const templates = {
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
       const icon = bookingLadderIcon(t.icon);
+      const featList = String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
+      const featHtml = featList.length
+        ? `<ul class="bl-features">${featList.map(f=>`<li>${checkSvg}<span>${richText(f)}</span></li>`).join('')}</ul>`
+        : '';
       const action = `
         <div class="bl-tier-action">
           <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
@@ -3147,6 +3172,7 @@ const templates = {
             ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
             ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
             ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
+            ${featHtml}
             ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
           </div>
           ${action}
