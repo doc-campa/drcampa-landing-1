@@ -1014,6 +1014,12 @@ const SECTION_SCHEMA = {
   stats_band: [
     ['id', 'ID per link interni', 'text'],
     ['intro', 'Testo introduttivo (opzionale, sopra i numeri)', 'text', 'Es: "I numeri dello Studio Campa". Lascia vuoto per non mostrarlo.'],
+    ['label_size', 'Dimensione delle etichette sotto i numeri', 'select', null, [
+      ['', 'Normale (default)'],
+      ['medium', 'Media'],
+      ['large', 'Grande'],
+      ['xlarge', 'Molto grande']
+    ]],
     ['items', 'Numeri da mostrare (consigliati 3-4)', 'list-object', null, [
       ['prefix', 'Prefisso (opzionale)', 'text', 'Es: "Oltre" oppure "+". Appare prima del numero.'],
       ['number', 'Numero (solo cifre, es. 12000)', 'text', 'Scrivi solo il numero senza punti: "12000". L\'animazione conta fino a questo valore e formatta automaticamente (12.000).'],
@@ -1895,7 +1901,8 @@ const previewTemplates = {
         ${it.label?`<div class="sb-label">${esc(it.label)}</div>`:''}
       </div>`;
     }).join('');
-    return `<section${sectionStyleAttr(s)} class="stats-band">
+    const labelSizeCls = s.label_size ? ` sb-labelsize-${s.label_size}` : '';
+    return `<section${sectionStyleAttr(s)} class="stats-band${labelSizeCls}">
       <div class="container">
         ${s.intro?`<p class="sb-intro">${richText(s.intro)}</p>`:''}
         <div class="sb-grid">${items}</div>
