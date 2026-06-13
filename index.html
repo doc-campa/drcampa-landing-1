@@ -1679,6 +1679,10 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   margin:0 0 36px;
   position:relative;
 }
+/* Dimensioni del titolo introduttivo, regolabili dall'editor */
+.sb-introsize-medium .sb-intro { font-size:1rem;    letter-spacing:.12em; }
+.sb-introsize-large  .sb-intro { font-size:1.25rem; letter-spacing:.10em; margin-bottom:42px; }
+.sb-introsize-xlarge .sb-intro { font-size:1.55rem; letter-spacing:.08em; margin-bottom:48px; color:rgba(247,243,236,.85); }
 .sb-grid {
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));
@@ -1727,6 +1731,45 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   /* Su mobile riduco un filo le etichette ingrandite per non strabordare */
   .sb-labelsize-large   .sb-label { font-size:1.05rem; }
   .sb-labelsize-xlarge  .sb-label { font-size:1.15rem; }
+}
+
+/* Blocco loghi società scientifiche dentro la fascia numeri */
+.sb-logos-block {
+  margin-top:56px;
+  padding-top:44px;
+  border-top:1px solid rgba(200,168,107,.18);
+  position:relative;
+  text-align:center;
+}
+.sb-logos-title {
+  color:rgba(247,243,236,.65);
+  font-size:.82rem; font-weight:600;
+  letter-spacing:.14em; text-transform:uppercase;
+  margin:0 0 32px;
+}
+.sb-logos-grid {
+  display:flex; flex-wrap:wrap;
+  align-items:center; justify-content:center;
+  gap:40px 56px;
+}
+.sb-logo {
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.sb-logo img {
+  max-height:64px; max-width:180px;
+  width:auto; height:auto;
+  object-fit:contain;
+  /* I loghi di solito sono colorati o scuri: su sfondo petrol li rendiamo
+     chiari/uniformi. Se preferisci i colori originali, togli questi filtri. */
+  filter:brightness(0) invert(1);
+  opacity:.78;
+  transition:opacity .25s ease, transform .25s ease;
+}
+.sb-logo:hover img { opacity:1; transform:translateY(-2px); }
+@media (max-width:600px){
+  .sb-logos-block { margin-top:40px; padding-top:32px; }
+  .sb-logos-grid { gap:28px 36px; }
+  .sb-logo img { max-height:48px; max-width:130px; }
 }
 
 /* ============================================================
@@ -2823,11 +2866,31 @@ const templates = {
         </div>`;
     }).join('');
     const labelSizeCls = s.label_size ? ` sb-labelsize-${s.label_size}` : '';
+    const introSizeCls = s.intro_size ? ` sb-introsize-${s.intro_size}` : '';
+
+    // Sezione loghi (società scientifiche, accreditamenti...)
+    let logosHtml = '';
+    const logos = (s.logos||[]).filter(l => l && l.image);
+    if(s.logos_title || logos.length){
+      const logoItems = logos.map(l => {
+        const imgTag = `<img src="${esc(imageSrc(l.image))}" alt="${esc(l.alt||'')}" loading="lazy">`;
+        return l.href
+          ? `<a class="sb-logo" href="${esc(l.href)}" target="_blank" rel="noopener">${imgTag}</a>`
+          : `<div class="sb-logo">${imgTag}</div>`;
+      }).join('');
+      logosHtml = `
+        <div class="sb-logos-block">
+          ${s.logos_title?`<p class="sb-logos-title">${richText(s.logos_title)}</p>`:''}
+          ${logoItems?`<div class="sb-logos-grid">${logoItems}</div>`:''}
+        </div>`;
+    }
+
     return `
-      <section${sectionStyleAttr(s)} class="stats-band${labelSizeCls}" data-stats-band${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="stats-band${labelSizeCls}${introSizeCls}" data-stats-band${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           ${s.intro?`<p class="sb-intro">${richText(s.intro)}</p>`:''}
           <div class="sb-grid">${items}</div>
+          ${logosHtml}
         </div>
       </section>`;
   }
