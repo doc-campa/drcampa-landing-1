@@ -1021,6 +1021,12 @@ const SECTION_SCHEMA = {
   stats_band: [
     ['id', 'ID per link interni', 'text'],
     ['intro', 'Testo introduttivo (opzionale, sopra i numeri)', 'text', 'Es: "I numeri dello Studio Campa". Lascia vuoto per non mostrarlo.'],
+    ['intro_size', 'Dimensione del testo introduttivo', 'select', null, [
+      ['', 'Normale (default)'],
+      ['medium', 'Media'],
+      ['large', 'Grande'],
+      ['xlarge', 'Molto grande']
+    ]],
     ['label_size', 'Dimensione delle etichette sotto i numeri', 'select', null, [
       ['', 'Normale (default)'],
       ['medium', 'Media'],
@@ -1032,6 +1038,12 @@ const SECTION_SCHEMA = {
       ['number', 'Numero (solo cifre, es. 12000)', 'text', 'Scrivi solo il numero senza punti: "12000". L\'animazione conta fino a questo valore e formatta automaticamente (12.000).'],
       ['suffix', 'Suffisso (opzionale)', 'text', 'Es: "+" oppure "%". Appare dopo il numero.'],
       ['label', 'Etichetta sotto il numero', 'text', 'Es: "Interventi eseguiti", "Trattamenti di medicina estetica", "Soddisfazione pazienti".']
+    ]],
+    ['logos_title', 'Titolo sezione loghi (opzionale)', 'text', 'Es: "LE SOCIETÀ SCIENTIFICHE". Se vuoto, la sezione loghi non viene mostrata.'],
+    ['logos', 'Loghi (società scientifiche, accreditamenti...)', 'list-object', null, [
+      ['image', 'Logo (immagine)', 'image', 'Carica il logo. Preferibilmente PNG/SVG con sfondo trasparente.'],
+      ['alt', 'Nome / descrizione del logo', 'text', 'Es: "SICPRE". Importante per accessibilità e SEO.'],
+      ['href', 'Link (opzionale)', 'text', 'Se inserito, il logo diventa cliccabile (es. sito della società).']
     ]]
   ]
 };
@@ -1909,10 +1921,27 @@ const previewTemplates = {
       </div>`;
     }).join('');
     const labelSizeCls = s.label_size ? ` sb-labelsize-${s.label_size}` : '';
-    return `<section${sectionStyleAttr(s)} class="stats-band${labelSizeCls}">
+    const introSizeCls = s.intro_size ? ` sb-introsize-${s.intro_size}` : '';
+
+    let logosHtml = '';
+    const logos = (s.logos||[]).filter(l => l && l.image);
+    if(s.logos_title || logos.length){
+      const logoItems = logos.map(l => {
+        const url = previewImageUrl(l.image);
+        const imgTag = url ? `<img src="${esc(url)}" alt="${esc(l.alt||'')}">` : `<span style="opacity:.5;font-size:12px">[logo]</span>`;
+        return `<div class="sb-logo">${imgTag}</div>`;
+      }).join('');
+      logosHtml = `<div class="sb-logos-block">
+        ${s.logos_title?`<p class="sb-logos-title">${richText(s.logos_title)}</p>`:''}
+        ${logoItems?`<div class="sb-logos-grid">${logoItems}</div>`:''}
+      </div>`;
+    }
+
+    return `<section${sectionStyleAttr(s)} class="stats-band${labelSizeCls}${introSizeCls}">
       <div class="container">
         ${s.intro?`<p class="sb-intro">${richText(s.intro)}</p>`:''}
         <div class="sb-grid">${items}</div>
+        ${logosHtml}
       </div>
     </section>`;
   }
