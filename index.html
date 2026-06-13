@@ -2147,6 +2147,193 @@ section[style*="--section-text"] h3,
 section[style*="--section-text"] h4,
 section[style*="--section-text"] p,
 section[style*="--section-text"] li { color:inherit; }
+
+/* ============================================================
+   BOOKING LADDER — scala di accesso / chiusura prenotazioni
+   ============================================================ */
+.booking-ladder {
+  background:var(--section-bg, var(--petrol-darker));
+  color:var(--section-text, var(--ivory));
+  padding:96px 0 104px;
+  position:relative;
+  overflow:hidden;
+}
+.booking-ladder::before {
+  content:"";
+  position:absolute; inset:0;
+  background:
+    radial-gradient(circle at 50% -10%, rgba(200,168,107,.18), transparent 55%),
+    radial-gradient(circle at 90% 110%, rgba(200,168,107,.10), transparent 50%);
+  pointer-events:none;
+}
+.booking-ladder .container { position:relative; z-index:1; }
+.bl-head { text-align:center; max-width:760px; margin:0 auto 18px; }
+.bl-eyebrow {
+  font-family:'Bebas Neue', sans-serif;
+  letter-spacing:.22em; font-size:.95rem;
+  color:var(--section-accent, var(--gold));
+  margin:0 0 14px; text-transform:uppercase;
+}
+.bl-title {
+  font-family:'Inter', sans-serif; font-weight:800;
+  font-size:clamp(2rem, 4.5vw, 3.2rem);
+  line-height:1.05; margin:0 0 18px; color:inherit;
+}
+.bl-title .accent {
+  font-family:'Instrument Serif', serif; font-weight:400;
+  font-style:italic; color:var(--section-accent, var(--gold));
+}
+.bl-subtitle {
+  font-size:1.08rem; line-height:1.6;
+  opacity:.85; margin:0 auto; max-width:680px;
+}
+.bl-urgency {
+  display:inline-flex; align-items:center; gap:8px;
+  margin:26px auto 0; padding:10px 20px;
+  background:rgba(200,168,107,.12);
+  border:1px solid rgba(200,168,107,.35);
+  border-radius:999px;
+  font-size:.95rem; color:var(--section-accent, var(--gold));
+  font-weight:600;
+}
+.bl-urgency-wrap { text-align:center; }
+
+/* Scala dei tier */
+.bl-tiers {
+  margin:56px auto 0; max-width:920px;
+  display:flex; flex-direction:column; gap:18px;
+}
+.bl-tier {
+  position:relative;
+  display:grid;
+  grid-template-columns:auto 1fr auto;
+  align-items:center; gap:26px;
+  padding:28px 32px;
+  background:rgba(255,255,255,.04);
+  border:1px solid rgba(255,255,255,.10);
+  border-left:3px solid var(--section-accent, var(--gold));
+  border-radius:18px;
+  transition:transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.bl-tier:hover { transform:translateY(-3px); background:rgba(255,255,255,.07); }
+
+/* Tier in evidenza (premium, in cima alla piramide) */
+.bl-tier.is-featured {
+  background:linear-gradient(135deg, var(--gold) 0%, var(--gold-deeper) 100%);
+  border:none;
+  color:var(--petrol-darker);
+  transform:scale(1.02);
+  box-shadow:0 24px 60px -22px rgba(200,168,107,.6);
+  padding:34px 32px;
+}
+.bl-tier.is-featured:hover { transform:scale(1.02) translateY(-3px); }
+.bl-tier.is-featured .bl-tier-who,
+.bl-tier.is-featured .bl-tier-format,
+.bl-tier.is-featured .bl-value { color:rgba(13,46,54,.78); }
+.bl-tier.is-featured .bl-icon {
+  background:rgba(13,46,54,.14); color:var(--petrol-darker);
+}
+.bl-tier.is-featured .bl-cta {
+  background:var(--petrol-darker); color:var(--gold);
+}
+.bl-tier.is-featured .bl-cta:hover { background:#000; }
+
+/* Icona tier */
+.bl-icon {
+  width:54px; height:54px; flex-shrink:0;
+  display:grid; place-items:center;
+  border-radius:14px;
+  background:rgba(200,168,107,.14);
+  color:var(--section-accent, var(--gold));
+}
+.bl-icon svg { width:26px; height:26px; }
+
+/* Corpo testo tier */
+.bl-tier-body { min-width:0; }
+.bl-badge {
+  display:inline-block; margin:0 0 8px;
+  font-family:'Bebas Neue', sans-serif; letter-spacing:.14em;
+  font-size:.72rem; padding:3px 10px; border-radius:999px;
+  background:rgba(13,46,54,.16); color:inherit;
+}
+.bl-tier:not(.is-featured) .bl-badge {
+  background:rgba(200,168,107,.16); color:var(--section-accent, var(--gold));
+}
+.bl-tier.is-free .bl-badge {
+  background:rgba(74,222,128,.16); color:#86efac;
+}
+.bl-tier-name {
+  font-family:'Inter', sans-serif; font-weight:800;
+  font-size:1.18rem; line-height:1.2; margin:0 0 6px; color:inherit;
+}
+.bl-tier-who {
+  font-size:.92rem; opacity:.85; margin:0 0 2px;
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+}
+.bl-tier-format { font-size:.85rem; opacity:.7; }
+.bl-value { font-size:.92rem; line-height:1.5; margin:10px 0 0; opacity:.9; }
+.bl-scarcity {
+  display:inline-flex; align-items:center; gap:6px;
+  margin-top:10px; font-size:.82rem; font-weight:700;
+  color:var(--petrol-darker);
+  background:rgba(13,46,54,.12); padding:3px 10px; border-radius:999px;
+}
+
+/* Prezzo + CTA (colonna destra) */
+.bl-tier-action {
+  display:flex; flex-direction:column; align-items:flex-end;
+  gap:12px; text-align:right; flex-shrink:0;
+}
+.bl-price {
+  font-family:'Inter', sans-serif; font-weight:800;
+  font-size:1.9rem; line-height:1; color:inherit;
+}
+.bl-price small { font-size:.85rem; font-weight:600; opacity:.7; display:block; margin-top:4px; }
+.bl-price.is-free { color:#86efac; }
+.bl-tier.is-featured .bl-price.is-free { color:var(--petrol-darker); }
+.bl-cta {
+  display:inline-flex; align-items:center; gap:7px;
+  font-family:'Bebas Neue', sans-serif; letter-spacing:.06em;
+  font-size:1rem; padding:11px 24px; border-radius:999px;
+  background:var(--section-accent, var(--gold)); color:var(--petrol-darker);
+  text-decoration:none; white-space:nowrap;
+  transition:transform .2s ease, filter .2s ease;
+}
+.bl-cta:hover { transform:translateY(-2px); filter:brightness(1.08); }
+.bl-tier.is-free .bl-cta {
+  background:transparent; color:var(--section-accent, var(--gold));
+  border:1.5px solid var(--section-accent, var(--gold));
+}
+.bl-tier.is-free .bl-cta:hover { background:rgba(200,168,107,.12); }
+
+.bl-footer-note {
+  text-align:center; margin:48px auto 0; max-width:620px;
+  font-size:1rem; line-height:1.6; opacity:.8;
+}
+.bl-footer-note strong { color:var(--section-accent, var(--gold)); font-weight:700; }
+
+/* Mobile */
+@media (max-width:760px){
+  .booking-ladder { padding:64px 0 72px; }
+  .bl-tier {
+    grid-template-columns:auto 1fr;
+    gap:16px 16px; padding:22px 20px;
+  }
+  .bl-tier.is-featured { padding:26px 20px; transform:none; }
+  .bl-tier.is-featured:hover { transform:translateY(-3px); }
+  .bl-icon { width:46px; height:46px; }
+  .bl-icon svg { width:22px; height:22px; }
+  .bl-tier-action {
+    grid-column:1 / -1;
+    flex-direction:row; align-items:center; justify-content:space-between;
+    text-align:left; width:100%;
+    margin-top:6px; padding-top:16px;
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .bl-tier.is-featured .bl-tier-action { border-top-color:rgba(13,46,54,.18); }
+  .bl-price { font-size:1.6rem; }
+  .bl-cta { flex:0 0 auto; }
+}
 </style>
 </head>
 <body>
@@ -2893,8 +3080,65 @@ const templates = {
           ${logosHtml}
         </div>
       </section>`;
+  },
+
+  booking_ladder(s){
+    const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
+      const isFeatured = !!t.featured;
+      const isFree = !!t.free;
+      const priceRaw = String(t.price||'').trim();
+      const priceIsFree = isFree || /grat/i.test(priceRaw);
+      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
+      const icon = bookingLadderIcon(t.icon);
+      const action = `
+        <div class="bl-tier-action">
+          <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
+          ${t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)} →</a>`:''}
+        </div>`;
+      return `
+        <div class="${cls}">
+          <div class="bl-icon">${icon}</div>
+          <div class="bl-tier-body">
+            ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
+            <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
+            ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
+            ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
+            ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
+            ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
+          </div>
+          ${action}
+        </div>`;
+    }).join('');
+    return `
+      <section${sectionStyleAttr(s)} class="booking-ladder"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="bl-head reveal">
+            ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
+            <h2 class="bl-title">${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
+            ${s.subtitle?`<p class="bl-subtitle">${richText(s.subtitle)}</p>`:''}
+          </div>
+          ${s.urgency?`<div class="bl-urgency-wrap reveal"><span class="bl-urgency">${richText(s.urgency)}</span></div>`:''}
+          <div class="bl-tiers">${tiers}</div>
+          ${s.footer_note?`<p class="bl-footer-note reveal">${richText(s.footer_note)}</p>`:''}
+        </div>
+      </section>`;
   }
 };
+
+/* Icone SVG per i tier della booking ladder */
+function bookingLadderIcon(name){
+  const S = path => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  switch(name){
+    case 'crown':    return S('<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/><path d="M5 20h14"/>');
+    case 'video':    return S('<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>');
+    case 'user':     return S('<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>');
+    case 'chat':     return S('<path d="M21 12a8 8 0 0 1-11.5 7.2L4 21l1.8-5.5A8 8 0 1 1 21 12z"/>');
+    case 'whatsapp': return S('<path d="M21 12a8.5 8.5 0 0 1-12.6 7.5L3.5 21l1.6-4.8A8.5 8.5 0 1 1 21 12z"/><path d="M9 9.5c0 3 2.5 5.5 5.5 5.5.6 0 1-.5 1-1 0-.3-.2-.6-.5-.7l-1.3-.5c-.3-.1-.6 0-.8.2l-.3.4a4 4 0 0 1-1.9-1.9l.4-.3c.2-.2.3-.5.2-.8l-.5-1.3c-.1-.3-.4-.5-.7-.5-.5 0-1 .4-1 1z"/>');
+    case 'sparkle':  return S('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>');
+    default:         return S('<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>');
+  }
+}
+
 
 /* Icone SVG inline per categorie trattamenti */
 function treatmentIconSvg(name){
