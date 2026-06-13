@@ -707,7 +707,8 @@ const TYPE_LABELS = {
   before_after: '🔄 Prima / Dopo',
   treatments_list: '🗂️ Lista trattamenti',
   spacer: '⬜ Spazio / Separatore',
-  stats_band: '🔢 Fascia numeri animati'
+  stats_band: '🔢 Fascia numeri animati',
+  booking_ladder: '🎯 Scala prenotazioni'
 };
 
 const TYPE_DESC = {
@@ -728,7 +729,8 @@ const TYPE_DESC = {
   before_after: 'Foto prima/dopo con slider e disclaimer',
   treatments_list: 'Lista trattamenti organizzati per categoria',
   spacer: 'Spazio vuoto regolabile tra le sezioni',
-  stats_band: 'Fascia con numeri che si animano allo scroll'
+  stats_band: 'Fascia con numeri che si animano allo scroll',
+  booking_ladder: 'Scala di livelli di prenotazione (chiusura vendita)'
 };
 
 function summarize(s) {
@@ -762,7 +764,8 @@ const SECTION_DEFAULTS = {
   before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
   treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
   spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' },
-  stats_band: { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' }
+  stats_band: { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' },
+  booking_ladder: { bg:'#0D2E36', accent:'#C8A86B', text:'#F7F3EC' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -1045,6 +1048,42 @@ const SECTION_SCHEMA = {
       ['alt', 'Nome / descrizione del logo', 'text', 'Es: "SICPRE". Importante per accessibilità e SEO.'],
       ['href', 'Link (opzionale)', 'text', 'Se inserito, il logo diventa cliccabile (es. sito della società).']
     ]]
+  ],
+  booking_ladder: [
+    ['id', 'ID per link interni', 'text', 'Es: "prenota". Per linkare questa sezione dai bottoni.'],
+    ['eyebrow', 'Sopra-titolo (piccolo, in alto)', 'text', 'Es: "L\'ULTIMO PASSO È IL PIÙ IMPORTANTE".'],
+    ['title_a', 'Titolo (prima parte)', 'text', 'Es: "Scegli Come".'],
+    ['title_accent', 'Titolo (parte in corsivo/oro)', 'text', 'Es: "Iniziare Oggi.".'],
+    ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Frase che spinge a scegliere un livello. Usa _corsivo_ e **grassetto** se vuoi.'],
+    ['urgency', 'Striscia di urgenza (opzionale)', 'text', 'Es: "⚡ Posti in studio limitati ogni mese". Lascia vuoto per nasconderla.'],
+    ['tiers', 'Livelli di prenotazione (dal più premium al gratuito)', 'list-object', null, [
+      ['badge', 'Etichetta in alto (opzionale)', 'text', 'Es: "ESPERIENZA COMPLETA", "INIZIA GRATIS".'],
+      ['name', 'Nome del livello', 'text', 'Es: "Consulto dal vivo con il Dr. Campa".'],
+      ['who', 'Con chi', 'text', 'Es: "Dr. Domenico Campa".'],
+      ['format', 'Formato / luogo', 'text', 'Es: "In studio · Napoli" oppure "Online · da casa tua".'],
+      ['value_line', 'Frase di valore (perché sceglierlo)', 'textarea', 'La leva di vendita: cosa ottiene davvero la persona.'],
+      ['price', 'Prezzo', 'text', 'Es: "300€" oppure "Gratis". Scrivendo "Gratis" il prezzo diventa verde.'],
+      ['scarcity', 'Scarsità (opzionale)', 'text', 'Es: "Solo 8 posti questo mese". Appare solo nel livello in evidenza.'],
+      ['cta_label', 'Testo del bottone', 'text', 'Es: "Prenota con il Dr. Campa".'],
+      ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti" oppure un link WhatsApp "https://wa.me/39...".'],
+      ['icon', 'Icona', 'select', null, [
+        ['crown', '👑 Corona (premium)'],
+        ['video', '🎥 Video'],
+        ['user', '👤 Persona'],
+        ['chat', '💬 Chat / colloquio'],
+        ['whatsapp', '🟢 WhatsApp'],
+        ['sparkle', '✨ Brillantini']
+      ]],
+      ['featured', 'In evidenza? (card oro, in cima)', 'select', null, [
+        ['', 'No'],
+        ['true', 'Sì — livello premium evidenziato']
+      ]],
+      ['free', 'È gratuito? (stile verde, bottone outline)', 'select', null, [
+        ['', 'No'],
+        ['true', 'Sì — gratuito']
+      ]]
+    ]],
+    ['footer_note', 'Nota finale rassicurante (opzionale)', 'textarea', 'Es: "Nessun impegno. Nessuna pressione. Solo chiarezza.". Usa **grassetto** per evidenziare.']
   ]
 };
 
@@ -1944,8 +1983,58 @@ const previewTemplates = {
         ${logosHtml}
       </div>
     </section>`;
+  },
+  booking_ladder(s){
+    const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
+      const isFeatured = !!t.featured && t.featured !== '';
+      const isFree = !!t.free && t.free !== '';
+      const priceRaw = String(t.price||'').trim();
+      const priceIsFree = isFree || /grat/i.test(priceRaw);
+      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
+      const icon = previewBookingLadderIcon(t.icon);
+      return `<div class="${cls}">
+        <div class="bl-icon">${icon}</div>
+        <div class="bl-tier-body">
+          ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
+          <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
+          ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
+          ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
+          ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
+          ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
+        </div>
+        <div class="bl-tier-action">
+          <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
+          ${t.cta_label?`<span class="bl-cta">${esc(t.cta_label)} →</span>`:''}
+        </div>
+      </div>`;
+    }).join('');
+    return `<section${sectionStyleAttr(s)} class="booking-ladder">
+      <div class="container">
+        <div class="bl-head">
+          ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
+          <h2 class="bl-title">${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
+          ${s.subtitle?`<p class="bl-subtitle">${richText(s.subtitle)}</p>`:''}
+        </div>
+        ${s.urgency?`<div class="bl-urgency-wrap"><span class="bl-urgency">${richText(s.urgency)}</span></div>`:''}
+        <div class="bl-tiers">${tiers}</div>
+        ${s.footer_note?`<p class="bl-footer-note">${richText(s.footer_note)}</p>`:''}
+      </div>
+    </section>`;
   }
 };
+
+function previewBookingLadderIcon(name){
+  const S = path => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${path}</svg>`;
+  switch(name){
+    case 'crown':    return S('<path d="M3 8l4 4 5-7 5 7 4-4-2 11H5z"/><path d="M5 20h14"/>');
+    case 'video':    return S('<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>');
+    case 'user':     return S('<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>');
+    case 'chat':     return S('<path d="M21 12a8 8 0 0 1-11.5 7.2L4 21l1.8-5.5A8 8 0 1 1 21 12z"/>');
+    case 'whatsapp': return S('<path d="M21 12a8.5 8.5 0 0 1-12.6 7.5L3.5 21l1.6-4.8A8.5 8.5 0 1 1 21 12z"/>');
+    case 'sparkle':  return S('<path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M6 18l2.5-2.5M15.5 8.5L18 6"/>');
+    default:         return S('<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>');
+  }
+}
 
 function previewTopbarIconSvg(name){
   const S = (path, sw) => `<svg class="topbar-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="${sw||1.8}" stroke-linecap="round" stroke-linejoin="round" width="13" height="13">${path}</svg>`;
