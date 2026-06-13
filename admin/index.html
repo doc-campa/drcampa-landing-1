@@ -1066,6 +1066,7 @@ const SECTION_SCHEMA = {
       ['who', 'Con chi', 'text', 'Es: "Dr. Domenico Campa".'],
       ['format', 'Formato / luogo', 'text', 'Es: "In studio · Napoli" oppure "Online · da casa tua".'],
       ['value_line', 'Frase di valore (perché sceglierlo)', 'textarea', 'La leva di vendita: cosa ottiene davvero la persona.'],
+      ['features', 'Cosa include (un punto per riga)', 'textarea', 'Scrivi un vantaggio per ogni riga: diventano elenco con spunta ✓. Più punti = più valore percepito. Es:\nValutazione clinica completa\nPiano personalizzato\nPriorità in agenda'],
       ['price', 'Prezzo', 'text', 'Es: "300€" oppure "Gratis". Scrivendo "Gratis" il prezzo diventa verde.'],
       ['scarcity', 'Scarsità (opzionale)', 'text', 'Es: "Solo 8 posti questo mese". Appare solo nel livello in evidenza.'],
       ['cta_label', 'Testo del bottone', 'text', 'Es: "Prenota con il Dr. Campa".'],
@@ -1989,6 +1990,7 @@ const previewTemplates = {
     </section>`;
   },
   booking_ladder(s){
+    const checkSvg = '<svg class="bl-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
     const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
       const isFeatured = !!t.featured && t.featured !== '';
       const isFree = !!t.free && t.free !== '';
@@ -1996,6 +1998,10 @@ const previewTemplates = {
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
       const icon = previewBookingLadderIcon(t.icon);
+      const featList = String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
+      const featHtml = featList.length
+        ? `<ul class="bl-features">${featList.map(f=>`<li>${checkSvg}<span>${richText(f)}</span></li>`).join('')}</ul>`
+        : '';
       return `<div class="${cls}">
         <div class="bl-icon">${icon}</div>
         <div class="bl-tier-body">
@@ -2004,6 +2010,7 @@ const previewTemplates = {
           ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
           ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
           ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
+          ${featHtml}
           ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
         </div>
         <div class="bl-tier-action">
