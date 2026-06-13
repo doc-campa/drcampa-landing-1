@@ -1701,13 +1701,13 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   display:flex; align-items:baseline; justify-content:center; gap:2px;
   font-family:var(--font-sans);
   font-weight:800;
-  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  font-size:clamp(2rem, 4vw, 2.9rem);
   line-height:1;
-  color:var(--gold);
+  color:var(--ivory);
   letter-spacing:-.02em;
 }
-.sb-affix { color:var(--gold); font-weight:700; }
-.sb-prefix { font-size:.5em; margin-right:3px; align-self:center; opacity:.85; }
+.sb-affix { color:var(--ivory); font-weight:700; }
+.sb-prefix { font-size:.6em; margin-right:3px; align-self:center; opacity:.85; }
 .sb-suffix { font-size:.7em; }
 .sb-label {
   margin-top:12px;
@@ -2798,13 +2798,18 @@ const templates = {
 
   stats_band(s){
     const items = (s.items||[]).filter(it => it && (it.number || it.label)).map(it => {
-      const rawNum = String(it.number||'').replace(/[^\d]/g, '');
-      const target = rawNum ? parseInt(rawNum, 10) : 0;
+      const raw = String(it.number||'').trim();
+      // Se il numero ha una virgola (es. "99,8") lo mostriamo fisso, senza count-up
+      const isDecimal = raw.includes(',') || raw.includes('.');
+      const intVal = raw.replace(/[^\d]/g, '');
+      const target = intVal ? parseInt(intVal, 10) : 0;
+      const countAttr = isDecimal ? '' : ` data-count-to="${target}"`;
+      const shown = isDecimal ? raw : '0';
       return `
         <div class="sb-item">
           <div class="sb-number">
             ${it.prefix?`<span class="sb-affix sb-prefix">${esc(it.prefix)}</span>`:''}
-            <span class="sb-count" data-count-to="${target}">0</span>
+            <span class="sb-count"${countAttr}>${shown}</span>
             ${it.suffix?`<span class="sb-affix sb-suffix">${esc(it.suffix)}</span>`:''}
           </div>
           ${it.label?`<div class="sb-label">${esc(it.label)}</div>`:''}
@@ -3202,6 +3207,8 @@ function initStatsBands(){
   };
 
   const animateCount = (el) => {
+    // Se non ha data-count-to (numero decimale tipo "99,8"), lo lasciamo fisso
+    if(!el.hasAttribute('data-count-to')) return;
     const target = parseInt(el.getAttribute('data-count-to'), 10) || 0;
     const duration = 1800;
     const start = performance.now();
