@@ -699,7 +699,8 @@ const TYPE_LABELS = {
   video_block: '🎬 Video',
   before_after: '🔄 Prima / Dopo',
   treatments_list: '🗂️ Lista trattamenti',
-  spacer: '⬜ Spazio / Separatore'
+  spacer: '⬜ Spazio / Separatore',
+  stats_band: '🔢 Fascia numeri animati'
 };
 
 const TYPE_DESC = {
@@ -719,7 +720,8 @@ const TYPE_DESC = {
   video_block: 'Sezione con video grande',
   before_after: 'Foto prima/dopo con slider e disclaimer',
   treatments_list: 'Lista trattamenti organizzati per categoria',
-  spacer: 'Spazio vuoto regolabile tra le sezioni'
+  spacer: 'Spazio vuoto regolabile tra le sezioni',
+  stats_band: 'Fascia con numeri che si animano allo scroll'
 };
 
 function summarize(s) {
@@ -752,7 +754,8 @@ const SECTION_DEFAULTS = {
   video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' },
   before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
   treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
-  spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' }
+  spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' },
+  stats_band: { bg:'#123C46', accent:'#C8A86B', text:'#F7F3EC' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -1007,6 +1010,16 @@ const SECTION_SCHEMA = {
       ['dot', 'Sì, pallino centrale'],
       ['gold', 'Sì, trattino gold (decorativo)']
     ]]
+  ],
+  stats_band: [
+    ['id', 'ID per link interni', 'text'],
+    ['intro', 'Testo introduttivo (opzionale, sopra i numeri)', 'text', 'Es: "I numeri dello Studio Campa". Lascia vuoto per non mostrarlo.'],
+    ['items', 'Numeri da mostrare (consigliati 3-4)', 'list-object', null, [
+      ['prefix', 'Prefisso (opzionale)', 'text', 'Es: "Oltre" oppure "+". Appare prima del numero.'],
+      ['number', 'Numero (solo cifre, es. 12000)', 'text', 'Scrivi solo il numero senza punti: "12000". L\'animazione conta fino a questo valore e formatta automaticamente (12.000).'],
+      ['suffix', 'Suffisso (opzionale)', 'text', 'Es: "+" oppure "%". Appare dopo il numero.'],
+      ['label', 'Etichetta sotto il numero', 'text', 'Es: "Interventi eseguiti", "Trattamenti di medicina estetica", "Soddisfazione pazienti".']
+    ]]
   ]
 };
 
@@ -1033,6 +1046,9 @@ const NAV_SCHEMA = [
 
 const TOPBAR_SCHEMA = [
   ['enabled', 'Mostra la barra in alto', 'boolean', 'Se attiva, mostra la barra sticky scura sopra alla nav con le voci sotto.'],
+  ['bg_color', 'Colore di sfondo della barra', 'color', '#0D2E36', 'Il colore della barra in alto. Default petrol scuro.'],
+  ['bg_color_2', 'Colore di sfondo 2 (per sfumatura, opzionale)', 'color', '#123C46', 'Se diverso dal primo, crea una sfumatura orizzontale. Mettilo uguale al primo per un colore pieno.'],
+  ['text_color', 'Colore del testo', 'color', '#F7F3EC', 'Il colore del testo delle voci. Default ivory chiaro.'],
   ['items', 'Voci della barra (in ordine)', 'list-object', null, [
     ['label', 'Testo della voce', 'text', 'Es: "5,0 · 2.219 recensioni Google" oppure "Chirurgo Plastico, Napoli"'],
     ['href', 'Link (opzionale)', 'text', 'Se inserito, la voce diventa cliccabile. Es: link recensioni Google, ancora #newsletter, link Calendly.'],
@@ -1863,6 +1879,26 @@ const previewTemplates = {
       ${divider}
       <span class="spacer-preview-badge">Spazio ${hd}px${hm!==hd?` · mobile ${hm}px`:''}</span>
     </div>`;
+  },
+  stats_band(s){
+    const items = (s.items||[]).filter(it => it && (it.number || it.label)).map(it => {
+      const rawNum = String(it.number||'').replace(/[^\d]/g, '');
+      const shown = rawNum ? parseInt(rawNum,10).toLocaleString('it-IT') : '0';
+      return `<div class="sb-item">
+        <div class="sb-number">
+          ${it.prefix?`<span class="sb-affix sb-prefix">${esc(it.prefix)}</span>`:''}
+          <span class="sb-count">${shown}</span>
+          ${it.suffix?`<span class="sb-affix sb-suffix">${esc(it.suffix)}</span>`:''}
+        </div>
+        ${it.label?`<div class="sb-label">${esc(it.label)}</div>`:''}
+      </div>`;
+    }).join('');
+    return `<section${sectionStyleAttr(s)} class="stats-band">
+      <div class="container">
+        ${s.intro?`<p class="sb-intro">${richText(s.intro)}</p>`:''}
+        <div class="sb-grid">${items}</div>
+      </div>
+    </section>`;
   }
 };
 
@@ -1896,7 +1932,11 @@ function renderPreviewTopbar(d){
     if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
     return `<${tag} class="${cls}">${inner}${label}</${tag}>`;
   }).join('');
-  return `<div class="topbar"><div class="topbar-track">${items}</div></div>`;
+  const c1 = tb.bg_color || '#0D2E36';
+  const c2 = tb.bg_color_2 || c1;
+  const tc = tb.text_color || '#F7F3EC';
+  const bg = (c1 === c2) ? c1 : `linear-gradient(90deg, ${c1} 0%, ${c2} 100%)`;
+  return `<div class="topbar" style="background:${bg}; color:${tc}"><div class="topbar-track">${items}</div></div>`;
 }
 
 function previewLogoMark(d){
@@ -2068,23 +2108,23 @@ body { padding-top:36px; }
   position:absolute; left:50%; top:50%;
   transform:translate(-50%, -50%);
   display:inline-flex; align-items:center; gap:8px;
-  color:rgba(247,243,236,.92);
+  color:inherit;
   text-decoration:none;
   opacity:0;
   white-space:nowrap;
   pointer-events:none;
   transition:opacity .5s ease;
 }
+/* Nel preview non c'è il rotator JS: mostro la prima voce */
+.topbar-item:first-child { opacity:1; pointer-events:auto; }
 .topbar-item.is-active { opacity:1; pointer-events:auto; }
 .topbar-item.is-link { cursor:pointer; }
 .topbar-item.is-link:hover { color:#C8A86B; }
 .topbar-item .topbar-star { color:#C8A86B; font-size:.95em; }
-.topbar-item .topbar-strong { font-weight:600; color:#F7F3EC; }
+.topbar-item .topbar-strong { font-weight:700; color:inherit; }
 .topbar-item .topbar-google {
-  font-weight:500;
-  background:linear-gradient(90deg, #4285F4, #EA4335 30%, #FBBC04 60%, #34A853 90%);
-  -webkit-background-clip:text; background-clip:text;
-  -webkit-text-fill-color:transparent; color:transparent;
+  font-weight:600;
+  color:inherit;
 }
 .topbar-item .topbar-icon { display:inline-flex; align-items:center; color:#C8A86B; }
 .topbar-icon-svg { display:block; flex-shrink:0; }
