@@ -73,24 +73,28 @@
       "intro": "I numeri dello Studio Campa",
       "items": [
         {
-          "prefix": "+",
+          "prefix": ">",
           "number": "10000",
-          "suffix": "+",
+          "suffix": "",
           "label": "𝘐𝘯𝘵𝘦𝘳𝘷𝘦𝘯𝘵𝘪 𝘤𝘩𝘪𝘳𝘶𝘳𝘨𝘪𝘤𝘪"
         },
         {
-          "prefix": "+",
-          "number": "30000",
-          "suffix": "+",
+          "prefix": ">",
+          "number": "35000",
+          "suffix": "",
           "label": "𝘛𝘳𝘢𝘵𝘵𝘢𝘮𝘦𝘯𝘵𝘪 𝘥𝘪 𝘮𝘦𝘥𝘪𝘤𝘪𝘯𝘢 𝘦𝘴𝘵𝘦𝘵𝘪𝘤𝘢"
         },
         {
-          "prefix": "+",
+          "prefix": ">",
           "number": "99,8",
           "suffix": "%",
           "label": "𝘛𝘢𝘴𝘴𝘰 𝘥𝘪 𝘴𝘰𝘥𝘥𝘪𝘴𝘧𝘢𝘻𝘪𝘰𝘯𝘦 𝘥𝘦𝘪 𝘱𝘢𝘻𝘪𝘦𝘯𝘵𝘪"
         }
-      ]
+      ],
+      "style": {
+        "bg": "#021318",
+        "accent": "#fafafa"
+      }
     },
     {
       "type": "problem",
