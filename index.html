@@ -2334,6 +2334,49 @@ section[style*="--section-text"] li { color:inherit; }
   .bl-price { font-size:1.6rem; }
   .bl-cta { flex:0 0 auto; }
 }
+
+/* ---- Variante COLONNE (card affiancate, stile pricing) ---- */
+.booking-ladder.bl-columns .bl-tiers {
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(196px, 1fr));
+  align-items:stretch;
+  max-width:1180px;
+  gap:16px;
+}
+.booking-ladder.bl-columns .bl-tier {
+  grid-template-columns:none;
+  display:flex; flex-direction:column;
+  text-align:center; align-items:center;
+  padding:30px 22px;
+  border-left:1px solid rgba(255,255,255,.10);
+  border-top:3px solid var(--section-accent, var(--gold));
+}
+.booking-ladder.bl-columns .bl-tier.is-featured {
+  transform:scale(1.04);
+  border:none;
+  padding:36px 22px;
+  z-index:2;
+}
+.booking-ladder.bl-columns .bl-tier.is-featured:hover { transform:scale(1.04) translateY(-3px); }
+.booking-ladder.bl-columns .bl-tier-body { width:100%; }
+.booking-ladder.bl-columns .bl-tier-who,
+.booking-ladder.bl-columns .bl-tier-format { justify-content:center; }
+.booking-ladder.bl-columns .bl-value { font-size:.86rem; }
+.booking-ladder.bl-columns .bl-tier-action {
+  flex-direction:column; align-items:center; text-align:center;
+  width:100%; margin-top:auto; padding-top:18px; gap:14px;
+}
+.booking-ladder.bl-columns .bl-cta { width:100%; justify-content:center; }
+.booking-ladder.bl-columns .bl-scarcity { margin-left:auto; margin-right:auto; }
+@media (max-width:760px){
+  /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
+  .booking-ladder.bl-columns .bl-tier.is-featured { transform:none; }
+  .booking-ladder.bl-columns .bl-tier.is-featured:hover { transform:translateY(-3px); }
+  .booking-ladder.bl-columns .bl-tier-action {
+    border-top:1px solid rgba(255,255,255,.12);
+  }
+  .booking-ladder.bl-columns .bl-tier.is-featured .bl-tier-action { border-top-color:rgba(13,46,54,.18); }
+}
 </style>
 </head>
 <body>
@@ -3110,7 +3153,7 @@ const templates = {
         </div>`;
     }).join('');
     return `
-      <section${sectionStyleAttr(s)} class="booking-ladder"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="bl-head reveal">
             ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
