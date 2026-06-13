@@ -94,7 +94,8 @@
       "style": {
         "bg": "#021318",
         "accent": "#fafafa"
-      }
+      },
+      "label_size": "large"
     },
     {
       "type": "problem",
