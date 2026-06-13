@@ -100,17 +100,17 @@
       "logos_title": "LE SOCIETÀ SCIENTIFICHE",
       "logos": [
         {
-          "image": "",
+          "image": "/images/1781351942304-logo-asps-dottor-campa.png",
           "alt": "",
           "href": ""
         },
         {
-          "image": "",
+          "image": "/images/1781351945710-logo-aicpre-dottor-campa.png",
           "alt": "",
           "href": ""
         },
         {
-          "image": "",
+          "image": "/images/1781351949261-logo-sicpre-dottor-campa.png",
           "alt": "",
           "href": ""
         }
@@ -797,7 +797,8 @@
       "style": {
         "bg": "#0D2E36",
         "accent": "#C8A86B",
-        "text": "#F7F3EC"
+        "text": "#F7F3EC",
+        "scale": ""
       }
     },
     {
