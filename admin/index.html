@@ -329,6 +329,13 @@ a { color:inherit; text-decoration:none; }
 .field-hint {
   font-size:11.5px; color:var(--ink-light); margin:0 0 7px; line-height:1.45;
 }
+.field-fmt-hint {
+  font-size:10.5px; color:var(--ink-light); margin:5px 0 0; opacity:.7;
+}
+.field-fmt-hint code {
+  background:rgba(0,0,0,.05); padding:1px 5px; border-radius:4px;
+  font-family:ui-monospace, "SF Mono", Menlo, monospace; font-size:10px;
+}
 .field-input, .field-textarea, .field-select {
   width:100%; padding:9px 12px; border:0.5px solid #d5d0c5; border-radius:7px;
   background:#fff; font-size:13.5px; color:var(--ink); font-family:inherit;
@@ -1568,9 +1575,9 @@ const previewTemplates = {
       </div>` : '';
     const titleHtml = `
       <h1 class="hero-title">
-        ${s.headline_pre?`${esc(s.headline_pre)}<br>`:''}
-        ${s.headline_main?`${esc(s.headline_main)} `:''}
-        ${s.headline_accent?`<span class="accent">${esc(s.headline_accent)}</span>`:''}
+        ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
+        ${s.headline_main?`${richText(s.headline_main)} `:''}
+        ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
       </h1>`;
     const subHtml = (s.subtitle_em || s.subtitle) ? `
       <p class="hero-sub">
@@ -1584,7 +1591,7 @@ const previewTemplates = {
           <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
           <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
         </div>
-        <div class="mission-figure">${esc(s.mission_figure||'')}</div>
+        <div class="mission-figure">${richText(s.mission_figure||'')}</div>
         <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
       </div>` : '';
     const ctaHtml = s.cta_label ? `<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>` : '';
@@ -1609,7 +1616,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="problem">
       ${s.watermark?`<div class="problem-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container">
-        <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+        <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
         <div class="problem-body">
           ${intro}${questions?`<p>${questions}</p>`:''}${middle}
           ${quote?`<div class="problem-quote">${quote}</div>`:''}
@@ -1623,7 +1630,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="about">
       <div class="container about-grid">
         <div>
-          <h2>${esc(s.title||'')}</h2>
+          <h2>${richText(s.title||'')}</h2>
           ${s.lead?`<p class="about-lead">${richText(s.lead)}</p>`:''}
         </div>
         ${s.photo?`<div class="about-photo">${imgTag(s.photo,'Dr. Campa')}</div>`:''}
@@ -1643,13 +1650,13 @@ const previewTemplates = {
     const items = (s.items||[]).map(it=>`
       <div class="value-item">
         <div class="value-icon">${icons[it.icon]||icons.clock}</div>
-        <h4>${esc(it.title||'')}</h4>
-        ${it.tag?`<span class="value-tag">${esc(it.tag)}</span>`:''}
+        <h4>${richText(it.title||'')}</h4>
+        ${it.tag?`<span class="value-tag">${richText(it.tag)}</span>`:''}
       </div>`).join('');
     return `<section${sectionStyleAttr(s)} class="value-section">
       <div class="container">
         <div class="value-card">
-          <h2>${esc(s.title||'')}</h2>
+          <h2>${richText(s.title||'')}</h2>
           <p class="lead">${richText(s.lead||'')} <strong>${richText(s.lead_strong||'')}</strong></p>
           <div class="value-grid">${items}</div>
           ${s.footnote?`<p class="value-footnote">${richText(s.footnote)} <strong>${richText(s.footnote_strong||'')}</strong></p>`:''}
@@ -1661,12 +1668,12 @@ const previewTemplates = {
     const cards = (s.cards||[]).map(c=>`
       <div class="method-card">
         <div class="method-photo">${imgTag(c.photo, c.title)}<div class="method-num">${esc(c.num||'')}</div></div>
-        <div class="method-body"><h3>${esc(c.title||'')}</h3><p>${richText(c.body||'')}</p></div>
+        <div class="method-body"><h3>${richText(c.title||'')}</h3><p>${richText(c.body||'')}</p></div>
       </div>`).join('');
     return `<section${sectionStyleAttr(s)} class="method">
       <div class="container">
         <div class="method-head">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <p class="sub">${richText(s.subtitle_a||'')}<br><br>${richText(s.subtitle_b||'')} <strong>${richText(s.subtitle_strong||'')}</strong></p>
         </div>
         <div class="method-grid">${cards}</div>
@@ -1676,15 +1683,15 @@ const previewTemplates = {
   levels(s){
     const items = (s.levels||[]).map(l=>`
       <div class="level">
-        <div class="level-tag">${esc(l.tag||'')}</div>
-        <h4>${esc(l.title||'')}</h4>
+        <div class="level-tag">${richText(l.tag||'')}</div>
+        <h4>${richText(l.title||'')}</h4>
         <p>${richText(l.body||'')}</p>
       </div>`).join('');
     const labels = s.pyramid_labels||[];
     return `<section${sectionStyleAttr(s)} class="levels">
       <div class="container">
         <div class="levels-head">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         <div class="levels-grid">
@@ -1702,8 +1709,8 @@ const previewTemplates = {
     const cards = (s.cards||[]).map(c=>`
       <div class="program-card ${c.reverse?'reverse':''}">
         <div class="program-text">
-          ${c.tag?`<div class="program-tag">${esc(c.tag)}</div>`:''}
-          <h3>${esc(c.title||'')}</h3>
+          ${c.tag?`<div class="program-tag">${richText(c.tag)}</div>`:''}
+          <h3>${richText(c.title||'')}</h3>
           ${c.subtitle?`<div class="program-subtitle">${richText(c.subtitle)}</div>`:''}
           <p>${richText(c.body||'')}</p>
           ${c.link_label?`<a href="#" class="program-link">${esc(c.link_label)}</a>`:''}
@@ -1713,7 +1720,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="programs">
       <div class="container">
         <div class="programs-head">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         ${cards}
@@ -1724,13 +1731,13 @@ const previewTemplates = {
     const items = (s.items||[]).map(it=>`
       <div class="audience-item">
         <div class="audience-photo">${imgTag(it.photo, it.title)}</div>
-        <h4>${esc(it.title||'')}</h4>
+        <h4>${richText(it.title||'')}</h4>
         <p><strong>${richText(it.body_strong||'')}</strong> ${richText(it.body||'')}</p>
       </div>`).join('');
     return `<section${sectionStyleAttr(s)} class="audience">
       <div class="container">
         <div class="audience-head">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         <div class="audience-grid">${items}</div>
@@ -1740,13 +1747,13 @@ const previewTemplates = {
   stats(s){
     const renderRow = row => {
       if(!row||!row.length) return '';
-      const cells = row.map(c=>`<div class="stat">${c.pill?`<div class="pill">${esc(c.pill)}</div>`:''}<div class="num">${esc(c.num||'')}</div><div class="lbl">${esc(c.label||'')}</div></div>`).join('');
+      const cells = row.map(c=>`<div class="stat">${c.pill?`<div class="pill">${richText(c.pill)}</div>`:''}<div class="num">${esc(c.num||'')}</div><div class="lbl">${richText(c.label||'')}</div></div>`).join('');
       return `<div class="stats-row">${cells}</div>`;
     };
     return `<section${sectionStyleAttr(s)} class="stats">
       <div class="container">
         <div class="stats-head">
-          <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
           <p class="sub">${richText(s.subtitle||'')}</p>
         </div>
         ${renderRow(s.row_a)}${renderRow(s.row_b)}
@@ -1767,7 +1774,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="testimonials">
       <div class="container">
         <div class="test-head">
-          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
         </div>
         <div class="test-grid">${items}</div>
       </div>
@@ -1779,7 +1786,7 @@ const previewTemplates = {
         <p class="q">${richText(s.quote||'')}</p>
         <div class="who">
           ${s.author_photo?`<div class="av">${imgTag(s.author_photo, s.author_name)}</div>`:''}
-          <div class="n">${esc(s.author_name||'')}</div>
+          <div class="n">${richText(s.author_name||'')}</div>
         </div>
       </div>
     </section>`;
@@ -1792,7 +1799,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="features-section">
       <div class="container">
         <div class="features-card">
-          <h2>${esc(s.title||'')}</h2>
+          <h2>${richText(s.title||'')}</h2>
           <p class="lead">${richText(s.lead||'')}</p>
           <div class="feature-pills">${pills}</div>
         </div>
@@ -1805,13 +1812,13 @@ const previewTemplates = {
       <div class="container">
         <div class="cta-card">
           <div class="cta-text">
-            <h2>${esc(s.title_a||'')} <span class="accent">${esc(s.title_accent||'')}</span></h2>
+            <h2>${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
             <p>${richText(s.body||'')}</p>
             <ul class="cta-perks">${perks}</ul>
           </div>
           <div class="form-wrap">
-            <h3>${esc(s.form_title||'Prenota')}</h3>
-            <p class="form-sub">${esc(s.form_subtitle||'')}</p>
+            <h3>${richText(s.form_title||'Prenota')}</h3>
+            <p class="form-sub">${richText(s.form_subtitle||'')}</p>
             <p style="color:#888;font-style:italic;text-align:center;margin-top:30px">[ form lead sulla landing ]</p>
           </div>
         </div>
@@ -1822,7 +1829,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="video-block">
       <div class="container">
         ${(s.title||s.subtitle)?`<div class="video-block-head">
-          ${s.title?`<h2>${esc(s.title)}</h2>`:''}
+          ${s.title?`<h2>${richText(s.title)}</h2>`:''}
           ${s.subtitle?`<p class="sub">${esc(s.subtitle)}</p>`:''}
         </div>`:''}
         <div class="video-block-wrap">${videoTag(s.video, {})}</div>
@@ -1846,7 +1853,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="before-after">
       <div class="container">
         <div class="ba-head">
-          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
           ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
         </div>
         <div class="ba-grid">${items}</div>
@@ -1864,7 +1871,7 @@ const previewTemplates = {
     return `<section${sectionStyleAttr(s)} class="treatments-list">
       <div class="container">
         <div class="tl-head">
-          <h2>${esc(s.title_a||'')} <span class="serif-italic">${esc(s.title_italic||'')}</span></h2>
+          <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
           ${s.subtitle?`<p class="tl-subtitle">${richText(s.subtitle)}</p>`:''}
         </div>
         <div class="tl-tabs">${tabs}</div>
@@ -1898,7 +1905,7 @@ const previewTemplates = {
           <span class="sb-count">${shown}</span>
           ${it.suffix?`<span class="sb-affix sb-suffix">${esc(it.suffix)}</span>`:''}
         </div>
-        ${it.label?`<div class="sb-label">${esc(it.label)}</div>`:''}
+        ${it.label?`<div class="sb-label">${richText(it.label)}</div>`:''}
       </div>`;
     }).join('');
     const labelSizeCls = s.label_size ? ` sb-labelsize-${s.label_size}` : '';
@@ -2326,9 +2333,9 @@ function renderField(field, value, path){
   let inputHTML = '';
 
   if(type === 'text'){
-    inputHTML = `<input class="field-input" type="text" data-path="${path.join('.')}" value="${esc(value||'')}">`;
+    inputHTML = `<input class="field-input" type="text" data-path="${path.join('.')}" value="${esc(value||'')}"><p class="field-fmt-hint">Formattazione: <code>_corsivo_</code> · <code>**grassetto**</code></p>`;
   } else if(type === 'textarea'){
-    inputHTML = `<textarea class="field-textarea" data-path="${path.join('.')}">${esc(value||'')}</textarea>`;
+    inputHTML = `<textarea class="field-textarea" data-path="${path.join('.')}">${esc(value||'')}</textarea><p class="field-fmt-hint">Formattazione: <code>_corsivo_</code> · <code>**grassetto**</code></p>`;
   } else if(type === 'number'){
     inputHTML = `<input class="field-input field-number" type="number" data-path="${path.join('.')}" value="${value!=null?value:''}">`;
   } else if(type === 'boolean'){
