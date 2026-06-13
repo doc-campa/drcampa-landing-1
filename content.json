@@ -98,6 +98,77 @@
       "label_size": "large"
     },
     {
+      "type": "testimonials",
+      "id": "recensioni",
+      "title_a": "Storie vere,",
+      "title_italic": "risultati reali.",
+      "items": [
+        {
+          "name": "Claudia Leonardi",
+          "date": "3 mesi fa",
+          "text_strong": "Prima esperienza dal doc Campa positivissima!",
+          "text": "Dottore super professionale ma soprattutto una persona squisita. Le ragazze dello staff gentilissime, sono davvero soddisfatta del risultato ottenuto, ve lo consiglio vivamente."
+        },
+        {
+          "name": "Bruna Tarantino",
+          "date": "5 mesi fa",
+          "text_strong": "Dott. Domenico Campa: un nome, una garanzia.",
+          "text": "Professionalità, precisione e umanità sono solo alcune delle qualità che lo distinguono. Lo studio è sempre accogliente e curato in ogni dettaglio."
+        },
+        {
+          "name": "Grazia Pisani",
+          "date": "7 mesi fa",
+          "text_strong": "",
+          "text": "Ho effettuato un filler correttivo dal dottor Campa, sono stata da lui per la prima volta. Che dire, lui e il suo staff sono molto dolci e gentili, sanno metterti a tuo agio dal primo momento. Risultato naturale ed elegante."
+        },
+        {
+          "name": "Nunzia Landolfo",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Sono stata per la prima volta dal dottore ed inizialmente, a causa di un percorso non andato al meglio in passato, avevo non poche remore. Il dottor Campa e il suo staff mi hanno messo subito a mio agio. Risultato eccellente."
+        },
+        {
+          "name": "Lucrezia Stacchini",
+          "date": "5 mesi fa",
+          "text_strong": "Impossibile descrivere il dottore e il suo staff con una parola.",
+          "text": "Dico solo che da quando li ho conosciuti mi fido solo di loro. Personale attento al dettaglio e percorso clinico curato in ogni passaggio."
+        },
+        {
+          "name": "Sara Esposito",
+          "date": "3 mesi fa",
+          "text_strong": "",
+          "text": "Mi sono affidata al Dottor Campa per un filler alle labbra e non potrei essere più felice della scelta fatta. Fin dalla prima visita mi sono sentita ascoltata e seguita con attenzione. Risultato naturale e armonioso."
+        },
+        {
+          "name": "Felicya Salcino",
+          "date": "3 mesi fa",
+          "text_strong": "A parer mio è il migliore in assoluto.",
+          "text": "Oltre ad essere super professionale è anche simpaticissimo e ti mette subito a tuo agio. Lo staff è gentile e accogliente, lo consiglio senza esitazioni."
+        },
+        {
+          "name": "Federica Raimo",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Oggi posso sorridere alla vita con gratitudine e serenità, ed è grazie al Dottor Campa. Non esistono davvero parole sufficienti per descrivere la sua straordinaria professionalità e umanità."
+        },
+        {
+          "name": "Valentina De Liso",
+          "date": "5 mesi fa",
+          "text_strong": "",
+          "text": "Il dottor Campa ha trasformato una semplice iniezione in un momento sorprendentemente speciale: preciso, delicato e con un senso estetico che fa sentire subito a proprio agio."
+        }
+      ],
+      "subtitle": "Le testimonianze dei pazienti dello Studio Campa, pubblicate direttamente su **Google**. Tutte verificate.",
+      "reviews_rating": "5,0",
+      "reviews_count": "2.219",
+      "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
+      "style": {
+        "bg": "#e3e3e3",
+        "text": "#000000",
+        "accent": "#6f2d01"
+      }
+    },
+    {
       "type": "problem",
       "id": "studio",
       "watermark": "Dr. Campa",
@@ -530,72 +601,6 @@
         }
       ],
       "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
-    },
-    {
-      "type": "testimonials",
-      "id": "recensioni",
-      "title_a": "Storie vere,",
-      "title_italic": "risultati reali.",
-      "items": [
-        {
-          "name": "Claudia Leonardi",
-          "date": "3 mesi fa",
-          "text_strong": "Prima esperienza dal doc Campa positivissima!",
-          "text": "Dottore super professionale ma soprattutto una persona squisita. Le ragazze dello staff gentilissime, sono davvero soddisfatta del risultato ottenuto, ve lo consiglio vivamente."
-        },
-        {
-          "name": "Bruna Tarantino",
-          "date": "5 mesi fa",
-          "text_strong": "Dott. Domenico Campa: un nome, una garanzia.",
-          "text": "Professionalità, precisione e umanità sono solo alcune delle qualità che lo distinguono. Lo studio è sempre accogliente e curato in ogni dettaglio."
-        },
-        {
-          "name": "Grazia Pisani",
-          "date": "7 mesi fa",
-          "text_strong": "",
-          "text": "Ho effettuato un filler correttivo dal dottor Campa, sono stata da lui per la prima volta. Che dire, lui e il suo staff sono molto dolci e gentili, sanno metterti a tuo agio dal primo momento. Risultato naturale ed elegante."
-        },
-        {
-          "name": "Nunzia Landolfo",
-          "date": "5 mesi fa",
-          "text_strong": "",
-          "text": "Sono stata per la prima volta dal dottore ed inizialmente, a causa di un percorso non andato al meglio in passato, avevo non poche remore. Il dottor Campa e il suo staff mi hanno messo subito a mio agio. Risultato eccellente."
-        },
-        {
-          "name": "Lucrezia Stacchini",
-          "date": "5 mesi fa",
-          "text_strong": "Impossibile descrivere il dottore e il suo staff con una parola.",
-          "text": "Dico solo che da quando li ho conosciuti mi fido solo di loro. Personale attento al dettaglio e percorso clinico curato in ogni passaggio."
-        },
-        {
-          "name": "Sara Esposito",
-          "date": "3 mesi fa",
-          "text_strong": "",
-          "text": "Mi sono affidata al Dottor Campa per un filler alle labbra e non potrei essere più felice della scelta fatta. Fin dalla prima visita mi sono sentita ascoltata e seguita con attenzione. Risultato naturale e armonioso."
-        },
-        {
-          "name": "Felicya Salcino",
-          "date": "3 mesi fa",
-          "text_strong": "A parer mio è il migliore in assoluto.",
-          "text": "Oltre ad essere super professionale è anche simpaticissimo e ti mette subito a tuo agio. Lo staff è gentile e accogliente, lo consiglio senza esitazioni."
-        },
-        {
-          "name": "Federica Raimo",
-          "date": "5 mesi fa",
-          "text_strong": "",
-          "text": "Oggi posso sorridere alla vita con gratitudine e serenità, ed è grazie al Dottor Campa. Non esistono davvero parole sufficienti per descrivere la sua straordinaria professionalità e umanità."
-        },
-        {
-          "name": "Valentina De Liso",
-          "date": "5 mesi fa",
-          "text_strong": "",
-          "text": "Il dottor Campa ha trasformato una semplice iniezione in un momento sorprendentemente speciale: preciso, delicato e con un senso estetico che fa sentire subito a proprio agio."
-        }
-      ],
-      "subtitle": "Le testimonianze dei pazienti dello Studio Campa, pubblicate direttamente su **Google**. Tutte verificate.",
-      "reviews_rating": "5,0",
-      "reviews_count": "2.219",
-      "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa"
     },
     {
       "type": "before_after",
