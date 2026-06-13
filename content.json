@@ -68,6 +68,31 @@
       "mobile_title_gap": 150
     },
     {
+      "type": "stats_band",
+      "id": "numeri",
+      "intro": "I numeri dello Studio Campa",
+      "items": [
+        {
+          "prefix": "Oltre",
+          "number": "12000",
+          "suffix": "+",
+          "label": "Interventi chirurgici eseguiti"
+        },
+        {
+          "prefix": "Oltre",
+          "number": "50000",
+          "suffix": "+",
+          "label": "Trattamenti di medicina estetica"
+        },
+        {
+          "prefix": "",
+          "number": "99",
+          "suffix": "%",
+          "label": "Tasso di soddisfazione dei pazienti"
+        }
+      ]
+    },
+    {
       "type": "problem",
       "id": "studio",
       "watermark": "Dr. Campa",
