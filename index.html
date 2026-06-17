@@ -15,33 +15,33 @@
    DESIGN TOKENS
    ============================================================ */
 :root {
-  /* ====== CLINICAL LUXURY PALETTE ====== */
-  /* Primary: Deep Petrol — fiducia, competenza, professionalità */
-  --petrol:#123C46;
-  --petrol-darker:#0D2E36;
-  --petrol-soft:#1a5260;
-  --petrol-tint:#e6ecee;
-  /* Surfaces: Warm Ivory — accogliente, premium */
-  --ivory:#F7F3EC;
-  --ivory-deeper:#EFE9DD;
+  /* ====== PALETTE: BIANCO FREDDO & BLU POLVERE ====== */
+  /* "Scuro" di base: Slate blu — sezioni/footer scure + titoli */
+  --petrol:#2B3138;
+  --petrol-darker:#21262B;
+  --petrol-soft:#54606B;
+  --petrol-tint:#E4EAEE;
+  /* Superfici: Bianco freddo — pulito, clinico */
+  --ivory:#F0F2F4;
+  --ivory-deeper:#E4E8EC;
   --white:#FFFFFF;
-  /* Luxury accent: Champagne Gold — dettagli prestigio */
-  --gold:#C8A86B;
-  --gold-deeper:#A88B4F;
-  --gold-soft:#F0E5CC;
-  /* Emotional: Soft Blush — beauty senza essere infantile */
-  --blush:#E8C8C0;
-  --blush-soft:#F5E3DE;
-  --blush-deep:#D4A89E;
-  /* Text: Charcoal — leggibilissimo, morbido */
-  --ink:#1E1E1E;
-  --ink-soft:#3a3a3a;
-  --ink-light:#6a6a6a;
-  /* Neutral support: Mist Grey */
-  --mist:#D9DDD9;
-  --mist-soft:#E8ECE8;
-  --line:#D9DDD9;
-  --line-hair:rgba(30,30,30,.08);
+  /* Accento: Blu polvere — dettagli, bottoni, evidenze */
+  --gold:#7E97A8;
+  --gold-deeper:#5E7585;
+  --gold-soft:#DCE4EA;
+  /* Secondario freddo (ex blush) */
+  --blush:#C2CED6;
+  --blush-soft:#E4EAEE;
+  --blush-deep:#9DB0BB;
+  /* Testo: Slate */
+  --ink:#2B3138;
+  --ink-soft:#404852;
+  --ink-light:#6B727A;
+  /* Neutri: grigi freddi */
+  --mist:#D5DBDF;
+  --mist-soft:#E6EAED;
+  --line:#D5DBDF;
+  --line-hair:rgba(43,49,56,.08);
 
   /* ====== BACKWARD-COMPAT ALIASES ======
      I template usano ancora questi nomi storici (--coral-deep, --coral-1, --yellow, --bg-soft).
@@ -70,10 +70,10 @@
   --radius-xl:48px;
   --ease-spring:cubic-bezier(.16, 1, .3, 1);
   --ease-out:cubic-bezier(.4, 0, .2, 1);
-  --shadow-sm:0 1px 3px rgba(18,60,70,.06), 0 1px 2px rgba(18,60,70,.04);
-  --shadow-md:0 4px 14px -2px rgba(18,60,70,.1), 0 2px 4px -1px rgba(18,60,70,.05);
-  --shadow-lg:0 20px 40px -12px rgba(18,60,70,.18), 0 8px 12px -4px rgba(18,60,70,.1);
-  --shadow-xl:0 32px 64px -16px rgba(18,60,70,.22), 0 12px 24px -8px rgba(18,60,70,.12);
+  --shadow-sm:0 1px 3px rgba(43,49,56,.06), 0 1px 2px rgba(43,49,56,.04);
+  --shadow-md:0 4px 14px -2px rgba(43,49,56,.1), 0 2px 4px -1px rgba(43,49,56,.05);
+  --shadow-lg:0 20px 40px -12px rgba(43,49,56,.18), 0 8px 12px -4px rgba(43,49,56,.1);
+  --shadow-xl:0 32px 64px -16px rgba(43,49,56,.22), 0 12px 24px -8px rgba(43,49,56,.12);
   --shadow-petrol:0 20px 40px -12px rgba(18, 60, 70, .35);
   --shadow-gold:0 16px 32px -8px rgba(200, 168, 107, .35);
 }
@@ -286,7 +286,7 @@ html.no-topbar .hero { padding-top:190px; }
 .nav.scrolled {
   padding:3px 0;
   background:rgba(247,243,236,.95);
-  box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(18,60,70,.08);
+  box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(43,49,56,.08);
 }
 /* Grid a 3 colonne: logo | menu (sempre al centro) | cta.
    Le 2 colonne laterali hanno la stessa larghezza (1fr) così il menu resta
@@ -313,7 +313,7 @@ html.no-topbar .hero { padding-top:190px; }
   background:var(--petrol);
   display:grid; place-items:center;
   color:var(--ivory); font-weight:700; font-size:.9rem;
-  box-shadow:0 4px 12px -4px rgba(18,60,70,.4);
+  box-shadow:0 4px 12px -4px rgba(43,49,56,.4);
   transition:transform .3s var(--ease-spring), box-shadow .3s var(--ease-out), background .3s var(--ease-out);
   border:1px solid transparent;
   flex-shrink:0;
@@ -430,7 +430,7 @@ html.no-topbar .hero { padding-top:190px; }
 .hero-bg picture { opacity:.5; filter:saturate(.9); }
 .hero::before {
   content:""; position:absolute; inset:0; z-index:1;
-  background:linear-gradient(180deg, rgba(18,60,70,.4) 0%, rgba(18,60,70,.25) 50%, rgba(13,46,54,.85) 100%);
+  background:linear-gradient(180deg, rgba(43,49,56,.4) 0%, rgba(43,49,56,.25) 50%, rgba(13,46,54,.85) 100%);
   pointer-events:none;
 }
 .hero-watermark {
@@ -509,14 +509,14 @@ html.no-topbar .hero { padding-top:190px; }
 }
 .hero-video-overlay {
   position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(18,60,70,.18) 0%, rgba(18,60,70,.05) 40%, rgba(13,46,54,.55) 100%);
+  background:linear-gradient(180deg, rgba(43,49,56,.18) 0%, rgba(43,49,56,.05) 40%, rgba(13,46,54,.55) 100%);
   transition:opacity .35s var(--ease-out);
 }
 .hero-video-label {
   position:absolute; top:20px; left:22px;
   font-size:.78rem; font-weight:500; letter-spacing:.08em; text-transform:uppercase;
   color:var(--ivory);
-  background:rgba(18,60,70,.6);
+  background:rgba(43,49,56,.6);
   backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
   padding:7px 14px;
   border-radius:999px;
@@ -816,7 +816,7 @@ html.no-topbar .hero { padding-top:190px; }
   font-family:var(--font-sans);
   font-size:clamp(8rem, 18vw, 18rem);
   font-weight:800; letter-spacing:-.04em;
-  color:rgba(18,60,70,.05);
+  color:rgba(43,49,56,.05);
   pointer-events:none; user-select:none;
   white-space:nowrap; z-index:0;
 }
@@ -1270,7 +1270,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 .test-card:hover {
   transform:translateY(-4px);
-  box-shadow:0 18px 36px -16px rgba(18,60,70,.18);
+  box-shadow:0 18px 36px -16px rgba(43,49,56,.18);
   border-color:rgba(200,168,107,.45);
 }
 .test-card-head {
@@ -1483,7 +1483,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .form-wrap input:focus, .form-wrap textarea:focus, .form-wrap select:focus {
   outline:0;
   border-color:var(--petrol);
-  box-shadow:0 0 0 4px rgba(18,60,70,.12);
+  box-shadow:0 0 0 4px rgba(43,49,56,.12);
 }
 .form-wrap textarea { min-height:90px; resize:vertical; }
 .form-wrap .btn { width:100%; margin-top:6px; }
@@ -1566,7 +1566,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 .ba-card:hover {
   transform:translateY(-4px);
-  box-shadow:0 18px 36px -16px rgba(18,60,70,.18);
+  box-shadow:0 18px 36px -16px rgba(43,49,56,.18);
 }
 .ba-card-head {
   padding:22px 24px 6px;
@@ -1737,7 +1737,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .sb-logos-block {
   margin-top:56px;
   padding-top:44px;
-  border-top:1px solid rgba(200,168,107,.18);
+  border-top:1px solid rgba(126,151,168,.22);
   position:relative;
   text-align:center;
 }
@@ -1817,7 +1817,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   background:#fff;
   border:1px solid var(--line);
   border-radius:999px;
-  box-shadow:0 4px 12px -6px rgba(18,60,70,.08);
+  box-shadow:0 4px 12px -6px rgba(43,49,56,.08);
 }
 .tl-tab {
   display:inline-flex; align-items:center; gap:9px;
@@ -1829,11 +1829,11 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   transition:background .25s var(--ease-out), color .2s, transform .2s;
   white-space:nowrap;
 }
-.tl-tab:hover { color:var(--petrol); background:rgba(18,60,70,.04); }
+.tl-tab:hover { color:var(--petrol); background:rgba(43,49,56,.04); }
 .tl-tab.is-active {
   background:var(--petrol);
   color:var(--ivory);
-  box-shadow:0 6px 16px -8px rgba(18,60,70,.4);
+  box-shadow:0 6px 16px -8px rgba(43,49,56,.4);
 }
 .tl-tab.is-active .tl-icon { color:var(--gold); }
 .tl-tab .tl-icon { color:var(--ink-light); flex-shrink:0; transition:color .2s; }
@@ -1880,7 +1880,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .tl-treatment.is-link { cursor:pointer; }
 .tl-treatment:hover {
   transform:translateY(-2px);
-  box-shadow:0 12px 24px -12px rgba(18,60,70,.18);
+  box-shadow:0 12px 24px -12px rgba(43,49,56,.18);
   border-color:rgba(200,168,107,.45);
 }
 .tl-treatment-icon {
@@ -1918,7 +1918,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 .footer {
   background:var(--petrol); color:rgba(247,243,236,.7);
   padding:80px 0 36px;
-  border-top:1px solid rgba(200,168,107,.18);
+  border-top:1px solid rgba(126,151,168,.22);
 }
 .footer .logo { color:var(--ivory); margin-bottom:18px; }
 .footer-top {
@@ -2570,8 +2570,8 @@ const templates = {
           ${s.video_player_label?`<div class="hero-video-label">${esc(s.video_player_label)}</div>`:''}
           <div class="hero-video-play" aria-hidden="true">
             <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(200,168,107,.4)" stroke-width="1"/>
-              <path d="M26 22 L44 32 L26 42 Z" fill="#123C46"/>
+              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(126,151,168,.5)" stroke-width="1"/>
+              <path d="M26 22 L44 32 L26 42 Z" fill="#2B3138"/>
             </svg>
           </div>
         </button>
@@ -3397,9 +3397,9 @@ async function init(){
       topbar.classList.add('topbar-visible');
       // Colori personalizzabili dall'editor (con fallback ai default petrol/ivory)
       const tb = data.topbar || {};
-      const c1 = tb.bg_color || '#0D2E36';
+      const c1 = tb.bg_color || '#2B3138';
       const c2 = tb.bg_color_2 || c1;
-      const tc = tb.text_color || '#F7F3EC';
+      const tc = tb.text_color || '#F0F2F4';
       topbar.style.background = (c1 === c2)
         ? c1
         : `linear-gradient(90deg, ${c1} 0%, ${c2} 100%)`;
