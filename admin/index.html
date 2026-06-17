@@ -708,7 +708,8 @@ const TYPE_LABELS = {
   treatments_list: '🗂️ Lista trattamenti',
   spacer: '⬜ Spazio / Separatore',
   stats_band: '🔢 Fascia numeri animati',
-  booking_ladder: '🎯 Scala prenotazioni'
+  booking_ladder: '🎯 Scala prenotazioni',
+  wake_videos: '🎬 Video dei risvegli'
 };
 
 const TYPE_DESC = {
@@ -730,7 +731,8 @@ const TYPE_DESC = {
   treatments_list: 'Lista trattamenti organizzati per categoria',
   spacer: 'Spazio vuoto regolabile tra le sezioni',
   stats_band: 'Fascia con numeri che si animano allo scroll',
-  booking_ladder: 'Scala di livelli di prenotazione (chiusura vendita)'
+  booking_ladder: 'Scala di livelli di prenotazione (chiusura vendita)',
+  wake_videos: '4 video verticali in autoplay su sfondo nero (i risvegli dei pazienti)'
 };
 
 function summarize(s) {
@@ -765,7 +767,8 @@ const SECTION_DEFAULTS = {
   treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
   spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' },
   stats_band: { bg:'#0E1626', accent:'#C2825A', text:'#ECEEF4' },
-  booking_ladder: { bg:'#121A2E', accent:'#C2825A', text:'#ECEEF4' }
+  booking_ladder: { bg:'#121A2E', accent:'#C2825A', text:'#ECEEF4' },
+  wake_videos: { bg:'#000000', accent:'#C8A86B', text:'#ffffff' }
 };
 
 const SECTIONS_WITH_CARD_BG = new Set(['value_card', 'features_card', 'cta_form']);
@@ -1098,6 +1101,19 @@ const SECTION_SCHEMA = {
       ]]
     ]],
     ['footer_note', 'Nota finale rassicurante (opzionale)', 'textarea', 'Es: "Nessun impegno. Nessuna pressione. Solo chiarezza.". Usa **grassetto** per evidenziare.']
+  ],
+  wake_videos: [
+    ['id', 'ID per link interni', 'text', 'Es: "risvegli".'],
+    ['eyebrow', 'Sopra-titolo (piccolo, in alto)', 'text', 'Es: "I VIDEO DEI RISVEGLI".'],
+    ['title_a', 'Titolo (prima parte)', 'text', 'Es: "Cosa ti spaventa di".'],
+    ['title_accent', 'Titolo (parte in corsivo/oro)', 'text', 'Es: "un intervento?".'],
+    ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Frase introduttiva sotto al titolo. Usa **grassetto** se vuoi.'],
+    ['items', 'Video (consigliati 4)', 'list-object', 'Video verticali che partono da soli, muti e in loop. Carica file MP4 leggeri (max 5-10MB l\'uno) per non rallentare il sito.', [
+      ['video', 'Video (MP4 verticale, autoplay muto)', 'video', 'Formato verticale 9:16. Tienilo corto e leggero.'],
+      ['poster', 'Anteprima (mostrata prima del caricamento)', 'image', 'Opzionale: un fotogramma del video. Se vuoto, parte direttamente il video.'],
+      ['name', 'Nome del paziente (opzionale)', 'text', 'Es: "Giulia". Solo se hai il consenso a mostrarlo.'],
+      ['treatment', 'Tipo di intervento', 'text', 'Es: "Rinoplastica", "Mastoplastica additiva".']
+    ]]
   ]
 };
 
@@ -1878,6 +1894,29 @@ const previewTemplates = {
           ${s.author_photo?`<div class="av">${imgTag(s.author_photo, s.author_name)}</div>`:''}
           <div class="n">${richText(s.author_name||'')}</div>
         </div>
+      </div>
+    </section>`;
+  },
+  wake_videos(s){
+    const items = (s.items||[]).map(it=>{
+      const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
+      const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
+      const media = src
+        ? `<video class="wv-video" autoplay muted loop playsinline${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
+        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`);
+      return `<figure class="wv-card">
+        <div class="wv-media">${media}</div>
+        ${(it.name||it.treatment)?`<figcaption class="wv-cap">${it.name?`<span class="wv-name">${esc(it.name)}</span>`:''}${it.treatment?`<span class="wv-treatment">${esc(it.treatment)}</span>`:''}</figcaption>`:''}
+      </figure>`;
+    }).join('');
+    return `<section${sectionStyleAttr(s)} class="wake-videos">
+      <div class="container">
+        <div class="wv-head">
+          ${s.eyebrow?`<span class="wv-eyebrow">${esc(s.eyebrow)}</span>`:''}
+          <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_accent||'')}</span></h2>
+          ${s.subtitle?`<p class="wv-subtitle">${richText(s.subtitle)}</p>`:''}
+        </div>
+        <div class="wv-grid">${items}</div>
       </div>
     </section>`;
   },
