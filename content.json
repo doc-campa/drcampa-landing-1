@@ -92,8 +92,8 @@
         }
       ],
       "style": {
-        "bg": "#2B3138",
-        "accent": "#F0F2F4"
+        "bg": "#0E1626",
+        "accent": "#C2825A"
       },
       "label_size": "large",
       "intro_size": "large",
@@ -182,9 +182,9 @@
       "reviews_count": "2.219",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
       "style": {
-        "bg": "#E4E8EC",
-        "text": "#2B3138",
-        "accent": "#5E7585"
+        "bg": "#141C2E",
+        "text": "#ECEEF4",
+        "accent": "#C2825A"
       }
     },
     {
@@ -795,9 +795,9 @@
       ],
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
-        "bg": "#2B3138",
-        "accent": "#7E97A8",
-        "text": "#F0F2F4"
+        "bg": "#121A2E",
+        "accent": "#C2825A",
+        "text": "#ECEEF4"
       }
     },
     {
