@@ -2438,8 +2438,8 @@ section[style*="--section-text"] li { color:inherit; }
 
 /* Palco video */
 .hero-stage{
-  position:relative; width:100%; max-width:min(1240px, 94vw); margin:14px auto 0;
-  aspect-ratio:16/9; border-radius:24px; overflow:hidden;
+  position:relative; width:100%; max-width:min(1200px, 95vw); margin:14px auto 0;
+  aspect-ratio:4/3; border-radius:24px; overflow:hidden;
   border:1px solid rgba(236,238,244,.10);
   box-shadow:0 50px 110px -32px rgba(0,0,0,.8);
 }
@@ -2447,11 +2447,11 @@ section[style*="--section-text"] li { color:inherit; }
 .hero-stage-media img{ width:100%; height:100%; object-fit:cover; }
 .hero-stage-scrim{
   position:absolute; inset:0;
-  background:linear-gradient(180deg, rgba(10,15,26,.05) 0%, rgba(10,15,26,.12) 42%, rgba(10,15,26,.85) 100%);
+  background:linear-gradient(180deg, rgba(10,15,26,.05) 0%, rgba(10,15,26,.12) 30%, rgba(10,15,26,.72) 62%, rgba(10,15,26,.94) 100%);
 }
 /* Tasto play — cerchio outline + solo triangolo */
 .hero-play{
-  position:absolute; top:44%; left:50%; transform:translate(-50%,-50%);
+  position:absolute; top:30%; left:50%; transform:translate(-50%,-50%);
   width:104px; height:104px; border-radius:50%;
   padding:0; cursor:pointer;
   background:rgba(255,255,255,.06);
@@ -2466,8 +2466,13 @@ section[style*="--section-text"] li { color:inherit; }
 /* Overlay in basso sul video: CTA + mission */
 .hero-stage-bottom{
   position:absolute; left:0; right:0; bottom:0; z-index:3;
-  padding:clamp(16px,3vw,30px);
-  display:flex; flex-direction:column; align-items:center; gap:14px;
+  padding:clamp(20px,3.4vw,40px);
+  display:flex; flex-direction:column; align-items:center; gap:16px;
+}
+.hero-stage-bottom .hero-title{
+  margin:0 0 2px; max-width:none; text-align:center;
+  font-size:clamp(2rem,4.4vw,3.7rem); line-height:.98; color:#fff;
+  text-shadow:0 2px 24px rgba(0,0,0,.45);
 }
 .hero-cta-btn{
   display:inline-flex; align-items:center; gap:12px;
@@ -2496,8 +2501,10 @@ section[style*="--section-text"] li { color:inherit; }
 
 @media (max-width:600px){
   .hero-stage{ aspect-ratio:3/4; border-radius:18px; max-width:460px; }
-  .hero-play{ top:38%; width:76px; height:76px; border-width:2px; }
-  .hero-play svg{ width:30px; height:30px; }
+  .hero-play{ top:26%; width:72px; height:72px; border-width:2px; }
+  .hero-play svg{ width:28px; height:28px; }
+  .hero-stage-bottom{ gap:12px; padding:18px; }
+  .hero-stage-bottom .hero-title{ font-size:clamp(1.7rem,7vw,2.4rem); }
   .hero-cta-btn{ font-size:1rem; padding:13px 24px; white-space:normal; text-align:center; }
   .hero-mission-badge{ font-size:.8rem; padding:9px 14px; }
 }
@@ -2680,28 +2687,27 @@ const templates = {
         ${(s.mission_label_strong||s.mission_label_text)?`<span class="hmb-label">${s.mission_label_strong?`<strong>${esc(s.mission_label_strong)}</strong> `:''}${richText(s.mission_label_text||'')}</span>`:''}
         ${s.mission_figure?`<span class="hmb-figure">${richText(s.mission_figure)}</span>`:''}
       </div>` : '';
+    const titleHtml = (s.headline_pre||s.headline_main||s.headline_accent) ? `
+      <h1 class="hero-title">
+        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
+      </h1>` : '';
+    const subHtml = (s.subtitle_em || s.subtitle) ? `
+      <p class="hero-sub">
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
+      </p>` : '';
     const stageHtml = `
       <div class="hero-stage reveal">
         <div class="hero-stage-media">${img(playerPoster, '') || ''}</div>
         <div class="hero-stage-scrim" aria-hidden="true"></div>
         ${playBtn}
-        ${(ctaBtn||missionBadge)?`<div class="hero-stage-bottom">${ctaBtn}${missionBadge}</div>`:''}
+        <div class="hero-stage-bottom">${titleHtml}${ctaBtn}${missionBadge}</div>
       </div>`;
-    const titleHtml = `
-      <h1 class="hero-title">
-        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
-      </h1>`;
-    const subHtml = (s.subtitle_em || s.subtitle) ? `
-      <p class="hero-sub">
-        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
-      </p>` : '';
     return `
       <section${sectionStyleAttr(s)} class="hero hero-centered ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="hero-bg">${bg}</div>
         <div class="hero-bg-scrim" aria-hidden="true"></div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container hero-c reveal">
-          ${titleHtml}
           ${subHtml}
           ${stageHtml}
         </div>
