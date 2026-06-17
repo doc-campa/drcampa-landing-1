@@ -1343,6 +1343,71 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 .test-text strong { color:var(--ink); font-weight:600; }
 
+/* ===== Recensioni — TEMA CHIARO (sfondo bianco) =====
+   Vince sulle variabili inline della sezione grazie alla specificità. */
+section.testimonials[style*="--section-bg"] { background:#fff !important; }
+section.testimonials[style*="--section-text"] { color:#1C2438; }
+.testimonials .test-head h2 { color:#141C2E; }
+.testimonials .test-head h2 .serif-italic { color:var(--orange); }
+.testimonials .test-subtitle { color:#5A6377; }
+.testimonials .test-card {
+  background:#fff; border:1px solid #E6E9F0;
+  box-shadow:0 2px 10px -6px rgba(20,28,46,.12);
+}
+.testimonials .test-card:hover {
+  border-color:rgba(255,107,44,.45);
+  box-shadow:0 18px 36px -16px rgba(20,28,46,.18);
+}
+.testimonials .test-name { color:#141C2E; }
+.testimonials .test-source { color:#7A8294; }
+.testimonials .test-text { color:#4A5263; }
+.testimonials .test-text strong { color:#141C2E; }
+.testimonials .test-date,
+.testimonials .test-stars-num { color:#8C94A4; }
+/* Stelle in ambra (convenzione recensioni) — vince sul --section-accent */
+section.testimonials .test-stars { color:#F5A623 !important; }
+.testimonials .test-google-stars { color:#F5A623; }
+.testimonials .test-google-badge { background:#fff; border:1px solid #E6E9F0; color:#141C2E; }
+.testimonials .test-google-rating { color:#141C2E; }
+.testimonials .test-google-count { color:#7A8294; }
+
+/* Riga badge dei 3 servizi recensioni */
+.test-badges {
+  display:flex; flex-wrap:wrap; justify-content:center; gap:14px;
+  margin-top:30px;
+}
+.test-badge {
+  display:flex; align-items:center; gap:13px;
+  padding:13px 20px; min-width:210px;
+  background:#fff; border:1px solid #E6E9F0; border-radius:16px;
+  box-shadow:0 3px 14px -8px rgba(20,28,46,.18);
+  text-decoration:none;
+  transition:transform .25s var(--ease-spring), box-shadow .25s, border-color .2s;
+}
+.test-badge:hover {
+  transform:translateY(-3px);
+  border-color:rgba(255,107,44,.45);
+  box-shadow:0 14px 30px -14px rgba(20,28,46,.28);
+}
+.tb-logo { width:34px; height:34px; flex-shrink:0; display:grid; place-items:center; }
+.tb-logo svg { width:30px; height:30px; }
+.tb-ge {
+  width:34px; height:34px; border-radius:9px;
+  background:#0E7C7B; color:#fff;
+  display:grid; place-items:center;
+  font-family:var(--font-display); font-size:1rem; letter-spacing:.04em;
+}
+.tb-body { display:flex; flex-direction:column; line-height:1.2; min-width:0; }
+.tb-name { font-weight:700; font-size:.9rem; color:#141C2E; letter-spacing:.01em; }
+.tb-rate { display:flex; align-items:center; gap:6px; margin-top:1px; }
+.tb-num { font-weight:800; font-size:1.12rem; color:#141C2E; }
+.tb-stars { color:#F5A623; font-size:.82rem; letter-spacing:1px; }
+.tb-reco { font-weight:700; font-size:.92rem; color:#0E9F6E; margin-top:1px; }
+.tb-note { font-size:.74rem; color:#7A8294; margin-top:2px; }
+@media (max-width:560px){
+  .test-badge { min-width:0; flex:1 1 100%; }
+}
+
 /* ============================================================
    BIG QUOTE
    ============================================================ */
@@ -2983,24 +3048,35 @@ const templates = {
         <p class="test-text">${t.text_strong?`<strong>${richText(t.text_strong)}</strong> `:''}${richText(t.text||'')}</p>
       </div>`;
     }).join('');
-    // Header con badge Google globale + link a tutte le recensioni
-    const reviewsLink = s.reviews_link || '';
-    const reviewsCount = s.reviews_count || '';
-    const reviewsRating = s.reviews_rating || '5,0';
-    const badgeHtml = reviewsCount ? `
-      <a class="test-google-badge" ${reviewsLink?`href="${esc(reviewsLink)}" target="_blank" rel="noopener"`:''}>
-        ${googleLogo}
-        <span class="test-google-rating">${esc(reviewsRating)}</span>
-        <span class="test-google-stars">★★★★★</span>
-        <span class="test-google-count">${esc(reviewsCount)} recensioni</span>
-      </a>` : '';
+    // Logo Facebook (inline)
+    const fbLogo = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.85v-8.38H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79V24C19.61 23.04 24 18.07 24 12.07z"/></svg>`;
+    const logoFor = (svc)=> svc==='google' ? googleLogo : (svc==='facebook' ? fbLogo : `<span class="tb-ge">GE</span>`);
+    // Badge dei 3 servizi (modificabili da CMS via review_badges; default qui sotto)
+    const defaultBadges = [
+      {service:'google',        name:'Google',        rating:'5,0', note:'Recensioni verificate',        href:'https://www.google.com/search?q=dottore+domenico+campa'},
+      {service:'guidaestetica', name:'GuidaEstetica', rating:'5,0', note:'60 opinioni · 100% consiglia', href:'https://www.guidaestetica.it/centri/studio-medico-dott-domenico-campa-chirurgia-estetica'},
+      {service:'facebook',      name:'Facebook',      rating:'',    note:'Recensioni dei pazienti',      href:'https://www.facebook.com/DottDomenicoCampaChirurgoPlastico/reviews'}
+    ];
+    const badges = (Array.isArray(s.review_badges) && s.review_badges.length) ? s.review_badges : defaultBadges;
+    const badgesRow = `
+      <div class="test-badges reveal">
+        ${badges.map(b=>`
+          <a class="test-badge"${b.href?` href="${esc(b.href)}" target="_blank" rel="noopener"`:''}>
+            <span class="tb-logo">${logoFor(b.service)}</span>
+            <span class="tb-body">
+              <span class="tb-name">${esc(b.name||'')}</span>
+              ${b.rating?`<span class="tb-rate"><span class="tb-num">${esc(b.rating)}</span><span class="tb-stars">★★★★★</span></span>`:`<span class="tb-reco">✓ Consigliato</span>`}
+              ${b.note?`<span class="tb-note">${esc(b.note)}</span>`:''}
+            </span>
+          </a>`).join('')}
+      </div>`;
     return `
       <section${sectionStyleAttr(s)} class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
           <div class="test-head reveal">
             <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
             ${s.subtitle?`<p class="test-subtitle">${richText(s.subtitle)}</p>`:''}
-            ${badgeHtml}
+            ${badgesRow}
           </div>
           <div class="test-grid">${items}</div>
         </div>
