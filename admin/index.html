@@ -1627,27 +1627,26 @@ const previewTemplates = {
         ${(s.mission_label_strong||s.mission_label_text)?`<span class="hmb-label">${s.mission_label_strong?`<strong>${esc(s.mission_label_strong)}</strong> `:''}${richText(s.mission_label_text||'')}</span>`:''}
         ${s.mission_figure?`<span class="hmb-figure">${richText(s.mission_figure)}</span>`:''}
       </div>` : '';
+    const titleHtml = (s.headline_pre||s.headline_main||s.headline_accent) ? `
+      <h1 class="hero-title">
+        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
+      </h1>` : '';
+    const subHtml = (s.subtitle_em || s.subtitle) ? `
+      <p class="hero-sub">
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
+      </p>` : '';
     const stageHtml = `
       <div class="hero-stage">
         <div class="hero-stage-media">${imgTag(playerPoster, '') || ''}</div>
         <div class="hero-stage-scrim"></div>
         ${playBtn}
-        ${(ctaBtn||missionBadge)?`<div class="hero-stage-bottom">${ctaBtn}${missionBadge}</div>`:''}
+        <div class="hero-stage-bottom">${titleHtml}${ctaBtn}${missionBadge}</div>
       </div>`;
-    const titleHtml = `
-      <h1 class="hero-title">
-        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
-      </h1>`;
-    const subHtml = (s.subtitle_em || s.subtitle) ? `
-      <p class="hero-sub">
-        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
-      </p>` : '';
     return `<section${sectionStyleAttr(s)} class="hero hero-centered ${hasPlayer?'has-video-player':''}">
       <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, '')}</div>
       <div class="hero-bg-scrim"></div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
       <div class="container hero-c">
-        ${titleHtml}
         ${subHtml}
         ${stageHtml}
       </div>
