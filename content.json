@@ -913,7 +913,7 @@
     ]
   },
   "topbar": {
-    "enabled": true,
+    "enabled": false,
     "items": [
       {
         "label": "5,0 · 2.219 recensioni Google",
@@ -943,6 +943,7 @@
         "new_tab": true,
         "icon": "calendar"
       }
-    ]
+    ],
+    "bg_color": "#000000"
   }
 }
