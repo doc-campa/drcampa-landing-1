@@ -1418,6 +1418,48 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   .test-badge.is-featured:hover { transform:translateY(-3px); }
 }
 
+/* ===== Video dei risvegli (sezione nera, 4 video autoplay) ===== */
+.wake-videos { background:#000; color:#fff; }
+.wv-head { text-align:center; max-width:780px; margin:0 auto 46px; }
+.wv-eyebrow {
+  display:inline-block; margin-bottom:16px;
+  font-family:var(--font-display); text-transform:uppercase;
+  letter-spacing:.24em; font-size:.82rem; color:var(--section-accent,#C8A86B);
+}
+.wake-videos h2 { color:#fff; }
+.wake-videos .wv-head h2 .serif-italic { color:var(--section-accent,#C8A86B); }
+.wv-subtitle {
+  margin:16px auto 0; max-width:620px;
+  color:rgba(255,255,255,.72); font-size:1.04rem; line-height:1.6;
+}
+.wv-grid {
+  display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;
+  max-width:1180px; margin:0 auto;
+}
+.wv-card { margin:0; }
+.wv-media {
+  position:relative; aspect-ratio:9/16; border-radius:16px; overflow:hidden;
+  background:#111; border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 20px 50px -24px rgba(0,0,0,.9);
+}
+.wv-video { width:100%; height:100%; object-fit:cover; display:block; }
+.wv-empty {
+  position:absolute; inset:0; display:grid; place-items:center;
+  color:rgba(255,255,255,.4); font-size:.85rem; letter-spacing:.03em;
+  font-family:var(--font-display);
+}
+.wv-cap { margin-top:14px; text-align:center; display:flex; flex-direction:column; gap:3px; }
+.wv-name { color:#fff; font-weight:700; font-size:1rem; }
+.wv-treatment { color:var(--section-accent,#C8A86B); font-size:.85rem; letter-spacing:.02em; }
+@media (max-width:880px){
+  .wv-grid { grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:520px){
+  .wv-grid { gap:12px; }
+  .wv-name { font-size:.9rem; }
+  .wv-treatment { font-size:.78rem; }
+}
+
 /* ============================================================
    BIG QUOTE
    ============================================================ */
@@ -3094,6 +3136,35 @@ const templates = {
             ${badgesRow}
           </div>
           <div class="test-grid">${items}</div>
+        </div>
+      </section>`;
+  },
+
+  wake_videos(s){
+    const items = (s.items||[]).map(it=>{
+      const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
+      const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
+      const media = src
+        ? `<video class="wv-video" autoplay muted loop playsinline preload="metadata"${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
+        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`);
+      return `
+        <figure class="wv-card reveal">
+          <div class="wv-media">${media}</div>
+          ${(it.name||it.treatment)?`<figcaption class="wv-cap">
+            ${it.name?`<span class="wv-name">${esc(it.name)}</span>`:''}
+            ${it.treatment?`<span class="wv-treatment">${esc(it.treatment)}</span>`:''}
+          </figcaption>`:''}
+        </figure>`;
+    }).join('');
+    return `
+      <section${sectionStyleAttr(s)} class="wake-videos"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="wv-head reveal">
+            ${s.eyebrow?`<span class="wv-eyebrow">${esc(s.eyebrow)}</span>`:''}
+            <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_accent||'')}</span></h2>
+            ${s.subtitle?`<p class="wv-subtitle">${richText(s.subtitle)}</p>`:''}
+          </div>
+          <div class="wv-grid">${items}</div>
         </div>
       </section>`;
   },
