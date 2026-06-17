@@ -92,25 +92,25 @@
         }
       ],
       "style": {
-        "bg": "#021318",
-        "accent": "#fafafa"
+        "bg": "#2B3138",
+        "accent": "#F0F2F4"
       },
       "label_size": "large",
       "intro_size": "large",
       "logos_title": "LE SOCIETÀ SCIENTIFICHE",
       "logos": [
         {
-          "image": "/images/1781351942304-logo-asps-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781351945710-logo-aicpre-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781351949261-logo-sicpre-dottor-campa.png",
+          "image": "",
           "alt": "",
           "href": ""
         }
@@ -182,9 +182,9 @@
       "reviews_count": "2.219",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
       "style": {
-        "bg": "#e3e3e3",
-        "text": "#000000",
-        "accent": "#6f2d01"
+        "bg": "#E4E8EC",
+        "text": "#2B3138",
+        "accent": "#5E7585"
       }
     },
     {
@@ -795,10 +795,9 @@
       ],
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
-        "bg": "#0D2E36",
-        "accent": "#C8A86B",
-        "text": "#F7F3EC",
-        "scale": ""
+        "bg": "#2B3138",
+        "accent": "#7E97A8",
+        "text": "#F0F2F4"
       }
     },
     {
