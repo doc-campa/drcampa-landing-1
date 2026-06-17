@@ -182,7 +182,7 @@
       "reviews_count": "2.219",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
       "style": {
-        "bg": "#e3e3e3",
+        "bg": "#ffffff",
         "text": "#000000",
         "accent": "#6f2d01"
       }
@@ -913,7 +913,7 @@
     ]
   },
   "topbar": {
-    "enabled": false,
+    "enabled": true,
     "items": [
       {
         "label": "5,0 · 2.219 recensioni Google",
