@@ -228,6 +228,32 @@
       }
     },
     {
+      "type": "before_after",
+      "id": "risultati-prima-dopo",
+      "title_a": "Risultati",
+      "title_italic": "che parlano da soli.",
+      "subtitle": "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato in ogni fase: pre-operatorio, intervento, follow-up a 7-30-90-365 giorni.",
+      "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
+      "items": [
+        {
+          "title": "Rinoplastica funzionale ed estetica",
+          "description": "Correzione del dorso e affinamento punta. Risultato a 6 mesi dall'intervento.",
+          "after_label": "Dopo 6 mesi"
+        },
+        {
+          "title": "Mastoplastica additiva",
+          "description": "Protesi anatomiche, accesso peri-areolare. Risultato a 3 mesi dall'intervento.",
+          "after_label": "Dopo 3 mesi"
+        },
+        {
+          "title": "Filler labbra correttivo",
+          "description": "Riempimento con acido ialuronico reticolato. Risultato immediato e naturale.",
+          "after_label": "Dopo il trattamento"
+        },
+        {}
+      ]
+    },
+    {
       "type": "problem",
       "id": "studio",
       "watermark": "Dr. Campa",
@@ -660,31 +686,6 @@
         }
       ],
       "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
-    },
-    {
-      "type": "before_after",
-      "id": "risultati-prima-dopo",
-      "title_a": "Risultati",
-      "title_italic": "che parlano da soli.",
-      "subtitle": "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato in ogni fase: pre-operatorio, intervento, follow-up a 7-30-90-365 giorni.",
-      "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
-      "items": [
-        {
-          "title": "Rinoplastica funzionale ed estetica",
-          "description": "Correzione del dorso e affinamento punta. Risultato a 6 mesi dall'intervento.",
-          "after_label": "Dopo 6 mesi"
-        },
-        {
-          "title": "Mastoplastica additiva",
-          "description": "Protesi anatomiche, accesso peri-areolare. Risultato a 3 mesi dall'intervento.",
-          "after_label": "Dopo 3 mesi"
-        },
-        {
-          "title": "Filler labbra correttivo",
-          "description": "Riempimento con acido ialuronico reticolato. Risultato immediato e naturale.",
-          "after_label": "Dopo il trattamento"
-        }
-      ]
     },
     {
       "type": "big_quote",
