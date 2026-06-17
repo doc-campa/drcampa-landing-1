@@ -15,33 +15,33 @@
    DESIGN TOKENS
    ============================================================ */
 :root {
-  /* ====== PALETTE: BIANCO FREDDO & BLU POLVERE ====== */
-  /* "Scuro" di base: Slate blu — sezioni/footer scure + titoli */
-  --petrol:#2B3138;
-  --petrol-darker:#21262B;
-  --petrol-soft:#54606B;
-  --petrol-tint:#E4EAEE;
-  /* Superfici: Bianco freddo — pulito, clinico */
-  --ivory:#F0F2F4;
-  --ivory-deeper:#E4E8EC;
-  --white:#FFFFFF;
-  /* Accento: Blu polvere — dettagli, bottoni, evidenze */
-  --gold:#7E97A8;
-  --gold-deeper:#5E7585;
-  --gold-soft:#DCE4EA;
-  /* Secondario freddo (ex blush) */
-  --blush:#C2CED6;
-  --blush-soft:#E4EAEE;
-  --blush-deep:#9DB0BB;
-  /* Testo: Slate */
-  --ink:#2B3138;
-  --ink-soft:#404852;
-  --ink-light:#6B727A;
-  /* Neutri: grigi freddi */
-  --mist:#D5DBDF;
-  --mist-soft:#E6EAED;
-  --line:#D5DBDF;
-  --line-hair:rgba(43,49,56,.08);
+  /* ====== PALETTE: INDACO & RAME (tema scuro) ====== */
+  /* Indaco scuro: pagina + sezioni (sfondi) */
+  --petrol:#141C2E;
+  --petrol-darker:#0E1422;
+  --petrol-soft:#2A3656;
+  --petrol-tint:#1E2A44;
+  /* CHIARO: testo e elementi chiari su fondo scuro */
+  --ivory:#ECEEF4;
+  --ivory-deeper:#D6DCE6;
+  --white:#1C2438;
+  /* Accento: Rame */
+  --gold:#C2825A;
+  --gold-deeper:#A66A45;
+  --gold-soft:#33251C;
+  /* Secondario (ex blush) — tonalità indaco */
+  --blush:#2A3656;
+  --blush-soft:#1E2A44;
+  --blush-deep:#3A4A6A;
+  /* Testo: chiaro */
+  --ink:#ECEEF4;
+  --ink-soft:#C3C9D4;
+  --ink-light:#8C94A4;
+  /* Neutri su scuro: bordi/track */
+  --mist:#2B3550;
+  --mist-soft:#1E2740;
+  --line:#2B3550;
+  --line-hair:rgba(236,238,244,.10);
 
   /* ====== BACKWARD-COMPAT ALIASES ======
      I template usano ancora questi nomi storici (--coral-deep, --coral-1, --yellow, --bg-soft).
@@ -89,7 +89,7 @@ body {
   font-size:17px;
   line-height:1.6;
   color:var(--ink);
-  background:var(--ivory);
+  background:var(--petrol);
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
   overflow-x:hidden;
@@ -135,8 +135,8 @@ p { margin:0; }
   font-weight:400;
   letter-spacing:-.005em;
 }
-.accent { color:var(--coral-deep); }
-.hl { color:var(--coral-deep); font-weight:600; }
+.accent { color:var(--gold); }
+.hl { color:var(--gold); font-weight:600; }
 
 /* ============================================================
    LAYOUT
@@ -174,8 +174,8 @@ section[id] { scroll-margin-top:90px; }
 .btn:hover { transform:translateY(-2px); }
 .btn:active { transform:translateY(0); transition-duration:.08s; }
 .btn-primary {
-  background:var(--petrol); color:var(--white);
-  border:1px solid var(--petrol);
+  background:var(--gold); color:#141C2E;
+  border:1px solid var(--gold);
 }
 .btn-primary:hover {
   background:var(--petrol-darker);
@@ -279,13 +279,13 @@ html.no-topbar .hero { padding-top:190px; }
 .nav {
   position:fixed; left:0; right:0; z-index:100;
   padding:6px 0;
-  background:rgba(247,243,236,.85);
+  background:rgba(20,28,46,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
   transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 .nav.scrolled {
   padding:3px 0;
-  background:rgba(247,243,236,.95);
+  background:rgba(20,28,46,.92);
   box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(43,49,56,.08);
 }
 /* Grid a 3 colonne: logo | menu (sempre al centro) | cta.
@@ -367,19 +367,19 @@ html.no-topbar .hero { padding-top:190px; }
   transform:scaleX(0); transform-origin:right;
   transition:transform .35s var(--ease-spring);
 }
-.nav-links a:hover { color:var(--petrol); }
+.nav-links a:hover { color:var(--gold); }
 .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
 .nav-cta { display:flex; align-items:center; gap:16px; }
 .nav-cta .login {
   font-size:.92rem; font-weight:500; color:var(--ink-soft);
   transition:color .2s;
 }
-.nav-cta .login:hover { color:var(--petrol); }
+.nav-cta .login:hover { color:var(--gold); }
 /* Bottone "Prenota Consulto" nella nav: gold con bordino nero */
 .nav-cta .btn-primary {
   background:var(--gold);
-  color:var(--ink);
-  border:1.5px solid var(--ink);
+  color:#141C2E;
+  border:1.5px solid var(--gold-deeper);
 }
 .nav-cta .btn-primary:hover {
   background:var(--gold-deeper);
@@ -779,7 +779,7 @@ html.no-topbar .hero { padding-top:190px; }
   box-shadow:var(--shadow-xl);
 }
 .mission-label { font-size:.78rem; font-weight:500; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); margin-bottom:14px; }
-.mission-label strong { color:var(--petrol); font-weight:700; letter-spacing:.08em; }
+.mission-label strong { color:var(--gold); font-weight:700; letter-spacing:.08em; }
 .mission-bar {
   position:relative; height:8px; background:var(--mist); border-radius:999px;
   margin-bottom:18px; overflow:hidden;
@@ -799,16 +799,16 @@ html.no-topbar .hero { padding-top:190px; }
 .mission-figure {
   font-size:clamp(1.7rem, 3vw, 2.4rem); font-weight:700; letter-spacing:-.025em;
   line-height:1.1; margin-bottom:6px;
-  color:var(--petrol);
+  color:var(--gold);
 }
 .mission-sub { color:var(--ink-soft); font-size:.95rem; }
-.mission-sub .hl { color:var(--petrol); font-weight:600; }
+.mission-sub .hl { color:var(--gold); font-weight:600; }
 
 /* ============================================================
    PROBLEM section
    ============================================================ */
 .problem {
-  background:var(--ivory-deeper); position:relative; overflow:hidden;
+  background:var(--petrol-darker); position:relative; overflow:hidden;
 }
 .problem-watermark {
   position:absolute; left:50%; top:50%;
@@ -827,7 +827,7 @@ html.no-topbar .hero { padding-top:190px; }
   text-align:center;
 }
 .problem h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .problem-body {
@@ -848,7 +848,7 @@ html.no-topbar .hero { padding-top:190px; }
   text-align:center;
   font-family:var(--font-serif); font-style:italic; font-weight:400;
   font-size:clamp(1.3rem, 2vw, 1.8rem);
-  color:var(--petrol);
+  color:var(--gold);
   letter-spacing:-.01em;
   margin-top:50px;
 }
@@ -889,7 +889,7 @@ html.no-topbar .hero { padding-top:190px; }
 .about-body .callout {
   display:block; margin-top:36px;
   font-family:var(--font-serif); font-style:italic; font-size:clamp(1.3rem, 2.2vw, 1.7rem);
-  color:var(--petrol);
+  color:var(--gold);
   padding:28px 0 0; border-top:1px solid var(--line);
   text-align:left;
   line-height:1.4;
@@ -901,7 +901,7 @@ html.no-topbar .hero { padding-top:190px; }
 /* ============================================================
    VALUE CARD section — sezione autorevolezza chirurgo
    ============================================================ */
-.value-section { background:var(--ivory); }
+.value-section { background:var(--petrol); }
 .value-card {
   background:linear-gradient(135deg, var(--petrol) 0%, var(--petrol-darker) 100%);
   color:var(--ivory);
@@ -968,17 +968,17 @@ html.no-topbar .hero { padding-top:190px; }
 /* ============================================================
    METHOD section
    ============================================================ */
-.method { background:var(--ivory-deeper); }
+.method { background:var(--petrol-darker); }
 .method-head { text-align:center; max-width:780px; margin:0 auto 70px; }
 .method-head h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .method-head .sub {
   font-size:1.1rem; line-height:1.6; color:var(--ink-soft);
   margin-top:24px;
 }
-.method-head .sub strong { color:var(--petrol); font-weight:600; }
+.method-head .sub strong { color:var(--gold); font-weight:600; }
 .method-grid {
   display:grid;
   grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));
@@ -1023,10 +1023,10 @@ html.no-topbar .hero { padding-top:190px; }
 /* ============================================================
    LEVELS / PIRAMIDE
    ============================================================ */
-.levels { background:var(--ivory); }
+.levels { background:var(--petrol); }
 .levels-head { text-align:center; max-width:780px; margin:0 auto 70px; }
 .levels-head h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .levels-head .sub { font-size:1.1rem; color:var(--ink-soft); margin-top:20px; }
@@ -1062,18 +1062,18 @@ html.no-topbar .hero { padding-top:190px; }
 .level {
   padding:24px 28px;
   border-left:3px solid var(--gold);
-  background:var(--ivory-deeper);
+  background:var(--petrol-darker);
   border-radius:0 var(--radius-sm) var(--radius-sm) 0;
   transition:transform .3s var(--ease-spring), background .3s var(--ease-out), border-color .3s var(--ease-out);
 }
 .level:hover {
   transform:translateX(6px);
   background:var(--petrol-tint);
-  border-left-color:var(--petrol);
+  border-left-color:var(--gold);
 }
 .level-tag {
   font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase;
-  color:var(--petrol); margin-bottom:10px;
+  color:var(--gold); margin-bottom:10px;
 }
 .level h4 { font-size:1.25rem; margin-bottom:8px; }
 .level p { color:var(--ink-soft); line-height:1.55; }
@@ -1085,10 +1085,10 @@ html.no-topbar .hero { padding-top:190px; }
 /* ============================================================
    PROGRAMS
    ============================================================ */
-.programs { background:var(--ivory-deeper); }
+.programs { background:var(--petrol-darker); }
 .programs-head { text-align:center; max-width:780px; margin:0 auto 80px; }
 .programs-head h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .programs-head .sub { font-size:1.1rem; color:var(--ink-soft); margin-top:20px; }
@@ -1107,11 +1107,11 @@ html.no-topbar .hero { padding-top:190px; }
   color:var(--gold-deeper); font-size:1rem; margin-bottom:10px;
 }
 .program-text h3 { font-size:clamp(1.6rem, 2.6vw, 2.2rem); margin-bottom:8px; }
-.program-subtitle { font-weight:600; color:var(--petrol); margin-bottom:18px; font-size:1.05rem; }
+.program-subtitle { font-weight:600; color:var(--gold); margin-bottom:18px; font-size:1.05rem; }
 .program-text p { color:var(--ink-soft); line-height:1.7; font-size:1.05rem; margin-bottom:24px; }
 .program-link {
   display:inline-flex; align-items:center; gap:8px;
-  color:var(--petrol); font-weight:600;
+  color:var(--gold); font-weight:600;
   position:relative;
   transition:gap .25s var(--ease-spring), color .2s;
 }
@@ -1141,7 +1141,7 @@ html.no-topbar .hero { padding-top:190px; }
    ============================================================ */
 .audience-head { text-align:center; max-width:780px; margin:0 auto 70px; }
 .audience-head h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .audience-head .sub { font-size:1.1rem; color:var(--ink-soft); margin-top:20px; }
@@ -1235,7 +1235,7 @@ html.no-topbar .hero { padding-top:190px; }
    ============================================================ */
 .testimonials { background:var(--blush-soft); }
 .test-head { text-align:center; max-width:780px; margin:0 auto 50px; }
-.test-head h2 .serif-italic { color:var(--petrol); }
+.test-head h2 .serif-italic { color:var(--gold); }
 .test-subtitle {
   margin:14px auto 0; max-width:580px;
   color:var(--ink-soft); font-size:1.02rem; line-height:1.55;
@@ -1375,7 +1375,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 /* ============================================================
    FEATURES CARD (Pillole)
    ============================================================ */
-.features-section { background:var(--ivory); }
+.features-section { background:var(--petrol); }
 .features-card {
   background:linear-gradient(135deg, var(--petrol), var(--petrol-darker));
   color:var(--ivory);
@@ -1432,7 +1432,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 /* ============================================================
    CTA FORM
    ============================================================ */
-.cta-section { background:var(--ivory-deeper); }
+.cta-section { background:var(--petrol-darker); }
 .cta-card {
   display:grid; grid-template-columns:1.1fr 1fr;
   gap:60px; align-items:start;
@@ -1443,7 +1443,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   border:1px solid var(--line-hair);
 }
 .cta-text h2 .accent {
-  color:var(--petrol);
+  color:var(--gold);
   font-family:var(--font-serif); font-style:italic; font-weight:400;
 }
 .cta-text > p {
@@ -1464,7 +1464,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   background-size:14px; background-repeat:no-repeat; background-position:center;
 }
 .form-wrap {
-  background:var(--ivory);
+  background:var(--petrol);
   border-radius:var(--radius);
   padding:36px 32px;
   border:1px solid var(--line-hair);
@@ -1482,7 +1482,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 .form-wrap input:focus, .form-wrap textarea:focus, .form-wrap select:focus {
   outline:0;
-  border-color:var(--petrol);
+  border-color:var(--gold);
   box-shadow:0 0 0 4px rgba(43,49,56,.12);
 }
 .form-wrap textarea { min-height:90px; resize:vertical; }
@@ -1510,7 +1510,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 /* ============================================================
    VIDEO BLOCK section
    ============================================================ */
-.video-section { background:var(--ivory); }
+.video-section { background:var(--petrol); }
 .video-head {
   text-align:center; max-width:780px; margin:0 auto 50px;
 }
@@ -1548,7 +1548,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   background:var(--bg-soft);
 }
 .ba-head { text-align:center; max-width:780px; margin:0 auto 50px; }
-.ba-head h2 .serif-italic { color:var(--petrol); }
+.ba-head h2 .serif-italic { color:var(--gold); }
 .ba-subtitle {
   margin:14px auto 0; max-width:600px;
   color:var(--ink-soft); font-size:1.02rem; line-height:1.55;
@@ -1641,7 +1641,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   background:#fff;
   border-radius:50%;
   display:flex; align-items:center; justify-content:center;
-  color:var(--petrol);
+  color:var(--gold);
   box-shadow:0 8px 24px rgba(0,0,0,.3);
   pointer-events:auto;
   cursor:ew-resize;
@@ -1805,7 +1805,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   background:var(--bg-soft);
 }
 .tl-head { text-align:center; max-width:780px; margin:0 auto 44px; }
-.tl-head h2 .serif-italic { color:var(--petrol); }
+.tl-head h2 .serif-italic { color:var(--gold); }
 .tl-subtitle {
   margin:14px auto 0; max-width:620px;
   color:var(--ink-soft); font-size:1.02rem; line-height:1.55;
@@ -1829,7 +1829,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   transition:background .25s var(--ease-out), color .2s, transform .2s;
   white-space:nowrap;
 }
-.tl-tab:hover { color:var(--petrol); background:rgba(43,49,56,.04); }
+.tl-tab:hover { color:var(--gold); background:rgba(236,238,244,.06); }
 .tl-tab.is-active {
   background:var(--petrol);
   color:var(--ivory);
@@ -1905,7 +1905,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
 }
 .tl-treatment.is-link:hover .tl-treatment-arrow {
   opacity:1; transform:translate(0,0);
-  color:var(--petrol);
+  color:var(--gold);
 }
 .tl-footer-note {
   text-align:center; margin:48px auto 0; max-width:680px;
@@ -1971,7 +1971,7 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   .nav-links {
     position:absolute; left:0; right:0; top:100%;
     flex-direction:column; gap:0;
-    background:var(--ivory);
+    background:var(--petrol);
     padding:20px var(--gutter);
     border-bottom:1px solid var(--line);
     opacity:0; visibility:hidden; transform:translateY(-10px);
