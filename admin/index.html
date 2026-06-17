@@ -1615,40 +1615,52 @@ const previewTemplates = {
     const hasVideo = s.bg_video && (typeof s.bg_video === 'object' ? s.bg_video.src : s.bg_video);
     const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
     const playerPoster = s.video_player_poster || s.bg_image;
-    const playBtn = hasPlayer ? `
-      <button class="hero-play" type="button" aria-label="Riproduci">
-        <span class="hero-play-ring" aria-hidden="true"></span>
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
-      </button>` : '';
-    const ctaBtn = s.cta_label ? `
-      <a href="#" class="hero-cta-btn">${esc(s.cta_label)}${s.cta_price_compare?`<span class="cta-strike">${esc(s.cta_price_compare)}</span>`:''}</a>` : '';
-    const missionBadge = (s.mission_label_strong || s.mission_label_text || s.mission_figure) ? `
-      <div class="hero-mission-badge">
-        ${(s.mission_label_strong||s.mission_label_text)?`<span class="hmb-label">${s.mission_label_strong?`<strong>${esc(s.mission_label_strong)}</strong> `:''}${richText(s.mission_label_text||'')}</span>`:''}
-        ${s.mission_figure?`<span class="hmb-figure">${richText(s.mission_figure)}</span>`:''}
+    const playerHtml = hasPlayer ? `
+      <div class="hero-video-card">
+        <div class="hero-video-trigger">
+          <div class="hero-video-poster">${imgTag(playerPoster, '') || '<div class="hero-video-poster-fallback"></div>'}</div>
+          <div class="hero-video-overlay"></div>
+          ${s.video_player_label?`<div class="hero-video-label">${esc(s.video_player_label)}</div>`:''}
+          <div class="hero-video-play">
+            <svg viewBox="0 0 64 64" fill="none">
+              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(200,168,107,.4)" stroke-width="1"/>
+              <path d="M26 22 L44 32 L26 42 Z" fill="#123C46"/>
+            </svg>
+          </div>
+        </div>
       </div>` : '';
-    const titleHtml = (s.headline_pre||s.headline_main||s.headline_accent) ? `
+    const titleHtml = `
       <h1 class="hero-title">
-        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
-      </h1>` : '';
+        ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
+        ${s.headline_main?`${richText(s.headline_main)} `:''}
+        ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
+      </h1>`;
     const subHtml = (s.subtitle_em || s.subtitle) ? `
       <p class="hero-sub">
-        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
+        ${s.subtitle?richText(s.subtitle):''}
       </p>` : '';
-    const stageHtml = `
-      <div class="hero-stage">
-        <div class="hero-stage-media">${imgTag(playerPoster, '') || ''}</div>
-        <div class="hero-stage-scrim"></div>
-        ${playBtn}
-        <div class="hero-stage-bottom">${titleHtml}${ctaBtn}${missionBadge}</div>
-      </div>`;
-    return `<section${sectionStyleAttr(s)} class="hero hero-centered ${hasPlayer?'has-video-player':''}">
-      <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, '')}</div>
-      <div class="hero-bg-scrim"></div>
+    const missionHtml = (s.mission_label_strong||s.mission_figure) ? `
+      <div class="mission-card">
+        <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
+        <div class="mission-bar">
+          <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
+          <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
+        </div>
+        <div class="mission-figure">${richText(s.mission_figure||'')}</div>
+        <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
+      </div>` : '';
+    const ctaHtml = s.cta_label ? `<div class="hero-cta"><a href="#" class="btn btn-yellow btn-large">${esc(s.cta_label)}</a></div>` : '';
+    return `<section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}">
+      <div class="hero-bg">${hasVideo ? videoTag(s.bg_video, {fill:true}) : imgTag(s.bg_image, 'Hero')}</div>
       ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
-      <div class="container hero-c">
-        ${subHtml}
-        ${stageHtml}
+      <div class="container hero-content">
+        ${playerHtml}
+        <div class="hero-text">
+          ${titleHtml}
+          <div class="hero-info">${subHtml}${missionHtml}</div>
+          ${ctaHtml}
+        </div>
       </div>
     </section>`;
   },
