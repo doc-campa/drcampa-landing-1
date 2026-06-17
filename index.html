@@ -1404,8 +1404,18 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 .tb-stars { color:#F5A623; font-size:.82rem; letter-spacing:1px; }
 .tb-reco { font-weight:700; font-size:.92rem; color:#0E9F6E; margin-top:1px; }
 .tb-note { font-size:.74rem; color:#7A8294; margin-top:2px; }
+.tb-count { font-size:.82rem; font-weight:800; color:var(--orange); margin-top:2px; }
+.test-badge.is-featured {
+  border-color:rgba(255,107,44,.55);
+  box-shadow:0 12px 30px -12px rgba(255,107,44,.4);
+  transform:scale(1.06);
+}
+.test-badge.is-featured .tb-num { font-size:1.3rem; }
+.test-badge.is-featured:hover { transform:translateY(-3px) scale(1.06); }
 @media (max-width:560px){
   .test-badge { min-width:0; flex:1 1 100%; }
+  .test-badge.is-featured { transform:none; }
+  .test-badge.is-featured:hover { transform:translateY(-3px); }
 }
 
 /* ============================================================
@@ -3053,22 +3063,27 @@ const templates = {
     const logoFor = (svc)=> svc==='google' ? googleLogo : (svc==='facebook' ? fbLogo : `<span class="tb-ge">GE</span>`);
     // Badge dei 3 servizi (modificabili da CMS via review_badges; default qui sotto)
     const defaultBadges = [
-      {service:'google',        name:'Google',        rating:'5,0', note:'Recensioni verificate',        href:'https://www.google.com/search?q=dottore+domenico+campa'},
       {service:'guidaestetica', name:'GuidaEstetica', rating:'5,0', note:'60 opinioni · 100% consiglia', href:'https://www.guidaestetica.it/centri/studio-medico-dott-domenico-campa-chirurgia-estetica'},
-      {service:'facebook',      name:'Facebook',      rating:'',    note:'Recensioni dei pazienti',      href:'https://www.facebook.com/DottDomenicoCampaChirurgoPlastico/reviews'}
+      {service:'google',        name:'Google',        rating:'5,0', count:'2.238 recensioni', featured:true, href:'https://www.google.com/search?q=dottore+domenico+campa'},
+      {service:'facebook',      name:'Facebook',      rating:'98%', note:'217 valutazioni positive', href:'https://www.facebook.com/DottDomenicoCampaChirurgoPlastico/reviews'}
     ];
     const badges = (Array.isArray(s.review_badges) && s.review_badges.length) ? s.review_badges : defaultBadges;
     const badgesRow = `
       <div class="test-badges reveal">
-        ${badges.map(b=>`
-          <a class="test-badge"${b.href?` href="${esc(b.href)}" target="_blank" rel="noopener"`:''}>
+        ${badges.map(b=>{
+          const isFeatured = b.featured===true || b.featured==='sì' || b.featured==='si';
+          const hasStars = b.rating && !String(b.rating).includes('%');
+          return `
+          <a class="test-badge${isFeatured?' is-featured':''}"${b.href?` href="${esc(b.href)}" target="_blank" rel="noopener"`:''}>
             <span class="tb-logo">${logoFor(b.service)}</span>
             <span class="tb-body">
               <span class="tb-name">${esc(b.name||'')}</span>
-              ${b.rating?`<span class="tb-rate"><span class="tb-num">${esc(b.rating)}</span><span class="tb-stars">★★★★★</span></span>`:`<span class="tb-reco">✓ Consigliato</span>`}
+              ${b.rating?`<span class="tb-rate"><span class="tb-num">${esc(b.rating)}</span>${hasStars?`<span class="tb-stars">★★★★★</span>`:''}</span>`:`<span class="tb-reco">✓ Consigliato</span>`}
+              ${b.count?`<span class="tb-count">${esc(b.count)}</span>`:''}
               ${b.note?`<span class="tb-note">${esc(b.note)}</span>`:''}
             </span>
-          </a>`).join('')}
+          </a>`;
+        }).join('')}
       </div>`;
     return `
       <section${sectionStyleAttr(s)} class="testimonials"${s.id?` id="${esc(s.id)}"`:''}>
