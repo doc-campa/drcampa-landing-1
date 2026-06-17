@@ -29,6 +29,9 @@
   --gold:#C2825A;
   --gold-deeper:#A66A45;
   --gold-soft:#33251C;
+  /* Arancio fluo — colore pulsanti */
+  --orange:#FF6B2C;
+  --orange-deep:#E8520F;
   /* Secondario (ex blush) — tonalità indaco */
   --blush:#2A3656;
   --blush-soft:#1E2A44;
@@ -174,21 +177,21 @@ section[id] { scroll-margin-top:90px; }
 .btn:hover { transform:translateY(-2px); }
 .btn:active { transform:translateY(0); transition-duration:.08s; }
 .btn-primary {
-  background:var(--gold); color:#141C2E;
-  border:1px solid var(--gold);
+  background:var(--orange); color:#fff;
+  border:1px solid var(--orange);
 }
 .btn-primary:hover {
-  background:var(--petrol-darker);
-  border-color:var(--gold);
-  box-shadow:var(--shadow-petrol);
+  background:var(--orange-deep); color:#fff;
+  border-color:var(--orange-deep);
+  box-shadow:0 14px 32px -8px rgba(255,107,44,.55);
 }
 .btn-yellow {
-  background:var(--gold); color:var(--ink);
-  border:1px solid var(--gold);
+  background:var(--orange); color:#fff;
+  border:1px solid var(--orange);
 }
 .btn-yellow:hover {
-  background:var(--gold-deeper); color:var(--ivory);
-  box-shadow:var(--shadow-gold);
+  background:var(--orange-deep); color:#fff;
+  box-shadow:0 14px 32px -8px rgba(255,107,44,.55);
 }
 .btn-large { padding:16px 32px; font-size:1.08rem; letter-spacing:.07em; }
 
@@ -279,14 +282,15 @@ html.no-topbar .hero { padding-top:190px; }
 .nav {
   position:fixed; left:0; right:0; z-index:100;
   padding:6px 0;
-  background:rgba(20,28,46,.85);
+  background:rgba(250,250,252,.85);
   backdrop-filter:blur(18px); -webkit-backdrop-filter:blur(18px);
+  box-shadow:0 1px 0 rgba(20,28,46,.07);
   transition:padding .3s var(--ease-out), background .3s var(--ease-out), box-shadow .3s var(--ease-out);
 }
 .nav.scrolled {
   padding:3px 0;
-  background:rgba(20,28,46,.92);
-  box-shadow:0 1px 0 var(--line-hair), 0 4px 14px -8px rgba(43,49,56,.08);
+  background:rgba(255,255,255,.95);
+  box-shadow:0 1px 0 rgba(20,28,46,.08), 0 6px 18px -10px rgba(20,28,46,.18);
 }
 /* Grid a 3 colonne: logo | menu (sempre al centro) | cta.
    Le 2 colonne laterali hanno la stessa larghezza (1fr) così il menu resta
@@ -303,7 +307,7 @@ html.no-topbar .hero { padding-top:190px; }
 .logo {
   display:flex; align-items:center; gap:10px;
   font-weight:700; font-size:1.1rem; letter-spacing:-.025em;
-  color:var(--ink);
+  color:#141C2E;
   transition:opacity .2s;
   min-width:0;
 }
@@ -357,41 +361,41 @@ html.no-topbar .hero { padding-top:190px; }
   font-weight:400;
   letter-spacing:.08em;
   text-transform:uppercase;
-  color:var(--ink-soft);
+  color:#2A3656;
   position:relative;
   transition:color .2s;
 }
 .nav-links a::after {
   content:""; position:absolute; left:0; right:0; bottom:-6px;
-  height:2px; background:var(--gold);
+  height:2px; background:var(--orange);
   transform:scaleX(0); transform-origin:right;
   transition:transform .35s var(--ease-spring);
 }
-.nav-links a:hover { color:var(--gold); }
+.nav-links a:hover { color:var(--orange); }
 .nav-links a:hover::after { transform:scaleX(1); transform-origin:left; }
 .nav-cta { display:flex; align-items:center; gap:16px; }
 .nav-cta .login {
-  font-size:.92rem; font-weight:500; color:var(--ink-soft);
+  font-size:.92rem; font-weight:500; color:#2A3656;
   transition:color .2s;
 }
-.nav-cta .login:hover { color:var(--gold); }
-/* Bottone "Prenota Consulto" nella nav: gold con bordino nero */
+.nav-cta .login:hover { color:var(--orange); }
+/* Bottone "Prenota Consulto" nella nav: arancio fluo */
 .nav-cta .btn-primary {
-  background:var(--gold);
-  color:#141C2E;
-  border:1.5px solid var(--gold-deeper);
+  background:var(--orange);
+  color:#fff;
+  border:1.5px solid var(--orange);
 }
 .nav-cta .btn-primary:hover {
-  background:var(--gold-deeper);
-  color:var(--ink);
-  border-color:var(--ink);
-  box-shadow:var(--shadow-gold);
+  background:var(--orange-deep);
+  color:#fff;
+  border-color:var(--orange-deep);
+  box-shadow:0 12px 28px -8px rgba(255,107,44,.5);
 }
 .mobile-toggle {
   display:none; flex-direction:column; gap:5px; padding:8px;
 }
 .mobile-toggle span {
-  display:block; width:22px; height:2px; background:var(--ink);
+  display:block; width:22px; height:2px; background:#141C2E;
   transition:transform .3s var(--ease-spring), opacity .2s;
 }
 .nav.open .mobile-toggle span:nth-child(1) { transform:translateY(7px) rotate(45deg); }
@@ -715,7 +719,7 @@ html.no-topbar .hero { padding-top:190px; }
 .btn-outline-gold {
   background:transparent;
   color:var(--ivory);
-  border:1.5px solid rgba(200,168,107,.55);
+  border:1.5px solid rgba(255,107,44,.6);
   padding:10px 26px;
   border-radius:999px;
   font-family:var(--font-display);
@@ -729,9 +733,9 @@ html.no-topbar .hero { padding-top:190px; }
   text-decoration:none;
 }
 .btn-outline-gold:hover {
-  background:var(--gold);
-  border-color:var(--gold);
-  color:var(--petrol-darker);
+  background:var(--orange);
+  border-color:var(--orange);
+  color:#fff;
   transform:translateY(-2px);
 }
 .btn-outline-gold.btn-large { padding:16px 32px; font-size:1.08rem; letter-spacing:.07em; }
@@ -1971,17 +1975,17 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   .nav-links {
     position:absolute; left:0; right:0; top:100%;
     flex-direction:column; gap:0;
-    background:var(--petrol);
+    background:#fff;
     padding:20px var(--gutter);
-    border-bottom:1px solid var(--line);
+    border-bottom:1px solid rgba(20,28,46,.1);
     opacity:0; visibility:hidden; transform:translateY(-10px);
     transition:opacity .25s, transform .3s var(--ease-spring), visibility .25s;
-    box-shadow:var(--shadow-md);
+    box-shadow:0 12px 28px -12px rgba(20,28,46,.25);
   }
   .nav.open .nav-links {
     opacity:1; visibility:visible; transform:translateY(0);
   }
-  .nav-links li { padding:14px 0; border-bottom:1px solid var(--line-hair); }
+  .nav-links li { padding:14px 0; border-bottom:1px solid rgba(20,28,46,.08); }
   .nav-links li:last-child { border-bottom:0; }
   .nav-cta .login { display:none; }
 }
@@ -2234,9 +2238,9 @@ section[style*="--section-text"] li { color:inherit; }
   background:rgba(13,46,54,.14); color:var(--petrol-darker);
 }
 .bl-tier.is-featured .bl-cta {
-  background:var(--petrol-darker); color:var(--gold);
+  background:var(--orange); color:#fff;
 }
-.bl-tier.is-featured .bl-cta:hover { background:#000; }
+.bl-tier.is-featured .bl-cta:hover { background:var(--orange-deep); }
 
 /* Icona tier */
 .bl-icon {
@@ -2310,16 +2314,16 @@ section[style*="--section-text"] li { color:inherit; }
   display:inline-flex; align-items:center; gap:7px;
   font-family:'Bebas Neue', sans-serif; letter-spacing:.06em;
   font-size:1rem; padding:11px 24px; border-radius:999px;
-  background:var(--section-accent, var(--gold)); color:var(--petrol-darker);
+  background:var(--orange); color:#fff;
   text-decoration:none; white-space:nowrap;
   transition:transform .2s ease, filter .2s ease;
 }
 .bl-cta:hover { transform:translateY(-2px); filter:brightness(1.08); }
 .bl-tier.is-free .bl-cta {
-  background:transparent; color:var(--section-accent, var(--gold));
-  border:1.5px solid var(--section-accent, var(--gold));
+  background:transparent; color:var(--orange);
+  border:1.5px solid var(--orange);
 }
-.bl-tier.is-free .bl-cta:hover { background:rgba(200,168,107,.12); }
+.bl-tier.is-free .bl-cta:hover { background:rgba(255,107,44,.12); }
 
 .bl-footer-note {
   text-align:center; margin:48px auto 0; max-width:620px;
