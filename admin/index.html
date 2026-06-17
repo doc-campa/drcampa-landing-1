@@ -927,6 +927,13 @@ const SECTION_SCHEMA = {
     ['reviews_rating', 'Voto medio (es. "5,0")', 'text'],
     ['reviews_count', 'Numero recensioni totali (es. "2.219")', 'text', 'Se compilato, mostra il badge Google con voto e conteggio sopra alle card.'],
     ['reviews_link', 'Link a tutte le recensioni Google', 'text', 'URL della SERP Google con le recensioni del dottore. Il badge diventa cliccabile.'],
+    ['review_badges', 'Badge servizi recensioni (riga in alto)', 'list-object', 'I badge cliccabili dei portali dove sei recensito (Google, GuidaEstetica, Facebook…). Se lasci vuoto, vengono mostrati i 3 di default.', [
+      ['service', 'Servizio (per il logo)', 'select', null, ['google','guidaestetica','facebook']],
+      ['name', 'Nome mostrato', 'text', 'Es: "Google", "GuidaEstetica", "Facebook".'],
+      ['rating', 'Voto (es. "5,0") — lascia vuoto per mostrare "Consigliato"', 'text'],
+      ['note', 'Nota piccola (es. "60 opinioni · 100% consiglia")', 'text'],
+      ['href', 'Link al profilo recensioni', 'text']
+    ]],
     ['items', 'Testimonianze', 'list-object', null, [
       ['name', 'Nome del paziente', 'text', 'Es: "Claudia Leonardi"'],
       ['date', 'Data ("3 mesi fa")', 'text', 'Patina di credibilità Google. Es: "3 mesi fa", "5 mesi fa".'],
@@ -1818,6 +1825,24 @@ const previewTemplates = {
     </section>`;
   },
   testimonials(s){
+    const googleLogo = `<svg viewBox="0 0 48 48" aria-hidden="true"><path fill="#FFC107" d="M43.611,20.083H42V20H24v8h11.303c-1.649,4.657-6.08,8-11.303,8c-6.627,0-12-5.373-12-12c0-6.627,5.373-12,12-12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C12.955,4,4,12.955,4,24c0,11.045,8.955,20,20,20c11.045,0,20-8.955,20-20C44,22.659,43.862,21.35,43.611,20.083z"/><path fill="#FF3D00" d="M6.306,14.691l6.571,4.819C14.655,15.108,18.961,12,24,12c3.059,0,5.842,1.154,7.961,3.039l5.657-5.657C34.046,6.053,29.268,4,24,4C16.318,4,9.656,8.337,6.306,14.691z"/><path fill="#4CAF50" d="M24,44c5.166,0,9.86-1.977,13.409-5.192l-6.19-5.238C29.211,35.091,26.715,36,24,36c-5.202,0-9.619-3.317-11.283-7.946l-6.522,5.025C9.505,39.556,16.227,44,24,44z"/><path fill="#1976D2" d="M43.611,20.083H42V20H24v8h11.303c-0.792,2.237-2.231,4.166-4.087,5.571l6.19,5.238C36.971,39.205,44,34,44,24C44,22.659,43.862,21.35,43.611,20.083z"/></svg>`;
+    const fbLogo = `<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="#1877F2" d="M24 12.07C24 5.4 18.63 0 12 0S0 5.4 0 12.07c0 6 4.39 10.97 10.13 11.85v-8.38H7.08v-3.47h3.05V9.41c0-3.02 1.79-4.69 4.53-4.69 1.31 0 2.68.24 2.68.24v2.97h-1.51c-1.49 0-1.95.93-1.95 1.88v2.26h3.32l-.53 3.47h-2.79V24C19.61 23.04 24 18.07 24 12.07z"/></svg>`;
+    const logoFor = (svc)=> svc==='google' ? googleLogo : (svc==='facebook' ? fbLogo : `<span class="tb-ge">GE</span>`);
+    const defaultBadges = [
+      {service:'google', name:'Google', rating:'5,0', note:'Recensioni verificate', href:'#'},
+      {service:'guidaestetica', name:'GuidaEstetica', rating:'5,0', note:'60 opinioni · 100% consiglia', href:'#'},
+      {service:'facebook', name:'Facebook', rating:'', note:'Recensioni dei pazienti', href:'#'}
+    ];
+    const badges = (Array.isArray(s.review_badges) && s.review_badges.length) ? s.review_badges : defaultBadges;
+    const badgesRow = `<div class="test-badges">${badges.map(b=>`
+      <a class="test-badge">
+        <span class="tb-logo">${logoFor(b.service)}</span>
+        <span class="tb-body">
+          <span class="tb-name">${esc(b.name||'')}</span>
+          ${b.rating?`<span class="tb-rate"><span class="tb-num">${esc(b.rating)}</span><span class="tb-stars">★★★★★</span></span>`:`<span class="tb-reco">✓ Consigliato</span>`}
+          ${b.note?`<span class="tb-note">${esc(b.note)}</span>`:''}
+        </span>
+      </a>`).join('')}</div>`;
     const items = (s.items||[]).map(t=>`
       <div class="test-card">
         <div class="test-stars">★★★★★</div>
@@ -1831,6 +1856,8 @@ const previewTemplates = {
       <div class="container">
         <div class="test-head">
           <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
+          ${s.subtitle?`<p class="test-subtitle">${richText(s.subtitle)}</p>`:''}
+          ${badgesRow}
         </div>
         <div class="test-grid">${items}</div>
       </div>
