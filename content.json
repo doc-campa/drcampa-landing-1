@@ -62,7 +62,8 @@
       "cta_tertiary_label": "",
       "cta_tertiary_href": "",
       "style": {
-        "scale": "compatto"
+        "scale": "compatto",
+        "bg": "#000000"
       },
       "video_player_poster": "/images/1781114052617-img-0408-1.jpg",
       "mobile_title_gap": 150
@@ -185,6 +186,45 @@
         "bg": "#ffffff",
         "text": "#000000",
         "accent": "#6f2d01"
+      }
+    },
+    {
+      "type": "wake_videos",
+      "id": "risvegli",
+      "eyebrow": "I VIDEO DEI RISVEGLI",
+      "title_a": "Cosa ti spaventa di",
+      "title_accent": "un intervento?",
+      "subtitle": "Guarda i risvegli reali dei nostri pazienti, pochi minuti dopo l'intervento: sereni, lucidi, sorridenti. È questo il momento che racconta meglio di mille parole come ci si sente nelle mani dello Studio Campa.",
+      "items": [
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Rinoplastica"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Mastoplastica additiva"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Blefaroplastica"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Liposuzione"
+        }
+      ],
+      "style": {
+        "bg": "#000000",
+        "accent": "#C8A86B",
+        "text": "#ffffff"
       }
     },
     {
@@ -706,45 +746,6 @@
           "special": true
         }
       ]
-    },
-    {
-      "type": "wake_videos",
-      "id": "risvegli",
-      "eyebrow": "I VIDEO DEI RISVEGLI",
-      "title_a": "Cosa ti spaventa di",
-      "title_accent": "un intervento?",
-      "subtitle": "Guarda i risvegli reali dei nostri pazienti, pochi minuti dopo l'intervento: sereni, lucidi, sorridenti. È questo il momento che racconta meglio di mille parole come ci si sente nelle mani dello Studio Campa.",
-      "items": [
-        {
-          "video": "",
-          "poster": "",
-          "name": "",
-          "treatment": "Rinoplastica"
-        },
-        {
-          "video": "",
-          "poster": "",
-          "name": "",
-          "treatment": "Mastoplastica additiva"
-        },
-        {
-          "video": "",
-          "poster": "",
-          "name": "",
-          "treatment": "Blefaroplastica"
-        },
-        {
-          "video": "",
-          "poster": "",
-          "name": "",
-          "treatment": "Liposuzione"
-        }
-      ],
-      "style": {
-        "bg": "#000000",
-        "accent": "#C8A86B",
-        "text": "#ffffff"
-      }
     },
     {
       "type": "booking_ladder",
