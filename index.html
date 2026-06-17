@@ -2397,6 +2397,113 @@ section[style*="--section-text"] li { color:inherit; }
   }
   .booking-ladder.bl-columns .bl-tier.is-featured .bl-tier-action { border-top-color:rgba(13,46,54,.18); }
 }
+
+/* ============================================================
+   HERO CENTRATA (video grande al centro, stile "event")
+   ============================================================ */
+.hero.hero-centered{
+  position:relative; overflow:hidden; display:block;
+  min-height:auto;
+  padding:clamp(96px,14vh,160px) 0 clamp(56px,9vh,104px);
+  background:var(--petrol-darker);
+}
+.hero-centered .hero-bg{ position:absolute; inset:0; z-index:0; }
+.hero-centered .hero-bg img,
+.hero-centered .hero-bg video{ width:100%; height:100%; object-fit:cover; opacity:.30; }
+.hero-centered .hero-bg-scrim{
+  position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(20,28,46,.45), rgba(14,20,34,.93) 72%),
+    linear-gradient(180deg, rgba(14,20,34,.55) 0%, rgba(14,20,34,.9) 100%);
+}
+.hero-centered .hero-c{
+  position:relative; z-index:2;
+  display:flex; flex-direction:column; align-items:center; text-align:center;
+  gap:20px; max-width:1000px;
+}
+.hero-centered .hero-title{
+  margin:0; text-align:center;
+  font-family:var(--font-sans); font-weight:800;
+  font-size:clamp(2.2rem,5.4vw,4.1rem); line-height:1.04;
+  letter-spacing:-.02em; color:var(--ivory); max-width:18ch;
+}
+.hero-centered .hero-title .accent{
+  font-family:var(--font-serif); font-style:italic; font-weight:400; color:var(--gold);
+}
+.hero-centered .hero-sub{
+  margin:0 auto; max-width:62ch;
+  font-size:clamp(1rem,1.5vw,1.16rem); line-height:1.6; color:var(--ink-soft);
+}
+.hero-centered .hero-sub .em{ font-style:italic; }
+
+/* Palco video */
+.hero-stage{
+  position:relative; width:100%; max-width:880px; margin:10px auto 0;
+  aspect-ratio:16/9; border-radius:24px; overflow:hidden;
+  border:1px solid rgba(236,238,244,.10);
+  box-shadow:0 44px 96px -30px rgba(0,0,0,.75);
+}
+.hero-stage-media{ position:absolute; inset:0; }
+.hero-stage-media img{ width:100%; height:100%; object-fit:cover; }
+.hero-stage-scrim{
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(10,15,26,.05) 0%, rgba(10,15,26,.12) 42%, rgba(10,15,26,.85) 100%);
+}
+/* Tasto play — arancio forte */
+.hero-play{
+  position:absolute; top:42%; left:50%; transform:translate(-50%,-50%);
+  width:88px; height:88px; border-radius:50%;
+  border:0; padding:0; cursor:pointer;
+  background:#FF6B2C; display:grid; place-items:center;
+  box-shadow:0 14px 36px -6px rgba(255,107,44,.6);
+  transition:transform .2s ease, background .2s ease;
+}
+.hero-play svg{ width:34px; height:34px; fill:#fff; margin-left:4px; }
+.hero-play:hover{ transform:translate(-50%,-50%) scale(1.07); background:#FF7C42; }
+.hero-play-ring{
+  position:absolute; inset:-12px; border-radius:50%;
+  border:2px solid rgba(255,107,44,.5);
+  animation:heroPulse 2.4s ease-out infinite;
+}
+@keyframes heroPulse{ 0%{transform:scale(1);opacity:.75} 70%{transform:scale(1.4);opacity:0} 100%{opacity:0} }
+/* Overlay in basso sul video: CTA + mission */
+.hero-stage-bottom{
+  position:absolute; left:0; right:0; bottom:0; z-index:3;
+  padding:clamp(16px,3vw,30px);
+  display:flex; flex-direction:column; align-items:center; gap:14px;
+}
+.hero-cta-btn{
+  display:inline-flex; align-items:center; gap:12px;
+  background:#FF6B2C; color:#fff; text-decoration:none;
+  font-family:var(--font-display); letter-spacing:.04em;
+  font-size:clamp(1rem,1.5vw,1.2rem);
+  padding:15px 34px; border-radius:999px;
+  box-shadow:0 14px 32px -8px rgba(255,107,44,.55);
+  transition:transform .2s ease, filter .2s ease;
+}
+.hero-cta-btn:hover{ transform:translateY(-2px); filter:brightness(1.07); }
+.hero-cta-btn .cta-strike{
+  text-decoration:line-through; opacity:.72;
+  font-size:.78em; font-family:var(--font-sans);
+}
+.hero-mission-badge{
+  display:flex; flex-direction:column; gap:3px; align-items:center;
+  max-width:600px; padding:10px 20px; border-radius:14px;
+  background:rgba(14,20,34,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px);
+  border:1px solid rgba(236,238,244,.18);
+  font-size:.86rem; line-height:1.45; color:rgba(236,238,244,.92);
+}
+.hero-mission-badge .hmb-label{ font-style:italic; }
+.hero-mission-badge .hmb-label strong{ color:var(--gold); font-style:normal; font-weight:700; letter-spacing:.04em; }
+.hero-mission-badge .hmb-figure{ font-weight:700; color:var(--gold); }
+
+@media (max-width:600px){
+  .hero-stage{ aspect-ratio:3/4; border-radius:18px; max-width:460px; }
+  .hero-play{ top:38%; width:66px; height:66px; }
+  .hero-play svg{ width:25px; height:25px; }
+  .hero-cta-btn{ font-size:1rem; padding:13px 24px; white-space:normal; text-align:center; }
+  .hero-mission-badge{ font-size:.8rem; padding:9px 14px; }
+}
 </style>
 </head>
 <body>
@@ -2554,89 +2661,52 @@ const templates = {
   hero(s){
     const bg = hasVideo(s.bg_video)
       ? video(s.bg_video, {fill:true})
-      : img(s.bg_image, 'Hero');
+      : img(s.bg_image, '');
     const hasPlayer = !!(s.video_player_url && String(s.video_player_url).trim());
     const playerPoster = s.video_player_poster || s.bg_image;
-    // Spazio sopra il video su mobile (px), gestibile dall'editor. Default 30.
-    const mobileGap = (s.mobile_title_gap !== undefined && s.mobile_title_gap !== null && String(s.mobile_title_gap).trim() !== '')
-      ? Number(s.mobile_title_gap) : 30;
-    const playerHtml = hasPlayer ? `
-      <div class="hero-video-card reveal" style="--mobile-video-gap:${mobileGap}px">
-        <button class="hero-video-trigger" type="button"
-          data-video-modal="${esc(s.video_player_url)}"
-          aria-label="Apri il video">
-          <div class="hero-video-poster">${img(playerPoster, '') || '<div class="hero-video-poster-fallback"></div>'}</div>
-          <div class="hero-video-overlay"></div>
-          ${s.video_player_label?`<div class="hero-video-label">${esc(s.video_player_label)}</div>`:''}
-          <div class="hero-video-play" aria-hidden="true">
-            <svg viewBox="0 0 64 64" fill="none">
-              <circle cx="32" cy="32" r="30" fill="rgba(247,243,236,.95)" stroke="rgba(126,151,168,.5)" stroke-width="1"/>
-              <path d="M26 22 L44 32 L26 42 Z" fill="#2B3138"/>
-            </svg>
-          </div>
-        </button>
+    // Play button (arancio) — apre il modal video
+    const playBtn = hasPlayer ? `
+      <button class="hero-play" type="button" data-video-modal="${esc(s.video_player_url)}" aria-label="Riproduci il video">
+        <span class="hero-play-ring" aria-hidden="true"></span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>` : '';
+    // CTA primaria (sul video)
+    const hasPrimary = !!(s.cta_label && String(s.cta_label).trim());
+    const ctaBtn = hasPrimary ? `
+      <a href="${esc(s.cta_href||'#contatti')}" class="hero-cta-btn">
+        ${esc(s.cta_label)}
+        ${s.cta_price_compare?`<span class="cta-strike">${esc(s.cta_price_compare)}</span>`:''}
+      </a>` : '';
+    // Badge mission (sul video)
+    const missionBadge = (s.mission_label_strong || s.mission_label_text || s.mission_figure) ? `
+      <div class="hero-mission-badge">
+        ${(s.mission_label_strong||s.mission_label_text)?`<span class="hmb-label">${s.mission_label_strong?`<strong>${esc(s.mission_label_strong)}</strong> `:''}${richText(s.mission_label_text||'')}</span>`:''}
+        ${s.mission_figure?`<span class="hmb-figure">${richText(s.mission_figure)}</span>`:''}
       </div>` : '';
-    // I pezzi del testo li tengo separati così su mobile posso riordinarli
-    // (titolo → video → info → CTA in fondo) tramite CSS `order`.
+    const stageHtml = `
+      <div class="hero-stage reveal">
+        <div class="hero-stage-media">${img(playerPoster, '') || ''}</div>
+        <div class="hero-stage-scrim" aria-hidden="true"></div>
+        ${playBtn}
+        ${(ctaBtn||missionBadge)?`<div class="hero-stage-bottom">${ctaBtn}${missionBadge}</div>`:''}
+      </div>`;
     const titleHtml = `
       <h1 class="hero-title">
-        ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
-        ${s.headline_main?`${richText(s.headline_main)} `:''}
-        ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
+        ${s.headline_pre?`${richText(s.headline_pre)} `:''}${s.headline_main?`${richText(s.headline_main)} `:''}${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
       </h1>`;
     const subHtml = (s.subtitle_em || s.subtitle) ? `
       <p class="hero-sub">
-        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}
-        ${s.subtitle?richText(s.subtitle):''}
+        ${s.subtitle_em?`<span class="em">${richText(s.subtitle_em)}</span> `:''}${s.subtitle?richText(s.subtitle):''}
       </p>` : '';
-    const missionHtml = (s.mission_label_strong||s.mission_figure) ? `
-      <div class="mission-card">
-        <div class="mission-label"><strong>${esc(s.mission_label_strong||'')}</strong> ${richText(s.mission_label_text||'')}</div>
-        <div class="mission-bar">
-          <div class="mission-bar-fill" style="width:${Number(s.mission_percent)||0}%"></div>
-          <div class="mission-bar-pct">${Number(s.mission_percent)||0}%</div>
-        </div>
-        <div class="mission-figure">${richText(s.mission_figure||'')}</div>
-        <div class="mission-sub">${richText(s.mission_sub_a||'')} <span class="hl">${richText(s.mission_sub_b||'')}</span></div>
-      </div>` : '';
-    // Blocco CTA a 3 percorsi
-    const hasSecondary = !!(s.cta_secondary_label && String(s.cta_secondary_label).trim());
-    const hasTertiary  = !!(s.cta_tertiary_label  && String(s.cta_tertiary_label).trim());
-    const hasPrimary   = !!(s.cta_label && String(s.cta_label).trim());
-    const ctaHtml = hasPrimary ? `
-      <div class="hero-cta">
-        <div class="hero-cta-row">
-          <a href="${esc(s.cta_href||'#contatti')}" class="btn btn-yellow btn-large hero-cta-primary">
-            ${esc(s.cta_label)}
-            ${s.cta_price_compare?`<span class="cta-price-strike">${esc(s.cta_price_compare)}</span>`:''}
-          </a>
-          ${hasSecondary?`
-            <a href="${esc(s.cta_secondary_href||'#contatti')}" class="btn btn-outline-gold btn-large hero-cta-secondary">
-              ${esc(s.cta_secondary_label)}
-            </a>` : ''}
-        </div>
-        ${(hasSecondary && s.cta_secondary_hint)?`
-          <div class="hero-cta-hint">${esc(s.cta_secondary_hint)}</div>` : ''}
-        ${hasTertiary?`
-          <a href="${esc(s.cta_tertiary_href||'#')}" class="hero-cta-tertiary" ${s.cta_tertiary_href && s.cta_tertiary_href.startsWith('http')?'target="_blank" rel="noopener"':''}>
-            ${esc(s.cta_tertiary_label)}
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:5px;vertical-align:-2px"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-          </a>` : ''}
-      </div>` : '';
     return `
-      <section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
+      <section${sectionStyleAttr(s)} class="hero hero-centered ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="hero-bg">${bg}</div>
+        <div class="hero-bg-scrim" aria-hidden="true"></div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
-        <div class="container hero-content reveal">
-          ${playerHtml}
-          <div class="hero-text">
-            ${titleHtml}
-            <div class="hero-info">
-              ${subHtml}
-              ${missionHtml}
-            </div>
-            ${ctaHtml}
-          </div>
+        <div class="container hero-c reveal">
+          ${titleHtml}
+          ${subHtml}
+          ${stageHtml}
         </div>
       </section>`;
   },
