@@ -179,7 +179,7 @@
       ],
       "subtitle": "Le testimonianze dei pazienti dello Studio Campa, pubblicate direttamente su **Google**. Tutte verificate.",
       "reviews_rating": "5,0",
-      "reviews_count": "2.219",
+      "reviews_count": "2.238",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
       "style": {
         "bg": "#ffffff",
@@ -708,6 +708,45 @@
       ]
     },
     {
+      "type": "wake_videos",
+      "id": "risvegli",
+      "eyebrow": "I VIDEO DEI RISVEGLI",
+      "title_a": "Cosa ti spaventa di",
+      "title_accent": "un intervento?",
+      "subtitle": "Guarda i risvegli reali dei nostri pazienti, pochi minuti dopo l'intervento: sereni, lucidi, sorridenti. È questo il momento che racconta meglio di mille parole come ci si sente nelle mani dello Studio Campa.",
+      "items": [
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Rinoplastica"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Mastoplastica additiva"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Blefaroplastica"
+        },
+        {
+          "video": "",
+          "poster": "",
+          "name": "",
+          "treatment": "Liposuzione"
+        }
+      ],
+      "style": {
+        "bg": "#000000",
+        "accent": "#C8A86B",
+        "text": "#ffffff"
+      }
+    },
+    {
       "type": "booking_ladder",
       "id": "prenota",
       "layout": "columns",
@@ -916,12 +955,12 @@
     "enabled": true,
     "items": [
       {
-        "label": "5,0 · 2.219 recensioni Google",
+        "label": "5,0 · 2.238 recensioni Google",
         "href": "https://www.google.com/search?q=dottore+domenico+campa",
         "new_tab": true,
         "icon": "star",
         "google_brand": true,
-        "strong_part": "2.219"
+        "strong_part": "2.238"
       },
       {
         "label": "Chirurgo Plastico · Napoli",
