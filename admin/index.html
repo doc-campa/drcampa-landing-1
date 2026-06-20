@@ -2070,32 +2070,35 @@ const previewTemplates = {
     const featList = (t)=> String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
     const featUl = (t)=>{ const f=featList(t); return f.length?`<ul class="bl-features">${f.map(x=>`<li>${checkSvg}<span>${richText(x)}</span></li>`).join('')}</ul>`:''; };
     const premium = (t)=>{
+      const FIC = ['<path d="M20 6 9 17l-5-5"/>','<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>','<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>','<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>','<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>'];
+      const fIcon = (i)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${FIC[i%FIC.length]}</svg>`;
+      const f = featList(t);
+      const featGrid = f.length?`<div class="bl-feat-list">${f.map((x,i)=>`<div class="bl-feat-item"><span class="bl-feat-ic">${fIcon(i)}</span><span>${richText(x)}</span></div>`).join('')}</div>`:'';
       const price = esc(String(t.price||'').trim());
+      const cta = t.cta_label?`<span class="bl-cta bl-cta-dark">${esc(t.cta_label)} →</span>`:'';
       return `
         <div class="bl-tier is-featured">
-          ${t.badge?`<div class="bl-feat-flag">${previewBookingLadderIcon('crown')}<span>${esc(t.badge)}</span></div>`:''}
+          ${t.badge?`<div class="bl-feat-ribbon"><span>${esc(t.badge)}</span></div>`:''}
           <div class="bl-feat-pad">
+            <div class="bl-feat-gem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9l4-6h10l4 6-9 12L3 9z"/><path d="M3 9h18"/><path d="M8 3l-1 6 5 12 5-12-1-6"/></svg></div>
             <h3 class="bl-feat-name">${richText(t.name||'')}</h3>
-            ${t.who?`<p class="bl-feat-sub">${richText(t.who)}</p>`:''}
+            ${t.who?`<span class="bl-feat-pill">${richText(t.who)}</span>`:''}
             ${t.social_proof?`<div class="bl-social"><span class="bl-stars">★★★★★</span><span>${richText(t.social_proof)}</span></div>`:''}
-            <div class="bl-feat-grid">
-              <div class="bl-feat-left">${featUl(t)}</div>
-              <div class="bl-feat-right">
-                ${t.price_compare?`<div class="bl-compare">Valore reale <s>${esc(t.price_compare)}</s></div>`:''}
-                <div class="bl-today">Oggi solo</div>
-                <div class="bl-price-big">${price}</div>
-                ${t.cta_label?`<span class="bl-cta bl-cta-dark">${esc(t.cta_label)} →</span>`:''}
-                ${t.scarcity?`<span class="bl-feat-scarcity">${lock}${esc(t.scarcity)}</span>`:''}
-              </div>
+            ${featGrid}
+            <div class="bl-feat-pricewrap">
+              ${t.price_compare?`<div class="bl-compare">Valore reale <s>${esc(t.price_compare)}</s></div>`:''}
+              <div class="bl-today">Oggi solo</div>
+              <div class="bl-price-big">${price}</div>
             </div>
+            ${cta}
+            ${t.scarcity?`<span class="bl-feat-scarcity">${lock}${esc(t.scarcity)}</span>`:''}
           </div>
-          ${t.bottom_note?`<div class="bl-bottom-note">${richText(t.bottom_note)}</div>`:''}
         </div>`;
     };
     const renderTier = (t)=>{
       if(s.layout==='columns' && !!t.featured && t.featured!=='') return premium(t);
-      const isFeatured = !!t.featured && t.featured !== '';
-      const isFree = !!t.free && t.free !== '';
+      const isFeatured = !!t.featured && t.featured!=='';
+      const isFree = !!t.free && t.free!=='';
       const priceRaw = String(t.price||'').trim();
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
@@ -2123,31 +2126,32 @@ const previewTemplates = {
       return `<div class="bl-button ${isWa?'bl-button-wa':'bl-button-gold'}">
         <span class="bl-button-ic">${previewBookingLadderIcon(t.icon||'chat')}</span>
         <span class="bl-button-tx"><strong>${esc(t.name||t.cta_label||'')}</strong>${sub?`<small>${richText(sub)}</small>`:''}</span>
-        <span class="bl-button-arrow">→</span>
+        <span class="bl-button-arrow" aria-hidden="true">→</span>
       </div>`;
     };
     const all = (s.tiers||[]).filter(t => t && (t.name || t.price));
-    let tiers;
+    let tiersHtml;
     if(s.layout === 'columns'){
-      const cards = all.filter(t => !(t.free && t.free !== ''));
-      const btns = all.filter(t => t.free && t.free !== '');
-      tiers = `<div class="bl-row bl-row-paid">${cards.map(renderTier).join('')}</div>`
+      const cards = all.filter(t => !(t.free && t.free!==''));
+      const btns = all.filter(t => t.free && t.free!=='');
+      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map(renderTier).join('')}</div>`
         + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('')}</div>` : '');
     } else {
-      tiers = all.map(renderTier).join('');
+      tiersHtml = all.map(renderTier).join('');
     }
-    return `<section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}">
-      <div class="container">
-        <div class="bl-head">
-          ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
-          <h2 class="bl-title">${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
-          ${s.subtitle?`<p class="bl-subtitle">${richText(s.subtitle)}</p>`:''}
+    return `
+      <section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}"${s.id?` id="${esc(s.id)}"`:''}>
+        <div class="container">
+          <div class="bl-head">
+            ${s.eyebrow?`<p class="bl-eyebrow">${esc(s.eyebrow)}</p>`:''}
+            <h2 class="bl-title">${richText(s.title_a||'')} <span class="accent">${richText(s.title_accent||'')}</span></h2>
+            ${s.subtitle?`<p class="bl-subtitle">${richText(s.subtitle)}</p>`:''}
+          </div>
+          ${s.urgency?`<div class="bl-urgency-wrap"><span class="bl-urgency">${richText(s.urgency)}</span></div>`:''}
+          <div class="bl-tiers">${tiersHtml}</div>
+          ${s.footer_note?`<p class="bl-footer-note">${richText(s.footer_note)}</p>`:''}
         </div>
-        ${s.urgency?`<div class="bl-urgency-wrap"><span class="bl-urgency">${richText(s.urgency)}</span></div>`:''}
-        <div class="bl-tiers">${tiers}</div>
-        ${s.footer_note?`<p class="bl-footer-note">${richText(s.footer_note)}</p>`:''}
-      </div>
-    </section>`;
+      </section>`;
   }
 };
 
