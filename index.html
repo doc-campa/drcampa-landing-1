@@ -2567,6 +2567,91 @@ section[style*="--section-text"] li { color:inherit; }
 .bl-button-gold .bl-button-ic { background:linear-gradient(135deg,#E7C067,#C99B43); color:#1C1405; }
 .bl-button-gold .bl-button-arrow { color:#E7C067; }
 
+/* ============== GLOSS REDESIGN booking ladder ============== */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured {
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,.4) 0%, rgba(255,255,255,0) 30%),
+    linear-gradient(165deg,#F6DD96 0%,#E0B559 26%,#C99B43 50%,#9C7327 78%,#D9B164 100%);
+  border:1px solid rgba(255,244,206,.7);
+  box-shadow:0 0 0 1px rgba(180,134,47,.4), 0 36px 90px -30px rgba(199,155,67,.85);
+  color:#2A1E08; text-align:center;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured::after {
+  content:""; position:absolute; inset:0; pointer-events:none; border-radius:inherit;
+  background:linear-gradient(155deg, rgba(255,255,255,.42) 0%, rgba(255,255,255,0) 24%);
+}
+.bl-feat-pad { padding:30px 30px 26px; position:relative; z-index:1; text-align:center; }
+.bl-feat-ribbon {
+  position:absolute; top:0; left:18px; z-index:4; width:78px;
+  background:linear-gradient(180deg,#FBE6A2,#C99B43); color:#2A1E08;
+  padding:12px 8px 18px; text-align:center;
+  font-family:'Bebas Neue',sans-serif; letter-spacing:.07em; font-size:.72rem; line-height:1.18;
+  clip-path:polygon(0 0,100% 0,100% 100%,50% 84%,0 100%);
+  box-shadow:0 6px 14px rgba(0,0,0,.3);
+}
+.bl-feat-gem { display:grid; place-items:center; margin:2px auto 6px; color:#6a4a12; }
+.bl-feat-gem svg { width:30px; height:30px; }
+.bl-feat-name {
+  font-family:'Inter',sans-serif; font-weight:800; text-transform:uppercase;
+  font-size:clamp(1.7rem,2.5vw,2.4rem); line-height:1; letter-spacing:-.01em;
+  margin:0 0 12px; padding:0; min-height:0; display:block;
+  background:linear-gradient(180deg,#5a3d0e 0%,#8a6418 45%,#4a3208 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.35));
+}
+.bl-feat-pill {
+  display:inline-block; margin:0 0 16px; padding:7px 16px; border-radius:999px;
+  background:rgba(20,16,6,.16); color:#3a2c0c; font-size:.86rem; font-weight:600;
+}
+.bl-tier.is-featured .bl-social { justify-content:center; color:rgba(35,25,5,.82); margin:0 0 16px; }
+.bl-feat-list { display:grid; grid-template-columns:1fr 1fr; gap:12px 18px; text-align:left; margin:0 0 18px; }
+.bl-feat-item { display:flex; align-items:center; gap:9px; font-size:.85rem; line-height:1.25; color:#2A1E08; }
+.bl-feat-ic { width:30px; height:30px; flex:none; border-radius:50%; display:grid; place-items:center; background:rgba(20,16,6,.12); color:#5a3d0e; }
+.bl-feat-ic svg { width:16px; height:16px; }
+.bl-feat-pricewrap { border-top:1px solid rgba(35,25,5,.18); padding-top:14px; }
+.bl-compare { font-family:'Bebas Neue',sans-serif; letter-spacing:.06em; font-size:.95rem; color:rgba(35,25,5,.72); }
+.bl-compare s { color:#9a3b1a; text-decoration-thickness:2px; margin-left:4px; }
+.bl-today { font-family:'Bebas Neue',sans-serif; letter-spacing:.14em; font-size:.92rem; color:rgba(35,25,5,.72); text-transform:uppercase; }
+.bl-price-big {
+  font-family:'Inter',sans-serif; font-weight:800; font-size:clamp(2.8rem,5vw,3.8rem);
+  line-height:1; margin:2px 0 14px;
+  background:linear-gradient(180deg,#6a4a12 0%,#8a6418 50%,#3a2606 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent;
+  filter:drop-shadow(0 1px 0 rgba(255,255,255,.3));
+}
+.bl-tier.is-featured .bl-cta-dark {
+  background:linear-gradient(180deg,#2A2008,#13110B); color:#F3D98E;
+  border:1px solid rgba(243,217,142,.4); width:100%; justify-content:center;
+  border-radius:14px; padding:14px 18px;
+}
+.bl-tier.is-featured .bl-cta-dark:hover { filter:brightness(1.12); transform:translateY(-2px); }
+.bl-feat-scarcity { display:inline-flex; align-items:center; gap:6px; margin-top:12px; font-size:.8rem; font-weight:700; color:rgba(35,25,5,.78); justify-content:center; }
+
+/* --- Card secondarie a tema (blu / viola) --- */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) {
+  position:relative; overflow:hidden; border-radius:20px; padding:34px 24px;
+  background:radial-gradient(120% 60% at 50% 0%, var(--bl-glow,rgba(231,192,103,.18)) 0%, rgba(8,9,12,0) 60%), #08090C;
+  border:1px solid var(--bl-edge,rgba(231,192,103,.3));
+  box-shadow:0 30px 70px -34px var(--bl-glow,rgba(231,192,103,.55));
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-body { display:flex; flex-direction:column; align-items:center; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-name { order:0; background:linear-gradient(180deg,#FFFFFF 0%,var(--bl-accent,#E7C067) 135%); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-who { display:none; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value { order:1; display:inline-block; background:rgba(255,255,255,.05); border:1px solid var(--bl-edge,rgba(231,192,103,.28)); border-radius:12px; padding:8px 14px; font-size:.86rem; opacity:1; color:rgba(255,255,255,.82); margin:8px 0 2px; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-features { order:2; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-format { order:3; color:var(--bl-accent,#E7C067); opacity:.92; font-size:.8rem; margin-top:10px; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon {
+  width:66px; height:66px; border-radius:50%; background:rgba(255,255,255,.02);
+  border:1.5px solid var(--bl-edge,rgba(231,192,103,.55)); color:var(--bl-accent,#E7C067);
+  box-shadow:0 0 26px -4px var(--bl-glow,rgba(231,192,103,.6)); margin-bottom:10px;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-features li .bl-check { color:var(--bl-accent,#E7C067); border-color:var(--bl-accent,#E7C067); }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-price { background:linear-gradient(180deg,#FFFFFF,var(--bl-accent,#E7C067)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta { background:rgba(255,255,255,.03); color:var(--bl-accent,#E7C067); border:1.5px solid var(--bl-edge,rgba(231,192,103,.5)); }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta:hover { background:var(--bl-accent,#E7C067); color:#0B0B0C; filter:none; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(2) { --bl-accent:#5AB0F0; --bl-edge:rgba(90,176,240,.45); --bl-glow:rgba(90,176,240,.30); }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(3) { --bl-accent:#B07BE0; --bl-edge:rgba(176,123,224,.45); --bl-glow:rgba(176,123,224,.30); }
+
 @media (max-width:760px){
   /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
   .booking-ladder.bl-columns .bl-row { flex-direction:column; }
@@ -2576,6 +2661,7 @@ section[style*="--section-text"] li { color:inherit; }
   .bl-feat-name { padding-left:0; padding-top:46px; min-height:0; font-size:2rem; }
   .bl-feat-flag { width:auto; flex-direction:row; gap:8px; border-radius:0 0 14px 0; }
   .bl-button { flex:1 1 100%; }
+  .bl-feat-list { grid-template-columns:1fr; }
   .booking-ladder.bl-columns .bl-tier.is-featured { transform:none; }
   .booking-ladder.bl-columns .bl-tier.is-featured:hover { transform:translateY(-3px); }
   .booking-ladder.bl-columns .bl-tier-action {
@@ -3474,27 +3560,29 @@ const templates = {
     const featList = (t)=> String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
     const featUl = (t)=>{ const f=featList(t); return f.length?`<ul class="bl-features">${f.map(x=>`<li>${checkSvg}<span>${richText(x)}</span></li>`).join('')}</ul>`:''; };
     const premium = (t)=>{
+      const FIC = ['<path d="M20 6 9 17l-5-5"/>','<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>','<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>','<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>','<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>'];
+      const fIcon = (i)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${FIC[i%FIC.length]}</svg>`;
+      const f = featList(t);
+      const featGrid = f.length?`<div class="bl-feat-list">${f.map((x,i)=>`<div class="bl-feat-item"><span class="bl-feat-ic">${fIcon(i)}</span><span>${richText(x)}</span></div>`).join('')}</div>`:'';
       const price = esc(String(t.price||'').trim());
       const cta = t.cta_label?`<a class="bl-cta bl-cta-dark" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)} →</a>`:'';
       return `
         <div class="bl-tier is-featured">
-          ${t.badge?`<div class="bl-feat-flag">${bookingLadderIcon('crown')}<span>${esc(t.badge)}</span></div>`:''}
+          ${t.badge?`<div class="bl-feat-ribbon"><span>${esc(t.badge)}</span></div>`:''}
           <div class="bl-feat-pad">
+            <div class="bl-feat-gem"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><path d="M3 9l4-6h10l4 6-9 12L3 9z"/><path d="M3 9h18"/><path d="M8 3l-1 6 5 12 5-12-1-6"/></svg></div>
             <h3 class="bl-feat-name">${richText(t.name||'')}</h3>
-            ${t.who?`<p class="bl-feat-sub">${richText(t.who)}</p>`:''}
+            ${t.who?`<span class="bl-feat-pill">${richText(t.who)}</span>`:''}
             ${t.social_proof?`<div class="bl-social"><span class="bl-stars">★★★★★</span><span>${richText(t.social_proof)}</span></div>`:''}
-            <div class="bl-feat-grid">
-              <div class="bl-feat-left">${featUl(t)}</div>
-              <div class="bl-feat-right">
-                ${t.price_compare?`<div class="bl-compare">Valore reale <s>${esc(t.price_compare)}</s></div>`:''}
-                <div class="bl-today">Oggi solo</div>
-                <div class="bl-price-big">${price}</div>
-                ${cta}
-                ${t.scarcity?`<span class="bl-feat-scarcity">${lock}${esc(t.scarcity)}</span>`:''}
-              </div>
+            ${featGrid}
+            <div class="bl-feat-pricewrap">
+              ${t.price_compare?`<div class="bl-compare">Valore reale <s>${esc(t.price_compare)}</s></div>`:''}
+              <div class="bl-today">Oggi solo</div>
+              <div class="bl-price-big">${price}</div>
             </div>
+            ${cta}
+            ${t.scarcity?`<span class="bl-feat-scarcity">${lock}${esc(t.scarcity)}</span>`:''}
           </div>
-          ${t.bottom_note?`<div class="bl-bottom-note">${richText(t.bottom_note)}</div>`:''}
         </div>`;
     };
     const renderTier = (t)=>{
@@ -3505,25 +3593,22 @@ const templates = {
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
       const icon = bookingLadderIcon(t.icon);
-      const action = `
+      return `<div class="${cls}">
+        <div class="bl-icon">${icon}</div>
+        <div class="bl-tier-body">
+          ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
+          <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
+          ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
+          ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
+          ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
+          ${featUl(t)}
+          ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
+        </div>
         <div class="bl-tier-action">
           <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
           ${t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)} →</a>`:''}
-        </div>`;
-      return `
-        <div class="${cls}">
-          <div class="bl-icon">${icon}</div>
-          <div class="bl-tier-body">
-            ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
-            <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
-            ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
-            ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
-            ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
-            ${featUl(t)}
-            ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
-          </div>
-          ${action}
-        </div>`;
+        </div>
+      </div>`;
     };
     const renderButton = (t)=>{
       const isWa = (t.icon==='whatsapp');
