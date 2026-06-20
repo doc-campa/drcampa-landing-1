@@ -534,32 +534,6 @@
       "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente."
     },
     {
-      "type": "audience",
-      "title_a": "Lo Studio Campa è stato creato per chi vuole",
-      "title_accent": "una bellezza che lavora con te — non contro di te.",
-      "subtitle": "La chirurgia estetica non è più un tabù. È una scelta. L'unica domanda è se la affronti con metodo o se ti perdi a sperimentare.",
-      "items": [
-        {
-          "photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=900&q=80",
-          "title": "Donne in Carriera",
-          "body_strong": "Sai cosa vuoi.",
-          "body": "Ti serve un percorso pratico, calibrato sui tuoi ritmi e sulle tue priorità — senza compromessi sul risultato."
-        },
-        {
-          "photo": "https://images.unsplash.com/photo-1582719188393-bb71ca45dbb9?auto=format&fit=crop&w=900&q=80",
-          "title": "Mamme",
-          "body_strong": "Fai tutto per gli altri.",
-          "body": "Lo Studio dovrebbe aiutarti a ritrovare te stessa — semplificando il percorso e rispettando i tuoi tempi familiari."
-        },
-        {
-          "photo": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=900&q=80",
-          "title": "Uomini Over 40",
-          "body_strong": "Porti il peso della carriera e della vita.",
-          "body": "La chirurgia maschile è oggi una scelta intelligente, discreta, e mirata. Lo Studio è pronto."
-        }
-      ]
-    },
-    {
       "type": "stats",
       "id": "risultati",
       "title_a": "Risultati Misurabili.",
@@ -597,67 +571,6 @@
         }
       ],
       "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
-    },
-    {
-      "type": "big_quote",
-      "quote": "\"Grazie team! Siete davvero un cambio di paradigma. Mi avevate promesso di farmi risparmiare almeno 15 ore di insicurezze a settimana — me ne avete risparmiate più di 20, e mi avete dato così tanti strumenti per trasformare aree della mia vita che non riesco a dirvi quanto mi sento fortunata e grata.\"",
-      "author_photo": "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=200&q=80",
-      "author_name": "Bex B."
-    },
-    {
-      "type": "features_card",
-      "title": "Cosa Può Fare Per Te un Percorso Strutturato",
-      "lead": "Quando la chirurgia è affrontata con metodo invece che per sperimentazione, i risultati sono infiniti...",
-      "pills": [
-        {
-          "text": "Definire i tuoi obiettivi",
-          "special": false
-        },
-        {
-          "text": "Costruire un piano realistico",
-          "special": false
-        },
-        {
-          "text": "Recuperare sicurezza",
-          "special": false
-        },
-        {
-          "text": "Eliminare le insicurezze",
-          "special": false
-        },
-        {
-          "text": "Pianificare i tempi giusti",
-          "special": false
-        },
-        {
-          "text": "Capire cosa serve davvero",
-          "special": false
-        },
-        {
-          "text": "Sentirti più libera",
-          "special": false
-        },
-        {
-          "text": "Esprimere chi sei",
-          "special": false
-        },
-        {
-          "text": "Programmare il recupero",
-          "special": false
-        },
-        {
-          "text": "Ridurre lo stress",
-          "special": false
-        },
-        {
-          "text": "Vedere risultati naturali",
-          "special": false
-        },
-        {
-          "text": "Restituirti il tempo per VIVERE",
-          "special": true
-        }
-      ]
     },
     {
       "type": "booking_ladder",
@@ -751,9 +664,9 @@
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
         "bg": "#000000",
-        "accent": "#C8A86B",
-        "text": "#F7F3EC",
-        "scale": ""
+        "accent": "#f7e9c5",
+        "text": "#ffffff",
+        "scale": "compatto"
       }
     },
     {
