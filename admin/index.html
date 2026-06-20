@@ -990,9 +990,11 @@ const SECTION_SCHEMA = {
     ['title_italic', 'Titolo - parte in corsivo', 'text', 'Es: "che parlano da soli"'],
     ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Es: "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato."'],
     ['disclaimer', 'Disclaimer in basso (opzionale)', 'textarea', 'Es: "Le immagini sono pubblicate con consenso esplicito dei pazienti ai sensi del DPR n. 137/2012. Ogni caso clinico è unico: i risultati possono variare."'],
+    ['cta_label', 'Bottone Instagram (testo, non cliccabile)', 'text', 'Es: \"Scopri tutti i risultati su Instagram\". Bottone decorativo. Vuoto = niente bottone.'],
     ['items', 'Risultati', 'list-object', null, [
       ['image', 'Foto risultato', 'image'],
-      ['label', 'Testo pill (nome trattamento, opzionale)', 'text', 'Compare come etichetta sulla foto. Lascia vuoto per non mostrare nessuna pill.']
+      ['label', 'Testo pill (nome trattamento, opzionale)', 'text', 'Compare come etichetta in basso sulla foto. Vuoto = nessuna pill.'],
+      ['caption', 'Testo sotto la foto (opzionale)', 'text', 'Compare subito sotto la foto. Vuoto = niente testo.']
     ]]
   ],
   treatments_list: [
@@ -1969,8 +1971,10 @@ const previewTemplates = {
       const ph = '<div class="ba-empty">Foto in arrivo</div>';
       const media = it.image ? imgTag(it.image, it.label||'Risultato') : ph;
       const pill = it.label ? `<span class="ba-tag ba-tag-after">${esc(it.label)}</span>` : '';
-      return `<div class="ba-case"><div class="ba-shot">${media}${pill}</div></div>`;
+      const cap = it.caption ? `<div class="ba-cap"><span class="ba-cap-title">${richText(it.caption)}</span></div>` : '';
+      return `<div class="ba-case"><div class="ba-shot">${media}${pill}</div>${cap}</div>`;
     }).join('');
+    const cta = s.cta_label ? `<div class="ba-results-cta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg><span>${esc(s.cta_label)}</span></div>` : '';
     return `<section${sectionStyleAttr(s)} class="before-after">
       <div class="container">
         <div class="ba-head">
@@ -1979,6 +1983,7 @@ const previewTemplates = {
           ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
         </div>
         <div class="ba-grid">${cases}</div>
+        ${cta}
         ${s.disclaimer?`<p class="ba-disclaimer">${richText(s.disclaimer)}</p>`:''}
       </div>
     </section>`;
