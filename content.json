@@ -496,7 +496,12 @@
             }
           ]
         }
-      ]
+      ],
+      "style": {
+        "bg": "#000000",
+        "accent": "#C8A86B",
+        "text": "#F7F3EC"
+      }
     },
     {
       "type": "levels",
