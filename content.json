@@ -250,11 +250,13 @@
           "description": "Riempimento con acido ialuronico reticolato. Risultato immediato e naturale.",
           "after_label": "Dopo il trattamento"
         },
+        {},
         {}
       ],
       "style": {
-        "text": "#000000"
-      }
+        "bg": "#000000"
+      },
+      "eyebrow": "I NOSTRI RISULTATI"
     },
     {
       "type": "problem",
