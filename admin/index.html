@@ -2135,7 +2135,7 @@ const previewTemplates = {
       const cards = all.filter(t => !(t.free && t.free!==''));
       const btns = all.filter(t => t.free && t.free!=='');
       tiersHtml = `<div class="bl-row bl-row-paid">${cards.map(renderTier).join('')}</div>`
-        + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('')}</div>` : '');
+        + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('<span class="bl-or" aria-hidden="true">oppure</span>')}</div>` : '');
     } else {
       tiersHtml = all.map(renderTier).join('');
     }
