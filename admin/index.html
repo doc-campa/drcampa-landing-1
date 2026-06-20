@@ -1148,6 +1148,7 @@ const TOPBAR_SCHEMA = [
   ['bg_color', 'Colore di sfondo della barra', 'color', '#0D2E36', 'Il colore della barra in alto. Default petrol scuro.'],
   ['bg_color_2', 'Colore di sfondo 2 (per sfumatura, opzionale)', 'color', '#123C46', 'Se diverso dal primo, crea una sfumatura orizzontale. Mettilo uguale al primo per un colore pieno.'],
   ['text_color', 'Colore del testo', 'color', '#F7F3EC', 'Il colore del testo delle voci. Default ivory chiaro.'],
+  ['pillars_text', 'Pilastri a sinistra (scudo dorato)', 'text', 'Testo a sinistra con icona scudo, mostrato in MAIUSCOLO. Default: "Esperienza \u00b7 Eccellenza \u00b7 Risultati".'],
   ['items', 'Voci della barra (in ordine)', 'list-object', null, [
     ['label', 'Testo della voce', 'text', 'Es: "5,0 · 2.219 recensioni Google" oppure "Chirurgo Plastico, Napoli"'],
     ['href', 'Link (opzionale)', 'text', 'Se inserito, la voce diventa cliccabile. Es: link recensioni Google, ancora #newsletter, link Calendly.'],
@@ -2181,6 +2182,7 @@ function previewTopbarIconSvg(name){
     case 'phone':      return S('<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.37 1.9.72 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.35 1.85.59 2.81.72A2 2 0 0 1 22 16.92z"/>');
     case 'fire':       return S('<path d="M12 22c4 0 7-3 7-7 0-2-1-4-3-5 0 2-1 3-2 3 0-3-2-5-2-8 0 0-7 4-7 10a7 7 0 0 0 7 7z"/>');
     case 'check':      return S('<polyline points="20 6 9 17 4 12"/>');
+    case 'shield':     return S('<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>');
     default: return '';
   }
 }
@@ -2190,7 +2192,7 @@ function renderPreviewTopbar(d){
   if(tb.enabled === false) return '';
   const validItems = (tb.items||[]).filter(it => it && it.label && String(it.label).trim());
   if(!validItems.length) return '';
-  const items = validItems.map(item => {
+  const built = validItems.map(item => {
     const isLink = !!item.href;
     const tag = isLink ? 'a' : 'span';
     const cls = `topbar-item ${isLink?'is-link':''}`;
@@ -2201,13 +2203,19 @@ function renderPreviewTopbar(d){
     let label = esc(item.label||'');
     if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
     if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
-    return `<${tag} class="${cls}">${inner}${label}</${tag}>`;
-  }).join('');
+    return {item, html: `<${tag} class="${cls}">${inner}${label}</${tag}>`};
+  });
+  const googleB  = built.find(b => b.item.google_brand || b.item.icon === 'star');
+  const urgencyB = built.find(b => b.item.icon === 'dot' || /person|acquist|posti|client/i.test(b.item.label||''));
+  const centerB  = googleB || built[0] || null;
+  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : (built.find(b => b !== centerB) || null);
+  const pillars  = tb.pillars_text || 'Esperienza \u00b7 Eccellenza \u00b7 Risultati';
+  const leftHtml = `<span class="topbar-item topbar-pillars"><span class="topbar-shield">${previewTopbarIconSvg('shield')}</span><span class="topbar-pillars-text">${esc(pillars)}</span></span>`;
   const c1 = tb.bg_color || '#0D2E36';
   const c2 = tb.bg_color_2 || c1;
   const tc = tb.text_color || '#F7F3EC';
   const bg = (c1 === c2) ? c1 : `linear-gradient(90deg, ${c1} 0%, ${c2} 100%)`;
-  return `<div class="topbar" style="background:${bg}; color:${tc}"><div class="topbar-track">${items}</div></div>`;
+  return `<div class="topbar" style="background:${bg}; color:${tc}"><div class="topbar-fixed"><div class="tb-slot tb-left">${leftHtml}</div><div class="tb-slot tb-center">${centerB?centerB.html:''}</div><div class="tb-slot tb-right">${rightB?rightB.html:''}</div></div></div>`;
 }
 
 function previewLogoMark(d){
@@ -2388,6 +2396,15 @@ body { padding-top:36px; }
 }
 /* Nel preview non c'è il rotator JS: mostro la prima voce */
 .topbar-item:first-child { opacity:1; pointer-events:auto; }
+.topbar-fixed{ display:grid; grid-template-columns:1fr auto 1fr; align-items:center; width:100%; max-width:1280px; margin:0 auto; padding:0 24px; gap:14px; }
+.topbar-fixed .tb-slot{ display:flex; align-items:center; min-width:0; }
+.topbar-fixed .tb-left{ justify-content:flex-start; }
+.topbar-fixed .tb-center{ justify-content:center; }
+.topbar-fixed .tb-right{ justify-content:flex-end; }
+.topbar-fixed .topbar-item{ position:static; left:auto; top:auto; transform:none; opacity:1; pointer-events:auto; }
+.topbar-shield{ color:#C8A86B; display:inline-flex; align-items:center; }
+.topbar-shield svg{ width:14px; height:14px; }
+.topbar-pillars-text{ text-transform:uppercase; letter-spacing:.12em; font-weight:600; font-size:.88em; white-space:nowrap; }
 .topbar-item.is-active { opacity:1; pointer-events:auto; }
 .topbar-item.is-link { cursor:pointer; }
 .topbar-item.is-link:hover { color:#C8A86B; }
@@ -2411,7 +2428,7 @@ body { padding-top:36px; }
 </style></head><body>${body}<script>
 (function(){
   // ====== TOPBAR ROTATION: una voce alla volta, ogni 4 secondi ======
-  var topbarItems = document.querySelectorAll('.topbar-item');
+  var topbarItems = document.querySelector('.topbar-fixed') ? [] : document.querySelectorAll('.topbar-item');
   if(topbarItems.length){
     var current = 0;
     topbarItems[0].classList.add('is-active');
