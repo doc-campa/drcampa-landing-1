@@ -1898,8 +1898,8 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   display:flex; flex-wrap:wrap; justify-content:center;
   gap:8px; max-width:980px; margin:0 auto 38px;
   padding:6px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.16);
   border-radius:999px;
 }
 .tl-tab {
@@ -1952,8 +1952,8 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 .tl-treatment {
   display:flex; align-items:center; gap:12px;
   padding:14px 18px;
-  background:rgba(255,255,255,.04);
-  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.055);
+  border:1px solid rgba(255,255,255,.14);
   border-radius:12px;
   color:#F3EEDD;
   text-decoration:none;
@@ -2683,6 +2683,54 @@ section[style*="--section-text"] li { color:inherit; }
   }
   .booking-ladder.bl-columns .bl-tier.is-featured .bl-tier-action { border-top-color:rgba(13,46,54,.18); }
 }
+
+
+/* ============================================================
+   SCALA PRENOTAZIONI — VARIANTE SOBRIA (override)
+   Via blu/viola dalle card e l'oro dal premium; restano
+   colorati SOLO i due tasti contatto in fondo (verde / oro).
+   ============================================================ */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured),
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(2),
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(3){
+  --bl-accent:#FFFFFF;
+  --bl-edge:rgba(255,255,255,.22);
+  --bl-glow:rgba(255,255,255,.10);
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-format{ color:rgba(255,255,255,.55); }
+
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.22);
+  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 36px 90px -34px rgba(0,0,0,.8);
+  color:#F3EEE2;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured::after{ background:none; }
+.bl-feat-ribbon{ background:rgba(255,255,255,.16); color:#fff; box-shadow:0 6px 14px rgba(0,0,0,.4); }
+.bl-feat-gem{ color:rgba(255,255,255,.7); }
+.bl-feat-name{
+  background:none; -webkit-background-clip:border-box; background-clip:border-box;
+  -webkit-text-fill-color:#fff; color:#fff; filter:none;
+}
+.bl-feat-pill{ background:rgba(255,255,255,.10); color:rgba(255,255,255,.85); }
+.bl-tier.is-featured .bl-social{ color:rgba(255,255,255,.7); }
+.bl-stars{ color:rgba(255,255,255,.6); }
+.bl-feat-item{ color:rgba(255,255,255,.85); }
+.bl-feat-ic{ background:rgba(255,255,255,.08); color:rgba(255,255,255,.78); }
+.bl-feat-pricewrap{ border-top-color:rgba(255,255,255,.14); }
+.bl-compare{ color:rgba(255,255,255,.6); }
+.bl-compare s{ color:rgba(255,255,255,.42); }
+.bl-today{ color:rgba(255,255,255,.6); }
+.bl-price-big{
+  background:none; -webkit-background-clip:border-box; background-clip:border-box;
+  -webkit-text-fill-color:#fff; color:#fff; filter:none;
+}
+.bl-tier.is-featured .bl-cta-dark{
+  background:#F2ECDE; color:#15130D; border:1px solid rgba(255,255,255,.2);
+}
+.bl-tier.is-featured .bl-cta-dark:hover{ background:#fff; filter:none; transform:translateY(-2px); }
+.bl-feat-scarcity{ color:rgba(255,255,255,.7); }
+.bl-bottom-note{ color:rgba(255,255,255,.7); }
 
 /* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
