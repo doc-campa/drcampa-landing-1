@@ -2545,33 +2545,40 @@ section[style*="--section-text"] li { color:inherit; }
 
 /* ===== Bottoni contatto (servizi rapidi) ===== */
 .booking-ladder.bl-columns .bl-buttons {
-  display:flex; gap:16px; flex-wrap:wrap;
+  display:flex; gap:14px; flex-wrap:wrap; align-items:stretch; justify-content:center;
   max-width:1180px; margin:18px auto 0;
 }
 .bl-button {
-  flex:1 1 0; min-width:280px;
+  flex:1 1 0; min-width:300px;
   display:flex; align-items:center; gap:16px;
-  background:#0B0B0C; border:1px solid rgba(255,255,255,.12); border-radius:16px;
-  padding:16px 22px; text-decoration:none; color:#F3E6C8;
-  transition:transform .2s ease, border-color .2s ease;
+  background:#0A0B0A; border:1.5px solid rgba(255,255,255,.10); border-radius:18px;
+  padding:18px 24px; text-decoration:none; color:#F3EEDD;
+  transition:transform .2s ease, box-shadow .25s ease, border-color .25s ease;
 }
-.bl-button:hover { transform:translateY(-2px); border-color:rgba(231,192,103,.5); }
-.bl-button-ic { width:48px; height:48px; border-radius:50%; display:grid; place-items:center; flex:none; }
-.bl-button-ic svg { width:24px; height:24px; }
-.bl-button-tx { display:flex; flex-direction:column; gap:2px; line-height:1.2; flex:1; }
-.bl-button-tx strong { font-family:'Bebas Neue',sans-serif; letter-spacing:.05em; font-size:1.1rem; font-weight:400; text-transform:uppercase; }
-.bl-button-tx small { font-size:.84rem; color:rgba(255,255,255,.6); }
-.bl-button-arrow { font-size:1.3rem; flex:none; }
-.bl-button-wa .bl-button-ic { background:#25D366; color:#fff; }
+.bl-button:hover { transform:translateY(-2px); }
+.bl-button-ic { width:54px; height:54px; border-radius:50%; display:grid; place-items:center; flex:none; }
+.bl-button-ic svg { width:28px; height:28px; }
+.bl-button-tx { display:flex; flex-direction:column; gap:3px; line-height:1.2; flex:1; }
+.bl-button-tx strong { font-family:'Bebas Neue',sans-serif; letter-spacing:.05em; font-size:1.18rem; font-weight:400; text-transform:uppercase; color:#FBF7EC; }
+.bl-button-tx small { font-size:.86rem; color:rgba(255,255,255,.55); }
+.bl-button-arrow { flex:none; display:grid; place-items:center; }
+.bl-or { flex:none; align-self:center; color:rgba(255,255,255,.45); font-size:.82rem; font-style:italic; letter-spacing:.04em; padding:0 2px; }
+.bl-button-wa {
+  background:#08110B; border:1.5px solid rgba(37,211,102,.6);
+  box-shadow:0 0 0 1px rgba(37,211,102,.25), 0 0 32px -6px rgba(37,211,102,.5);
+}
+.bl-button-wa:hover { border-color:#25D366; box-shadow:0 0 0 1px rgba(37,211,102,.45), 0 0 44px -4px rgba(37,211,102,.65); }
+.bl-button-wa .bl-button-ic { background:#25D366; color:#fff; box-shadow:0 0 20px -3px rgba(37,211,102,.75); }
 .bl-button-wa .bl-button-arrow { color:#25D366; }
-.bl-button-gold .bl-button-ic { background:linear-gradient(135deg,#E7C067,#C99B43); color:#1C1405; }
+.bl-button-gold {
+  background:linear-gradient(115deg,#14100A 0%,#3A2D12 42%,#9A7531 100%);
+  border:1.5px solid rgba(231,192,103,.6);
+  box-shadow:0 0 0 1px rgba(231,192,103,.25), 0 0 32px -6px rgba(231,192,103,.5);
+}
+.bl-button-gold:hover { border-color:#E7C067; box-shadow:0 0 0 1px rgba(231,192,103,.45), 0 0 44px -4px rgba(231,192,103,.65); }
+.bl-button-gold .bl-button-ic { background:linear-gradient(135deg,#F4D58A,#C99B43); color:#1C1405; box-shadow:0 0 20px -3px rgba(231,192,103,.75); }
 .bl-button-gold .bl-button-arrow { color:#E7C067; }
-.bl-button-ic { width:52px; height:52px; }
-.bl-button-wa { border-color:rgba(37,211,102,.45); box-shadow:0 0 34px -8px rgba(37,211,102,.55); }
-.bl-button-wa:hover { border-color:rgba(37,211,102,.85); box-shadow:0 0 42px -6px rgba(37,211,102,.7); }
-.bl-button-gold { background:linear-gradient(120deg, rgba(231,192,103,.20) 0%, #0B0B0C 62%); border-color:rgba(231,192,103,.5); box-shadow:0 0 34px -8px rgba(231,192,103,.5); }
-.bl-button-gold:hover { border-color:rgba(231,192,103,.9); box-shadow:0 0 42px -6px rgba(231,192,103,.68); }
-.bl-or { flex:none; align-self:center; color:rgba(255,255,255,.5); font-size:.85rem; font-style:italic; padding:0 2px; }
+@media (max-width:760px){ .bl-button { flex:1 1 100%; } .bl-or { width:100%; text-align:center; } }
 
 /* ============== GLOSS REDESIGN booking ladder ============== */
 .booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured {
@@ -3622,7 +3629,7 @@ const templates = {
       return `<a class="bl-button ${isWa?'bl-button-wa':'bl-button-gold'}" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>
         <span class="bl-button-ic">${bookingLadderIcon(t.icon||'chat')}</span>
         <span class="bl-button-tx"><strong>${esc(t.name||t.cta_label||'')}</strong>${sub?`<small>${richText(sub)}</small>`:''}</span>
-        <span class="bl-button-arrow" aria-hidden="true">→</span>
+        <span class="bl-button-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
       </a>`;
     };
     const all = (s.tiers||[]).filter(t => t && (t.name || t.price));
