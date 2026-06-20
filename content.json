@@ -245,12 +245,16 @@
           "label": "Filler labbra correttivo"
         },
         {},
+        {},
+        {},
+        {},
         {}
       ],
       "style": {
         "bg": "#000000"
       },
-      "eyebrow": "I NOSTRI RISULTATI"
+      "eyebrow": "I NOSTRI RISULTATI",
+      "cta_label": "Scopri tutti i risultati su Instagram"
     },
     {
       "type": "problem",
