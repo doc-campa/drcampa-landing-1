@@ -762,19 +762,22 @@
       "urgency": "⚡ I posti in studio sono limitati ogni mese — le agende si chiudono in fretta.",
       "tiers": [
         {
-          "badge": "ESPERIENZA COMPLETA",
-          "name": "Consulto dal vivo con il Dr. Campa",
-          "who": "Dr. Domenico Campa",
+          "badge": "La scelta n°1 dei nostri pazienti",
+          "name": "Dr. Campa",
+          "who": "L'eccellenza, direttamente con il Dr. Campa",
           "format": "In studio · Napoli",
           "value_line": "Il massimo livello di accesso: il chirurgo, faccia a faccia, dedicato solo a te e al tuo percorso. La valutazione più completa e personalizzata che puoi avere.",
-          "features": "Visita completa con il chirurgo in persona\nAnalisi approfondita e personalizzata del tuo caso\nPiano di trattamento su misura\nIndicazioni chiare sui risultati realistici\nPriorità in agenda",
+          "features": "Valutazione completa e approfondita\nAnalisi fotografica e simulazione risultato\nPiano di trattamento personalizzato\nAccesso prioritario all'agenda del Dr. Campa\nRiduzione tempi di attesa\nSupporto dedicato e continuo",
           "price": "300€",
           "scarcity": "Posti limitati ogni mese",
-          "cta_label": "Prenota con il Dr. Campa",
+          "cta_label": "Prenota ora il tuo consulto",
           "cta_href": "#contatti",
           "icon": "crown",
           "featured": true,
-          "free": false
+          "free": false,
+          "social_proof": "Scelto dal 78% dei pazienti",
+          "price_compare": "550€",
+          "bottom_note": "L'agenda del Dr. Campa viene programmata con diversi mesi di anticipo"
         },
         {
           "badge": "",
