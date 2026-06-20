@@ -2435,12 +2435,17 @@ section[style*="--section-text"] li { color:inherit; }
 
 /* ---- Variante COLONNE (card affiancate, stile pricing) ---- */
 .booking-ladder.bl-columns .bl-tiers {
-  display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(196px, 1fr));
+  display:flex; flex-direction:column;
   align-items:stretch;
   max-width:1180px;
-  gap:16px;
+  gap:20px;
 }
+.booking-ladder.bl-columns .bl-row {
+  display:flex; gap:16px; align-items:stretch; justify-content:center;
+}
+.booking-ladder.bl-columns .bl-row-free { max-width:780px; margin:0 auto; width:100%; }
+.booking-ladder.bl-columns .bl-row > .bl-tier { flex:1 1 0; min-width:0; }
+.booking-ladder.bl-columns .bl-row > .bl-tier.is-featured { flex:1.5 1 0; }
 .booking-ladder.bl-columns .bl-tier {
   grid-template-columns:none;
   display:flex; flex-direction:column;
@@ -2473,6 +2478,8 @@ section[style*="--section-text"] li { color:inherit; }
 .booking-ladder.bl-columns .bl-scarcity { margin-left:auto; margin-right:auto; }
 @media (max-width:760px){
   /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
+  .booking-ladder.bl-columns .bl-row { flex-direction:column; }
+  .booking-ladder.bl-columns .bl-row-free { max-width:none; }
   .booking-ladder.bl-columns .bl-tier.is-featured { transform:none; }
   .booking-ladder.bl-columns .bl-tier.is-featured:hover { transform:translateY(-3px); }
   .booking-ladder.bl-columns .bl-tier-action {
@@ -3367,7 +3374,7 @@ const templates = {
 
   booking_ladder(s){
     const checkSvg = '<svg class="bl-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-    const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
+    const renderTier = (t)=>{
       const isFeatured = !!t.featured;
       const isFree = !!t.free;
       const priceRaw = String(t.price||'').trim();
@@ -3397,7 +3404,17 @@ const templates = {
           </div>
           ${action}
         </div>`;
-    }).join('');
+    };
+    const all = (s.tiers||[]).filter(t => t && (t.name || t.price));
+    let tiersHtml;
+    if(s.layout === 'columns'){
+      const paid = all.filter(t => !t.free);
+      const free = all.filter(t => !!t.free);
+      tiersHtml = `<div class="bl-row bl-row-paid">${paid.map(renderTier).join('')}</div>`
+        + (free.length ? `<div class="bl-row bl-row-free">${free.map(renderTier).join('')}</div>` : '');
+    } else {
+      tiersHtml = all.map(renderTier).join('');
+    }
     return `
       <section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
@@ -3407,7 +3424,7 @@ const templates = {
             ${s.subtitle?`<p class="bl-subtitle">${richText(s.subtitle)}</p>`:''}
           </div>
           ${s.urgency?`<div class="bl-urgency-wrap reveal"><span class="bl-urgency">${richText(s.urgency)}</span></div>`:''}
-          <div class="bl-tiers">${tiers}</div>
+          <div class="bl-tiers">${tiersHtml}</div>
           ${s.footer_note?`<p class="bl-footer-note reveal">${richText(s.footer_note)}</p>`:''}
         </div>
       </section>`;
