@@ -1057,6 +1057,7 @@ const SECTION_SCHEMA = {
     ['logos_title', 'Titolo sezione loghi (opzionale)', 'text', 'Es: "LE SOCIETÀ SCIENTIFICHE". Se vuoto, la sezione loghi non viene mostrata.'],
     ['logos', 'Loghi (società scientifiche, accreditamenti...)', 'list-object', null, [
       ['image', 'Logo (immagine)', 'image', 'Carica il logo. Preferibilmente PNG/SVG con sfondo trasparente.'],
+      ['image_contrast', 'Logo — versione contrasto (tema chiaro)', 'image', 'Versione SCURA del logo, mostrata quando il sito è in tema chiaro. Se vuoto, il logo chiaro viene scurito automaticamente.'],
       ['alt', 'Nome / descrizione del logo', 'text', 'Es: "SICPRE". Importante per accessibilità e SEO.'],
       ['href', 'Link (opzionale)', 'text', 'Se inserito, il logo diventa cliccabile (es. sito della società).']
     ]]
@@ -2047,8 +2048,11 @@ const previewTemplates = {
     if(s.logos_title || logos.length){
       const logoItems = logos.map(l => {
         const url = previewImageUrl(l.image);
-        const imgTag = url ? `<img src="${esc(url)}" alt="${esc(l.alt||'')}">` : `<span style="opacity:.5;font-size:12px">[logo]</span>`;
-        return `<div class="sb-logo">${imgTag}</div>`;
+        const urlC = l.image_contrast ? previewImageUrl(l.image_contrast) : '';
+        const imgTag = url ? `<img class="sb-logo-img sb-logo-dark" src="${esc(url)}" alt="${esc(l.alt||'')}">` : `<span style="opacity:.5;font-size:12px">[logo]</span>`;
+        const imgTagC = urlC ? `<img class="sb-logo-img sb-logo-light" src="${esc(urlC)}" alt="${esc(l.alt||'')}">` : '';
+        const cls = 'sb-logo' + (urlC ? ' has-contrast' : '');
+        return `<div class="${cls}">${imgTag}${imgTagC}</div>`;
       }).join('');
       logosHtml = `<div class="sb-logos-block">
         ${s.logos_title?`<p class="sb-logos-title">${richText(s.logos_title)}</p>`:''}
