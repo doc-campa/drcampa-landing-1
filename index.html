@@ -127,7 +127,7 @@ h4, h5 {
   color:var(--ink);
 }
 h1 { font-size:clamp(2.8rem, 7.2vw, 6rem); font-weight:800; letter-spacing:-.035em; }
-h2 { font-size:clamp(2.1rem, 5vw, 4rem); letter-spacing:-.03em; }
+h2 { font-family:var(--font-display); font-weight:400; font-size:clamp(2.4rem, 5.6vw, 4.6rem); letter-spacing:.012em; line-height:.96; }
 h3 { font-size:clamp(1.4rem, 2.4vw, 2.1rem); letter-spacing:-.02em; }
 h4 { font-size:1.15rem; font-weight:600; letter-spacing:-.01em; }
 h5 { font-size:.85rem; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-light); margin:0 0 14px; }
@@ -2885,6 +2885,13 @@ section[style*="--section-text"] li { color:inherit; }
 :root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{ color:#A66A45; border-color:rgba(166,106,69,.5); }
 :root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-price{ color:#1B2433; }
 
+
+/* Loghi: versione contrasto per tema chiaro (+ fallback automatico se manca) */
+.sb-logo-light{ display:none; }
+:root[data-theme="light"] .sb-logo.has-contrast .sb-logo-dark{ display:none; }
+:root[data-theme="light"] .sb-logo.has-contrast .sb-logo-light{ display:block; }
+:root[data-theme="light"] .sb-logo:not(.has-contrast) .sb-logo-img{ filter:brightness(0); opacity:.5; }
+
 </style>
 </head>
 <body>
@@ -3641,10 +3648,13 @@ const templates = {
     const logos = (s.logos||[]).filter(l => l && l.image);
     if(s.logos_title || logos.length){
       const logoItems = logos.map(l => {
-        const imgTag = img(l.image, l.alt||'', 'sb-logo-img');
+        const imgDark = img(l.image, l.alt||'', 'sb-logo-img sb-logo-dark');
+        const imgLight = l.image_contrast ? img(l.image_contrast, l.alt||'', 'sb-logo-img sb-logo-light') : '';
+        const cls = 'sb-logo' + (l.image_contrast ? ' has-contrast' : '');
+        const inner = imgDark + imgLight;
         return l.href
-          ? `<a class="sb-logo" href="${esc(l.href)}" target="_blank" rel="noopener">${imgTag}</a>`
-          : `<div class="sb-logo">${imgTag}</div>`;
+          ? `<a class="${cls}" href="${esc(l.href)}" target="_blank" rel="noopener">${inner}</a>`
+          : `<div class="${cls}">${inner}</div>`;
       }).join('');
       logosHtml = `
         <div class="sb-logos-block">
