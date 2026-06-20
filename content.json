@@ -793,14 +793,14 @@
         },
         {
           "badge": "",
-          "name": "Consulto dal vivo con il Dr. Mansi",
-          "who": "Dr. Mansi",
+          "name": "Consulto dal vivo con la Dr.ssa Mansi o il Dr. Campa",
+          "who": "Dr.ssa Mansi o Dr. Campa",
           "format": "In studio · Napoli",
-          "value_line": "Una valutazione clinica completa di persona con il Dr. Mansi: un punto di partenza concreto per il tuo percorso.",
+          "value_line": "Una valutazione clinica completa di persona, con la Dr.ssa Mansi o con il Dr. Campa: un punto di partenza concreto per il tuo percorso.",
           "features": "Visita clinica completa in studio\nValutazione del tuo caso\nIndicazioni sul percorso più adatto",
           "price": "190€",
           "scarcity": "",
-          "cta_label": "Prenota con il Dr. Mansi",
+          "cta_label": "Prenota il consulto in studio",
           "cta_href": "#contatti",
           "icon": "user",
           "featured": false,
@@ -839,7 +839,7 @@
       ],
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
-        "bg": "#0D2E36",
+        "bg": "#000000",
         "accent": "#C8A86B",
         "text": "#F7F3EC",
         "scale": ""
