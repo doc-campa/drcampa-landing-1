@@ -3230,14 +3230,11 @@ const templates = {
   before_after(s){
     const cases = (s.items||[]).map((it)=>{
       const ph = `<div class="ba-empty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg><span>Foto in arrivo</span></div>`;
-      const beforeHtml = it.before_image ? img(it.before_image, 'Prima') : ph;
-      const afterHtml  = it.after_image  ? img(it.after_image, 'Dopo')  : ph;
-      const cap = (it.title||it.description) ? `<div class="ba-cap">${it.title?`<span class="ba-cap-title">${esc(it.title)}</span>`:''}${it.description?`<span class="ba-cap-desc">${richText(it.description)}</span>`:''}</div>` : '';
+      const media = it.image ? img(it.image, it.label||'Risultato') : ph;
+      const pill = it.label ? `<span class="ba-tag ba-tag-after">${esc(it.label)}</span>` : '';
       return `
       <div class="ba-case">
-        <div class="ba-shot">${beforeHtml}<span class="ba-tag ba-tag-before">Prima</span></div>
-        <div class="ba-shot">${afterHtml}<span class="ba-tag ba-tag-after">${esc(it.after_label||'Dopo')}</span></div>
-        ${cap}
+        <div class="ba-shot">${media}${pill}</div>
       </div>`;
     }).join('');
     return `
