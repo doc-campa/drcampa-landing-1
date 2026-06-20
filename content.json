@@ -93,7 +93,7 @@
         }
       ],
       "style": {
-        "bg": "#000000",
+        "bg": "#000105",
         "accent": "#ffffff",
         "text": "#ffffff"
       },
@@ -223,7 +223,7 @@
         }
       ],
       "style": {
-        "bg": "#000000",
+        "bg": "#000105",
         "accent": "#C8A86B",
         "text": "#ffffff"
       }
@@ -252,7 +252,7 @@
         {}
       ],
       "style": {
-        "bg": "#000000"
+        "bg": "#000105"
       },
       "eyebrow": "I NOSTRI RISULTATI",
       "cta_label": "Scopri tutti i risultati su Instagram"
@@ -280,7 +280,10 @@
         }
       ],
       "footnote": "Non devi capire tutto da sola, né inseguire ogni novità. Hai bisogno di un punto di partenza chiaro, di un metodo costante, e di una guida che restituisca controllo",
-      "footnote_strong": "sul tuo tempo, sulle tue scelte, sul tuo futuro."
+      "footnote_strong": "sul tuo tempo, sulle tue scelte, sul tuo futuro.",
+      "style": {
+        "bg": "#000105"
+      }
     },
     {
       "type": "treatments_list",
@@ -499,7 +502,7 @@
         }
       ],
       "style": {
-        "bg": "#000000",
+        "bg": "#000105",
         "accent": "#C8A86B",
         "text": "#F7F3EC"
       }
@@ -532,7 +535,10 @@
         "Consulenza & Prevenzione"
       ],
       "footer_a": "Ogni paziente inizia con la consulenza. Da lì, la medicina estetica diventa un alleato quotidiano. Quando serve, percorsi strutturati evolvono in chirurgia.",
-      "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente."
+      "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente.",
+      "style": {
+        "bg": "#000105"
+      }
     },
     {
       "type": "stats",
@@ -571,7 +577,10 @@
           "label": "Anni di esperienza"
         }
       ],
-      "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa."
+      "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa.",
+      "style": {
+        "bg": "#000105"
+      }
     },
     {
       "type": "booking_ladder",
@@ -664,7 +673,7 @@
       ],
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
-        "bg": "#000000",
+        "bg": "#000105",
         "accent": "#f7e9c5",
         "text": "#ffffff",
         "scale": "compatto"
@@ -695,7 +704,11 @@
       ],
       "submit_label": "Invia Richiesta",
       "success_title": "Grazie!",
-      "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative."
+      "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative.",
+      "style": {
+        "bg": "#000105",
+        "text": "#ffffff"
+      }
     }
   ],
   "footer": {
