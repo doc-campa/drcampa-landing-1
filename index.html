@@ -2663,8 +2663,8 @@ section[style*="--section-text"] li { color:inherit; }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-price { background:linear-gradient(180deg,#FFFFFF,var(--bl-accent,#E7C067)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; color:transparent; }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta { background:rgba(255,255,255,.03); color:var(--bl-accent,#E7C067); border:1.5px solid var(--bl-edge,rgba(231,192,103,.5)); }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta:hover { background:var(--bl-accent,#E7C067); color:#0B0B0C; filter:none; }
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(2) { --bl-accent:#5AB0F0; --bl-edge:rgba(90,176,240,.45); --bl-glow:rgba(90,176,240,.30); }
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(3) { --bl-accent:#B07BE0; --bl-edge:rgba(176,123,224,.45); --bl-glow:rgba(176,123,224,.30); }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(2),
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(3) { --bl-accent:#E7C067; --bl-edge:rgba(231,192,103,.45); --bl-glow:rgba(231,192,103,.32); }
 
 @media (max-width:760px){
   /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
@@ -2683,54 +2683,6 @@ section[style*="--section-text"] li { color:inherit; }
   }
   .booking-ladder.bl-columns .bl-tier.is-featured .bl-tier-action { border-top-color:rgba(13,46,54,.18); }
 }
-
-
-/* ============================================================
-   SCALA PRENOTAZIONI — VARIANTE SOBRIA (override)
-   Via blu/viola dalle card e l'oro dal premium; restano
-   colorati SOLO i due tasti contatto in fondo (verde / oro).
-   ============================================================ */
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured),
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(2),
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:nth-child(3){
-  --bl-accent:#FFFFFF;
-  --bl-edge:rgba(255,255,255,.22);
-  --bl-glow:rgba(255,255,255,.10);
-}
-.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-format{ color:rgba(255,255,255,.55); }
-
-.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured{
-  background:rgba(255,255,255,.05);
-  border:1px solid rgba(255,255,255,.22);
-  box-shadow:0 0 0 1px rgba(255,255,255,.05), 0 36px 90px -34px rgba(0,0,0,.8);
-  color:#F3EEE2;
-}
-.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured::after{ background:none; }
-.bl-feat-ribbon{ background:rgba(255,255,255,.16); color:#fff; box-shadow:0 6px 14px rgba(0,0,0,.4); }
-.bl-feat-gem{ color:rgba(255,255,255,.7); }
-.bl-feat-name{
-  background:none; -webkit-background-clip:border-box; background-clip:border-box;
-  -webkit-text-fill-color:#fff; color:#fff; filter:none;
-}
-.bl-feat-pill{ background:rgba(255,255,255,.10); color:rgba(255,255,255,.85); }
-.bl-tier.is-featured .bl-social{ color:rgba(255,255,255,.7); }
-.bl-stars{ color:rgba(255,255,255,.6); }
-.bl-feat-item{ color:rgba(255,255,255,.85); }
-.bl-feat-ic{ background:rgba(255,255,255,.08); color:rgba(255,255,255,.78); }
-.bl-feat-pricewrap{ border-top-color:rgba(255,255,255,.14); }
-.bl-compare{ color:rgba(255,255,255,.6); }
-.bl-compare s{ color:rgba(255,255,255,.42); }
-.bl-today{ color:rgba(255,255,255,.6); }
-.bl-price-big{
-  background:none; -webkit-background-clip:border-box; background-clip:border-box;
-  -webkit-text-fill-color:#fff; color:#fff; filter:none;
-}
-.bl-tier.is-featured .bl-cta-dark{
-  background:#F2ECDE; color:#15130D; border:1px solid rgba(255,255,255,.2);
-}
-.bl-tier.is-featured .bl-cta-dark:hover{ background:#fff; filter:none; transform:translateY(-2px); }
-.bl-feat-scarcity{ color:rgba(255,255,255,.7); }
-.bl-bottom-note{ color:rgba(255,255,255,.7); }
 
 /* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
@@ -3722,7 +3674,6 @@ function bookingLadderIcon(name){
   }
 }
 
-
 /* Icone SVG inline per categorie trattamenti */
 function treatmentIconSvg(name){
   const S = path => `<svg class="tl-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" width="18" height="18">${path}</svg>`;
@@ -3848,7 +3799,6 @@ function renderFooter(data){
       </div>
     </div>`;
 }
-
 
 /* ==========================================================
    INIT — fetch content.json, set colors, render everything
