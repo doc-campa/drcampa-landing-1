@@ -2688,6 +2688,54 @@ section[style*="--section-text"] li { color:inherit; }
 }
 
 /* ============================================================
+   SCALA PRENOTAZIONI — card scure + BORDO ORO, NIENTE alone
+   (stesso fondo per tutte; premium = fondo scuro con bordo oro)
+   ============================================================ */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured){
+  background:#0C0D11;
+  border:1px solid rgba(231,192,103,.45);
+  box-shadow:none;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{
+  background:rgba(231,192,103,.10); box-shadow:none;
+  border:1.5px solid rgba(231,192,103,.55);
+}
+/* Premium: da oro pieno a fondo scuro con bordo oro brillante */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured{
+  background:#0C0D11;
+  border:1.6px solid #E7C067;
+  box-shadow:none;
+  color:#F3EEE2;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured::after{ background:none; }
+.bl-feat-name{
+  background:linear-gradient(180deg,#F6DD96 0%,#E7C067 50%,#C99B43 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:none;
+}
+.bl-feat-gem{ color:#E7C067; }
+.bl-feat-pill{ background:rgba(231,192,103,.12); color:#F3EEE2; border:1px solid rgba(231,192,103,.28); }
+.bl-tier.is-featured .bl-social{ color:rgba(247,243,236,.7); }
+.bl-stars{ color:#E7C067; }
+.bl-feat-item{ color:rgba(247,243,236,.9); }
+.bl-feat-ic{ background:rgba(231,192,103,.12); color:#E7C067; }
+.bl-feat-pricewrap{ border-top-color:rgba(231,192,103,.22); }
+.bl-compare{ color:rgba(247,243,236,.6); }
+.bl-compare s{ color:rgba(247,243,236,.42); }
+.bl-today{ color:rgba(247,243,236,.7); }
+.bl-price-big{
+  background:linear-gradient(180deg,#FBE6A2,#E7C067);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:none;
+}
+.bl-tier.is-featured .bl-cta-dark{
+  background:linear-gradient(135deg,#F4D58A,#C99B43); color:#1C1405; border:none;
+}
+.bl-tier.is-featured .bl-cta-dark:hover{ filter:brightness(1.06); transform:translateY(-2px); }
+.bl-feat-scarcity{ color:rgba(247,243,236,.65); }
+.bl-bottom-note{ background:rgba(0,0,0,.35); color:rgba(231,192,103,.85); }
+
+/* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
    ============================================================ */
 .hero.hero-centered{
