@@ -2062,7 +2062,7 @@ const previewTemplates = {
   },
   booking_ladder(s){
     const checkSvg = '<svg class="bl-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>';
-    const tiers = (s.tiers||[]).filter(t => t && (t.name || t.price)).map(t => {
+    const renderTier = (t)=>{
       const isFeatured = !!t.featured && t.featured !== '';
       const isFree = !!t.free && t.free !== '';
       const priceRaw = String(t.price||'').trim();
@@ -2089,7 +2089,17 @@ const previewTemplates = {
           ${t.cta_label?`<span class="bl-cta">${esc(t.cta_label)} →</span>`:''}
         </div>
       </div>`;
-    }).join('');
+    };
+    const all = (s.tiers||[]).filter(t => t && (t.name || t.price));
+    let tiers;
+    if(s.layout === 'columns'){
+      const paid = all.filter(t => !(t.free && t.free !== ''));
+      const free = all.filter(t => t.free && t.free !== '');
+      tiers = `<div class="bl-row bl-row-paid">${paid.map(renderTier).join('')}</div>`
+        + (free.length ? `<div class="bl-row bl-row-free">${free.map(renderTier).join('')}</div>` : '');
+    } else {
+      tiers = all.map(renderTier).join('');
+    }
     return `<section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}">
       <div class="container">
         <div class="bl-head">
