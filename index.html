@@ -2669,6 +2669,9 @@ section[style*="--section-text"] li { color:inherit; }
 @media (max-width:760px){
   /* In colonne su mobile: 1 card per riga, ripristino azione verticale pulita */
   .booking-ladder.bl-columns .bl-row { flex-direction:column; }
+  /* FIX: in colonna le card si dimensionano sul contenuto (no collasso/clip) */
+  .booking-ladder.bl-columns .bl-row > .bl-tier,
+  .booking-ladder.bl-columns .bl-row > .bl-tier.is-featured { flex:1 1 auto; }
   .booking-ladder.bl-columns .bl-row-free { max-width:none; }
   .bl-feat-grid { grid-template-columns:1fr; gap:16px; }
   .bl-feat-right { border-left:none; border-top:1px solid rgba(35,25,5,.18); padding-left:0; padding-top:16px; }
