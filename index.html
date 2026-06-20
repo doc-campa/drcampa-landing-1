@@ -2737,6 +2737,38 @@ section[style*="--section-text"] li { color:inherit; }
 .bl-feat-scarcity{ color:rgba(247,243,236,.65); }
 .bl-bottom-note{ background:rgba(0,0,0,.35); color:rgba(231,192,103,.85); }
 
+/* --- titoli card in Bebas Neue --- */
+.bl-feat-name,
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-name{
+  font-family:var(--font-display),'Bebas Neue',sans-serif !important;
+  font-weight:400 !important; letter-spacing:.014em;
+}
+.bl-feat-name{ font-size:clamp(2.1rem,3vw,2.9rem) !important; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-name{
+  font-size:1.7rem; line-height:1.02;
+}
+/* --- testi card piu grandi e leggibili --- */
+.bl-feat-item{ font-size:.96rem; line-height:1.32; }
+.bl-feat-pill{ font-size:.96rem; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{ font-size:.95rem; line-height:1.42; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-features li{ font-size:.95rem; line-height:1.32; }
+/* --- premium: pulsante spinto in basso --- */
+.bl-tier.is-featured .bl-feat-pad{ display:flex; flex-direction:column; height:100%; }
+.bl-tier.is-featured .bl-feat-pricewrap{ margin-top:auto; }
+/* --- hover CTA premium: resta oro, testo leggibile --- */
+.bl-tier.is-featured .bl-cta-dark:hover{
+  background:linear-gradient(135deg,#FBE6A2,#E7C067) !important;
+  color:#15110A !important; filter:none; transform:translateY(-2px);
+}
+/* --- CTA secondarie: semplici e leggibili --- */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta{
+  background:transparent; color:#EBD08A;
+  border:1.5px solid rgba(231,192,103,.6); font-weight:700;
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta:hover{
+  background:#E7C067; color:#15110A; filter:none;
+}
+
 /* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
    ============================================================ */
