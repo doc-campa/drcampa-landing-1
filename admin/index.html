@@ -2126,7 +2126,7 @@ const previewTemplates = {
       return `<div class="bl-button ${isWa?'bl-button-wa':'bl-button-gold'}">
         <span class="bl-button-ic">${previewBookingLadderIcon(t.icon||'chat')}</span>
         <span class="bl-button-tx"><strong>${esc(t.name||t.cta_label||'')}</strong>${sub?`<small>${richText(sub)}</small>`:''}</span>
-        <span class="bl-button-arrow" aria-hidden="true">→</span>
+        <span class="bl-button-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="12" x2="19" y2="12"/><polyline points="13 6 19 12 13 18"/></svg></span>
       </div>`;
     };
     const all = (s.tiers||[]).filter(t => t && (t.name || t.price));
