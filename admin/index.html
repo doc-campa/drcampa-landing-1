@@ -727,7 +727,7 @@ const TYPE_DESC = {
   features_card: 'Pillole arancioni',
   cta_form: 'Form di contatto finale',
   video_block: 'Sezione con video grande',
-  before_after: 'Foto prima/dopo con slider e disclaimer',
+  before_after: 'Griglia prima/dopo (5 colonne) su sfondo nero',
   treatments_list: 'Lista trattamenti organizzati per categoria',
   spacer: 'Spazio vuoto regolabile tra le sezioni',
   stats_band: 'Fascia con numeri che si animano allo scroll',
@@ -763,7 +763,7 @@ const SECTION_DEFAULTS = {
   features_card: { bg:'#F7F3EC', accent:'#C8A86B', text:'#F7F3EC', card:'#123C46' },
   cta_form:      { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E', card:'#F7F3EC' },
   video_block:   { bg:'#F7F3EC', accent:'#C8A86B', text:'#1E1E1E' },
-  before_after:  { bg:'#EFE9DD', accent:'#123C46', text:'#1E1E1E' },
+  before_after:  { bg:'#000000', accent:'#C8A86B', text:'#FFFFFF' },
   treatments_list: { bg:'#F7F3EC', accent:'#123C46', text:'#1E1E1E' },
   spacer: { bg:'transparent', accent:'#C8A86B', text:'#1E1E1E' },
   stats_band: { bg:'#0E1626', accent:'#C2825A', text:'#ECEEF4' },
@@ -985,6 +985,7 @@ const SECTION_SCHEMA = {
   ],
   before_after: [
     ['id', 'ID per link interni', 'text', 'Es: "risultati" per linkare con #risultati dal menu.'],
+    ['eyebrow', 'Sopra-titolo (opzionale)', 'text', 'Piccola scritta in maiuscolo sopra al titolo, es: "I NOSTRI RISULTATI". Lascia vuoto per non mostrarla.'],
     ['title_a', 'Titolo - parte normale', 'text', 'Es: "Risultati"'],
     ['title_italic', 'Titolo - parte in corsivo', 'text', 'Es: "che parlano da soli"'],
     ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Es: "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato."'],
@@ -1967,25 +1968,25 @@ const previewTemplates = {
     </section>`;
   },
   before_after(s){
-    const items = (s.items||[]).map(it => {
-      const before = it.before_image ? imgTag(it.before_image, 'Prima') : '<div class="ba-placeholder">Foto Prima</div>';
-      const after  = it.after_image ? imgTag(it.after_image, 'Dopo') : '<div class="ba-placeholder">Foto Dopo</div>';
-      return `<div class="ba-card">
-        ${it.title?`<div class="ba-card-head"><h3>${esc(it.title)}</h3>${it.description?`<p>${richText(it.description)}</p>`:''}</div>`:''}
-        <div class="ba-compare">
-          <div class="ba-image ba-after">${after}<span class="ba-label ba-label-after">${esc(it.after_label||'Dopo')}</span></div>
-          <div class="ba-image ba-before" style="clip-path:polygon(0 0, 50% 0, 50% 100%, 0 100%)">${before}<span class="ba-label ba-label-before">Prima</span></div>
-          <div class="ba-handle" style="left:50%"><div class="ba-handle-line"></div><div class="ba-handle-grip"></div></div>
-        </div>
+    const cases = (s.items||[]).map(it => {
+      const ph = '<div class="ba-empty">Foto in arrivo</div>';
+      const beforeHtml = it.before_image ? imgTag(it.before_image, 'Prima') : ph;
+      const afterHtml  = it.after_image ? imgTag(it.after_image, 'Dopo') : ph;
+      const cap = (it.title||it.description) ? `<div class="ba-cap">${it.title?`<span class="ba-cap-title">${esc(it.title)}</span>`:''}${it.description?`<span class="ba-cap-desc">${richText(it.description)}</span>`:''}</div>` : '';
+      return `<div class="ba-case">
+        <div class="ba-shot">${beforeHtml}<span class="ba-tag ba-tag-before">Prima</span></div>
+        <div class="ba-shot">${afterHtml}<span class="ba-tag ba-tag-after">${esc(it.after_label||'Dopo')}</span></div>
+        ${cap}
       </div>`;
     }).join('');
     return `<section${sectionStyleAttr(s)} class="before-after">
       <div class="container">
         <div class="ba-head">
+          ${s.eyebrow?`<span class="ba-eyebrow">${esc(s.eyebrow)}</span>`:''}
           <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
           ${s.subtitle?`<p class="ba-subtitle">${richText(s.subtitle)}</p>`:''}
         </div>
-        <div class="ba-grid">${items}</div>
+        <div class="ba-grid">${cases}</div>
         ${s.disclaimer?`<p class="ba-disclaimer">${richText(s.disclaimer)}</p>`:''}
       </div>
     </section>`;
