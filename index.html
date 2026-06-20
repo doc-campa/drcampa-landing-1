@@ -2790,6 +2790,69 @@ section[style*="--section-text"] li { color:inherit; }
   .hero-cta-btn{ font-size:1rem; padding:13px 24px; white-space:normal; text-align:center; }
   .hero-mission-badge{ font-size:.8rem; padding:9px 14px; }
 }
+
+/* ============================================================
+   TEMA CHIARO  —  attivo con <html data-theme="light">
+   Le sezioni "a variabile" si ribaltano da sole; qui rimappo le
+   variabili, tengo scure le sezioni media (hero/video) e converto
+   le 3 sezioni col nero cablato (trattamenti, risultati, scala).
+   ============================================================ */
+:root[data-theme="light"]{
+  --petrol:#F5F1E9; --petrol-darker:#EDE8DD; --petrol-soft:#E0D9CA; --petrol-tint:#EBE5D9;
+  --ivory:#1B2433; --ivory-deeper:#2A3346;
+  --ink:#1B2433; --ink-soft:#4C566B; --ink-light:#7C8597;
+  --mist:#E2DCCF; --mist-soft:#EEE9DE; --line:#E2DCCF; --line-hair:rgba(20,28,46,.10);
+  --bg-soft:#FFFFFF; --bg-warm:#F3EEE4; --cream:#FFFFFF;
+  --gold:#A66A45; --gold-deeper:#8A5436;
+  --coral-1:#F5F1E9; --coral-2:#F5F1E9; --coral-deep:#F5F1E9; --coral-darker:#EDE8DD; --coral-soft:#EBE5D9;
+}
+:root[data-theme="light"] .hero{ background:#141C2E !important; --ink:#ECEEF4; --ink-soft:#C3C9D4; --ivory:#ECEEF4; }
+:root[data-theme="light"] .hero-centered{ background:#0E1422 !important; --ink:#ECEEF4; --ink-soft:#C3C9D4; --ivory:#ECEEF4; }
+:root[data-theme="light"] section[style*="--section-bg"]:not(.hero):not(.hero-centered):not(.wake-videos){ background:#F5F1E9 !important; }
+:root[data-theme="light"] section[style*="--section-text"]:not(.hero):not(.hero-centered):not(.wake-videos){ color:#1B2433; }
+:root[data-theme="light"] .before-after{ background:#F5F1E9; color:#1B2433; }
+:root[data-theme="light"] .ba-cap{ color:#4C566B; }
+:root[data-theme="light"] .treatments-list{ background:#F5F1E9; color:#1B2433; }
+:root[data-theme="light"] .tl-head h2{ color:#1B2433; }
+:root[data-theme="light"] .tl-subtitle{ color:#4C566B; }
+:root[data-theme="light"] .tl-tabs{ background:#FFFFFF; border-color:#E2DCCF; }
+:root[data-theme="light"] .tl-tab{ color:#4C566B; }
+:root[data-theme="light"] .tl-tab:hover{ color:var(--gold); background:rgba(166,106,69,.06); }
+:root[data-theme="light"] .tl-tab .tl-icon{ color:#9AA1AE; }
+:root[data-theme="light"] .tl-cat-desc{ color:#5A6172; }
+:root[data-theme="light"] .tl-treatment{ background:#FFFFFF; border-color:#E6E0D4; color:#283042; }
+:root[data-theme="light"] .tl-treatment:hover{ background:#FBF8F1; border-color:rgba(166,106,69,.4); }
+:root[data-theme="light"] .tl-footer-note{ color:#7C8597; }
+:root[data-theme="light"] .bl-title{ color:#1B2433; }
+:root[data-theme="light"] .bl-eyebrow, :root[data-theme="light"] .bl-subtitle{ color:#4C566B; }
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured){
+  background:#FFFFFF; border-color:#E6E0D4;
+  --bl-accent:#A66A45; --bl-edge:rgba(166,106,69,.5); --bl-glow:rgba(166,106,69,.16);
+}
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-tier-name,
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-price{
+  background:none; -webkit-text-fill-color:#1B2433; color:#1B2433;
+}
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{
+  background:#F6F2EA; color:#3a4254; border-color:#E6E0D4;
+}
+:root[data-theme="light"] .bl-features li{ color:#3a4254; }
+:root[data-theme="light"] .bl-button-tx strong{ color:#1B2433; }
+:root[data-theme="light"] .bl-button-tx small{ color:#6b7180; }
+:root[data-theme="light"] .bl-button-wa, :root[data-theme="light"] .bl-button-gold{ background:#FFFFFF; }
+:root[data-theme="light"] .bl-or{ color:#8a8f97; }
+:root[data-theme="light"] .footer{ color:#4C566B; }
+:root[data-theme="light"] .footer h5{ color:#1B2433; }
+:root[data-theme="light"] .footer a{ color:#4C566B; }
+:root[data-theme="light"] .footer a:hover{ color:var(--orange); }
+:root[data-theme="light"] .footer .logo-mark-img img{ filter:none; }
+.theme-toggle{ width:38px; height:38px; border-radius:50%; border:1px solid rgba(42,54,86,.22); background:transparent; color:#2A3656; display:grid; place-items:center; cursor:pointer; padding:0; transition:color .2s, border-color .2s; }
+.theme-toggle:hover{ color:var(--orange); border-color:var(--orange); }
+.theme-toggle svg{ width:18px; height:18px; }
+.theme-toggle .ic-sun{ display:none; }
+:root[data-theme="light"] .theme-toggle .ic-moon{ display:none; }
+:root[data-theme="light"] .theme-toggle .ic-sun{ display:block; }
+
 </style>
 </head>
 <body>
@@ -3766,6 +3829,10 @@ function renderNav(data){
       <div class="nav-cta">
         ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login">${esc(nav.phone_label)}</a>`:''}
         ${nav.cta_label?`<a href="${esc(nav.cta_href||'#')}" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambia tema chiaro o scuro" title="Tema chiaro / scuro">
+          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>
         <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -3804,6 +3871,7 @@ function renderFooter(data){
    INIT — fetch content.json, set colors, render everything
    ========================================================== */
 async function init(){
+  try{document.documentElement.setAttribute("data-theme", localStorage.getItem("theme")||"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}
   let data;
   try {
     const res = await fetch('content.json?t=' + Date.now(), {cache:'no-store'});
@@ -4101,6 +4169,7 @@ function initTreatmentsTabs(){
 }
 
 function initBehaviors(){
+  (function(){var tt=document.getElementById("themeToggle");if(tt){tt.addEventListener("click",function(){var c=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",c);try{localStorage.setItem("theme",c);}catch(e){}});}})();
 
   // ---- VIDEO MODAL ----
   initVideoModal();
