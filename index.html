@@ -2692,9 +2692,9 @@ section[style*="--section-text"] li { color:inherit; }
    (stesso fondo per tutte; premium = fondo scuro con bordo oro)
    ============================================================ */
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured){
-  background:#0C0D11;
-  border:1px solid rgba(231,192,103,.45);
-  box-shadow:none;
+  background:#000;
+  border:1px solid rgba(231,192,103,.6);
+  box-shadow:0 0 0 1px rgba(231,192,103,.22), 0 0 12px 0 rgba(231,192,103,.30), inset 0 0 16px -6px rgba(231,192,103,.22);
 }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{
   background:rgba(231,192,103,.10); box-shadow:none;
@@ -2702,11 +2702,13 @@ section[style*="--section-text"] li { color:inherit; }
 }
 /* Premium: da oro pieno a fondo scuro con bordo oro brillante */
 .booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured{
-  background:#0C0D11;
-  border:1.6px solid #E7C067;
-  box-shadow:none;
+  background:#000;
+  border:1.5px solid #E7C067;
+  box-shadow:0 0 0 1px rgba(231,192,103,.45), 0 0 18px 1px rgba(231,192,103,.42), inset 0 0 20px -6px rgba(231,192,103,.30);
   color:#F3EEE2;
 }
+/* sezione: niente alone caldo, nero uniforme */
+.booking-ladder::before{ background:none; }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier.is-featured::after{ background:none; }
 .bl-feat-name{
   background:linear-gradient(180deg,#F6DD96 0%,#E7C067 50%,#C99B43 100%);
