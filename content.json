@@ -257,46 +257,6 @@
       "cta_label": "Scopri tutti i risultati su Instagram"
     },
     {
-      "type": "problem",
-      "id": "studio",
-      "watermark": "Dr. Campa",
-      "title_a": "L'Estetica Non è il Problema.",
-      "title_accent": "La Confusione Lo È.",
-      "intro_paragraphs": [
-        "Viviamo un'epoca in cui parlare di chirurgia estetica è facilissimo. Pareri ovunque, prima e dopo su Instagram, tendenze che cambiano ogni stagione, opinioni più rumorose della verità clinica.",
-        "La maggior parte delle persone sa di volersi sentire meglio nel proprio corpo."
-      ],
-      "questions": [
-        "Ma da dove si parte?",
-        "Quale intervento serve davvero?",
-        "Come si sceglie un chirurgo di cui fidarsi senza esagerare né rinunciare?"
-      ],
-      "middle_paragraphs": [
-        "Si cercano risposte online. Si confrontano cliniche. Si guarda chi costa meno.",
-        "Ma niente di tutto questo aiuta a capire cosa è giusto per te."
-      ],
-      "quote_lines": [
-        "Il vero problema non è l'estetica.",
-        "È la mancanza di ascolto.",
-        "Lo Studio del Dr. Campa nasce per questo: ridurre il rumore, mettere al centro la persona, e costruire un percorso che restituisce armonia — non un volto standardizzato."
-      ],
-      "final_line": "Non si tratta di moda. Si tratta di costruire un'estetica che resta tua."
-    },
-    {
-      "type": "about",
-      "title": "Una chirurgia che mette la persona prima della procedura.",
-      "lead": "L'intelligenza chirurgica avanza a velocità straordinaria. Quello che manca alla maggior parte delle persone non è la tecnologia. È una guida di cui fidarsi.",
-      "photo": "/images/1779893710599-a1-p5a7086.webp",
-      "body_paragraphs": [
-        "<strong>Lo Studio Campa è nato per colmare quel divario.</strong>",
-        "Da oltre vent'anni il Dr. Domenico Campa accompagna pazienti in percorsi di chirurgia estetica e medicina rigenerativa fatti di ascolto, precisione clinica e risultati naturali. Formatosi tra le scuole italiane e i centri d'eccellenza europei, ha trasformato la sua esperienza in un metodo riconosciuto.",
-        "Oggi opera in strutture sanitarie accreditate ed è voce esperta in pubblicazioni nazionali, programmi televisivi e congressi internazionali.",
-        "L'arrivo delle nuove tecnologie e delle tecniche mini-invasive rappresenta un cambiamento strutturale.",
-        "Non una moda. Una nuova era della chirurgia."
-      ],
-      "callout": "Lo Studio Campa è stato costruito per attraversare questo momento in modo diverso."
-    },
-    {
       "type": "value_card",
       "title": "Con il Dr. Campa torni protagonista... Della tua immagine.",
       "lead": "Il mondo della chirurgia estetica non rallenterà e i ritocchi non spariranno. Aspettare non rende le scelte più semplici. Ma con il giusto ascolto, struttura e accompagnamento, il percorso non deve sembrare un salto nel vuoto.",
@@ -320,35 +280,6 @@
       ],
       "footnote": "Non devi capire tutto da sola, né inseguire ogni novità. Hai bisogno di un punto di partenza chiaro, di un metodo costante, e di una guida che restituisca controllo",
       "footnote_strong": "sul tuo tempo, sulle tue scelte, sul tuo futuro."
-    },
-    {
-      "type": "method",
-      "id": "trattamenti",
-      "title_a": "Il Metodo",
-      "title_accent": "Campa",
-      "subtitle_a": "Un sistema strutturato per una chirurgia che funziona davvero.",
-      "subtitle_b": "La maggior parte degli studi punta sulle tecniche. Sulle protesi più nuove. Sui macchinari di tendenza.",
-      "subtitle_strong": "Il Metodo Campa punta sulla struttura del percorso.",
-      "cards": [
-        {
-          "num": "01",
-          "photo": "https://images.unsplash.com/photo-1573497019418-b400bb3ab074?auto=format&fit=crop&w=900&q=80",
-          "title": "Ascoltare",
-          "body": "Il primo passo non è la chirurgia. È il discernimento. Identifichiamo dove un intervento crea valore reale e dove invece non serve. Questa fase elimina le distrazioni e definisce l'obiettivo."
-        },
-        {
-          "num": "02",
-          "photo": "https://images.unsplash.com/photo-1581595220892-b0739db3ba8c?auto=format&fit=crop&w=900&q=80",
-          "title": "Pianificare",
-          "body": "L'intervento deve essere integrato nella tua vita, non sovrapposto. In questa fase progettiamo tempi, tecnica e recupero in modo che il percorso diventi sostenibile, riducendo dubbi ed eliminando passaggi inutili."
-        },
-        {
-          "num": "03",
-          "photo": "https://images.unsplash.com/photo-1583912267550-d6c2ac3196c0?auto=format&fit=crop&w=900&q=80",
-          "title": "Eseguire",
-          "body": "Il tempo recuperato attraverso una procedura ben strutturata si trasforma in un vantaggio misurabile. È qui che i pazienti smettono di reagire al cambiamento e cominciano a vivere il risultato."
-        }
-      ]
     },
     {
       "type": "treatments_list",
@@ -596,34 +527,6 @@
       ],
       "footer_a": "Ogni paziente inizia con la consulenza. Da lì, la medicina estetica diventa un alleato quotidiano. Quando serve, percorsi strutturati evolvono in chirurgia.",
       "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente."
-    },
-    {
-      "type": "programs",
-      "title_a": "I",
-      "title_accent": "Percorsi",
-      "subtitle": "Tre vie d'ingresso, una sola filosofia.",
-      "cards": [
-        {
-          "tag": "Studio Campa",
-          "title": "Consulto Gratuito",
-          "subtitle": "Il Punto di Partenza",
-          "body": "Un colloquio conoscitivo, senza impegno, dove ascoltiamo le tue esigenze. La consulenza è il momento in cui costruiamo insieme un piano realistico, condividiamo risultati attesi, e definiamo se la chirurgia è davvero la strada giusta — o se non lo è.",
-          "link_label": "Prenota Ora →",
-          "link_href": "#contatti",
-          "photo": "https://images.unsplash.com/photo-1631815588090-d4bfec5b1ccb?auto=format&fit=crop&w=1200&q=80",
-          "reverse": false
-        },
-        {
-          "tag": "Studio Campa",
-          "title": "Percorso Bellezza",
-          "subtitle": "L'Integrazione Quotidiana",
-          "body": "Un programma di medicina estetica strutturato su 12 mesi. Trattamenti mini-invasivi calibrati sulla tua fisionomia, follow-up costanti, accesso prioritario alla segreteria. Pensato per chi vuole prendersi cura di sé in modo continuo, senza interventi chirurgici.",
-          "link_label": "Scopri di Più →",
-          "link_href": "#contatti",
-          "photo": "https://images.unsplash.com/photo-1582719471384-894fbb16e074?auto=format&fit=crop&w=1200&q=80",
-          "reverse": true
-        }
-      ]
     },
     {
       "type": "audience",
