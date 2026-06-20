@@ -251,7 +251,10 @@
           "after_label": "Dopo il trattamento"
         },
         {}
-      ]
+      ],
+      "style": {
+        "text": "#000000"
+      }
     },
     {
       "type": "problem",
