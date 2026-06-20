@@ -704,7 +704,7 @@ const TYPE_LABELS = {
   features_card: '✅ Caratteristiche',
   cta_form: '📩 Form Contatti',
   video_block: '🎬 Video',
-  before_after: '🔄 Prima / Dopo',
+  before_after: '🖼️ Risultati',
   treatments_list: '🗂️ Lista trattamenti',
   spacer: '⬜ Spazio / Separatore',
   stats_band: '🔢 Fascia numeri animati',
@@ -727,7 +727,7 @@ const TYPE_DESC = {
   features_card: 'Pillole arancioni',
   cta_form: 'Form di contatto finale',
   video_block: 'Sezione con video grande',
-  before_after: 'Griglia prima/dopo (5 colonne) su sfondo nero',
+  before_after: 'Griglia di risultati con pill trattamento, su sfondo nero',
   treatments_list: 'Lista trattamenti organizzati per categoria',
   spacer: 'Spazio vuoto regolabile tra le sezioni',
   stats_band: 'Fascia con numeri che si animano allo scroll',
@@ -990,12 +990,9 @@ const SECTION_SCHEMA = {
     ['title_italic', 'Titolo - parte in corsivo', 'text', 'Es: "che parlano da soli"'],
     ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Es: "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato."'],
     ['disclaimer', 'Disclaimer in basso (opzionale)', 'textarea', 'Es: "Le immagini sono pubblicate con consenso esplicito dei pazienti ai sensi del DPR n. 137/2012. Ogni caso clinico è unico: i risultati possono variare."'],
-    ['items', 'Casi prima/dopo', 'list-object', null, [
-      ['title', 'Titolo del caso (es. "Rinoplastica - Paziente di 32 anni")', 'text'],
-      ['description', 'Breve descrizione (1-2 frasi, opzionale)', 'textarea', 'Es: "Correzione del dorso e affinamento punta. Risultato a 6 mesi dall\'intervento."'],
-      ['before_image', 'Foto PRIMA', 'image'],
-      ['after_image', 'Foto DOPO', 'image'],
-      ['after_label', 'Etichetta sotto al dopo (es. "Dopo 6 mesi")', 'text', 'Lascia vuoto per usare semplicemente "Dopo".']
+    ['items', 'Risultati', 'list-object', null, [
+      ['image', 'Foto risultato', 'image'],
+      ['label', 'Testo pill (nome trattamento, opzionale)', 'text', 'Compare come etichetta sulla foto. Lascia vuoto per non mostrare nessuna pill.']
     ]]
   ],
   treatments_list: [
@@ -1970,14 +1967,9 @@ const previewTemplates = {
   before_after(s){
     const cases = (s.items||[]).map(it => {
       const ph = '<div class="ba-empty">Foto in arrivo</div>';
-      const beforeHtml = it.before_image ? imgTag(it.before_image, 'Prima') : ph;
-      const afterHtml  = it.after_image ? imgTag(it.after_image, 'Dopo') : ph;
-      const cap = (it.title||it.description) ? `<div class="ba-cap">${it.title?`<span class="ba-cap-title">${esc(it.title)}</span>`:''}${it.description?`<span class="ba-cap-desc">${richText(it.description)}</span>`:''}</div>` : '';
-      return `<div class="ba-case">
-        <div class="ba-shot">${beforeHtml}<span class="ba-tag ba-tag-before">Prima</span></div>
-        <div class="ba-shot">${afterHtml}<span class="ba-tag ba-tag-after">${esc(it.after_label||'Dopo')}</span></div>
-        ${cap}
-      </div>`;
+      const media = it.image ? imgTag(it.image, it.label||'Risultato') : ph;
+      const pill = it.label ? `<span class="ba-tag ba-tag-after">${esc(it.label)}</span>` : '';
+      return `<div class="ba-case"><div class="ba-shot">${media}${pill}</div></div>`;
     }).join('');
     return `<section${sectionStyleAttr(s)} class="before-after">
       <div class="container">
