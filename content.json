@@ -93,8 +93,9 @@
         }
       ],
       "style": {
-        "bg": "#021318",
-        "accent": "#fafafa"
+        "bg": "#000000",
+        "accent": "#ffffff",
+        "text": "#ffffff"
       },
       "label_size": "large",
       "intro_size": "large",
