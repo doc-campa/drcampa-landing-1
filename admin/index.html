@@ -1148,7 +1148,6 @@ const TOPBAR_SCHEMA = [
   ['bg_color', 'Colore di sfondo della barra', 'color', '#0D2E36', 'Il colore della barra in alto. Default petrol scuro.'],
   ['bg_color_2', 'Colore di sfondo 2 (per sfumatura, opzionale)', 'color', '#123C46', 'Se diverso dal primo, crea una sfumatura orizzontale. Mettilo uguale al primo per un colore pieno.'],
   ['text_color', 'Colore del testo', 'color', '#F7F3EC', 'Il colore del testo delle voci. Default ivory chiaro.'],
-  ['pillars_text', 'Pilastri a sinistra (scudo dorato)', 'text', 'Testo a sinistra con icona scudo, mostrato in MAIUSCOLO. Default: "Esperienza \u00b7 Eccellenza \u00b7 Risultati".'],
   ['items', 'Voci della barra (in ordine)', 'list-object', null, [
     ['label', 'Testo della voce', 'text', 'Es: "5,0 · 2.219 recensioni Google" oppure "Chirurgo Plastico, Napoli"'],
     ['href', 'Link (opzionale)', 'text', 'Se inserito, la voce diventa cliccabile. Es: link recensioni Google, ancora #newsletter, link Calendly.'],
@@ -1157,6 +1156,7 @@ const TOPBAR_SCHEMA = [
       ['', '— Nessuna —'],
       ['star', 'Stelle (recensioni)'],
       ['dot', 'Pallino pulsante (urgency)'],
+      ['shield', 'Scudo (pilastri)'],
       ['fire', 'Fiamma (hot)'],
       ['newsletter', 'Busta (newsletter)'],
       ['calendar', 'Calendario'],
@@ -2193,24 +2193,26 @@ function renderPreviewTopbar(d){
   const validItems = (tb.items||[]).filter(it => it && it.label && String(it.label).trim());
   if(!validItems.length) return '';
   const built = validItems.map(item => {
-    const isLink = !!item.href;
-    const tag = isLink ? 'a' : 'span';
-    const cls = `topbar-item ${isLink?'is-link':''}`;
+    let label = esc(item.label||'');
+    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
+    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
+    if(item.icon === 'shield'){
+      return {item, html:`<span class="topbar-item topbar-pillars"><span class="topbar-shield">${previewTopbarIconSvg('shield')}</span><span class="topbar-pillars-text">${label}</span></span>`};
+    }
     let inner = '';
     if(item.icon === 'star') inner = `<span class="topbar-star">★★★★★</span>`;
     else if(item.icon === 'dot') inner = `<span class="topbar-dot" aria-hidden="true"></span>`;
     else if(item.icon) inner = `<span class="topbar-icon">${previewTopbarIconSvg(item.icon)}</span>`;
-    let label = esc(item.label||'');
-    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
-    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
-    return {item, html: `<${tag} class="${cls}">${inner}${label}</${tag}>`};
+    return {item, html: `<span class="topbar-item">${inner}${label}</span>`};
   });
   const googleB  = built.find(b => b.item.google_brand || b.item.icon === 'star');
   const urgencyB = built.find(b => b.item.icon === 'dot' || /person|acquist|posti|client/i.test(b.item.label||''));
-  const centerB  = googleB || built[0] || null;
-  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : (built.find(b => b !== centerB) || null);
-  const pillars  = tb.pillars_text || 'Esperienza \u00b7 Eccellenza \u00b7 Risultati';
-  const leftHtml = `<span class="topbar-item topbar-pillars"><span class="topbar-shield">${previewTopbarIconSvg('shield')}</span><span class="topbar-pillars-text">${esc(pillars)}</span></span>`;
+  const pillarsB = built.find(b => b.item.icon === 'shield');
+  const centerB  = googleB || null;
+  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : null;
+  const leftB    = (pillarsB && pillarsB !== centerB && pillarsB !== rightB) ? pillarsB
+                   : (built.find(b => b !== centerB && b !== rightB) || null);
+  const leftHtml = leftB ? leftB.html : '';
   const c1 = tb.bg_color || '#0D2E36';
   const c2 = tb.bg_color_2 || c1;
   const tc = tb.text_color || '#F7F3EC';
@@ -2402,6 +2404,10 @@ body { padding-top:36px; }
 .topbar-fixed .tb-center{ justify-content:center; }
 .topbar-fixed .tb-right{ justify-content:flex-end; }
 .topbar-fixed .topbar-item{ position:static; left:auto; top:auto; transform:none; opacity:1; pointer-events:auto; }
+@media (max-width:860px){
+  .topbar-fixed{ display:flex; flex-wrap:wrap; justify-content:center; grid-template-columns:none; gap:4px 14px; }
+  .topbar-fixed .tb-slot{ justify-content:center; }
+}
 .topbar-shield{ color:#C8A86B; display:inline-flex; align-items:center; }
 .topbar-shield svg{ width:14px; height:14px; }
 .topbar-pillars-text{ text-transform:uppercase; letter-spacing:.12em; font-weight:600; font-size:.88em; white-space:nowrap; }
