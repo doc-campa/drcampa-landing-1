@@ -33,7 +33,7 @@
     ],
     "phone_label": "Chiama",
     "phone_href": "tel:+390200000000",
-    "cta_label": "Prenota Consulto",
+    "cta_label": "Prenota Subito",
     "cta_href": "#contatti"
   },
   "sections": [
@@ -737,7 +737,7 @@
     "enabled": true,
     "items": [
       {
-        "label": "Esperienza · Eccellenza · Risultati",
+        "label": "Esperienza · Sicurezza · Risultati",
         "icon": "shield"
       },
       {
