@@ -2993,9 +2993,10 @@ section[style*="--section-text"] li { color:inherit; }
 .topbar-shield svg{ width:16px; height:16px; }
 .topbar-pillars-text{ text-transform:uppercase; letter-spacing:.13em; font-weight:600; font-size:.86em; white-space:nowrap; }
 @media (max-width:860px){
-  .topbar-fixed{ grid-template-columns:auto 1fr; gap:12px; }
-  .topbar-fixed .tb-left{ display:none; }
-  .topbar-fixed .tb-center{ justify-content:flex-start; }
+  .topbar-fixed{ display:block; grid-template-columns:none; }
+  .topbar-fixed .tb-slot{ display:none; justify-content:center; text-align:center; width:100%; }
+  .topbar-fixed .tb-slot.is-active{ display:flex; }
+  .topbar-fixed .tb-left{ justify-content:center; }
 }
 
 
@@ -3965,24 +3966,28 @@ function renderTopbar(data){
     const attrs = isLink
       ? ` href="${esc(item.href)}"${item.new_tab?' target="_blank" rel="noopener"':''}`
       : '';
-    const cls = `topbar-item ${isLink?'is-link':''}`;
-    // Decorazioni: stelle, dot urgency, oppure SVG inline per le altre icone
+    let label = esc(item.label||'');
+    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
+    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
+    // Pilastri (icona scudo): markup speciale maiuscolo
+    if(item.icon === 'shield'){
+      return {item, html:`<${tag} class="topbar-item topbar-pillars ${isLink?'is-link':''}"${attrs}><span class="topbar-shield">${topbarIconSvg('shield')}</span><span class="topbar-pillars-text">${label}</span></${tag}>`};
+    }
     let inner = '';
     if(item.icon === 'star') inner = `<span class="topbar-star">★★★★★</span>`;
     else if(item.icon === 'dot') inner = `<span class="topbar-dot" aria-hidden="true"></span>`;
     else if(item.icon) inner = `<span class="topbar-icon">${topbarIconSvg(item.icon)}</span>`;
-    // Label con grassetto e gradient google se richiesto
-    let label = esc(item.label||'');
-    if(item.google_brand) label = label.replace(/Google/g, '<span class="topbar-google">Google</span>');
-    if(item.strong_part) label = label.replace(new RegExp(esc(item.strong_part), 'g'), `<span class="topbar-strong">${esc(item.strong_part)}</span>`);
+    const cls = `topbar-item ${isLink?'is-link':''}`;
     return {item, html: `<${tag} class="${cls}"${attrs}>${inner}${label}</${tag}>`};
   });
   const googleB  = built.find(b => b.item.google_brand || b.item.icon === 'star');
   const urgencyB = built.find(b => b.item.icon === 'dot' || /person|acquist|posti|client/i.test(b.item.label||''));
-  const centerB  = googleB || built[0] || null;
-  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : (built.find(b => b !== centerB) || null);
-  const pillars  = tb.pillars_text || 'Esperienza \u00b7 Eccellenza \u00b7 Risultati';
-  const leftHtml = `<span class="topbar-item topbar-pillars"><span class="topbar-shield">${topbarIconSvg('shield')}</span><span class="topbar-pillars-text">${esc(pillars)}</span></span>`;
+  const pillarsB = built.find(b => b.item.icon === 'shield');
+  const centerB  = googleB || null;
+  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : null;
+  const leftB    = (pillarsB && pillarsB !== centerB && pillarsB !== rightB) ? pillarsB
+                   : (built.find(b => b !== centerB && b !== rightB) || null);
+  const leftHtml = leftB ? leftB.html : '';
   return `<div class="topbar-fixed">
     <div class="tb-slot tb-left">${leftHtml}</div>
     <div class="tb-slot tb-center">${centerB?centerB.html:''}</div>
@@ -4244,6 +4249,27 @@ function initVideoModal(){
    TOPBAR ROTATOR — fa scorrere le voci della topbar
    una alla volta, ogni 4 secondi, con fade.
    ========================================================== */
+function initTopbarMobileRotate(){
+  const wrap = document.querySelector('.topbar-fixed');
+  if(!wrap) return;
+  const slots = Array.from(wrap.querySelectorAll('.tb-slot'))
+    .filter(s => s.querySelector('*') || s.textContent.trim());
+  const mq = window.matchMedia('(max-width: 860px)');
+  let timer = null, idx = 0;
+  function show(i){ slots.forEach((s,k)=>s.classList.toggle('is-active', k===i)); }
+  function stop(){ if(timer){ clearInterval(timer); timer=null; } slots.forEach(s=>s.classList.remove('is-active')); }
+  function start(){
+    stop();
+    if(slots.length === 0) return;
+    idx = 0; show(0);
+    if(slots.length < 2) return;
+    timer = setInterval(()=>{ idx=(idx+1)%slots.length; show(idx); }, 3000);
+  }
+  function apply(){ if(mq.matches){ start(); } else { stop(); } }
+  apply();
+  if(mq.addEventListener) mq.addEventListener('change', apply);
+  else if(mq.addListener) mq.addListener(apply);
+}
 function initTopbarRotator(){
   if(document.querySelector('.topbar-fixed')) return;
   const items = document.querySelectorAll('.topbar-item');
@@ -4384,6 +4410,7 @@ function initBehaviors(){
 
   // ---- TOPBAR ROTATOR (una voce alla volta, ogni 4 secondi) ----
   initTopbarRotator();
+  initTopbarMobileRotate();
 
   // ---- BEFORE/AFTER SLIDERS ----
   initBeforeAfterSliders();
