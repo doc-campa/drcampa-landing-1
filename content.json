@@ -290,9 +290,9 @@
       "footer_note": "Ogni trattamento è preceduto da una consulenza personalizzata (149€) per valutare insieme l'approccio più indicato. Preventivo dettagliato condiviso dopo la visita.",
       "categories": [
         {
-          "name": "Viso",
-          "icon": "face",
-          "description": "Chirurgia e medicina estetica per l'area del viso: profilo, occhi, fronte, contorni.",
+          "name": "Chirurgia Estetica",
+          "icon": "body",
+          "description": "Interventi chirurgici per viso, seno e corpo, eseguiti dal Dr. Campa.",
           "treatments": [
             {
               "name": "Rinoplastica",
@@ -311,36 +311,13 @@
               "href": ""
             },
             {
-              "name": "Lifting fronte",
-              "href": ""
-            },
-            {
-              "name": "Lifting sopracciglio",
+              "name": "Lifting collo",
               "href": ""
             },
             {
               "name": "Otoplastica",
               "href": ""
             },
-            {
-              "name": "Correzione sorriso gengivale",
-              "href": ""
-            },
-            {
-              "name": "Liposuzione area sottomento",
-              "href": ""
-            },
-            {
-              "name": "Correzione doppio mento con fili di trazione",
-              "href": ""
-            }
-          ]
-        },
-        {
-          "name": "Seno",
-          "icon": "breast",
-          "description": "Interventi sul seno con tecniche calibrate sull'anatomia di ogni paziente.",
-          "treatments": [
             {
               "name": "Mastoplastica additiva",
               "href": ""
@@ -350,50 +327,27 @@
               "href": ""
             },
             {
-              "name": "Mastopessi con protesi",
+              "name": "Mastopessi",
               "href": ""
             },
             {
-              "name": "Mastopessi senza protesi",
+              "name": "Ginecomastia",
               "href": ""
             },
-            {
-              "name": "Mammella tuberosa",
-              "href": ""
-            },
-            {
-              "name": "Correzione asimmetrie mammarie",
-              "href": ""
-            },
-            {
-              "name": "Correzione capezzoli introflessi",
-              "href": ""
-            },
-            {
-              "name": "Ginecomastia (uomo)",
-              "href": ""
-            }
-          ]
-        },
-        {
-          "name": "Corpo",
-          "icon": "body",
-          "description": "Rimodellamento del torace, dell'addome e degli arti superiori.",
-          "treatments": [
             {
               "name": "Addominoplastica",
               "href": ""
             },
             {
-              "name": "Mini-Addominoplastica",
+              "name": "Liposuzione",
               "href": ""
             },
             {
-              "name": "Liposuzione addome e fianchi",
+              "name": "Liposcultura",
               "href": ""
             },
             {
-              "name": "Brachioplastica (lifting braccia)",
+              "name": "Gluteoplastica",
               "href": ""
             },
             {
@@ -403,47 +357,20 @@
           ]
         },
         {
-          "name": "Cosce e Glutei",
-          "icon": "legs",
-          "description": "Modellamento e rivitalizzazione di cosce, glutei e polpacci.",
-          "treatments": [
-            {
-              "name": "Liposuzione cosce e polpacci",
-              "href": ""
-            },
-            {
-              "name": "Lifting cosce",
-              "href": ""
-            },
-            {
-              "name": "Lifting glutei",
-              "href": ""
-            },
-            {
-              "name": "Aumento glutei",
-              "href": ""
-            },
-            {
-              "name": "Filler glutei",
-              "href": ""
-            }
-          ]
-        },
-        {
           "name": "Medicina Estetica",
           "icon": "syringe",
-          "description": "Trattamenti mini-invasivi senza chirurgia: filler, botox, ringiovanimento.",
+          "description": "Trattamenti iniettivi e mini-invasivi per ringiovanimento e armonia del viso.",
           "treatments": [
             {
+              "name": "Tossina botulinica",
+              "href": ""
+            },
+            {
+              "name": "Filler acido ialuronico",
+              "href": ""
+            },
+            {
               "name": "Filler labbra",
-              "href": ""
-            },
-            {
-              "name": "Lip flip",
-              "href": ""
-            },
-            {
-              "name": "Filler solchi naso-genieni",
               "href": ""
             },
             {
@@ -451,47 +378,132 @@
               "href": ""
             },
             {
-              "name": "Trattamento zigomi",
+              "name": "Biorivitalizzazione",
               "href": ""
             },
             {
-              "name": "Correzione occhiaie",
+              "name": "Fili di trazione",
               "href": ""
             },
             {
-              "name": "Foxy Eyes",
+              "name": "Peeling chimico",
               "href": ""
             },
             {
-              "name": "Trattamento rughe della fronte",
+              "name": "Mesoterapia",
               "href": ""
             },
             {
-              "name": "Trattamento zampe di gallina",
+              "name": "Trattamento occhiaie",
               "href": ""
             },
             {
-              "name": "Trattamento rughe periorali",
+              "name": "Bioristrutturazione cutanea",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Trattamenti Laser",
+          "icon": "sparkle",
+          "description": "Tecnologie laser per pelle, inestetismi e ringiovanimento cutaneo.",
+          "treatments": [
+            {
+              "name": "Epilazione laser",
               "href": ""
             },
             {
-              "name": "Trattamento iperidrosi con Botox®",
+              "name": "Laser CO2 frazionato",
               "href": ""
             },
             {
-              "name": "Ringiovanimento cutaneo",
+              "name": "Resurfacing cutaneo",
               "href": ""
             },
             {
-              "name": "Resurfacing viso",
+              "name": "Rimozione tatuaggi",
               "href": ""
             },
             {
-              "name": "Inestetismi e lesioni cutanee",
+              "name": "Laser vascolare (capillari)",
               "href": ""
             },
             {
-              "name": "Peli superflui (epilazione)",
+              "name": "Trattamento macchie cutanee",
+              "href": ""
+            },
+            {
+              "name": "Laser cicatrici e acne",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Macchinari Corpo",
+          "icon": "legs",
+          "description": "Rimodellamento corporeo e trattamenti tecnologici non invasivi.",
+          "treatments": [
+            {
+              "name": "Criolipolisi",
+              "href": ""
+            },
+            {
+              "name": "Radiofrequenza",
+              "href": ""
+            },
+            {
+              "name": "Cavitazione medica",
+              "href": ""
+            },
+            {
+              "name": "Pressoterapia",
+              "href": ""
+            },
+            {
+              "name": "Onde d'urto (cellulite)",
+              "href": ""
+            },
+            {
+              "name": "Elettrostimolazione",
+              "href": ""
+            },
+            {
+              "name": "Linfodrenaggio",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Medicina Rigenerativa",
+          "icon": "heart",
+          "description": "Stimolazione dei processi naturali di rigenerazione di pelle e tessuti.",
+          "treatments": [
+            {
+              "name": "PRP (plasma ricco di piastrine)",
+              "href": ""
+            },
+            {
+              "name": "Polinucleotidi",
+              "href": ""
+            },
+            {
+              "name": "Microneedling",
+              "href": ""
+            },
+            {
+              "name": "Needling con fattori di crescita",
+              "href": ""
+            },
+            {
+              "name": "Lipofilling rigenerativo",
+              "href": ""
+            },
+            {
+              "name": "PRP capelli",
+              "href": ""
+            },
+            {
+              "name": "Biostimolazione cutanea",
               "href": ""
             }
           ]
