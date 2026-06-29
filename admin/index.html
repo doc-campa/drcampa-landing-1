@@ -1996,10 +1996,13 @@ const previewTemplates = {
   },
   treatments_list(s){
     const cats = s.categories || [];
-    const tabs = cats.map((c,i) => `<button class="tl-tab${i===0?' is-active':''}">${esc(c.name||'')}</button>`).join('');
-    const panels = cats.map((c,i) => {
+    const chev = '<svg class="tl-acc-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    const items = cats.map((c,i) => {
       const treatments = (c.treatments||[]).map(t => `<span class="tl-treatment"><span class="tl-treatment-icon">✓</span><span class="tl-treatment-name">${esc(t.name||'')}</span></span>`).join('');
-      return `<div class="tl-panel${i===0?' is-active':''}">${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}<div class="tl-treatments-grid">${treatments}</div></div>`;
+      return `<div class="tl-acc-item${i===0?' is-open':''}">
+        <button class="tl-acc-head" type="button"><span class="tl-acc-ic"></span><span class="tl-acc-name">${esc(c.name||'')}</span>${chev}</button>
+        <div class="tl-acc-body"><div class="tl-acc-inner"><div class="tl-acc-pad">${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}<div class="tl-treatments-grid">${treatments}</div></div></div></div>
+      </div>`;
     }).join('');
     return `<section${sectionStyleAttr(s)} class="treatments-list">
       <div class="container">
@@ -2007,8 +2010,7 @@ const previewTemplates = {
           <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
           ${s.subtitle?`<p class="tl-subtitle">${richText(s.subtitle)}</p>`:''}
         </div>
-        <div class="tl-tabs">${tabs}</div>
-        <div class="tl-panels">${panels}</div>
+        <div class="tl-accordion">${items}</div>
         ${s.footer_note?`<p class="tl-footer-note">${richText(s.footer_note)}</p>`:''}
       </div>
     </section>`;
