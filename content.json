@@ -258,34 +258,6 @@
       "cta_label": "Scopri tutti i risultati su Instagram"
     },
     {
-      "type": "value_card",
-      "title": "Con il Dr. Campa torni protagonista... Della tua immagine.",
-      "lead": "Il mondo della chirurgia estetica non rallenterà e i ritocchi non spariranno. Aspettare non rende le scelte più semplici. Ma con il giusto ascolto, struttura e accompagnamento, il percorso non deve sembrare un salto nel vuoto.",
-      "lead_strong": "Può diventare il momento più consapevole della tua vita.",
-      "items": [
-        {
-          "icon": "clock",
-          "title": "Ritrova sicurezza ogni mattina",
-          "tag": "Risultati visibili"
-        },
-        {
-          "icon": "chart",
-          "title": "Passa da insicura a serena",
-          "tag": "4.1 → 8.7 / 10"
-        },
-        {
-          "icon": "shield",
-          "title": "Mai più dubbi sulla scelta",
-          "tag": "98% Soddisfazione"
-        }
-      ],
-      "footnote": "Non devi capire tutto da sola, né inseguire ogni novità. Hai bisogno di un punto di partenza chiaro, di un metodo costante, e di una guida che restituisca controllo",
-      "footnote_strong": "sul tuo tempo, sulle tue scelte, sul tuo futuro.",
-      "style": {
-        "bg": "#000105"
-      }
-    },
-    {
       "type": "treatments_list",
       "id": "trattamenti",
       "title_a": "Trattamenti",
@@ -505,39 +477,6 @@
         "bg": "#000105",
         "accent": "#C8A86B",
         "text": "#F7F3EC"
-      }
-    },
-    {
-      "type": "levels",
-      "title_a": "La",
-      "title_accent": "Piramide della Cura Estetica",
-      "subtitle": "Un percorso strutturato dalla curiosità alla padronanza.",
-      "levels": [
-        {
-          "tag": "Livello 1",
-          "title": "Consulenza & Prevenzione",
-          "body": "Il punto di partenza. Un colloquio approfondito per capire cosa serve davvero, escludere ciò che non serve, e iniziare un percorso di prevenzione."
-        },
-        {
-          "tag": "Livello 2",
-          "title": "Medicina Estetica Avanzata",
-          "body": "Trattamenti mini-invasivi pensati per integrarsi nella tua quotidianità: filler, biorivitalizzanti, tossina, peeling. Risultati naturali, recupero rapido."
-        },
-        {
-          "tag": "Livello 3",
-          "title": "Chirurgia su Misura",
-          "body": "Interventi chirurgici eseguiti in strutture accreditate, con équipe selezionate. Ogni procedura è calibrata sulla fisionomia e sugli obiettivi del paziente."
-        }
-      ],
-      "pyramid_labels": [
-        "Chirurgia su Misura",
-        "Medicina Estetica Avanzata",
-        "Consulenza & Prevenzione"
-      ],
-      "footer_a": "Ogni paziente inizia con la consulenza. Da lì, la medicina estetica diventa un alleato quotidiano. Quando serve, percorsi strutturati evolvono in chirurgia.",
-      "footer_strong": "La progressione è intenzionale, ogni livello costruisce sul precedente.",
-      "style": {
-        "bg": "#000105"
       }
     },
     {
@@ -806,24 +745,9 @@
         "strong_part": "2.238"
       },
       {
-        "label": "Chirurgo Plastico · Napoli",
-        "icon": ""
-      },
-      {
         "label": "85 persone hanno prenotato negli ultimi 7 giorni",
         "icon": "dot",
         "strong_part": "85"
-      },
-      {
-        "label": "Iscriviti alla newsletter",
-        "href": "#newsletter",
-        "icon": "newsletter"
-      },
-      {
-        "label": "Prenota Subito",
-        "href": "https://calendly.com/",
-        "new_tab": true,
-        "icon": "calendar"
       }
     ],
     "bg_color": "#000000"
