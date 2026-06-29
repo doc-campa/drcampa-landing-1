@@ -183,6 +183,30 @@
       "reviews_rating": "5,0",
       "reviews_count": "2.238",
       "reviews_link": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa",
+      "review_badges": [
+        {
+          "service": "google",
+          "name": "Google",
+          "rating": "5,0",
+          "count": "2.238 recensioni",
+          "featured": "sì",
+          "href": "https://www.google.com/search?sca_esv=423685a90e5df121&q=dottore+domenico+campa"
+        },
+        {
+          "service": "guidaestetica",
+          "name": "GuidaEstetica",
+          "rating": "5,0",
+          "note": "60 opinioni · 100% consiglia",
+          "href": "https://www.guidaestetica.it/centri/studio-medico-dott-domenico-campa-chirurgia-estetica"
+        },
+        {
+          "service": "facebook",
+          "name": "Facebook",
+          "rating": "98%",
+          "note": "217 valutazioni positive",
+          "href": "https://www.facebook.com/DottDomenicoCampaChirurgoPlastico/reviews"
+        }
+      ],
       "style": {
         "bg": "#ffffff",
         "text": "#000000",
