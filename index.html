@@ -1939,6 +1939,41 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   from { opacity:0; transform:translateY(8px); }
   to { opacity:1; transform:translateY(0); }
 }
+/* ===== Trattamenti: layout a LISTA / accordion ===== */
+.tl-accordion{ max-width:920px; margin:0 auto; display:flex; flex-direction:column; gap:12px; }
+.tl-acc-item{
+  border:1px solid rgba(255,255,255,.12); border-radius:18px;
+  background:rgba(255,255,255,.02); overflow:hidden;
+  transition:border-color .25s, background .25s;
+}
+.tl-acc-item.is-open{ border-color:rgba(231,192,103,.45); background:rgba(231,192,103,.03); }
+.tl-acc-head{
+  width:100%; display:flex; align-items:center; gap:14px;
+  padding:18px 22px; background:transparent; border:0; cursor:pointer;
+  color:#fff; text-align:left; font-family:inherit;
+  font-size:1.12rem; font-weight:600; transition:background .2s;
+}
+.tl-acc-head:hover{ background:rgba(231,192,103,.06); }
+.tl-acc-ic{
+  display:inline-flex; align-items:center; justify-content:center;
+  width:36px; height:36px; border-radius:50%;
+  background:rgba(231,192,103,.12); color:#E7C067; flex-shrink:0;
+  transition:background .25s, color .25s;
+}
+.tl-acc-item.is-open .tl-acc-ic{ background:linear-gradient(135deg,#E7C067,#C99B43); color:#1C1405; }
+.tl-acc-name{ flex:1; min-width:0; }
+.tl-acc-chevron{ flex-shrink:0; color:rgba(255,255,255,.45); transition:transform .3s var(--ease-out), color .2s; }
+.tl-acc-item.is-open .tl-acc-chevron{ transform:rotate(180deg); color:#E7C067; }
+.tl-acc-body{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .35s var(--ease-out); }
+.tl-acc-item.is-open .tl-acc-body{ grid-template-rows:1fr; }
+.tl-acc-inner{ min-height:0; overflow:hidden; }
+.tl-acc-pad{ padding:2px 22px 22px; }
+.tl-acc-pad .tl-cat-desc{ margin-top:0; }
+@media (max-width:600px){
+  .tl-acc-head{ padding:15px 16px; font-size:1.02rem; gap:11px; }
+  .tl-acc-ic{ width:30px; height:30px; }
+  .tl-acc-pad{ padding:0 14px 18px; }
+}
 .tl-cat-desc {
   text-align:center; max-width:580px; margin:0 auto 28px;
   color:rgba(255,255,255,.6); font-size:.96rem; line-height:1.55;
@@ -3710,14 +3745,8 @@ const templates = {
 
   treatments_list(s){
     const cats = s.categories || [];
-    // Tabs (label + icona)
-    const tabs = cats.map((c, i) => `
-      <button class="tl-tab${i===0?' is-active':''}" data-tl-tab="${i}" type="button">
-        ${treatmentIconSvg(c.icon)}
-        <span>${esc(c.name||'')}</span>
-      </button>`).join('');
-    // Panels (uno per categoria)
-    const panels = cats.map((c, i) => {
+    const chev = '<svg class="tl-acc-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
+    const items = cats.map((c, i) => {
       const treatments = (c.treatments||[]).map(t => {
         const isLink = !!t.href;
         const tag = isLink ? 'a' : 'span';
@@ -3728,9 +3757,16 @@ const templates = {
           ${isLink?'<svg class="tl-treatment-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>':''}
         </${tag}>`;
       }).join('');
-      return `<div class="tl-panel${i===0?' is-active':''}" data-tl-panel="${i}">
-        ${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}
-        <div class="tl-treatments-grid">${treatments}</div>
+      return `<div class="tl-acc-item${i===0?' is-open':''}" data-tl-acc="${i}">
+        <button class="tl-acc-head" type="button" aria-expanded="${i===0?'true':'false'}">
+          <span class="tl-acc-ic">${treatmentIconSvg(c.icon)}</span>
+          <span class="tl-acc-name">${esc(c.name||'')}</span>
+          ${chev}
+        </button>
+        <div class="tl-acc-body"><div class="tl-acc-inner"><div class="tl-acc-pad">
+          ${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}
+          <div class="tl-treatments-grid">${treatments}</div>
+        </div></div></div>
       </div>`;
     }).join('');
     return `
@@ -3740,8 +3776,7 @@ const templates = {
             <h2>${richText(s.title_a||'')} <span class="serif-italic">${richText(s.title_italic||'')}</span></h2>
             ${s.subtitle?`<p class="tl-subtitle">${richText(s.subtitle)}</p>`:''}
           </div>
-          <div class="tl-tabs" role="tablist">${tabs}</div>
-          <div class="tl-panels">${panels}</div>
+          <div class="tl-accordion">${items}</div>
           ${s.footer_note?`<p class="tl-footer-note">${richText(s.footer_note)}</p>`:''}
         </div>
       </section>`;
@@ -4374,13 +4409,23 @@ function initStatsBands(){
    ========================================================== */
 function initTreatmentsTabs(){
   document.querySelectorAll('[data-treatments-list]').forEach(section => {
-    const tabs = section.querySelectorAll('[data-tl-tab]');
-    const panels = section.querySelectorAll('[data-tl-panel]');
-    tabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        const idx = tab.getAttribute('data-tl-tab');
-        tabs.forEach(t => t.classList.toggle('is-active', t === tab));
-        panels.forEach(p => p.classList.toggle('is-active', p.getAttribute('data-tl-panel') === idx));
+    const items = Array.from(section.querySelectorAll('.tl-acc-item'));
+    items.forEach(item => {
+      const head = item.querySelector('.tl-acc-head');
+      if(!head) return;
+      head.addEventListener('click', () => {
+        const wasOpen = item.classList.contains('is-open');
+        if(wasOpen){
+          item.classList.remove('is-open');
+          head.setAttribute('aria-expanded','false');
+        } else {
+          items.forEach(o => {
+            o.classList.remove('is-open');
+            const h = o.querySelector('.tl-acc-head'); if(h) h.setAttribute('aria-expanded','false');
+          });
+          item.classList.add('is-open');
+          head.setAttribute('aria-expanded','true');
+        }
       });
     });
   });
