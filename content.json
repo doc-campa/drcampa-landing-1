@@ -121,7 +121,7 @@
     {
       "type": "testimonials",
       "id": "recensioni",
-      "title_a": "Le Vostre parole, ",
+      "title_a": "La Vostra fiducia, ",
       "title_italic": "il nostro valore",
       "items": [
         {
@@ -202,7 +202,7 @@
         {
           "service": "facebook",
           "name": "Facebook",
-          "rating": "98%",
+          "rating": "98% +",
           "note": "217 valutazioni positive",
           "href": "https://www.facebook.com/DottDomenicoCampaChirurgoPlastico/reviews"
         }
@@ -279,7 +279,7 @@
         "bg": "#000105"
       },
       "eyebrow": "I NOSTRI RISULTATI",
-      "cta_label": "Scopri tutti i risultati su Instagram"
+      "cta_label": "Scopri tutti i risultati @dottcampa_chirurgoplastico"
     },
     {
       "type": "treatments_list",
