@@ -3047,6 +3047,16 @@ section[style*="--section-text"] li { color:inherit; }
 :root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{ color:#A66A45; border-color:rgba(166,106,69,.5); }
 :root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-price{ color:#1B2433; }
 
+/* TEMA CHIARO — prenotazioni modalita confronto: ✗ e pulsanti leggibili su bianco */
+:root[data-theme="light"] .booking-ladder .bl-features li .bl-x{ color:rgba(27,36,51,.34); }
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta{
+  background:linear-gradient(135deg,#C99B43,#A66A45) !important; color:#FFFFFF !important; border:none !important;
+}
+:root[data-theme="light"] .booking-ladder .bl-cta-alt{
+  background:transparent !important; color:#9A5B33 !important; border:1.5px solid rgba(166,106,69,.6) !important;
+}
+:root[data-theme="light"] .booking-ladder .bl-cta-alt:hover{ background:#A66A45 !important; color:#FFFFFF !important; }
+
 
 /* Loghi: versione contrasto per tema chiaro (+ fallback automatico se manca) */
 .sb-logo-light{ display:none; }
