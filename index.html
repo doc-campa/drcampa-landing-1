@@ -2406,6 +2406,13 @@ section[style*="--section-text"] li { color:inherit; }
 }
 .bl-tier.is-featured .bl-features li .bl-check { color:var(--petrol-darker); }
 .bl-tier.is-free .bl-features li .bl-check { color:#86efac; }
+/* ===== Modalità PARAGONE (✓ inclusi / ✗ esclusi) + doppio CTA ===== */
+.bl-features li .bl-x { width:17px; height:17px; flex-shrink:0; margin-top:1px; color:rgba(255,255,255,.4); }
+.bl-compare-list li.is-off { opacity:.42; }
+.bl-cta-pair { display:flex; flex-direction:column; gap:8px; width:100%; }
+.bl-cta-pair .bl-cta { width:100%; }
+.bl-cta-alt { background:transparent !important; border:1.5px solid rgba(231,192,103,.55) !important; color:#EBD08A !important; box-shadow:none !important; }
+.bl-cta-alt:hover { background:#E7C067 !important; color:#15110A !important; filter:none !important; }
 .bl-scarcity {
   display:inline-flex; align-items:center; gap:6px;
   margin-top:10px; font-size:.82rem; font-weight:700;
@@ -3852,6 +3859,11 @@ const templates = {
     const lock = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
     const featList = (t)=> String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
     const featUl = (t)=>{ const f=featList(t); return f.length?`<ul class="bl-features">${f.map(x=>`<li>${checkSvg}<span>${richText(x)}</span></li>`).join('')}</ul>`:''; };
+    const xSvg = '<svg class="bl-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    const compareRows = Array.isArray(s.compare_features) ? s.compare_features.filter(r=>r&&r.label) : [];
+    const compareMode = compareRows.length>0;
+    const isOn = (r,idx)=>{ const v=r['c'+(idx+1)]; return v===true||v==='sì'||v==='si'||v==='x'||v==='✓'; };
+    const extAttr = (href)=> /^https?:/i.test(href||'')?' target="_blank" rel="noopener"':'';
     const premium = (t)=>{
       const FIC = ['<path d="M20 6 9 17l-5-5"/>','<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>','<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>','<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>','<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>'];
       const fIcon = (i)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${FIC[i%FIC.length]}</svg>`;
@@ -3878,14 +3890,23 @@ const templates = {
           </div>
         </div>`;
     };
-    const renderTier = (t)=>{
-      if(s.layout==='columns' && !!t.featured) return premium(t);
-      const isFeatured = !!t.featured;
+    const renderTier = (t, idx)=>{
+      if(!compareMode && s.layout==='columns' && !!t.featured) return premium(t);
+      const isFeatured = !compareMode && !!t.featured;
       const isFree = !!t.free;
       const priceRaw = String(t.price||'').trim();
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
       const icon = bookingLadderIcon(t.icon);
+      const feats = compareMode
+        ? `<ul class="bl-features bl-compare-list">${compareRows.map(r=>{
+            const on = isOn(r, idx);
+            return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
+          }).join('')}</ul>`
+        : featUl(t);
+      const ctaA = t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${extAttr(t.cta_href)}>${esc(t.cta_label)} →</a>`:'';
+      const ctaB = t.cta2_label?`<a class="bl-cta bl-cta-alt" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)} →</a>`:'';
+      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
         <div class="bl-icon">${icon}</div>
         <div class="bl-tier-body">
@@ -3894,12 +3915,12 @@ const templates = {
           ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
           ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
           ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
-          ${featUl(t)}
+          ${feats}
           ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
         </div>
         <div class="bl-tier-action">
           <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
-          ${t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)} →</a>`:''}
+          ${ctaWrap}
         </div>
       </div>`;
     };
@@ -3917,10 +3938,10 @@ const templates = {
     if(s.layout === 'columns'){
       const cards = all.filter(t => !t.free);
       const btns = all.filter(t => !!t.free);
-      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map(renderTier).join('')}</div>`
+      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map((t,i)=>renderTier(t,i)).join('')}</div>`
         + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('<span class="bl-or" aria-hidden="true">oppure</span>')}</div>` : '');
     } else {
-      tiersHtml = all.map(renderTier).join('');
+      tiersHtml = all.map((t,i)=>renderTier(t,i)).join('');
     }
     return `
       <section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}"${s.id?` id="${esc(s.id)}"`:''}>
