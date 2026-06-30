@@ -2812,6 +2812,19 @@ section[style*="--section-text"] li { color:inherit; }
 }
 
 /* ============================================================
+   SCALA PRENOTAZIONI — schede piu larghe + bottoni allineati
+   ============================================================ */
+/* schede piu larghe (meno alte) */
+.booking-ladder.bl-columns .bl-tiers{ max-width:1320px; }
+/* azione subito dopo il corpo (non in fondo): cosi il 1° tasto e quello gratis sono in linea */
+.booking-ladder.bl-columns .bl-tier-action{ margin-top:18px; padding-top:18px; }
+/* pareggio altezze del corpo per allineare prezzo + bottoni tra le schede */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier .bl-tier-name{ min-height:3.4rem; }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{
+  display:block; width:100%; box-sizing:border-box; min-height:60px; text-align:center;
+}
+
+/* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
    ============================================================ */
 .hero.hero-centered{
