@@ -2133,7 +2133,7 @@ const previewTemplates = {
       const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)} →</span>`:'';
       const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
-        ${(compareMode&&t.photo)?'':`<div class="bl-icon">${icon}</div>`}
+        ${(compareMode&&t.photo) ? '' : (t.icon ? `<div class="bl-icon">${icon}</div>` : '')}
         <div class="bl-tier-body">
           ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
           <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
