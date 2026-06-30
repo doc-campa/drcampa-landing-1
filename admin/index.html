@@ -1087,6 +1087,8 @@ const SECTION_SCHEMA = {
       ['bottom_note', 'Barra in fondo (opzionale)', 'text', 'Es: \"L\'agenda del Dr. Campa viene programmata con mesi di anticipo\". Striscia scura in fondo alla card premium.'],
       ['cta_label', 'Testo del bottone', 'text', 'Es: "Prenota con il Dr. Campa".'],
       ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti" oppure un link WhatsApp "https://wa.me/39...".'],
+      ['cta2_label', 'Secondo bottone — testo (opzionale)', 'text', 'Es: "Prenota online". Crea il doppio tasto (dal vivo / online).'],
+      ['cta2_href', 'Secondo bottone — link (opzionale)', 'text', 'Es: "#contatti" o link Calendly per la versione online.'],
       ['icon', 'Icona', 'select', null, [
         ['crown', '👑 Corona (premium)'],
         ['video', '🎥 Video'],
@@ -1104,6 +1106,12 @@ const SECTION_SCHEMA = {
         ['', 'No'],
         ['true', 'Sì — gratuito']
       ]]
+    ]],
+    ['compare_features', 'Servizi a confronto (✓ inclusi / ✗ esclusi)', 'list-object', 'Una riga per servizio: la STESSA lista appare in tutte le schede. Le 3 colonne corrispondono alle prime 3 schede nell\'ordine qui sopra.', [
+      ['label', 'Servizio', 'text', 'Es: "Valutazione clinica completa".'],
+      ['c1', 'Inclusa nella 1ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]],
+      ['c2', 'Inclusa nella 2ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]],
+      ['c3', 'Inclusa nella 3ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]]
     ]],
     ['footer_note', 'Nota finale rassicurante (opzionale)', 'textarea', 'Es: "Nessun impegno. Nessuna pressione. Solo chiarezza.". Usa **grassetto** per evidenziare.']
   ],
@@ -2076,6 +2084,10 @@ const previewTemplates = {
     const lock = '<svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="9" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>';
     const featList = (t)=> String(t.features||'').split('\n').map(x=>x.trim()).filter(Boolean);
     const featUl = (t)=>{ const f=featList(t); return f.length?`<ul class="bl-features">${f.map(x=>`<li>${checkSvg}<span>${richText(x)}</span></li>`).join('')}</ul>`:''; };
+    const xSvg = '<svg class="bl-x" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>';
+    const compareRows = Array.isArray(s.compare_features) ? s.compare_features.filter(r=>r&&r.label) : [];
+    const compareMode = compareRows.length>0;
+    const isOn = (r,idx)=>{ const v=r['c'+(idx+1)]; return v===true||v==='sì'||v==='si'||v==='x'||v==='✓'; };
     const premium = (t)=>{
       const FIC = ['<path d="M20 6 9 17l-5-5"/>','<rect x="2" y="6" width="13" height="12" rx="2"/><path d="M15 10l6-3v10l-6-3z"/>','<rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h4"/>','<circle cx="12" cy="8" r="4"/><path d="M5 21a7 7 0 0 1 14 0"/>','<circle cx="12" cy="12" r="9"/><path d="M12 8v4l3 2"/>','<path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M5.6 18.4l2.1-2.1M16.3 7.7l2.1-2.1"/>'];
       const fIcon = (i)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${FIC[i%FIC.length]}</svg>`;
@@ -2102,14 +2114,23 @@ const previewTemplates = {
           </div>
         </div>`;
     };
-    const renderTier = (t)=>{
-      if(s.layout==='columns' && !!t.featured && t.featured!=='') return premium(t);
-      const isFeatured = !!t.featured && t.featured!=='';
+    const renderTier = (t, idx)=>{
+      if(!compareMode && s.layout==='columns' && !!t.featured && t.featured!=='') return premium(t);
+      const isFeatured = !compareMode && !!t.featured && t.featured!=='';
       const isFree = !!t.free && t.free!=='';
       const priceRaw = String(t.price||'').trim();
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
       const icon = previewBookingLadderIcon(t.icon);
+      const feats = compareMode
+        ? `<ul class="bl-features bl-compare-list">${compareRows.map(r=>{
+            const on = isOn(r, idx);
+            return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
+          }).join('')}</ul>`
+        : featUl(t);
+      const ctaA = t.cta_label?`<span class="bl-cta">${esc(t.cta_label)} →</span>`:'';
+      const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)} →</span>`:'';
+      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
         <div class="bl-icon">${icon}</div>
         <div class="bl-tier-body">
@@ -2118,12 +2139,12 @@ const previewTemplates = {
           ${t.who?`<p class="bl-tier-who">${richText(t.who)}</p>`:''}
           ${t.format?`<p class="bl-tier-format">${richText(t.format)}</p>`:''}
           ${t.value_line?`<p class="bl-value">${richText(t.value_line)}</p>`:''}
-          ${featUl(t)}
+          ${feats}
           ${t.scarcity?`<span class="bl-scarcity">${esc(t.scarcity)}</span>`:''}
         </div>
         <div class="bl-tier-action">
           <div class="bl-price${priceIsFree?' is-free':''}">${esc(priceRaw||'')}</div>
-          ${t.cta_label?`<span class="bl-cta">${esc(t.cta_label)} →</span>`:''}
+          ${ctaWrap}
         </div>
       </div>`;
     };
@@ -2141,10 +2162,10 @@ const previewTemplates = {
     if(s.layout === 'columns'){
       const cards = all.filter(t => !(t.free && t.free!==''));
       const btns = all.filter(t => t.free && t.free!=='');
-      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map(renderTier).join('')}</div>`
+      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map((t,i)=>renderTier(t,i)).join('')}</div>`
         + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('<span class="bl-or" aria-hidden="true">oppure</span>')}</div>` : '');
     } else {
-      tiersHtml = all.map(renderTier).join('');
+      tiersHtml = all.map((t,i)=>renderTier(t,i)).join('');
     }
     return `
       <section${sectionStyleAttr(s)} class="booking-ladder${s.layout==='columns'?' bl-columns':''}"${s.id?` id="${esc(s.id)}"`:''}>
