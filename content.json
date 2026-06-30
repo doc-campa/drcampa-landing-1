@@ -596,7 +596,8 @@
           "cta_href": "#contatti",
           "cta2_label": "Prenota online",
           "cta2_href": "#contatti",
-          "scarcity": ""
+          "scarcity": "",
+          "photo": "/images/1782840233513-dott-mansi-foto-landing-2.png"
         },
         {
           "name": "Videocall con una Beauty Consultant",
@@ -609,7 +610,8 @@
           "free": false,
           "cta_label": "Prenota la videocall",
           "cta_href": "#contatti",
-          "scarcity": ""
+          "scarcity": "",
+          "photo": "/images/1782841056102-foto-staff-landing-4.png"
         },
         {
           "name": "Scrivici su WhatsApp",
