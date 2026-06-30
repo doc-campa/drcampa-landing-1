@@ -691,37 +691,6 @@
           "c3": ""
         }
       ]
-    },
-    {
-      "type": "cta_form",
-      "id": "contatti",
-      "title_a": "È il momento. Smetti di sperimentare.",
-      "title_accent": "Inizia.",
-      "body": "Raccontaci cosa stai cercando. Ti ricontatteremo entro 24 ore per organizzare un primo consulto, in studio o in videocall — senza impegno, senza pressione.",
-      "perks": [
-        "Primo colloquio gratuito e senza impegno",
-        "Risposta diretta entro 24 ore lavorative",
-        "Massima riservatezza dei dati",
-        "Consulto online disponibile per pazienti fuori sede"
-      ],
-      "form_title": "Prenota Consulto",
-      "form_subtitle": "Compila il form. Ti contattiamo noi.",
-      "treatments": [
-        "Rinoplastica",
-        "Blefaroplastica",
-        "Mastoplastica",
-        "Liposcultura",
-        "Lifting viso",
-        "Medicina estetica",
-        "Vorrei un consulto generale"
-      ],
-      "submit_label": "Invia Richiesta",
-      "success_title": "Grazie!",
-      "success_body": "Abbiamo ricevuto la tua richiesta. La segreteria del Dr. Campa ti contatterà entro 24 ore lavorative.",
-      "style": {
-        "bg": "#000105",
-        "text": "#ffffff"
-      }
     }
   ],
   "footer": {
