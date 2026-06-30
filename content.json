@@ -261,15 +261,22 @@
       "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
       "items": [
         {
-          "label": "Rinoplastica funzionale ed estetica"
+          "label": "Rinoplastica",
+          "image": "/images/1782845563295-whatsapp-image-2026-06-30-at-20.46.51--1-.jpeg"
         },
         {
-          "label": "Mastoplastica additiva"
+          "label": "Mastoplastica",
+          "image": "/images/1782845709398-saveclip.app-546711545-18419104540105374-8757752207650273287-n.jpg"
         },
         {
-          "label": "Filler labbra correttivo"
+          "label": "Rinoplastica",
+          "image": "/images/1782845818403-whatsapp-image-2026-06-30-at-20.51.25--2-.jpeg",
+          "caption": ""
         },
-        {},
+        {
+          "image": "/images/1782846308372-screenshot-2026-06-30-alle-21.04.32.png",
+          "label": "mastoplastica"
+        },
         {},
         {},
         {},
