@@ -568,82 +568,59 @@
       "urgency": "⚡ I posti in studio sono limitati ogni mese — le agende si chiudono in fretta.",
       "tiers": [
         {
-          "badge": "La scelta n°1 dei nostri pazienti",
-          "name": "Dr. Campa",
-          "who": "L'eccellenza, direttamente con il Dr. Campa",
-          "format": "In studio · Napoli",
-          "value_line": "Il massimo livello di accesso: il chirurgo, faccia a faccia, dedicato solo a te e al tuo percorso. La valutazione più completa e personalizzata che puoi avere.",
-          "features": "Valutazione completa e approfondita\nAnalisi fotografica e simulazione risultato\nPiano di trattamento personalizzato\nAccesso prioritario all'agenda del Dr. Campa\nRiduzione tempi di attesa\nSupporto dedicato e continuo",
-          "price": "300€",
-          "scarcity": "Posti limitati ogni mese",
-          "cta_label": "Prenota ora il tuo consulto",
-          "cta_href": "#contatti",
-          "icon": "crown",
-          "featured": true,
-          "free": false,
-          "social_proof": "Scelto dal 78% dei pazienti",
-          "price_compare": "550€",
-          "bottom_note": "L'agenda del Dr. Campa viene programmata con diversi mesi di anticipo"
-        },
-        {
-          "badge": "",
-          "name": "Video consulenza con Campa o Mansi",
-          "who": "Dr. Campa o Dr. Mansi",
-          "format": "Online · comodamente da casa",
-          "value_line": "La stessa competenza clinica, in videochiamata. Perfetta se vivi fuori Napoli o vuoi iniziare subito, senza spostarti.",
-          "features": "Valutazione clinica in videochiamata\nConsigli personalizzati direttamente dal chirurgo\nComodo: nessuno spostamento\nIndicazioni sui passi successivi",
-          "price": "200€",
-          "scarcity": "",
-          "cta_label": "Prenota la video consulenza",
-          "cta_href": "#contatti",
-          "icon": "video",
-          "featured": false,
-          "free": false
-        },
-        {
-          "badge": "",
-          "name": "Consulto dal vivo con la Dr.ssa Mansi o il Dr. Campa",
-          "who": "Dr.ssa Mansi o Dr. Campa",
-          "format": "In studio · Napoli",
-          "value_line": "Una valutazione clinica completa di persona, con la Dr.ssa Mansi o con il Dr. Campa: un punto di partenza concreto per il tuo percorso.",
-          "features": "Visita clinica completa in studio\nValutazione del tuo caso\nIndicazioni sul percorso più adatto",
-          "price": "190€",
-          "scarcity": "",
-          "cta_label": "Prenota il consulto in studio",
-          "cta_href": "#contatti",
+          "name": "Consulenza Dott. Campa",
+          "who": "",
+          "format": "Online o in studio · Napoli",
+          "value_line": "La valutazione più completa, direttamente con il Dr. Campa: online o di persona, come preferisci.",
+          "price": "295€",
           "icon": "user",
-          "featured": false,
-          "free": false
-        },
-        {
-          "badge": "INIZIA SENZA SPENDERE",
-          "name": "Video call con una Beauty Consultant",
-          "who": "Le nostre Beauty Consultant",
-          "format": "Online · colloquio conoscitivo",
-          "value_line": "Un primo colloquio senza impegno per capire da dove partire e quale percorso fa per te. Zero costi, zero pressione.",
-          "features": "Colloquio conoscitivo gratuito\nOrientamento sui trattamenti disponibili\nNessun impegno",
-          "price": "Gratis",
-          "scarcity": "",
-          "cta_label": "Prenota la call gratuita",
+          "featured": "",
+          "free": false,
+          "cta_label": "Prenota dal vivo",
           "cta_href": "#contatti",
-          "icon": "chat",
-          "featured": false,
-          "free": true
+          "cta2_label": "Prenota online",
+          "cta2_href": "#contatti",
+          "scarcity": ""
         },
         {
-          "badge": "RISPOSTA IN GIORNATA",
+          "name": "Consulenza Dott.ssa Mansi",
+          "who": "",
+          "format": "Online o in studio · Napoli",
+          "value_line": "Una valutazione clinica completa con la Dr.ssa Mansi: scegli tu se online o in studio.",
+          "price": "195€",
+          "icon": "user",
+          "featured": "",
+          "free": false,
+          "cta_label": "Prenota dal vivo",
+          "cta_href": "#contatti",
+          "cta2_label": "Prenota online",
+          "cta2_href": "#contatti",
+          "scarcity": ""
+        },
+        {
+          "name": "Videocall con una Beauty Consultant",
+          "who": "",
+          "format": "Online · colloquio conoscitivo",
+          "value_line": "Un primo colloquio gratuito e senza impegno per capire da dove partire e quale percorso fa per te.",
+          "price": "Gratis",
+          "icon": "video",
+          "featured": "",
+          "free": false,
+          "cta_label": "Prenota la videocall",
+          "cta_href": "#contatti",
+          "scarcity": ""
+        },
+        {
           "name": "Scrivici su WhatsApp",
           "who": "Segreteria Studio Campa",
           "format": "Chat · veloce e diretta",
-          "value_line": "Hai solo una domanda? Scrivici ora. È il modo più semplice e leggero per fare il primo passo, proprio oggi.",
-          "features": "Risposta diretta dalla segreteria\nInfo su costi e disponibilità\nVeloce, in giornata",
+          "value_line": "Hai solo una domanda? Scrivici ora: è il modo più semplice per fare il primo passo.",
           "price": "Gratis",
-          "scarcity": "",
-          "cta_label": "Scrivi su WhatsApp",
-          "cta_href": "https://wa.me/39XXXXXXXXXX",
           "icon": "whatsapp",
-          "featured": false,
-          "free": true
+          "featured": "",
+          "free": true,
+          "cta_label": "Scrivici su WhatsApp",
+          "cta_href": "https://wa.me/39XXXXXXXXXX"
         }
       ],
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
@@ -652,7 +629,69 @@
         "accent": "#f7e9c5",
         "text": "#ffffff",
         "scale": "compatto"
-      }
+      },
+      "compare_features": [
+        {
+          "label": "Valutazione clinica completa",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Analisi fotografica e simulazione del risultato",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Piano di trattamento personalizzato",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Disponibile online e in studio",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Consigli direttamente dal chirurgo",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Accesso prioritario all'agenda",
+          "c1": "sì",
+          "c2": "",
+          "c3": ""
+        },
+        {
+          "label": "Supporto dedicato e continuo",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": ""
+        },
+        {
+          "label": "Indicazioni sui passi successivi",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": "sì"
+        },
+        {
+          "label": "Orientamento sui trattamenti disponibili",
+          "c1": "",
+          "c2": "",
+          "c3": "sì"
+        },
+        {
+          "label": "Colloquio conoscitivo gratuito",
+          "c1": "",
+          "c2": "",
+          "c3": "sì"
+        }
+      ]
     },
     {
       "type": "cta_form",
