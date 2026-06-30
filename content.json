@@ -572,7 +572,7 @@
           "who": "",
           "format": "Online o in studio · Napoli",
           "value_line": "La valutazione più completa, direttamente con il Dr. Campa — online o in studio.",
-          "price": "295€",
+          "price": "249€",
           "icon": "",
           "featured": "",
           "free": false,
@@ -581,7 +581,8 @@
           "cta2_label": "Prenota videoconsulenza",
           "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza",
           "scarcity": "",
-          "photo": "/images/1782839347270-dott-campa-foto-landing-1.png"
+          "photo": "/images/1782839347270-dott-campa-foto-landing-1.png",
+          "price_compare": ""
         },
         {
           "name": "Consulenza Dott.ssa Mansi",
