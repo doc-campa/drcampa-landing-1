@@ -571,7 +571,7 @@
           "name": "Consulenza Dott. Campa",
           "who": "",
           "format": "Online o in studio · Napoli",
-          "value_line": "La valutazione più completa, direttamente con il Dr. Campa: online o di persona, come preferisci.",
+          "value_line": "La valutazione più completa, direttamente con il Dr. Campa — online o in studio.",
           "price": "295€",
           "icon": "user",
           "featured": "",
@@ -586,7 +586,7 @@
           "name": "Consulenza Dott.ssa Mansi",
           "who": "",
           "format": "Online o in studio · Napoli",
-          "value_line": "Una valutazione clinica completa con la Dr.ssa Mansi: scegli tu se online o in studio.",
+          "value_line": "Valutazione clinica completa con la Dr.ssa Mansi — online o in studio.",
           "price": "195€",
           "icon": "user",
           "featured": "",
@@ -601,7 +601,7 @@
           "name": "Videocall con una Beauty Consultant",
           "who": "",
           "format": "Online · colloquio conoscitivo",
-          "value_line": "Un primo colloquio gratuito e senza impegno per capire da dove partire e quale percorso fa per te.",
+          "value_line": "Un primo colloquio gratuito e senza impegno per orientarti.",
           "price": "Gratis",
           "icon": "video",
           "featured": "",
@@ -638,7 +638,7 @@
           "c3": ""
         },
         {
-          "label": "Analisi fotografica e simulazione del risultato",
+          "label": "Analisi Fotografica e simulazione del risultato",
           "c1": "sì",
           "c2": "sì",
           "c3": ""
@@ -650,46 +650,40 @@
           "c3": ""
         },
         {
+          "label": "Supporto dedicato e continuo",
+          "c1": "sì",
+          "c2": "",
+          "c3": ""
+        },
+        {
+          "label": "Orientamento sui trattamenti",
+          "c1": "sì",
+          "c2": "sì",
+          "c3": "sì"
+        },
+        {
           "label": "Disponibile online e in studio",
           "c1": "sì",
           "c2": "sì",
-          "c3": ""
+          "c3": "sì"
         },
         {
           "label": "Consigli direttamente dal chirurgo",
           "c1": "sì",
           "c2": "sì",
-          "c3": ""
+          "c3": "sì"
         },
         {
           "label": "Accesso prioritario all'agenda",
           "c1": "sì",
           "c2": "",
-          "c3": ""
+          "c3": "sì"
         },
         {
-          "label": "Supporto dedicato e continuo",
+          "label": "Colloquio conoscitivo",
           "c1": "sì",
           "c2": "sì",
           "c3": ""
-        },
-        {
-          "label": "Indicazioni sui passi successivi",
-          "c1": "sì",
-          "c2": "sì",
-          "c3": "sì"
-        },
-        {
-          "label": "Orientamento sui trattamenti disponibili",
-          "c1": "",
-          "c2": "",
-          "c3": "sì"
-        },
-        {
-          "label": "Colloquio conoscitivo gratuito",
-          "c1": "",
-          "c2": "",
-          "c3": "sì"
         }
       ]
     },
