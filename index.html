@@ -2826,6 +2826,26 @@ section[style*="--section-text"] li { color:inherit; }
 }
 
 /* ============================================================
+   SCALA PRENOTAZIONI — foto che spunta da dietro la scheda
+   ============================================================ */
+.booking-ladder.bl-columns .bl-row > .bl-card-wrap{ flex:1 1 0; min-width:0; position:relative; display:flex; }
+.bl-card-wrap > .bl-tier{ flex:1 1 auto; width:100%; position:relative; z-index:1; }
+.bl-photo{
+  position:absolute; left:0; right:0; bottom:calc(100% - 70px);
+  display:flex; justify-content:center; align-items:flex-end;
+  z-index:0; pointer-events:none;
+}
+.bl-photo img{ height:210px; width:auto; max-width:90%; object-fit:contain; display:block;
+  filter:drop-shadow(0 16px 26px rgba(0,0,0,.55)); }
+.bl-tier.has-photo{ padding-top:30px; }
+.booking-ladder.bl-columns .bl-row-paid.bl-row-haspics{ margin-top:96px; }
+@media (max-width:760px){
+  .bl-photo img{ height:160px; }
+  .bl-photo{ bottom:calc(100% - 54px); }
+  .booking-ladder.bl-columns .bl-row-paid.bl-row-haspics{ margin-top:80px; }
+}
+
+/* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
    ============================================================ */
 .hero.hero-centered{
@@ -3910,7 +3930,7 @@ const templates = {
       const isFree = !!t.free;
       const priceRaw = String(t.price||'').trim();
       const priceIsFree = isFree || /grat/i.test(priceRaw);
-      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
+      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}${(compareMode&&t.photo)?' has-photo':''}`;
       const icon = bookingLadderIcon(t.icon);
       const feats = compareMode
         ? `<ul class="bl-features bl-compare-list">${compareRows.map(r=>{
@@ -3922,7 +3942,7 @@ const templates = {
       const ctaB = t.cta2_label?`<a class="bl-cta bl-cta-alt" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)} →</a>`:'';
       const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
-        <div class="bl-icon">${icon}</div>
+        ${(compareMode&&t.photo)?'':`<div class="bl-icon">${icon}</div>`}
         <div class="bl-tier-body">
           ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
           <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
@@ -3952,7 +3972,11 @@ const templates = {
     if(s.layout === 'columns'){
       const cards = all.filter(t => !t.free);
       const btns = all.filter(t => !!t.free);
-      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map((t,i)=>renderTier(t,i)).join('')}</div>`
+      const renderCard = (t,i)=> compareMode
+        ? `<div class="bl-card-wrap">${t.photo?`<div class="bl-photo">${img(t.photo, t.name||'')}</div>`:''}${renderTier(t,i)}</div>`
+        : renderTier(t,i);
+      const anyPhoto = compareMode && cards.some(t=>t.photo);
+      tiersHtml = `<div class="bl-row bl-row-paid${anyPhoto?' bl-row-haspics':''}">${cards.map((t,i)=>renderCard(t,i)).join('')}</div>`
         + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('<span class="bl-or" aria-hidden="true">oppure</span>')}</div>` : '');
     } else {
       tiersHtml = all.map((t,i)=>renderTier(t,i)).join('');
