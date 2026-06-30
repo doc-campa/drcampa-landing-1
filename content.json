@@ -577,9 +577,9 @@
           "featured": "",
           "free": false,
           "cta_label": "Prenota dal vivo",
-          "cta_href": "#contatti",
-          "cta2_label": "Prenota online",
-          "cta2_href": "#contatti",
+          "cta_href": "https://calendly.com/segreteriacampa/consulenza",
+          "cta2_label": "Prenota videoconsulenza",
+          "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza",
           "scarcity": "",
           "photo": "/images/1782839347270-dott-campa-foto-landing-1.png"
         },
