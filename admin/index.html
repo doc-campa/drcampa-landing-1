@@ -1076,6 +1076,7 @@ const SECTION_SCHEMA = {
     ['tiers', 'Livelli di prenotazione (dal più premium al gratuito)', 'list-object', null, [
       ['badge', 'Etichetta in alto (opzionale)', 'text', 'Es: "ESPERIENZA COMPLETA", "INIZIA GRATIS".'],
       ['name', 'Nome del livello', 'text', 'Es: "Consulto dal vivo con il Dr. Campa".'],
+      ['photo', 'Foto (PNG trasparente, busto) — sostituisce l\'icona', 'image', 'Ritaglio della persona su sfondo TRASPARENTE: spunta da dietro la scheda. Consigliato PNG verticale ~600×800px.'],
       ['who', 'Con chi', 'text', 'Es: "Dr. Domenico Campa".'],
       ['format', 'Formato / luogo', 'text', 'Es: "In studio · Napoli" oppure "Online · da casa tua".'],
       ['value_line', 'Frase di valore (perché sceglierlo)', 'textarea', 'La leva di vendita: cosa ottiene davvero la persona.'],
@@ -2120,7 +2121,7 @@ const previewTemplates = {
       const isFree = !!t.free && t.free!=='';
       const priceRaw = String(t.price||'').trim();
       const priceIsFree = isFree || /grat/i.test(priceRaw);
-      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}`;
+      const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}${(compareMode&&t.photo)?' has-photo':''}`;
       const icon = previewBookingLadderIcon(t.icon);
       const feats = compareMode
         ? `<ul class="bl-features bl-compare-list">${compareRows.map(r=>{
@@ -2132,7 +2133,7 @@ const previewTemplates = {
       const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)} →</span>`:'';
       const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
-        <div class="bl-icon">${icon}</div>
+        ${(compareMode&&t.photo)?'':`<div class="bl-icon">${icon}</div>`}
         <div class="bl-tier-body">
           ${t.badge?`<span class="bl-badge">${esc(t.badge)}</span>`:''}
           <h3 class="bl-tier-name">${richText(t.name||'')}</h3>
@@ -2162,7 +2163,11 @@ const previewTemplates = {
     if(s.layout === 'columns'){
       const cards = all.filter(t => !(t.free && t.free!==''));
       const btns = all.filter(t => t.free && t.free!=='');
-      tiersHtml = `<div class="bl-row bl-row-paid">${cards.map((t,i)=>renderTier(t,i)).join('')}</div>`
+      const renderCard = (t,i)=> compareMode
+        ? `<div class="bl-card-wrap">${t.photo?`<div class="bl-photo">${imgTag(t.photo, t.name||'')}</div>`:''}${renderTier(t,i)}</div>`
+        : renderTier(t,i);
+      const anyPhoto = compareMode && cards.some(t=>t.photo);
+      tiersHtml = `<div class="bl-row bl-row-paid${anyPhoto?' bl-row-haspics':''}">${cards.map((t,i)=>renderCard(t,i)).join('')}</div>`
         + (btns.length ? `<div class="bl-buttons">${btns.map(renderButton).join('<span class="bl-or" aria-hidden="true">oppure</span>')}</div>` : '');
     } else {
       tiersHtml = all.map((t,i)=>renderTier(t,i)).join('');
