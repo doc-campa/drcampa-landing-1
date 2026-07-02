@@ -1278,6 +1278,23 @@ a.test-google-badge:hover { transform:translateY(-2px); box-shadow:0 8px 18px -6
   gap:20px;
   max-width:1180px; margin:0 auto;
 }
+/* Pallini carosello recensioni (visibili solo su mobile) */
+.test-dots{ display:none; justify-content:center; gap:9px; margin:20px auto 0; }
+.test-dot{ width:8px; height:8px; padding:0; border:0; border-radius:999px;
+  background:rgba(20,28,46,.22); cursor:pointer; transition:width .3s var(--ease-out), background .3s; }
+.test-dot.is-active{ width:24px; background:var(--orange, #FF6B2C); }
+@media (max-width:760px){
+  .testimonials .test-grid{
+    display:flex; grid-template-columns:none;
+    overflow-x:auto; scroll-snap-type:x mandatory;
+    gap:14px; scroll-behavior:smooth;
+    -webkit-overflow-scrolling:touch; scrollbar-width:none;
+    padding:4px 2px 6px; max-width:none;
+  }
+  .testimonials .test-grid::-webkit-scrollbar{ display:none; }
+  .testimonials .test-grid > .test-card{ flex:0 0 86%; scroll-snap-align:center; }
+  .testimonials .test-dots{ display:flex; }
+}
 .test-card {
   background:#fff;
   padding:24px 26px;
@@ -3653,6 +3670,7 @@ const templates = {
             ${badgesRow}
           </div>
           <div class="test-grid">${items}</div>
+          ${(s.items||[]).length>1?`<div class="test-dots" role="tablist" aria-label="Scorri le recensioni">${(s.items||[]).map((_,i)=>`<button type="button" class="test-dot${i===0?' is-active':''}" data-i="${i}" aria-label="Recensione ${i+1}"></button>`).join('')}</div>`:''}
         </div>
       </section>`;
   },
@@ -4519,18 +4537,23 @@ function initBehaviors(){
   // ---- TESTIMONIALS SLIDER (mobile: auto + swipe) ----
   (function(){
     var grid=document.querySelector("section.testimonials .test-grid"); if(!grid) return;
+    var wrap=grid.parentNode;
+    var dots=wrap?wrap.querySelectorAll(".test-dots .test-dot"):[];
     var mq=window.matchMedia("(max-width:760px)");
-    var timer=null, idx=0, paused=false, resumeT=null;
+    var timer=null, idx=0, paused=false, resumeT=null, scrollT=null;
     function cards(){ return grid.querySelectorAll(".test-card"); }
-    function go(i){ var cs=cards(); if(!cs.length) return; idx=(i+cs.length)%cs.length; var c=cs[idx]; grid.scrollTo({left:c.offsetLeft-(grid.clientWidth-c.clientWidth)/2, behavior:"smooth"}); }
+    function setActive(i){ for(var k=0;k<dots.length;k++) dots[k].classList.toggle("is-active", k===i); }
+    function go(i){ var cs=cards(); if(!cs.length) return; idx=(i+cs.length)%cs.length; var c=cs[idx]; grid.scrollTo({left:c.offsetLeft-(grid.clientWidth-c.clientWidth)/2, behavior:"smooth"}); setActive(idx); }
+    function nearest(){ var cs=cards(); if(!cs.length) return 0; var center=grid.scrollLeft+grid.clientWidth/2, best=0, bd=1e9; for(var k=0;k<cs.length;k++){ var cc=cs[k].offsetLeft+cs[k].clientWidth/2, d=Math.abs(cc-center); if(d<bd){bd=d;best=k;} } return best; }
     function stop(){ if(timer){ clearInterval(timer); timer=null; } }
     function start(){ stop(); if(!mq.matches) return; timer=setInterval(function(){ if(!paused) go(idx+1); }, 4500); }
-    function pause(){ paused=true; clearTimeout(resumeT); resumeT=setTimeout(function(){ paused=false; }, 4000); }
+    function pause(){ paused=true; clearTimeout(resumeT); resumeT=setTimeout(function(){ paused=false; }, 5000); }
     grid.addEventListener("touchstart", pause, {passive:true});
     grid.addEventListener("pointerdown", pause);
-    grid.addEventListener("scroll", pause, {passive:true});
+    grid.addEventListener("scroll", function(){ pause(); clearTimeout(scrollT); scrollT=setTimeout(function(){ idx=nearest(); setActive(idx); }, 120); }, {passive:true});
+    for(var d=0; d<dots.length; d++){ (function(k){ dots[k].addEventListener("click", function(){ pause(); go(k); }); })(d); }
     if(mq.addEventListener) mq.addEventListener("change", start); else if(mq.addListener) mq.addListener(start);
-    start();
+    setActive(0); start();
   })();
   (function(){var tt=document.getElementById("themeToggle");if(tt){tt.addEventListener("click",function(){var c=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",c);try{localStorage.setItem("theme",c);}catch(e){}});}})();
 
