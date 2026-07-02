@@ -4550,7 +4550,9 @@ function initBehaviors(){
     function pause(){ paused=true; clearTimeout(resumeT); resumeT=setTimeout(function(){ paused=false; }, 5000); }
     grid.addEventListener("touchstart", pause, {passive:true});
     grid.addEventListener("pointerdown", pause);
-    grid.addEventListener("scroll", function(){ pause(); clearTimeout(scrollT); scrollT=setTimeout(function(){ idx=nearest(); setActive(idx); }, 120); }, {passive:true});
+    grid.addEventListener("wheel", pause, {passive:true});
+    // NB: lo scroll NON mette in pausa (altrimenti l'autoplay che scrolla si fermerebbe da solo): aggiorna solo i pallini
+    grid.addEventListener("scroll", function(){ clearTimeout(scrollT); scrollT=setTimeout(function(){ idx=nearest(); setActive(idx); }, 120); }, {passive:true});
     for(var d=0; d<dots.length; d++){ (function(k){ dots[k].addEventListener("click", function(){ pause(); go(k); }); })(d); }
     if(mq.addEventListener) mq.addEventListener("change", start); else if(mq.addListener) mq.addListener(start);
     setActive(0); start();
