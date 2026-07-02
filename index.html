@@ -3680,7 +3680,7 @@ const templates = {
       const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
       const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
       const media = src
-        ? `<video class="wv-video" autoplay muted loop playsinline preload="metadata"${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
+        ? `<video class="wv-video" autoplay muted loop playsinline preload="metadata"${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
         : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`);
       return `
         <figure class="wv-card reveal">
