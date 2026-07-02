@@ -2354,7 +2354,7 @@ function renderPreviewBody(){
 async function buildInitialPreviewHTML(){
   const baseCss = await ensurePreviewBaseCss();
   const body = renderPreviewBody();
-  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style>${baseCss}</style>${colorVars(data)}<style>
 body{margin:0}
 [data-cms-section-idx]{position:relative; cursor:pointer;}
 [data-cms-section-idx]:hover{outline:3px dashed rgba(232,93,60,.55); outline-offset:-3px;}
