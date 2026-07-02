@@ -4085,19 +4085,9 @@ function renderTopbar(data){
     const cls = `topbar-item ${isLink?'is-link':''}`;
     return {item, html: `<${tag} class="${cls}"${attrs}>${inner}${label}</${tag}>`};
   });
-  const googleB  = built.find(b => b.item.google_brand || b.item.icon === 'star');
-  const urgencyB = built.find(b => b.item.icon === 'dot' || /person|acquist|posti|client/i.test(b.item.label||''));
-  const pillarsB = built.find(b => b.item.icon === 'shield');
-  const centerB  = googleB || null;
-  const rightB   = (urgencyB && urgencyB !== centerB) ? urgencyB : null;
-  const leftB    = (pillarsB && pillarsB !== centerB && pillarsB !== rightB) ? pillarsB
-                   : (built.find(b => b !== centerB && b !== rightB) || null);
-  const leftHtml = leftB ? leftB.html : '';
-  return `<div class="topbar-fixed">
-    <div class="tb-slot tb-left">${leftHtml}</div>
-    <div class="tb-slot tb-center">${centerB?centerB.html:''}</div>
-    <div class="tb-slot tb-right">${rightB?rightB.html:''}</div>
-  </div>`;
+  // Rotazione singola al centro: tutte le voci nella track, una attiva alla volta (initTopbarRotator)
+  const itemsHtml = built.map(b => b.html).join('');
+  return `<div class="topbar-track">${itemsHtml}</div>`;
 }
 
 function logoMark(data){
