@@ -425,6 +425,9 @@ html.no-topbar .hero { padding-top:190px; }
 .hero-bg img, .hero-bg video, .hero-bg picture {
   width:100%; height:100%; object-fit:cover;
   display:block;
+  object-position:var(--hero-bg-pos, center);
+  transform:scale(var(--hero-bg-zoom, 1));
+  transform-origin:center;
 }
 .hero-bg img, .hero-bg video {
   opacity:.5;
@@ -481,6 +484,8 @@ html.no-topbar .hero { padding-top:190px; }
 .hero-video-card {
   position:relative;
   width:100%;
+  max-width:var(--hero-player-w, none);
+  margin-inline:auto;
   border-radius:var(--radius-lg);
   overflow:hidden;
   box-shadow:0 28px 64px -16px rgba(0,0,0,.55), 0 8px 24px -8px rgba(200,168,107,.18);
@@ -491,7 +496,7 @@ html.no-topbar .hero { padding-top:190px; }
   position:relative;
   display:block;
   width:100%;
-  aspect-ratio:4/5;
+  aspect-ratio:var(--hero-player-ratio, 4/5);
   border:0;
   padding:0;
   background:transparent;
@@ -528,7 +533,7 @@ html.no-topbar .hero { padding-top:190px; }
 }
 .hero-video-play {
   position:absolute;
-  left:50%; top:50%;
+  left:var(--play-x, 50%); top:var(--play-y, 50%);
   transform:translate(-50%, -50%);
   width:clamp(64px, 12%, 90px);
   height:clamp(64px, 12%, 90px);
@@ -590,6 +595,11 @@ html.no-topbar .hero { padding-top:190px; }
   }
 
   .hero-video-trigger { aspect-ratio:16/10; }
+  .hero.has-video-player .hero-video-card { max-width:none; }
+  .hero-bg img, .hero-bg video, .hero-bg picture {
+    object-position:var(--hero-bg-pos-m, center);
+    transform:scale(var(--hero-bg-zoom-m, 1));
+  }
   /* Spaziatura interna ridotta su mobile */
   .hero-info .hero-sub { margin-top:0; }
   .hero-info .mission-card { margin-top:28px; }
@@ -3285,8 +3295,18 @@ const templates = {
     // Spazio sopra il video su mobile (px), gestibile dall'editor. Default 30.
     const mobileGap = (s.mobile_title_gap !== undefined && s.mobile_title_gap !== null && String(s.mobile_title_gap).trim() !== '')
       ? Number(s.mobile_title_gap) : 30;
+    // --- Controlli editor: sfondo (inquadratura/zoom) + card player (dimensione/proporzione) + tasto play (posizione) ---
+    const _t = v => (v===undefined||v===null) ? '' : String(v).trim();
+    const bgPos=_t(s.bg_position)||'center', bgPosM=_t(s.bg_position_mobile)||bgPos;
+    const bgZoom=_t(s.bg_zoom)||'1', bgZoomM=_t(s.bg_zoom_mobile)||bgZoom;
+    const bgStyle=` style="--hero-bg-pos:${bgPos};--hero-bg-pos-m:${bgPosM};--hero-bg-zoom:${bgZoom};--hero-bg-zoom-m:${bgZoomM}"`;
+    const playerRatio=_t(s.player_ratio)||'4/5';
+    const playX=_t(s.play_x)||'50', playY=_t(s.play_y)||'50';
+    const playerW=_t(s.player_width);
+    let cardVars=`--mobile-video-gap:${mobileGap}px;--hero-player-ratio:${playerRatio};--play-x:${playX}%;--play-y:${playY}%`;
+    if(playerW) cardVars+=`;--hero-player-w:${playerW}`;
     const playerHtml = hasPlayer ? `
-      <div class="hero-video-card reveal" style="--mobile-video-gap:${mobileGap}px">
+      <div class="hero-video-card reveal" style="${cardVars}">
         <button class="hero-video-trigger" type="button"
           data-video-modal="${esc(s.video_player_url)}"
           aria-label="Apri il video">
@@ -3350,7 +3370,7 @@ const templates = {
       </div>` : '';
     return `
       <section${sectionStyleAttr(s)} class="hero ${hasPlayer?'has-video-player':''}"${s.id?` id="${esc(s.id)}"`:''}>
-        <div class="hero-bg">${bg}</div>
+        <div class="hero-bg"${bgStyle}>${bg}</div>
         ${s.watermark?`<div class="hero-watermark">${esc(s.watermark)}</div>`:''}
         <div class="container hero-content reveal">
           ${playerHtml}
