@@ -44,8 +44,8 @@
       "headline_pre": "\"Be the best version of ",
       "headline_main": "",
       "headline_accent": "yourself\"",
-      "subtitle_em": "Ogni paziente è unico e merita un approccio altrettanto Unico.\nPer questo ogni Esperienza nasce da un'attenta valutazione clinica, dall'ascolto delle esigenze e dalla definizione di un Percorso personalizzato. Il nostro obiettivo non è cambiare la persona ma aiutarla a ritrovare la versione migliore di sé ",
-      "subtitle": "",
+      "subtitle_em": "",
+      "subtitle": "Ogni paziente è unico e merita un approccio altrettanto Unico.\nPer questo ogni Esperienza nasce da un'attenta valutazione clinica, dall'ascolto delle esigenze e dalla definizione di un Percorso personalizzato. Il nostro obiettivo non è cambiare la persona ma aiutarla a ritrovare la versione migliore di sé ",
       "cta_label": "Prenota consulenza",
       "cta_href": "#contatti",
       "mission_label_strong": "LA NOSTRA MISSIONE:",
@@ -240,14 +240,20 @@
             "controls": true
           },
           "poster": "",
-          "name": "",
-          "treatment": "Rinoplastica"
+          "name": "Come funziona l'anestesia?",
+          "treatment": ""
         },
         {
-          "video": "",
+          "video": {
+            "src": "/videos/1783033613366-risvelglio.webm",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": true
+          },
           "poster": "",
-          "name": "",
-          "treatment": "Mastoplastica additiva"
+          "name": "E se non mi risveglio?",
+          "treatment": ""
         },
         {
           "video": "",
