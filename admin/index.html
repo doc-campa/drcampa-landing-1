@@ -1913,6 +1913,7 @@ const previewTemplates = {
           ${badgesRow}
         </div>
         <div class="test-grid">${items}</div>
+        ${(s.items||[]).length>1?`<div class="test-dots">${(s.items||[]).map((_,i)=>`<button type="button" class="test-dot${i===0?' is-active':''}" data-i="${i}"></button>`).join('')}</div>`:''}
       </div>
     </section>`;
   },
