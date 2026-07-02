@@ -228,7 +228,13 @@
       "subtitle": "Questi sono i Video Risposta a tutte le tue domande.",
       "items": [
         {
-          "video": "",
+          "video": {
+            "src": "/videos/1783030343389-risvegli-1.webm",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": true
+          },
           "poster": "",
           "name": "",
           "treatment": "Rinoplastica"
@@ -568,9 +574,9 @@
         {
           "name": "Consulenza Dott. Campa",
           "who": "",
-          "format": "Online o in studio · Napoli",
-          "value_line": "La valutazione più completa, direttamente con il Dr. Campa — online o in studio.",
-          "price": "249€",
+          "format": "",
+          "value_line": "Conosci direttamente il Dott. Domenico Campa. - Video Consulenza online o consulenza dal\nvivo.",
+          "price": "299€",
           "icon": "",
           "featured": "",
           "free": false,
@@ -585,8 +591,8 @@
         {
           "name": "Consulenza Dott.ssa Mansi",
           "who": "",
-          "format": "Online o in studio · Napoli",
-          "value_line": "Valutazione clinica completa con la Dr.ssa Mansi — online o in studio.",
+          "format": "",
+          "value_line": "Conosci la Dott.ssa Mansi Campa, Primo aiuto del Dott. Campa - Video Consulenza online o consulenza dal vivo.",
           "price": "149€",
           "icon": "",
           "featured": "",
@@ -601,8 +607,8 @@
         {
           "name": "Videocall con una Beauty Consultant",
           "who": "",
-          "format": "Online · colloquio conoscitivo",
-          "value_line": "Un primo colloquio gratuito e senza impegno per orientarti.",
+          "format": "",
+          "value_line": "Conosci la Beauty Consultant che ti accompagnerà per tutto il percorso.",
           "price": "Gratis",
           "icon": "",
           "featured": "",
