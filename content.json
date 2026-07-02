@@ -62,9 +62,9 @@
         "bg": "#000000"
       },
       "video_player_poster": "/images/1783000690640-screenshot-2026-07-02-alle-14.23.59.png",
-      "mobile_title_gap": 300,
+      "mobile_title_gap": 220,
       "bg_zoom": "0.9",
-      "bg_zoom_mobile": "",
+      "bg_zoom_mobile": "1",
       "bg_position": "",
       "bg_position_mobile": "",
       "play_x": "",
