@@ -24,7 +24,11 @@
       },
       {
         "label": "risultati",
-        "href": "#prenota"
+        "href": "#risultati-prima-dopo"
+      },
+      {
+        "label": "trattamenti",
+        "href": "#trattamenti"
       }
     ],
     "phone_label": "Chiama",
