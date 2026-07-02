@@ -222,9 +222,9 @@
     {
       "type": "wake_videos",
       "id": "risvegli",
-      "eyebrow": "I VIDEO DEI RISVEGLI",
-      "title_a": "Cosa ti spaventa di",
-      "title_accent": "un intervento?",
+      "eyebrow": "",
+      "title_a": "Cosa ti spaventa DI UN",
+      "title_accent": "intervento?",
       "subtitle": "Guarda i risvegli reali dei nostri pazienti, pochi minuti dopo l'intervento: sereni, lucidi, sorridenti. È questo il momento che racconta meglio di mille parole come ci si sente nelle mani dello Studio Campa.",
       "items": [
         {
@@ -254,7 +254,7 @@
       ],
       "style": {
         "bg": "#000105",
-        "accent": "#C8A86B",
+        "accent": "#fe6a2d",
         "text": "#ffffff"
       }
     },
