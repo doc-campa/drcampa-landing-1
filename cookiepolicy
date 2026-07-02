@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Cookie Policy — Studio Dr. Domenico Campa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{ --ink:#1B2433; --soft:#4C566B; --gold:#A66A45; --line:#E6E2D8; }
+*{ box-sizing:border-box; }
+body{ margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:#FBF9F4; line-height:1.65; font-size:.98rem; }
+.wrap{ max-width:760px; margin:0 auto; padding:48px 22px 80px; }
+.back{ display:inline-block; margin-bottom:28px; color:var(--gold); text-decoration:none; font-weight:600; font-size:.9rem; }
+.back:hover{ text-decoration:underline; }
+h1{ font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(2.2rem,6vw,3.2rem); letter-spacing:.015em; line-height:1; margin:0 0 6px; }
+.updated{ color:var(--soft); font-size:.85rem; margin-bottom:36px; }
+h2{ font-size:1.15rem; margin:34px 0 10px; }
+p, li, td, th{ color:var(--soft); }
+strong{ color:var(--ink); }
+a{ color:var(--gold); }
+ul{ padding-left:20px; }
+mark.todo{ background:#FFE9A8; color:#5C4400; padding:1px 6px; border-radius:5px; font-weight:600; }
+table{ width:100%; border-collapse:collapse; font-size:.9rem; margin:14px 0; background:#fff; border:1px solid var(--line); border-radius:12px; overflow:hidden; }
+th, td{ text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+th{ color:var(--ink); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; }
+tr:last-child td{ border-bottom:0; }
+.btnlike{ display:inline-block; background:#FF6B2C; color:#fff !important; text-decoration:none; padding:9px 16px; border-radius:9px; font-weight:600; font-size:.9rem; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Torna al sito</a>
+  <h1>Cookie Policy</h1>
+  <div class="updated">Informativa estesa sull'uso dei cookie · Ultimo aggiornamento: <mark class="todo">[data di pubblicazione]</mark></div>
+
+  <h2>1. Cosa sono i cookie</h2>
+  <p>I cookie sono piccoli file di testo che i siti salvano sul tuo dispositivo. Alcuni sono necessari al funzionamento del sito ("tecnici"), altri servono a misurare le visite o le campagne pubblicitarie e richiedono il tuo consenso.</p>
+
+  <h2>2. Strumenti utilizzati da questo sito</h2>
+  <table>
+    <tr><th>Strumento</th><th>Tipo</th><th>Finalità</th><th>Durata</th></tr>
+    <tr>
+      <td><strong>Preferenze locali</strong><br>(tema, scelta cookie)</td>
+      <td>Tecnico — non richiede consenso</td>
+      <td>Ricordare il tema chiaro/scuro scelto e la tua decisione sui cookie. Nessun dato viene inviato a terzi.</td>
+      <td>Fino a cancellazione dal browser</td>
+    </tr>
+    <tr>
+      <td><strong>Meta Pixel</strong><br>(Meta Platforms Ireland Ltd.)</td>
+      <td>Misurazione / marketing — <strong>solo previo consenso</strong></td>
+      <td>Misurare l'efficacia delle campagne pubblicitarie su Facebook e Instagram (es. visite alla pagina, click sui pulsanti di prenotazione).</td>
+      <td>Cookie <code>_fbp</code>: 90 giorni</td>
+    </tr>
+  </table>
+  <p>Il Meta Pixel <strong>non viene attivato</strong> finché non premi "Accetta" nel banner. Se premi "Rifiuta", nessuno strumento di misurazione viene caricato. Per maggiori informazioni sul trattamento da parte di Meta: <a href="https://www.facebook.com/privacy/policy" target="_blank" rel="noopener">informativa privacy di Meta</a>.</p>
+
+  <h2>3. Come gestire le preferenze</h2>
+  <ul>
+    <li>Puoi modificare la tua scelta in qualsiasi momento cliccando <strong>"Preferenze cookie"</strong> nel footer del sito, oppure qui: <a class="btnlike" href="/#" data-cc-open onclick="try{localStorage.removeItem('cc_choice')}catch(e){};location.href='/';return false;">Riapri le preferenze</a></li>
+    <li>Puoi inoltre cancellare o bloccare i cookie dalle impostazioni del tuo browser (Chrome, Safari, Firefox, Edge).</li>
+    <li>Per le preferenze sulle inserzioni Meta: <a href="https://www.facebook.com/adpreferences" target="_blank" rel="noopener">facebook.com/adpreferences</a>.</li>
+  </ul>
+
+  <h2>4. Titolare del trattamento</h2>
+  <p>Dr. Domenico Campa — <mark class="todo">[indirizzo completo]</mark> — <mark class="todo">[email dello studio]</mark>. Per ogni altra informazione sul trattamento dei dati consulta l'<a href="/privacy.html">Informativa Privacy</a>.</p>
+</div>
+</body>
+</html>
