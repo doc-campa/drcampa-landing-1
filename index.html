@@ -3149,6 +3149,35 @@ body.js-ready section.testimonials.fx-in .test-badge:nth-child(3) .tb-stars { an
   section.testimonials .test-grid > .test-card{ flex:0 0 86%; scroll-snap-align:center; }
 }
 
+
+/* ============ COOKIE BANNER (minimale) ============ */
+.ck-banner{
+  position:fixed; left:16px; bottom:16px; z-index:9000;
+  max-width:340px; width:calc(100% - 32px);
+  background:#141414; color:#EDEAE3;
+  border:1px solid rgba(200,168,107,.35);
+  border-radius:14px; padding:16px 18px;
+  box-shadow:0 18px 44px -14px rgba(0,0,0,.55);
+  font-size:.83rem; line-height:1.45;
+  opacity:0; transform:translateY(14px); pointer-events:none;
+  transition:opacity .35s ease, transform .35s ease;
+}
+.ck-banner.is-open{ opacity:1; transform:none; pointer-events:auto; }
+.ck-banner p{ margin:0 0 12px; }
+.ck-banner a{ color:#C8A86B; text-decoration:underline; }
+.ck-actions{ display:flex; gap:8px; align-items:center; }
+.ck-btn{
+  flex:1; padding:9px 12px; border-radius:9px; font-size:.82rem; font-weight:600;
+  cursor:pointer; border:1px solid rgba(255,255,255,.25); background:transparent; color:#EDEAE3;
+  transition:background .2s, color .2s, border-color .2s;
+}
+.ck-btn:hover{ border-color:rgba(255,255,255,.5); }
+.ck-btn.ck-accept{ background:#FF6B2C; border-color:#FF6B2C; color:#fff; }
+.ck-btn.ck-accept:hover{ background:#E8520F; border-color:#E8520F; }
+:root[data-theme="light"] .ck-banner{ background:#FFFFFF; color:#1B2433; border-color:rgba(20,28,46,.15); box-shadow:0 18px 44px -18px rgba(20,28,46,.28); }
+:root[data-theme="light"] .ck-banner a{ color:#A66A45; }
+:root[data-theme="light"] .ck-btn{ border-color:rgba(20,28,46,.3); color:#1B2433; }
+@media (max-width:520px){ .ck-banner{ left:10px; right:10px; bottom:10px; width:auto; max-width:none; } }
 </style>
 </head>
 <body>
@@ -3777,7 +3806,7 @@ const templates = {
                 </div>
                 <label class="consent">
                   <input type="checkbox" required>
-                  <span>Ho letto e accetto l'<a href="#">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.</span>
+                  <span>Ho letto e accetto l'<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.</span>
                 </label>
                 <button type="submit" class="btn btn-primary">${esc(s.submit_label||'Invia')} →</button>
               </form>
@@ -4195,7 +4224,7 @@ function renderFooter(data){
       </div>
       <div class="footer-bottom">
         <div>${esc(f.bottom_left||'')}</div>
-        <div>${bottomLinks}</div>
+        <div>${bottomLinks}${bottomLinks?' · ':''}<a href="/privacy.html">Privacy</a> · <a href="/cookie-policy.html">Cookie Policy</a> · <a href="#" data-cc-open>Preferenze cookie</a></div>
       </div>
     </div>`;
 }
@@ -4533,6 +4562,38 @@ function initTreatmentsTabs(){
   });
 }
 
+/* ==========================================================
+   COOKIE BANNER — consenso minimale (Meta Pixel parte solo se accettato)
+   API: window.ccConsent() -> bool · window.openCookiePrefs() · evento 'cc-change'
+   ========================================================== */
+function initCookieBanner(){
+  var KEY='cc_choice', el=null;
+  function get(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+  window.ccConsent = function(){ return get()==='granted'; };
+  function set(v){
+    try{ localStorage.setItem(KEY, v); }catch(e){}
+    hide();
+    try{ document.dispatchEvent(new CustomEvent('cc-change', {detail:v})); }catch(e){}
+  }
+  function build(){
+    el = document.createElement('div');
+    el.className='ck-banner'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Preferenze cookie');
+    el.innerHTML = '<p>Usiamo un cookie di misurazione (Meta Pixel) solo se accetti. <a href="/cookie-policy.html">Cookie policy</a></p>'+
+      '<div class="ck-actions"><button type="button" class="ck-btn ck-refuse">Rifiuta</button><button type="button" class="ck-btn ck-accept">Accetta</button></div>';
+    document.body.appendChild(el);
+    el.querySelector('.ck-accept').addEventListener('click', function(){ set('granted'); });
+    el.querySelector('.ck-refuse').addEventListener('click', function(){ set('denied'); });
+  }
+  function show(){ if(!el) build(); requestAnimationFrame(function(){ el.classList.add('is-open'); }); }
+  function hide(){ if(el) el.classList.remove('is-open'); }
+  window.openCookiePrefs = show;
+  document.addEventListener('click', function(e){
+    var t = e.target && e.target.closest ? e.target.closest('[data-cc-open]') : null;
+    if(t){ e.preventDefault(); show(); }
+  });
+  if(!get()) setTimeout(show, 900);
+}
+
 function initBehaviors(){
   // ---- TESTIMONIALS SLIDER (mobile: auto + swipe) ----
   (function(){
@@ -4571,6 +4632,9 @@ function initBehaviors(){
 
   // ---- TREATMENTS TABS ----
   initTreatmentsTabs();
+
+  // ---- COOKIE BANNER ----
+  initCookieBanner();
 
   // ---- STATS BAND COUNT-UP ----
   initStatsBands();
