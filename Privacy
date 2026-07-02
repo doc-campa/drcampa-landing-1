@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Informativa Privacy — Studio Dr. Domenico Campa</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{ --ink:#1B2433; --soft:#4C566B; --gold:#A66A45; --line:#E6E2D8; }
+*{ box-sizing:border-box; }
+body{ margin:0; font-family:'Inter',system-ui,sans-serif; color:var(--ink); background:#FBF9F4; line-height:1.65; font-size:.98rem; }
+.wrap{ max-width:760px; margin:0 auto; padding:48px 22px 80px; }
+.back{ display:inline-block; margin-bottom:28px; color:var(--gold); text-decoration:none; font-weight:600; font-size:.9rem; }
+.back:hover{ text-decoration:underline; }
+h1{ font-family:'Bebas Neue',sans-serif; font-weight:400; font-size:clamp(2.2rem,6vw,3.2rem); letter-spacing:.015em; line-height:1; margin:0 0 6px; }
+.updated{ color:var(--soft); font-size:.85rem; margin-bottom:36px; }
+h2{ font-size:1.15rem; margin:34px 0 10px; }
+p, li{ color:var(--soft); }
+strong{ color:var(--ink); }
+a{ color:var(--gold); }
+ul{ padding-left:20px; }
+mark.todo{ background:#FFE9A8; color:#5C4400; padding:1px 6px; border-radius:5px; font-weight:600; }
+.card{ background:#fff; border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:14px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="/">← Torna al sito</a>
+  <h1>Informativa sulla Privacy</h1>
+  <div class="updated">Informativa ai sensi degli artt. 13–14 del Regolamento (UE) 2016/679 ("GDPR") · Ultimo aggiornamento: <mark class="todo">[data di pubblicazione]</mark></div>
+
+  <h2>1. Titolare del trattamento</h2>
+  <div class="card">
+    <p><strong>Dr. Domenico Campa</strong> — Medico Chirurgo, specialista in Chirurgia Plastica<br>
+    Indirizzo dello studio: <mark class="todo">[indirizzo completo, Napoli]</mark><br>
+    P.IVA: <mark class="todo">[P.IVA]</mark><br>
+    Email di contatto: <mark class="todo">[email dello studio]</mark></p>
+  </div>
+
+  <h2>2. Tipologie di dati trattati</h2>
+  <ul>
+    <li><strong>Dati forniti volontariamente</strong> tramite il modulo di contatto: nome, cognome, email, numero di telefono ed eventuale messaggio.</li>
+    <li><strong>Dati di navigazione</strong>: dati tecnici raccolti automaticamente dai sistemi di hosting (es. indirizzo IP, log di accesso), necessari al funzionamento e alla sicurezza del sito.</li>
+    <li><strong>Cookie e strumenti di misurazione</strong>: si veda la <a href="/cookie-policy.html">Cookie Policy</a>. Gli strumenti di misurazione (Meta Pixel) sono attivati <strong>solo previo consenso</strong>.</li>
+  </ul>
+  <p><strong>Nota sui dati relativi alla salute:</strong> il modulo di contatto non richiede dati sanitari. Ti invitiamo a non inserire informazioni sul tuo stato di salute nel messaggio: potrai condividerle in modo riservato durante la consulenza. Eventuali informazioni comunicate spontaneamente saranno trattate con la massima riservatezza e utilizzate solo per dare seguito alla richiesta.</p>
+
+  <h2>3. Finalità e basi giuridiche</h2>
+  <ul>
+    <li><strong>Riscontro alle richieste di contatto e prenotazione</strong> — base giuridica: esecuzione di misure precontrattuali adottate su richiesta dell'interessato (art. 6.1.b GDPR).</li>
+    <li><strong>Sicurezza e funzionamento del sito</strong> — base giuridica: legittimo interesse del Titolare (art. 6.1.f GDPR).</li>
+    <li><strong>Misurazione delle campagne pubblicitarie</strong> (Meta Pixel) — base giuridica: consenso (art. 6.1.a GDPR), revocabile in qualsiasi momento.</li>
+    <li><strong>Adempimenti di obblighi di legge</strong> — base giuridica: art. 6.1.c GDPR.</li>
+  </ul>
+
+  <h2>4. Modalità del trattamento e conservazione</h2>
+  <p>I dati sono trattati con strumenti elettronici, con misure di sicurezza adeguate a prevenire accessi non autorizzati, perdita o divulgazione. I dati del modulo di contatto sono conservati per il tempo necessario a gestire la richiesta e comunque non oltre <mark class="todo">[es. 24 mesi]</mark> dall'ultimo contatto, salvo obblighi di legge o instaurazione di un rapporto professionale.</p>
+
+  <h2>5. Destinatari dei dati</h2>
+  <ul>
+    <li><strong>Netlify, Inc.</strong> (hosting del sito) e <strong>GitHub, Inc.</strong> (infrastruttura tecnica) — fornitori con sede negli USA; i trasferimenti avvengono sulla base delle garanzie previste dal GDPR (clausole contrattuali standard / EU-US Data Privacy Framework).</li>
+    <li><strong>Meta Platforms Ireland Ltd.</strong> — solo se hai prestato il consenso ai cookie di misurazione (si veda la <a href="/cookie-policy.html">Cookie Policy</a>).</li>
+    <li><strong>Calendly</strong> e <strong>WhatsApp</strong> — se scegli di prenotare o scriverci tramite questi servizi, i dati che inserisci lì sono trattati dai rispettivi titolari secondo le loro informative.</li>
+    <li>Personale autorizzato dello studio e consulenti soggetti a obblighi di riservatezza.</li>
+  </ul>
+  <p>I dati non sono oggetto di diffusione né di processi decisionali automatizzati.</p>
+
+  <h2>6. Diritti dell'interessato</h2>
+  <p>Ai sensi degli artt. 15–22 GDPR puoi esercitare in qualsiasi momento i diritti di accesso, rettifica, cancellazione, limitazione, portabilità e opposizione, nonché revocare il consenso prestato (senza pregiudicare la liceità del trattamento precedente). Puoi farlo scrivendo a <mark class="todo">[email dello studio]</mark>.</p>
+  <p>Hai inoltre il diritto di proporre reclamo al Garante per la protezione dei dati personali (<a href="https://www.garanteprivacy.it" target="_blank" rel="noopener">www.garanteprivacy.it</a>).</p>
+
+  <h2>7. Aggiornamenti</h2>
+  <p>La presente informativa può essere aggiornata: la versione pubblicata su questa pagina è quella vigente.</p>
+</div>
+</body>
+</html>
