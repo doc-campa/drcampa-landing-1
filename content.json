@@ -12,19 +12,19 @@
     "links": [
       {
         "label": "CHI SIAMO ",
-        "href": "#Hero"
+        "href": "#home"
       },
       {
         "label": "recensioni",
-        "href": "#testimonianze"
+        "href": "#recensioni"
       },
       {
         "label": "cosa ti spaventa",
-        "href": "#risultati"
+        "href": "#risvegli"
       },
       {
         "label": "risultati",
-        "href": "#sceglicome"
+        "href": "#prenota"
       }
     ],
     "phone_label": "Chiama",
