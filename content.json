@@ -261,9 +261,9 @@
     {
       "type": "before_after",
       "id": "risultati-prima-dopo",
-      "title_a": "Risultati",
-      "title_italic": "che parlano da soli.",
-      "subtitle": "Foto reali di pazienti dello Studio Campa, pubblicate con consenso scritto. Risultati naturali, percorso clinico strutturato in ogni fase: pre-operatorio, intervento, follow-up a 7-30-90-365 giorni.",
+      "title_a": "I NOSTRI",
+      "title_italic": "Risultati",
+      "subtitle": "",
       "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
       "items": [
         {
@@ -282,24 +282,21 @@
         {
           "image": "/images/1782846308372-screenshot-2026-06-30-alle-21.04.32.png",
           "label": "mastoplastica"
-        },
-        {},
-        {},
-        {},
-        {}
+        }
       ],
       "style": {
-        "bg": "#000105"
+        "bg": "#000105",
+        "accent": "#fe6a2d"
       },
-      "eyebrow": "I NOSTRI RISULTATI",
+      "eyebrow": "",
       "cta_label": "Scopri tutti i risultati @dottcampa_chirurgoplastico"
     },
     {
       "type": "treatments_list",
       "id": "trattamenti",
       "title_a": "Trattamenti",
-      "title_italic": "su misura.",
-      "subtitle": "Tutti gli interventi e trattamenti dello Studio Campa, organizzati per area di intervento. Ogni percorso inizia con la consulenza personalizzata.",
+      "title_italic": "",
+      "subtitle": "",
       "footer_note": "Ogni trattamento è preceduto da una consulenza personalizzata (149€) per valutare insieme l'approccio più indicato. Preventivo dettagliato condiviso dopo la visita.",
       "categories": [
         {
@@ -524,7 +521,7 @@
       ],
       "style": {
         "bg": "#000105",
-        "accent": "#C8A86B",
+        "accent": "#fe6a2d",
         "text": "#F7F3EC"
       }
     },
