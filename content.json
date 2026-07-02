@@ -528,8 +528,8 @@
     {
       "type": "stats",
       "id": "risultati",
-      "title_a": "Risultati Misurabili.",
-      "title_accent": "Bellezza Reale.",
+      "title_a": "i nosrti",
+      "title_accent": "Numeri",
       "subtitle": "Sicurezza raddoppiata. Tempo recuperato. Risultati osservabili. Lo Studio Campa lavora su numeri verificabili, non su promesse di marketing.",
       "row_a": [
         {
@@ -539,42 +539,30 @@
         },
         {
           "pill": "OLTRE",
-          "num": "35 MILA",
+          "num": "40 MILA",
           "label": "Pazienti seguiti"
         },
         {
           "pill": "OLTRE",
-          "num": "10 MILA",
+          "num": "3 SEDI",
           "label": "Interventi eseguiti"
         }
       ],
-      "row_b": [
-        {
-          "num": "9,8 /10",
-          "label": "Pazienti soddisfatti"
-        },
-        {
-          "num": "2.491",
-          "label": "Interventi eseguiti"
-        },
-        {
-          "num": "20+",
-          "label": "Anni di esperienza"
-        }
-      ],
+      "row_b": [],
       "footnote": "*Tutti i dati provengono da sondaggi interni e da rilevazioni cliniche su pazienti dello Studio Campa.",
       "style": {
-        "bg": "#000105"
+        "bg": "#000105",
+        "accent": "#fe6a2d"
       }
     },
     {
       "type": "booking_ladder",
       "id": "prenota",
       "layout": "columns",
-      "eyebrow": "L'ULTIMO PASSO È IL PIÙ IMPORTANTE",
-      "title_a": "Scegli Come",
-      "title_accent": "Iniziare Oggi.",
-      "subtitle": "Dal primo messaggio gratuito su WhatsApp fino all'esperienza completa in studio con il Dr. Campa, c'è un punto d'ingresso giusto per te. **L'unico vero errore è non fare il primo passo.**",
+      "eyebrow": "IL PRIMO PASSO",
+      "title_a": "",
+      "title_accent": "Scegli come iniziare .",
+      "subtitle": "Ogni persona parte da un punto diverso. Per questo puoi scegliere il percorso più adatto\nalle tue esigenze.",
       "urgency": "⚡ I posti in studio sono limitati ogni mese — le agende si chiudono in fretta.",
       "tiers": [
         {
@@ -641,7 +629,7 @@
       "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
       "style": {
         "bg": "#000105",
-        "accent": "#f7e9c5",
+        "accent": "#fe6a2d",
         "text": "#ffffff",
         "scale": "compatto"
       },
