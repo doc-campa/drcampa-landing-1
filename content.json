@@ -61,8 +61,16 @@
         "scale": "compatto",
         "bg": "#000000"
       },
-      "video_player_poster": "/images/1781114052617-img-0408-1.jpg",
-      "mobile_title_gap": 150
+      "video_player_poster": "/images/1783000690640-screenshot-2026-07-02-alle-14.23.59.png",
+      "mobile_title_gap": 150,
+      "bg_zoom": "0.9",
+      "bg_zoom_mobile": "",
+      "bg_position": "",
+      "bg_position_mobile": "",
+      "play_x": "",
+      "play_y": "",
+      "player_width": "",
+      "player_ratio": "12/9"
     },
     {
       "type": "stats_band",
