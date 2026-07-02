@@ -11,24 +11,20 @@
   "nav": {
     "links": [
       {
-        "label": "Studio",
+        "label": "CHI SIAMO ",
         "href": "#studio"
       },
       {
-        "label": "Trattamenti",
+        "label": "recensioni",
         "href": "#trattamenti"
       },
       {
-        "label": "Risultati",
+        "label": "cosa ti spaventa",
         "href": "#risultati"
       },
       {
-        "label": "Storie",
-        "href": "#storie"
-      },
-      {
-        "label": "Contatti",
-        "href": "#contatti"
+        "label": "risultati",
+        "href": "#sceglicome"
       }
     ],
     "phone_label": "Chiama",
@@ -786,10 +782,6 @@
   "topbar": {
     "enabled": true,
     "items": [
-      {
-        "label": "Esperienza · Sicurezza · Risultati",
-        "icon": "shield"
-      },
       {
         "label": "5,0 · 2.238 recensioni Google",
         "href": "https://www.google.com/search?q=dottore+domenico+campa",
