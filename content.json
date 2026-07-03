@@ -777,21 +777,8 @@
         ]
       }
     ],
-    "bottom_left": "© 2026 Dr. Domenico Campa — P.IVA 00000000000",
-    "bottom_links": [
-      {
-        "label": "Privacy",
-        "href": "#"
-      },
-      {
-        "label": "Cookie",
-        "href": "#"
-      },
-      {
-        "label": "Note legali",
-        "href": "#"
-      }
-    ]
+    "bottom_left": "© 2026 Dr. Domenico Campa — P.IVA 10210391214",
+    "bottom_links": []
   },
   "topbar": {
     "enabled": true,
