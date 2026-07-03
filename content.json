@@ -34,7 +34,7 @@
     "phone_label": "Chiama",
     "phone_href": "tel:+393332204059",
     "cta_label": "Prenota Subito",
-    "cta_href": "#contatti"
+    "cta_href": "#prenota"
   },
   "sections": [
     {
@@ -47,7 +47,7 @@
       "subtitle_em": "",
       "subtitle": "Ogni paziente è unico e merita un approccio altrettanto Unico.\nPer questo ogni Esperienza nasce da un'attenta valutazione clinica, dall'ascolto delle esigenze e dalla definizione di un Percorso personalizzato. Il nostro obiettivo non è cambiare la persona ma aiutarla a ritrovare la versione migliore di sé ",
       "cta_label": "Prenota consulenza",
-      "cta_href": "#contatti",
+      "cta_href": "#prenota",
       "mission_label_strong": "LA NOSTRA MISSIONE:",
       "mission_label_text": "AIUTRARE 15 MILA PERSONE A DIVENTARE LA VERSIONE MIGLIORE DI SE ENTRO IL 2030",
       "mission_percent": 63,
