@@ -3052,6 +3052,7 @@ section[style*="--section-text"] li { color:inherit; }
 .theme-toggle{ width:38px; height:38px; border-radius:50%; border:1px solid rgba(42,54,86,.22); background:transparent; color:#2A3656; display:grid; place-items:center; cursor:pointer; padding:0; transition:color .2s, border-color .2s; }
 .theme-toggle:hover{ color:var(--orange); border-color:var(--orange); }
 .theme-toggle svg{ width:18px; height:18px; }
+.lang-toggle{ font-size:.72rem; font-weight:800; letter-spacing:.05em; font-family:var(--font-sans); }
 .theme-toggle .ic-sun{ display:none; }
 :root[data-theme="light"] .theme-toggle .ic-moon{ display:none; }
 :root[data-theme="light"] .theme-toggle .ic-sun{ display:block; }
@@ -3290,6 +3291,33 @@ function esc(s){
   if(s==null) return '';
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
+
+/* ===== LINGUA SITO (IT default / EN) ===== */
+const SITE_LANG = (function(){
+  try{ return (typeof localStorage!=='undefined' && localStorage.getItem('site_lang')==='en') ? 'en' : 'it'; }
+  catch(e){ return 'it'; }
+})();
+const I18N = SITE_LANG==='en' ? {
+  videoSoon:'Video coming soon',
+  legalPrivacy:'Privacy', legalCookies:'Cookie Policy', legalPrefs:'Cookie preferences',
+  ckText:'We use measurement cookies (Google Analytics, Meta Pixel) only if you accept. <a href="/cookie-policy.html">Cookie policy</a>',
+  ckAccept:'Accept', ckRefuse:'Decline', ckAria:'Cookie preferences',
+  waTitle:'Message us on WhatsApp',
+  waSub:'Fill this in and we\u2019ll open the chat with your message ready.',
+  waName:'Your name', waNamePh:'E.g. Maria', waMsg:'Message',
+  waDefault:'Hi! I\u2019d like some information about a consultation.',
+  waSend:'Open WhatsApp', waIam:'Hi! I\u2019m ', waFallback:'I\u2019d like some information.'
+} : {
+  videoSoon:'Video in arrivo',
+  legalPrivacy:'Privacy', legalCookies:'Cookie Policy', legalPrefs:'Preferenze cookie',
+  ckText:'Usiamo cookie di misurazione (Google Analytics, Meta Pixel) solo se accetti. <a href="/cookie-policy.html">Cookie policy</a>',
+  ckAccept:'Accetta', ckRefuse:'Rifiuta', ckAria:'Preferenze cookie',
+  waTitle:'Scrivici su WhatsApp',
+  waSub:'Compila e ti apriamo la chat con il messaggio gi\u00e0 pronto.',
+  waName:'Il tuo nome', waNamePh:'Es. Maria', waMsg:'Messaggio',
+  waDefault:'Ciao! Vorrei ricevere informazioni su una consulenza.',
+  waSend:'Apri WhatsApp', waIam:'Ciao! Sono ', waFallback:'Vorrei ricevere informazioni.'
+};
 
 /* richText: applica formattazione inline sicura su testo che potrebbe contenere
    markdown semplice o tag inline tipo <strong>, <em>, <br>, <a href="...">.
@@ -3804,7 +3832,7 @@ const templates = {
       const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
       const media = src
         ? `<video class="wv-video" autoplay muted loop playsinline preload="metadata"${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
-        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`);
+        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">${I18N.videoSoon}</div>`);
       return `
         <figure class="wv-card reveal">
           <div class="wv-media">${media}</div>
@@ -4285,6 +4313,7 @@ function renderNav(data){
       <div class="nav-cta">
         ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login">${esc(nav.phone_label)}</a>`:''}
         ${nav.cta_label?`<a href="${esc(nav.cta_href||'#')}" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
+        <button class="theme-toggle lang-toggle" id="langToggle" type="button" aria-label="Cambia lingua / Change language" title="${SITE_LANG==='en'?'Passa all\'italiano':'Switch to English'}">${SITE_LANG==='en'?'IT':'EN'}</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambia tema chiaro o scuro" title="Tema chiaro / scuro">
           <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
           <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
@@ -4318,7 +4347,7 @@ function renderFooter(data){
       </div>
       <div class="footer-bottom">
         <div>${esc(f.bottom_left||'')}</div>
-        <div>${bottomLinks}${bottomLinks?' · ':''}<a href="/privacy.html">Privacy</a> · <a href="/cookie-policy.html">Cookie Policy</a> · <a href="#" data-cc-open>Preferenze cookie</a></div>
+        <div>${bottomLinks}${bottomLinks?' · ':''}<a href="/privacy.html">${I18N.legalPrivacy}</a> · <a href="/cookie-policy.html">${I18N.legalCookies}</a> · <a href="#" data-cc-open>${I18N.legalPrefs}</a></div>
       </div>
     </div>`;
 }
@@ -4327,10 +4356,12 @@ function renderFooter(data){
    INIT — fetch content.json, set colors, render everything
    ========================================================== */
 async function init(){
+  try{ document.documentElement.lang = SITE_LANG; }catch(e){}
   try{document.documentElement.setAttribute("data-theme", localStorage.getItem("theme")||"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}
   let data;
   try {
-    const res = await fetch('content.json?t=' + Date.now(), {cache:'no-store'});
+    let res = await fetch((SITE_LANG==='en' ? 'content.en.json?t=' : 'content.json?t=') + Date.now(), {cache:'no-store'});
+    if(!res.ok && SITE_LANG==='en'){ res = await fetch('content.json?t=' + Date.now(), {cache:'no-store'}); }
     if(!res.ok) throw new Error('HTTP ' + res.status);
     data = await res.json();
   } catch(err){
@@ -4671,9 +4702,9 @@ function initCookieBanner(){
   }
   function build(){
     el = document.createElement('div');
-    el.className='ck-banner'; el.setAttribute('role','dialog'); el.setAttribute('aria-label','Preferenze cookie');
-    el.innerHTML = '<p>Usiamo cookie di misurazione (Google Analytics, Meta Pixel) solo se accetti. <a href="/cookie-policy.html">Cookie policy</a></p>'+
-      '<div class="ck-actions"><button type="button" class="ck-btn ck-refuse">Rifiuta</button><button type="button" class="ck-btn ck-accept">Accetta</button></div>';
+    el.className='ck-banner'; el.setAttribute('role','dialog'); el.setAttribute('aria-label',I18N.ckAria);
+    el.innerHTML = '<p>'+I18N.ckText+'</p>'+
+      '<div class="ck-actions"><button type="button" class="ck-btn ck-refuse">'+I18N.ckRefuse+'</button><button type="button" class="ck-btn ck-accept">'+I18N.ckAccept+'</button></div>';
     document.body.appendChild(el);
     el.querySelector('.ck-accept').addEventListener('click', function(){ set('granted'); });
     el.querySelector('.ck-refuse').addEventListener('click', function(){ set('denied'); });
@@ -4697,15 +4728,15 @@ function initWaModal(){
   function build(){
     modal=document.createElement('div');
     modal.className='wa-modal';
-    modal.innerHTML='<div class="wa-card" role="dialog" aria-label="Scrivici su WhatsApp">'+
-      '<button type="button" class="wa-close" aria-label="Chiudi">\u00d7</button>'+
-      '<h3>Scrivici su WhatsApp</h3>'+
-      '<p>Compila e ti apriamo la chat con il messaggio gi\u00e0 pronto.</p>'+
-      '<label for="wa-name">Il tuo nome</label>'+
-      '<input id="wa-name" type="text" autocomplete="name" placeholder="Es. Maria">'+
-      '<label for="wa-msg">Messaggio</label>'+
-      '<textarea id="wa-msg">Ciao! Vorrei ricevere informazioni su una consulenza.</textarea>'+
-      '<button type="button" class="wa-send">Apri WhatsApp</button>'+
+    modal.innerHTML='<div class="wa-card" role="dialog" aria-label="'+I18N.waTitle+'">'+
+      '<button type="button" class="wa-close" aria-label="\u00d7">\u00d7</button>'+
+      '<h3>'+I18N.waTitle+'</h3>'+
+      '<p>'+I18N.waSub+'</p>'+
+      '<label for="wa-name">'+I18N.waName+'</label>'+
+      '<input id="wa-name" type="text" autocomplete="name" placeholder="'+I18N.waNamePh+'">'+
+      '<label for="wa-msg">'+I18N.waMsg+'</label>'+
+      '<textarea id="wa-msg">'+I18N.waDefault+'</textarea>'+
+      '<button type="button" class="wa-send">'+I18N.waSend+'</button>'+
     '</div>';
     document.body.appendChild(modal);
     modal.addEventListener('click', function(e){ if(e.target===modal) close(); });
@@ -4713,7 +4744,7 @@ function initWaModal(){
     modal.querySelector('.wa-send').addEventListener('click', function(){
       var name=(modal.querySelector('#wa-name').value||'').trim();
       var msg=(modal.querySelector('#wa-msg').value||'').trim();
-      var text=(name?('Ciao! Sono '+name+'. '):'')+(msg||'Vorrei ricevere informazioni.');
+      var text=(name?(I18N.waIam+name+'. '):'')+(msg||I18N.waFallback);
       var url='https://wa.me/'+currentNum+'?text='+encodeURIComponent(text);
       try{ document.dispatchEvent(new CustomEvent('wa-send')); }catch(err){}
       window.open(url,'_blank','noopener');
@@ -4772,6 +4803,13 @@ function initBehaviors(){
 
   // ---- TREATMENTS TABS ----
   initTreatmentsTabs();
+
+  // ---- LINGUA ----
+  var lt=document.getElementById('langToggle');
+  if(lt) lt.addEventListener('click', function(){
+    try{ localStorage.setItem('site_lang', SITE_LANG==='en' ? 'it' : 'en'); }catch(e){}
+    location.reload();
+  });
 
   // ---- COOKIE BANNER ----
   initCookieBanner();
