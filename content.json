@@ -256,10 +256,16 @@
           "treatment": ""
         },
         {
-          "video": "",
+          "video": {
+            "src": "/videos/1783072689742-campa-risveglio2.webm",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": true
+          },
           "poster": "",
-          "name": "",
-          "treatment": "Blefaroplastica"
+          "name": "Come è andata l'anestesia?",
+          "treatment": ""
         },
         {
           "video": "",
