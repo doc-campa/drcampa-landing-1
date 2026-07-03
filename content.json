@@ -228,7 +228,7 @@
       "id": "risvegli",
       "eyebrow": "",
       "title_a": "Cosa ti spaventa <br> DI UN<br>",
-      "title_accent": "intervento?",
+      "title_accent": "Intervento?",
       "subtitle": "Questi sono i Video Risposta a tutte le tue domande.",
       "items": [
         {
@@ -283,21 +283,21 @@
       "disclaimer": "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.",
       "items": [
         {
-          "label": "Rinoplastica",
-          "image": "/images/1782845563295-whatsapp-image-2026-06-30-at-20.46.51--1-.jpeg"
+          "label": "MASTOPLASTICA additiva",
+          "image": "/images/1783076034081-img-1424.png"
         },
         {
-          "label": "Mastoplastica",
-          "image": "/images/1782845709398-saveclip.app-546711545-18419104540105374-8757752207650273287-n.jpg"
+          "label": "rinoplastica",
+          "image": "/images/1783076002047-img-1428.jpg"
         },
         {
-          "label": "Rinoplastica",
-          "image": "/images/1782845818403-whatsapp-image-2026-06-30-at-20.51.25--2-.jpeg",
+          "label": "rinoplastica",
+          "image": "/images/1783076053948-img-1430.png",
           "caption": ""
         },
         {
-          "image": "/images/1782846308372-screenshot-2026-06-30-alle-21.04.32.png",
-          "label": "mastoplastica"
+          "image": "/images/1783076074989-img-1425.jpg",
+          "label": "mastoplastica additiva"
         }
       ],
       "style": {
