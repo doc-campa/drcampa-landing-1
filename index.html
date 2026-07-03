@@ -3891,8 +3891,8 @@ const templates = {
           ${isLink?'<svg class="tl-treatment-arrow" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>':''}
         </${tag}>`;
       }).join('');
-      return `<div class="tl-acc-item${i===0?' is-open':''}" data-tl-acc="${i}">
-        <button class="tl-acc-head" type="button" aria-expanded="${i===0?'true':'false'}">
+      return `<div class="tl-acc-item" data-tl-acc="${i}">
+        <button class="tl-acc-head" type="button" aria-expanded="false">
           <span class="tl-acc-ic">${treatmentIconSvg(c.icon)}</span>
           <span class="tl-acc-name">${esc(c.name||'')}</span>
           ${chev}
