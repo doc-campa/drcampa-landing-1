@@ -4968,12 +4968,39 @@ init();
     gtag('js', new Date());
     gtag('config', GA_ID);
   }
+  /* Google Tag Manager — solo dopo consenso */
+  var gtmLoaded=false;
+  function loadGTM(){
+    if(gtmLoaded) return; gtmLoaded=true;
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-KP5RF48H');
+  }
+  /* Meta Pixel — solo dopo consenso */
+  var fbLoaded=false;
+  function loadPixel(){
+    if(fbLoaded) return; fbLoaded=true;
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '1274119484796979');
+    fbq('track', 'PageView');
+  }
+  function loadAll(){ loadGA(); loadGTM(); loadPixel(); }
   function ok(){ try{ return localStorage.getItem('cc_choice')==='granted'; }catch(e){ return false; } }
-  if(ok()) loadGA();
-  document.addEventListener('cc-change', function(e){ if(e && e.detail==='granted') loadGA(); });
+  if(ok()) loadAll();
+  document.addEventListener('cc-change', function(e){ if(e && e.detail==='granted') loadAll(); });
 
   /* ---- Eventi CTA (partono solo se GA e' caricato, cioe' dopo il consenso) ---- */
   function track(name, params){ try{ if(window.gtag) gtag('event', name, params||{}); }catch(err){} }
+  function fb(name, params){ try{ if(window.fbq) fbq('track', name, params||{}); }catch(err){} }
   document.addEventListener('click', function(e){
     var a = e.target && e.target.closest ? e.target.closest('a,button') : null;
     if(!a) return;
@@ -4987,11 +5014,13 @@ init();
     if(a.classList && (a.classList.contains('bl-cta') || a.classList.contains('bl-cta-alt'))){
       var tier = a.closest('.bl-tier');
       var nameEl = tier ? tier.querySelector('.bl-tier-name') : null;
+      var tierName = nameEl ? nameEl.textContent.trim() : '';
       track('click_booking_cta', {
-        tier: nameEl ? nameEl.textContent.trim() : '',
+        tier: tierName,
         label: (a.textContent||'').trim(),
         dest: href
       });
+      fb('Schedule', { content_name: tierName });
       return;
     }
     /* Telefonata */
@@ -5001,7 +5030,7 @@ init();
   }, true);
   /* WhatsApp: apertura mini-form e invio (conversione) */
   document.addEventListener('wa-open', function(){ track('whatsapp_open', {}); });
-  document.addEventListener('wa-send', function(){ track('whatsapp_send', {}); });
+  document.addEventListener('wa-send', function(){ track('whatsapp_send', {}); fb('Contact', {}); });
 })();
 </script>
 </body>
