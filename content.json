@@ -220,18 +220,6 @@
       "items": [
         {
           "video": {
-            "src": "/videos/1783030343389-risvegli-1.webm",
-            "autoplay": true,
-            "loop": true,
-            "muted": true,
-            "controls": true
-          },
-          "poster": "",
-          "name": "Come funziona l'anestesia?",
-          "treatment": ""
-        },
-        {
-          "video": {
             "src": "/videos/1783034130870-risveglio-2.webm",
             "autoplay": true,
             "loop": true,
@@ -252,6 +240,18 @@
           },
           "poster": "",
           "name": "Come è andata l'anestesia?",
+          "treatment": ""
+        },
+        {
+          "video": {
+            "src": "/videos/1783030343389-risvegli-1.webm",
+            "autoplay": true,
+            "loop": true,
+            "muted": true,
+            "controls": true
+          },
+          "poster": "",
+          "name": "Posso parlare con l'anestesista?",
           "treatment": ""
         }
       ],
