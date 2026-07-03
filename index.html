@@ -2851,7 +2851,10 @@ section[style*="--section-text"] li { color:inherit; }
 /* schede piu larghe (meno alte) */
 .booking-ladder.bl-columns .bl-tiers{ max-width:1480px; }
 /* azione subito dopo il corpo (non in fondo): cosi il 1° tasto e quello gratis sono in linea */
-.booking-ladder.bl-columns .bl-tier-action{ margin-top:18px; padding-top:18px; }
+/* blocco prezzo+bottoni ancorato in basso: prezzi e tasti allineati tra le schede */
+.booking-ladder.bl-columns .bl-tier-action{ margin-top:auto; padding-top:18px; }
+.booking-ladder.bl-columns .bl-cta{ min-height:48px; display:inline-flex; align-items:center; }
+.booking-ladder.bl-columns .bl-cta-pair{ min-height:104px; justify-content:flex-start; }
 /* pareggio altezze del corpo per allineare prezzo + bottoni tra le schede */
 .booking-ladder.bl-columns .bl-row-paid .bl-tier .bl-tier-name{ min-height:3.4rem; }
 .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{
