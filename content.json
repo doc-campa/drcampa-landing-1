@@ -734,8 +734,8 @@
         "title": "Studio",
         "links": [
           {
-            "label": "Il dottore",
-            "href": "#studio"
+            "label": "chi siamo",
+            "href": "#home"
           },
           {
             "label": "Risultati",
@@ -747,7 +747,7 @@
           },
           {
             "label": "Contatti",
-            "href": "#contatti"
+            "href": "#prenota"
           }
         ]
       },
