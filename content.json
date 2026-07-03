@@ -546,6 +546,11 @@
       "row_a": [
         {
           "pill": "OLTRE",
+          "num": "3 SEDI",
+          "label": "in Italia"
+        },
+        {
+          "pill": "OLTRE",
           "num": "20 ANNI",
           "label": "di esperienza"
         },
@@ -553,11 +558,6 @@
           "pill": "OLTRE",
           "num": "40 MILA",
           "label": "Pazienti seguiti"
-        },
-        {
-          "pill": "OLTRE",
-          "num": "3 SEDI",
-          "label": "in Italia"
         }
       ],
       "row_b": [],
