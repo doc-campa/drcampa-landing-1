@@ -571,7 +571,7 @@
           "name": "Consulenza Dott. Campa",
           "who": "",
           "format": "",
-          "value_line": "Conosci direttamente il Dott. Domenico Campa. - Video Consulenza online o consulenza dal\nvivo.",
+          "value_line": "Conosci direttamente il <br>Dott. Domenico Campa.",
           "price": "300€",
           "icon": "",
           "featured": "",
@@ -589,7 +589,7 @@
           "name": "Consulenza Dott.ssa Mansi",
           "who": "",
           "format": "",
-          "value_line": "Conosci la Dott.ssa Mansi Campa, Primo aiuto del Dott. Campa - Video Consulenza online o consulenza dal vivo.",
+          "value_line": "Conosci la Dott.ssa Mansi.<br> Primo aiuto del Dott. Campa",
           "price": "200€",
           "icon": "",
           "featured": "",
@@ -599,7 +599,7 @@
           "cta2_label": "Prenota videoconsulenza",
           "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza-con-dottoressa-federicamansi?month=2026-07",
           "scarcity": "",
-          "photo": "/images/1783073652139-mansi-1-landing.webp",
+          "photo": "/images/1783097121005-mansi-1-landing-2.png",
           "features": "Valutazione clinica completa\nAnalisi avanzata e approfondita\nSimulazione del risultato con software avanzati\nPiano Definitivo di trattamento\nIndicazioni complete\nOnline o in studio"
         },
         {
