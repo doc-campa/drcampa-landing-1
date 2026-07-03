@@ -755,20 +755,24 @@
         "title": "Contatti",
         "links": [
           {
-            "label": "+39 02 0000000",
-            "href": "tel:+390200000000"
+            "label": "+39 3332204059",
+            "href": "tel:+393332204059"
           },
           {
-            "label": "info@drcampa.it",
-            "href": "mailto:info@drcampa.it"
+            "label": "segreteriacampa@gmail.com",
+            "href": "mailto:segreteriacampa@gmail.com"
           },
           {
             "label": "Instagram",
-            "href": "#"
+            "href": "https://www.instagram.com/dottcampa_chirurgoplastico/"
+          },
+          {
+            "label": "TikTok",
+            "href": "https://www.tiktok.com/@dott.domenicocampa?_r=1&_t=ZN-97iu5VbwRJm"
           },
           {
             "label": "YouTube",
-            "href": "#"
+            "href": "https://www.youtube.com/@domenicocampa1670"
           }
         ]
       }
