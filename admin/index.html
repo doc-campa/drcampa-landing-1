@@ -2818,9 +2818,17 @@ function renderListObject(items, path, subSchema){
     return `<div class="field-list-item" data-list-item="${i}" style="display:block;padding:14px 14px;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;padding-bottom:8px;border-bottom:0.5px solid var(--line-soft)">
         <span style="font-size:12px;font-weight:500;color:var(--ink-soft)">Elemento ${i+1}</span>
-        <button class="field-list-item-remove" data-list-remove="${i}" data-list-path="${path.join('.')}" aria-label="Rimuovi">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+        <span style="display:inline-flex;gap:2px;align-items:center">
+          <button class="field-list-item-remove" data-list-move="up" data-list-idx="${i}" data-list-path="${path.join('.')}" aria-label="Sposta su" title="Sposta su"${i===0?' disabled style="opacity:.25;cursor:default"':''}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <button class="field-list-item-remove" data-list-move="down" data-list-idx="${i}" data-list-path="${path.join('.')}" aria-label="Sposta giù" title="Sposta giù"${i===items.length-1?' disabled style="opacity:.25;cursor:default"':''}>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <button class="field-list-item-remove" data-list-remove="${i}" data-list-path="${path.join('.')}" aria-label="Rimuovi" title="Rimuovi">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </span>
       </div>
       <div class="${subfieldsCls}">${subFields}</div>
     </div>`;
@@ -3336,6 +3344,24 @@ function attachEditorListeners(){
       const idx = parseInt(el.dataset.listRemove);
       const list = getPath(data, listPath) || [];
       list.splice(idx, 1);
+      setPath(data, listPath, list);
+      markDirty();
+      renderEditor();
+    };
+  });
+
+  // List move (riordino con frecce)
+  editor.querySelectorAll('[data-list-move]').forEach(el => {
+    el.onclick = (e) => {
+      e.stopPropagation();
+      if(el.disabled) return;
+      const listPath = el.dataset.listPath.split('.').map(p => /^\d+$/.test(p) ? parseInt(p) : p);
+      const idx = parseInt(el.dataset.listIdx);
+      const dir = el.dataset.listMove === 'up' ? -1 : 1;
+      const list = getPath(data, listPath) || [];
+      const j = idx + dir;
+      if(j < 0 || j >= list.length) return;
+      const tmp = list[idx]; list[idx] = list[j]; list[j] = tmp;
       setPath(data, listPath, list);
       markDirty();
       renderEditor();
