@@ -416,7 +416,7 @@
           ]
         },
         {
-          "name": "Macchinari",
+          "name": "Macchinari Corpo e Viso",
           "icon": "legs",
           "description": "",
           "treatments": [
@@ -514,6 +514,9 @@
             {
               "name": "Epilazione Viso e corpo",
               "href": ""
+            },
+            {
+              "name": "Glacè Candela Viso"
             }
           ]
         }
