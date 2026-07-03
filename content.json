@@ -76,7 +76,8 @@
       "play_x": "",
       "play_y": "83",
       "player_width": "",
-      "player_ratio": "12/10"
+      "player_ratio": "12/10",
+      "title_offset": 120
     },
     {
       "type": "stats_band",
