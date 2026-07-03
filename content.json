@@ -460,7 +460,7 @@
           ]
         },
         {
-          "name": "Laser Viso",
+          "name": "Laser",
           "icon": "sparkle",
           "description": "",
           "treatments": [
@@ -575,7 +575,7 @@
       "title_a": "",
       "title_accent": "Scegli come iniziare .",
       "subtitle": "Ogni persona parte da un punto diverso. Per questo puoi scegliere il percorso più adatto\nalle tue esigenze.",
-      "urgency": "Il modo più veloce per fissare una consuleza.",
+      "urgency": "Il modo più veloce per fissare una consulenza.",
       "tiers": [
         {
           "name": "Consulenza Dott. Campa",
