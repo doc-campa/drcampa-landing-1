@@ -1464,9 +1464,11 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   color:rgba(255,255,255,.72); font-size:1.04rem; line-height:1.6;
 }
 .wv-grid {
-  display:grid; grid-template-columns:repeat(4, 1fr); gap:20px;
+  display:flex; flex-wrap:wrap; justify-content:center; gap:20px;
   max-width:1180px; margin:0 auto;
 }
+/* max 4 per fila; con meno video la fila resta centrata, oltre i 4 si va a capo */
+.wv-grid > .wv-card { flex:0 0 calc((100% - 60px)/4); }
 .wv-card { margin:0; }
 .wv-media {
   position:relative; aspect-ratio:9/16; border-radius:16px; overflow:hidden;
@@ -1483,10 +1485,11 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 .wv-name { color:#fff; font-weight:700; font-size:1rem; }
 .wv-treatment { color:var(--section-accent,#C8A86B); font-size:.85rem; letter-spacing:.02em; }
 @media (max-width:880px){
-  .wv-grid { grid-template-columns:repeat(2, 1fr); }
+  .wv-grid > .wv-card { flex:0 0 calc((100% - 20px)/2); }
 }
 @media (max-width:520px){
   .wv-grid { gap:12px; }
+  .wv-grid > .wv-card { flex:0 0 calc((100% - 12px)/2); }
   .wv-name { font-size:.9rem; }
   .wv-treatment { font-size:.78rem; }
 }
@@ -3091,13 +3094,12 @@ section[style*="--section-text"] li { color:inherit; }
 
 /* TEMA CHIARO — prenotazioni modalita confronto: ✗ e pulsanti leggibili su bianco */
 :root[data-theme="light"] .booking-ladder .bl-features li .bl-x{ color:rgba(27,36,51,.34); }
-:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta{
-  background:linear-gradient(135deg,#C99B43,#A66A45) !important; color:#FFFFFF !important; border:none !important;
-}
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta,
 :root[data-theme="light"] .booking-ladder .bl-cta-alt{
-  background:transparent !important; color:#9A5B33 !important; border:1.5px solid rgba(166,106,69,.6) !important;
+  background:#FF6B2C !important; color:#FFFFFF !important; border:none !important;
 }
-:root[data-theme="light"] .booking-ladder .bl-cta-alt:hover{ background:#A66A45 !important; color:#FFFFFF !important; }
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-cta:hover,
+:root[data-theme="light"] .booking-ladder .bl-cta-alt:hover{ background:#E8520F !important; color:#FFFFFF !important; }
 
 
 /* Loghi: versione contrasto per tema chiaro (+ fallback automatico se manca) */
@@ -3160,6 +3162,36 @@ body.js-ready section.testimonials.fx-in .test-badge:nth-child(3) .tb-stars { an
   section.testimonials .test-grid > .test-card{ flex:0 0 86%; scroll-snap-align:center; }
 }
 
+
+/* ===== PRENOTAZIONI: pulsanti arancio a pillola + contorni bianco (scuro) / arancio (chiaro) ===== */
+.booking-ladder .bl-cta,
+.booking-ladder .bl-cta-alt{
+  background:#FF6B2C !important; color:#FFFFFF !important; border:none !important;
+  border-radius:999px !important; box-shadow:none !important; filter:none !important;
+}
+.booking-ladder .bl-cta:hover,
+.booking-ladder .bl-cta-alt:hover{ background:#E8520F !important; color:#FFFFFF !important; }
+/* spunte cerchiate in arancio (entrambi i temi) */
+.booking-ladder .bl-features li .bl-check{ color:#FF6B2C; }
+/* tema scuro: contorni BIANCHI */
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured){
+  border:1px solid rgba(255,255,255,.85);
+  box-shadow:0 0 0 1px rgba(255,255,255,.14), 0 0 14px 0 rgba(255,255,255,.10), inset 0 0 16px -8px rgba(255,255,255,.10);
+}
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{ border:1px solid rgba(255,255,255,.35); }
+.booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{
+  border:1.5px solid rgba(255,255,255,.6); background:rgba(255,255,255,.06); color:#FFFFFF;
+}
+/* tema chiaro: contorni ARANCIO */
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured){
+  background:#FFFFFF;
+  border:1px solid rgba(232,82,15,.55);
+  box-shadow:0 0 0 1px rgba(232,82,15,.10);
+}
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-value{ border:1px solid rgba(232,82,15,.35); }
+:root[data-theme="light"] .booking-ladder.bl-columns .bl-row-paid .bl-tier:not(.is-featured) .bl-icon{
+  border:1.5px solid rgba(232,82,15,.55); background:rgba(232,82,15,.07); color:#E8520F;
+}
 
 /* ============ COOKIE BANNER (minimale) ============ */
 .ck-banner{
@@ -3997,7 +4029,7 @@ const templates = {
       const f = featList(t);
       const featGrid = f.length?`<div class="bl-feat-list">${f.map((x,i)=>`<div class="bl-feat-item"><span class="bl-feat-ic">${fIcon(i)}</span><span>${richText(x)}</span></div>`).join('')}</div>`:'';
       const price = esc(String(t.price||'').trim());
-      const cta = t.cta_label?`<a class="bl-cta bl-cta-dark" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)} →</a>`:'';
+      const cta = t.cta_label?`<a class="bl-cta bl-cta-dark" href="${esc(t.cta_href||'#contatti')}"${/^https?:/i.test(t.cta_href||'')?' target="_blank" rel="noopener"':''}>${esc(t.cta_label)}</a>`:'';
       return `
         <div class="bl-tier is-featured">
           ${t.badge?`<div class="bl-feat-ribbon"><span>${esc(t.badge)}</span></div>`:''}
@@ -4031,8 +4063,8 @@ const templates = {
             return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
           }).join('')}</ul>`
         : featUl(t);
-      const ctaA = t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${extAttr(t.cta_href)}>${esc(t.cta_label)} →</a>`:'';
-      const ctaB = t.cta2_label?`<a class="bl-cta bl-cta-alt" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)} →</a>`:'';
+      const ctaA = t.cta_label?`<a class="bl-cta" href="${esc(t.cta_href||'#contatti')}"${extAttr(t.cta_href)}>${esc(t.cta_label)}</a>`:'';
+      const ctaB = t.cta2_label?`<a class="bl-cta bl-cta-alt" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)}</a>`:'';
       const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
         ${(compareMode&&t.photo) ? '' : (t.icon ? `<div class="bl-icon">${icon}</div>` : '')}
