@@ -4106,7 +4106,7 @@ const templates = {
       const priceIsFree = isFree || /grat/i.test(priceRaw);
       const cls = `bl-tier${isFeatured?' is-featured':''}${isFree?' is-free':''}${(compareMode&&t.photo)?' has-photo':''}`;
       const icon = bookingLadderIcon(t.icon);
-      const feats = compareMode
+      const feats = (compareMode && featList(t).length===0)
         ? `<ul class="bl-features bl-compare-list">${compareRows.map(r=>{
             const on = isOn(r, idx);
             return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
