@@ -4713,12 +4713,13 @@ function initWaModal(){
       var msg=(modal.querySelector('#wa-msg').value||'').trim();
       var text=(name?('Ciao! Sono '+name+'. '):'')+(msg||'Vorrei ricevere informazioni.');
       var url='https://wa.me/'+currentNum+'?text='+encodeURIComponent(text);
+      try{ document.dispatchEvent(new CustomEvent('wa-send')); }catch(err){}
       window.open(url,'_blank','noopener');
       close();
     });
     document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
   }
-  function open(num){ currentNum=num; if(!modal) build(); modal.classList.add('is-open'); setTimeout(function(){ var f=modal.querySelector('#wa-name'); if(f) f.focus(); },200); }
+  function open(num){ currentNum=num; if(!modal) build(); modal.classList.add('is-open'); try{ document.dispatchEvent(new CustomEvent('wa-open')); }catch(err){} setTimeout(function(){ var f=modal.querySelector('#wa-name'); if(f) f.focus(); },200); }
   function close(){ if(modal) modal.classList.remove('is-open'); }
   document.addEventListener('click', function(e){
     var a=e.target && e.target.closest ? e.target.closest('a[href*="wa.me/"], a[href*="api.whatsapp.com"]') : null;
@@ -4970,6 +4971,37 @@ init();
   function ok(){ try{ return localStorage.getItem('cc_choice')==='granted'; }catch(e){ return false; } }
   if(ok()) loadGA();
   document.addEventListener('cc-change', function(e){ if(e && e.detail==='granted') loadGA(); });
+
+  /* ---- Eventi CTA (partono solo se GA e' caricato, cioe' dopo il consenso) ---- */
+  function track(name, params){ try{ if(window.gtag) gtag('event', name, params||{}); }catch(err){} }
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a,button') : null;
+    if(!a) return;
+    var href = (a.getAttribute && a.getAttribute('href')) || '';
+    /* Prenota (menu / hero) -> scroll alle schede */
+    if(href === '#prenota'){
+      track('click_prenota', { origin: a.closest('.nav') ? 'header' : 'hero' });
+      return;
+    }
+    /* CTA delle schede di prenotazione (dal vivo / videoconsulenza / videocall) */
+    if(a.classList && (a.classList.contains('bl-cta') || a.classList.contains('bl-cta-alt'))){
+      var tier = a.closest('.bl-tier');
+      var nameEl = tier ? tier.querySelector('.bl-tier-name') : null;
+      track('click_booking_cta', {
+        tier: nameEl ? nameEl.textContent.trim() : '',
+        label: (a.textContent||'').trim(),
+        dest: href
+      });
+      return;
+    }
+    /* Telefonata */
+    if(href.indexOf('tel:') === 0){
+      track('click_call', { number: href.replace('tel:','') });
+    }
+  }, true);
+  /* WhatsApp: apertura mini-form e invio (conversione) */
+  document.addEventListener('wa-open', function(){ track('whatsapp_open', {}); });
+  document.addEventListener('wa-send', function(){ track('whatsapp_send', {}); });
 })();
 </script>
 </body>
