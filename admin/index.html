@@ -1304,6 +1304,106 @@ async function saveContent(){
   dataSha = r.content.sha;
 }
 
+/* =====================================================================
+   TRADUZIONE AUTOMATICA EN (DeepL via Netlify function)
+   - Cammina il JSON italiano, raccoglie SOLO i testi da tradurre
+   - Memoria di traduzione (_tm dentro content.en.json): ritraduce solo il nuovo
+   - Ricostruisce content.en.json e lo committa
+   ===================================================================== */
+const TR_SKIP_KEYS = new Set(['href','src','image','poster','photo','logo_url','bg_image','video','icon','id','type',
+  'layout','service','style','colors','new_tab','google_brand','featured','free','autoplay','loop','muted','controls',
+  'c1','c2','c3','mission_percent','mobile_title_gap','title_offset','bg_position','bg_position_mobile','bg_zoom',
+  'bg_zoom_mobile','play_x','play_y','player_width','player_ratio','label_size','intro_size','scale','number',
+  'prefix','suffix','strong_part','enabled','watermark']);
+function trSkipKey(k){ return TR_SKIP_KEYS.has(k) || /(_href|_link)$/.test(k); }
+function trSkipValue(v){
+  if(typeof v !== 'string') return true;
+  const s = v.trim();
+  if(!s) return true;
+  if(/^(https?:|\/|#|tel:|mailto:)/i.test(s)) return true;      // link e percorsi
+  if(/wa\.me/i.test(s)) return true;
+  if(/^#?[0-9a-fA-F]{3,8}$/.test(s) && /[0-9a-fA-F]/.test(s) && s.length<=9 && /^#/.test(v.trim())) return true; // colori hex
+  if(s === 'sì' || s === 'si' || s === 'no') return true;         // flag del confronto
+  if(/^[+\d][\d\s.,-]*$/.test(s)) return true;                  // numeri e telefoni
+  if(s.includes('@') && !s.includes(' ')) return true;            // email / handle
+  return false;
+}
+function trWalk(node, key, fn){
+  if(node == null) return;
+  if(Array.isArray(node)){ node.forEach(x => trWalk(x, key, fn)); return; }
+  if(typeof node === 'object'){
+    for(const k of Object.keys(node)){
+      if(k === '_tm') continue;
+      if(trSkipKey(k)) continue;
+      const v = node[k];
+      if(typeof v === 'string'){ fn(node, k, v); }
+      else trWalk(v, k, fn);
+    }
+    return;
+  }
+}
+function trCollect(itData){
+  const out = new Set();
+  trWalk(itData, '', (obj, k, v) => {
+    if(k === 'features'){ v.split('\n').forEach(line => { if(!trSkipValue(line)) out.add(line.trim()); }); return; }
+    if(!trSkipValue(v)) out.add(v);
+  });
+  return Array.from(out);
+}
+function trBuildEn(itData, tm){
+  const en = JSON.parse(JSON.stringify(itData));
+  trWalk(en, '', (obj, k, v) => {
+    if(k === 'features'){
+      obj[k] = v.split('\n').map(line => tm[line.trim()] !== undefined ? tm[line.trim()] : line).join('\n');
+      return;
+    }
+    if(!trSkipValue(v) && tm[v] !== undefined) obj[k] = tm[v];
+  });
+  return en;
+}
+async function trTranslateMissing(strings, tm){
+  const missing = strings.filter(s => tm[s] === undefined);
+  if(!missing.length) return 0;
+  for(let i = 0; i < missing.length; i += 40){
+    const chunk = missing.slice(i, i + 40);
+    const res = await fetch('/.netlify/functions/translate', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ texts: chunk })
+    });
+    if(!res.ok){
+      let msg = 'HTTP ' + res.status;
+      try{ const j = await res.json(); if(j.error) msg = j.error; }catch(e){}
+      throw new Error(msg);
+    }
+    const j = await res.json();
+    (j.translations || []).forEach((tr, idx) => { tm[chunk[idx]] = tr; });
+  }
+  return missing.length;
+}
+async function saveEnglish(){
+  // 1. Carica EN esistente (per sha e memoria di traduzione)
+  let enSha = null, tm = {};
+  try{
+    const r = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.en.json?ref=${BRANCH}`);
+    enSha = r.sha;
+    try{ const old = JSON.parse(b64decode(r.content.replace(/\n/g, ''))); tm = old._tm || {}; }catch(e){}
+  }catch(e){ /* prima volta: il file non esiste ancora */ }
+  // 2. Traduce solo le frasi nuove
+  const nuove = await trTranslateMissing(trCollect(data), tm);
+  // 3. Ricostruisce l'inglese e committa
+  const en = trBuildEn(data, tm);
+  en._tm = tm;
+  const body = {
+    message: 'Auto-translate content.en.json' + (nuove ? ` (+${nuove} frasi)` : ''),
+    content: b64encode(JSON.stringify(en, null, 2)),
+    branch: BRANCH
+  };
+  if(enSha) body.sha = enSha;
+  await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.en.json`, { method: 'PUT', body });
+  return nuove;
+}
+
 async function uploadImage(file){
   return uploadAsset(file, 'images');
 }
@@ -3549,11 +3649,18 @@ async function doSave(){
   try {
     await saveContent();
     ui.isDirty = false;
+    // Traduzione inglese automatica (non blocca la pubblicazione italiana)
+    let enOk = true, enErr = '';
+    try {
+      document.querySelector('#saveBtn').innerHTML = '<span class="spinner"></span> Traduco EN…';
+      await saveEnglish();
+    } catch(e){ enOk = false; enErr = e.message || String(e); }
     ui.isSaving = false;
     document.querySelector('#saveBtn').disabled = false;
     document.querySelector('#saveBtn').textContent = 'Pubblica';
     updateStatusBar();
-    showToast('Pubblicato! Netlify aggiorna il sito in 30 secondi.', 'success');
+    if(enOk) showToast('Pubblicato in italiano e inglese! Online in 30 secondi.', 'success');
+    else showToast('Pubblicato (italiano). Traduzione EN non aggiornata: ' + enErr, 'error');
   } catch(err){
     ui.isSaving = false;
     document.querySelector('#saveBtn').disabled = false;
