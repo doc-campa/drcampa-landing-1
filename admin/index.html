@@ -2111,7 +2111,7 @@ const previewTemplates = {
       const f = featList(t);
       const featGrid = f.length?`<div class="bl-feat-list">${f.map((x,i)=>`<div class="bl-feat-item"><span class="bl-feat-ic">${fIcon(i)}</span><span>${richText(x)}</span></div>`).join('')}</div>`:'';
       const price = esc(String(t.price||'').trim());
-      const cta = t.cta_label?`<span class="bl-cta bl-cta-dark">${esc(t.cta_label)} →</span>`:'';
+      const cta = t.cta_label?`<span class="bl-cta bl-cta-dark">${esc(t.cta_label)}</span>`:'';
       return `
         <div class="bl-tier is-featured">
           ${t.badge?`<div class="bl-feat-ribbon"><span>${esc(t.badge)}</span></div>`:''}
@@ -2145,8 +2145,8 @@ const previewTemplates = {
             return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
           }).join('')}</ul>`
         : featUl(t);
-      const ctaA = t.cta_label?`<span class="bl-cta">${esc(t.cta_label)} →</span>`:'';
-      const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)} →</span>`:'';
+      const ctaA = t.cta_label?`<span class="bl-cta">${esc(t.cta_label)}</span>`:'';
+      const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)}</span>`:'';
       const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
       return `<div class="${cls}">
         ${(compareMode&&t.photo) ? '' : (t.icon ? `<div class="bl-icon">${icon}</div>` : '')}
