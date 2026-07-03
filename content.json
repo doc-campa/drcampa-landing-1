@@ -285,6 +285,23 @@
         {
           "image": "/images/1783096490872-landing-campa-4-2.png",
           "label": "rinoplastica"
+        },
+        {
+          "image": "/images/1783098600798-img-1583.png",
+          "label": "mastoplastica additiva"
+        },
+        {
+          "image": "/images/1783098687081-foto-eleonora.png",
+          "label": "rinoplastica"
+        },
+        {
+          "image": "/images/1783098747794-eleonora-2.png",
+          "label": "MASTOPLASTICA ADDITIVA"
+        },
+        {
+          "image": "/images/1783098760226-img-1580.png",
+          "label": "mastoplastica additiva",
+          "caption": ""
         }
       ],
       "style": {
