@@ -2024,7 +2024,7 @@ const previewTemplates = {
     const chev = '<svg class="tl-acc-chevron" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>';
     const items = cats.map((c,i) => {
       const treatments = (c.treatments||[]).map(t => `<span class="tl-treatment"><span class="tl-treatment-icon">✓</span><span class="tl-treatment-name">${esc(t.name||'')}</span></span>`).join('');
-      return `<div class="tl-acc-item${i===0?' is-open':''}">
+      return `<div class="tl-acc-item">
         <button class="tl-acc-head" type="button"><span class="tl-acc-ic"></span><span class="tl-acc-name">${esc(c.name||'')}</span>${chev}</button>
         <div class="tl-acc-body"><div class="tl-acc-inner"><div class="tl-acc-pad">${c.description?`<p class="tl-cat-desc">${richText(c.description)}</p>`:''}<div class="tl-treatments-grid">${treatments}</div></div></div></div>
       </div>`;
