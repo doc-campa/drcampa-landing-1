@@ -316,48 +316,28 @@
       "footer_note": "Ogni trattamento è preceduto da una consulenza personalizzata (149€) per valutare insieme l'approccio più indicato. Preventivo dettagliato condiviso dopo la visita.",
       "categories": [
         {
-          "name": "Chirurgia Estetica",
+          "name": "Interventi",
           "icon": "body",
-          "description": "Interventi chirurgici per viso, seno e corpo, eseguiti dal Dr. Campa.",
+          "description": "",
           "treatments": [
             {
+              "name": "Mastoplastica Additiva",
+              "href": ""
+            },
+            {
+              "name": "Mastopessi senza protesi",
+              "href": ""
+            },
+            {
+              "name": "Mastopessi con protesi",
+              "href": ""
+            },
+            {
+              "name": "Mastoplastica Riduttiva",
+              "href": ""
+            },
+            {
               "name": "Rinoplastica",
-              "href": "https://www.domenicocampa.it/intervento/rinoplastica"
-            },
-            {
-              "name": "Profiloplastica",
-              "href": ""
-            },
-            {
-              "name": "Blefaroplastica",
-              "href": ""
-            },
-            {
-              "name": "Lifting viso",
-              "href": ""
-            },
-            {
-              "name": "Lifting collo",
-              "href": ""
-            },
-            {
-              "name": "Otoplastica",
-              "href": ""
-            },
-            {
-              "name": "Mastoplastica additiva",
-              "href": ""
-            },
-            {
-              "name": "Mastoplastica riduttiva",
-              "href": ""
-            },
-            {
-              "name": "Mastopessi",
-              "href": ""
-            },
-            {
-              "name": "Ginecomastia",
               "href": ""
             },
             {
@@ -369,15 +349,39 @@
               "href": ""
             },
             {
-              "name": "Liposcultura",
+              "name": "Lifting Viso MACS",
               "href": ""
             },
             {
-              "name": "Gluteoplastica",
+              "name": "Lifting Cosce",
               "href": ""
             },
             {
-              "name": "Lipofilling",
+              "name": "Lifting Braccia",
+              "href": ""
+            },
+            {
+              "name": "Blefaroplastica completa, superiore o inferiore",
+              "href": ""
+            },
+            {
+              "name": "Otoplastica",
+              "href": ""
+            },
+            {
+              "name": "Split Lobo",
+              "href": ""
+            },
+            {
+              "name": "Lifting Temporale (Foxy eyes)",
+              "href": ""
+            },
+            {
+              "name": "Gluteoplastica con protesi",
+              "href": ""
+            },
+            {
+              "name": "Liplift",
               "href": ""
             }
           ]
@@ -385,116 +389,18 @@
         {
           "name": "Medicina Estetica",
           "icon": "syringe",
-          "description": "Trattamenti iniettivi e mini-invasivi per ringiovanimento e armonia del viso.",
+          "description": "",
           "treatments": [
             {
-              "name": "Tossina botulinica",
+              "name": "Filler (labbra, naso, zigomi, mento, contorno mandibolare, glutei, occhiaie)",
               "href": ""
             },
             {
-              "name": "Filler acido ialuronico",
-              "href": ""
-            },
-            {
-              "name": "Filler labbra",
-              "href": ""
-            },
-            {
-              "name": "Rinofiller",
+              "name": "Botox",
               "href": ""
             },
             {
               "name": "Biorivitalizzazione",
-              "href": ""
-            },
-            {
-              "name": "Fili di trazione",
-              "href": ""
-            },
-            {
-              "name": "Peeling chimico",
-              "href": ""
-            },
-            {
-              "name": "Mesoterapia",
-              "href": ""
-            },
-            {
-              "name": "Trattamento occhiaie",
-              "href": ""
-            },
-            {
-              "name": "Bioristrutturazione cutanea",
-              "href": ""
-            }
-          ]
-        },
-        {
-          "name": "Trattamenti Laser",
-          "icon": "sparkle",
-          "description": "Tecnologie laser per pelle, inestetismi e ringiovanimento cutaneo.",
-          "treatments": [
-            {
-              "name": "Epilazione laser",
-              "href": ""
-            },
-            {
-              "name": "Laser CO2 frazionato",
-              "href": ""
-            },
-            {
-              "name": "Resurfacing cutaneo",
-              "href": ""
-            },
-            {
-              "name": "Rimozione tatuaggi",
-              "href": ""
-            },
-            {
-              "name": "Laser vascolare (capillari)",
-              "href": ""
-            },
-            {
-              "name": "Trattamento macchie cutanee",
-              "href": ""
-            },
-            {
-              "name": "Laser cicatrici e acne",
-              "href": ""
-            }
-          ]
-        },
-        {
-          "name": "Macchinari Corpo",
-          "icon": "legs",
-          "description": "Rimodellamento corporeo e trattamenti tecnologici non invasivi.",
-          "treatments": [
-            {
-              "name": "Criolipolisi",
-              "href": ""
-            },
-            {
-              "name": "Radiofrequenza",
-              "href": ""
-            },
-            {
-              "name": "Cavitazione medica",
-              "href": ""
-            },
-            {
-              "name": "Pressoterapia",
-              "href": ""
-            },
-            {
-              "name": "Onde d'urto (cellulite)",
-              "href": ""
-            },
-            {
-              "name": "Elettrostimolazione",
-              "href": ""
-            },
-            {
-              "name": "Linfodrenaggio",
               "href": ""
             }
           ]
@@ -502,34 +408,124 @@
         {
           "name": "Medicina Rigenerativa",
           "icon": "heart",
-          "description": "Stimolazione dei processi naturali di rigenerazione di pelle e tessuti.",
+          "description": "",
           "treatments": [
             {
-              "name": "PRP (plasma ricco di piastrine)",
+              "name": "PRP",
               "href": ""
             },
             {
-              "name": "Polinucleotidi",
+              "name": "PRF",
               "href": ""
             },
             {
-              "name": "Microneedling",
+              "name": "PRX T33",
               "href": ""
             },
             {
-              "name": "Needling con fattori di crescita",
+              "name": "Glacè Candela Viso",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Macchinari",
+          "icon": "legs",
+          "description": "",
+          "treatments": [
+            {
+              "name": "Exion Body",
               "href": ""
             },
             {
-              "name": "Lipofilling rigenerativo",
+              "name": "Exion Viso",
               "href": ""
             },
             {
-              "name": "PRP capelli",
+              "name": "Exion RF",
               "href": ""
             },
             {
-              "name": "Biostimolazione cutanea",
+              "name": "Emtone",
+              "href": ""
+            },
+            {
+              "name": "Emsculpt neo",
+              "href": ""
+            },
+            {
+              "name": "Carbossiterapia",
+              "href": ""
+            }
+          ]
+        },
+        {
+          "name": "Laser Viso",
+          "icon": "sparkle",
+          "description": "",
+          "treatments": [
+            {
+              "name": "Teleangectasie Viso",
+              "href": ""
+            },
+            {
+              "name": "Cicatrici Chirurgiche e non Chirurgiche",
+              "href": ""
+            },
+            {
+              "name": "Capillari Corpo",
+              "href": ""
+            },
+            {
+              "name": "Lentigo solari viso e corpo",
+              "href": ""
+            },
+            {
+              "name": "Cheratosi seborroiche e attiniche",
+              "href": ""
+            },
+            {
+              "name": "Angiomi viso e corpo",
+              "href": ""
+            },
+            {
+              "name": "Melasma",
+              "href": ""
+            },
+            {
+              "name": "Rosacea",
+              "href": ""
+            },
+            {
+              "name": "Acne e Cicatrici da acne",
+              "href": ""
+            },
+            {
+              "name": "Colore Occhiaie",
+              "href": ""
+            },
+            {
+              "name": "Fotoringiovanimento",
+              "href": ""
+            },
+            {
+              "name": "Poichelodermia di Civatte",
+              "href": ""
+            },
+            {
+              "name": "Light and Bright",
+              "href": ""
+            },
+            {
+              "name": "Tatuaggi (+ Microblading)",
+              "href": ""
+            },
+            {
+              "name": "Porosità della pelle",
+              "href": ""
+            },
+            {
+              "name": "Epilazione Viso e corpo",
               "href": ""
             }
           ]
