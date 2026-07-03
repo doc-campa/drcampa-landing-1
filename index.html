@@ -690,6 +690,7 @@ html.no-topbar .hero { padding-top:190px; }
   display:inline-block;
 }
 .hero-content h1 .accent::after { content:none; }
+@media (min-width:761px){ .hero-title{ margin-top:var(--title-down, 0px); } }
 @keyframes underlineDraw { to { transform:scaleX(1); } }
 .hero-sub {
   font-size:clamp(1.05rem, 1.5vw, 1.3rem);
@@ -3461,8 +3462,9 @@ const templates = {
       </div>` : '';
     // I pezzi del testo li tengo separati così su mobile posso riordinarli
     // (titolo → video → info → CTA in fondo) tramite CSS `order`.
+    const _td = (s.title_offset!==undefined && s.title_offset!==null && String(s.title_offset).trim()!=='') ? Number(s.title_offset) : 0;
     const titleHtml = `
-      <h1 class="hero-title">
+      <h1 class="hero-title"${_td?` style="--title-down:${_td}px"`:''}>
         ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
         ${s.headline_main?`${richText(s.headline_main)} `:''}
         ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
