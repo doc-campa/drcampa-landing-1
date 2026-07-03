@@ -800,6 +800,7 @@ const SECTION_SCHEMA = {
     ['video_player_poster', 'Video player - Immagine di anteprima (poster)', 'image', 'L\'immagine mostrata prima del play. Se vuoto, si usa l\'immagine di sfondo.'],
     ['video_player_label', 'Video player - Etichetta sopra il bottone play', 'text', 'Es: "Guarda il video", "Storia di una paziente". Se vuoto, nessuna etichetta.'],
     ['mobile_title_gap', 'Mobile: spazio sopra il video (px)', 'number', 'Solo su smartphone. Distanza tra il titolo e il video, in pixel. Default 30. Aumenta (es. 120) per far vedere più foto di sfondo prima del video.'],
+    ['title_offset', 'Titolo \u2014 abbassa di (px, solo desktop)', 'number', 'Sposta il titolo verso il basso per non coprire i volti nella foto. Es: 120. Vuoto = posizione normale.'],
     ['bg_position', 'Sfondo \u2014 inquadratura (desktop)', 'text', 'Quale parte della foto si vede. Es: "center" oppure "50% 30%" (orizzontale% verticale%). Abbassa il 2\u00b0 numero per vedere più in alto.'],
     ['bg_position_mobile', 'Sfondo \u2014 inquadratura (mobile)', 'text', 'Come sopra ma su smartphone. Vuoto = usa desktop.'],
     ['bg_zoom', 'Sfondo \u2014 zoom (desktop)', 'text', 'Es: "1" normale, "1.2" più vicino, "1.4" molto vicino. Ingrandisce la foto di sfondo.'],
@@ -1685,7 +1686,7 @@ const previewTemplates = {
         </div>
       </div>` : '';
     const titleHtml = `
-      <h1 class="hero-title">
+      <h1 class="hero-title"${(s.title_offset&&String(s.title_offset).trim()!=='')?` style="--title-down:${Number(s.title_offset)}px"`:''}>
         ${s.headline_pre?`${richText(s.headline_pre)}<br>`:''}
         ${s.headline_main?`${richText(s.headline_main)} `:''}
         ${s.headline_accent?`<span class="accent">${richText(s.headline_accent)}</span>`:''}
