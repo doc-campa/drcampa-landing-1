@@ -3338,7 +3338,11 @@ const I18N = SITE_LANG==='en' ? {
   waSub:'Fill this in and we\u2019ll open the chat with your message ready.',
   waName:'Your name', waNamePh:'E.g. Maria', waMsg:'Message',
   waDefault:'Hi! I\u2019d like some information about a consultation.',
-  waSend:'Open WhatsApp', waIam:'Hi! I\u2019m ', waFallback:'I\u2019d like some information.'
+  waSend:'Open WhatsApp', waIam:'Hi! I\u2019m ', waFallback:'I\u2019d like some information.',
+  fName:'First name', fSurname:'Last name', fEmail:'Email', fPhone:'Phone',
+  fInterest:'What are you interested in', fSelect:'Select\u2026', fMessage:'Message',
+  fMsgPh:'Tell us briefly what brings you here\u2026',
+  fConsent:'I have read and accept the <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a> and consent to the processing of my data in order to be contacted.'
 } : {
   videoSoon:'Video in arrivo',
   legalPrivacy:'Privacy', legalCookies:'Cookie Policy', legalPrefs:'Preferenze cookie',
@@ -3348,7 +3352,11 @@ const I18N = SITE_LANG==='en' ? {
   waSub:'Compila e ti apriamo la chat con il messaggio gi\u00e0 pronto.',
   waName:'Il tuo nome', waNamePh:'Es. Maria', waMsg:'Messaggio',
   waDefault:'Ciao! Vorrei ricevere informazioni su una consulenza.',
-  waSend:'Apri WhatsApp', waIam:'Ciao! Sono ', waFallback:'Vorrei ricevere informazioni.'
+  waSend:'Apri WhatsApp', waIam:'Ciao! Sono ', waFallback:'Vorrei ricevere informazioni.',
+  fName:'Nome', fSurname:'Cognome', fEmail:'Email', fPhone:'Telefono',
+  fInterest:'Cosa ti interessa', fSelect:'Seleziona\u2026', fMessage:'Messaggio',
+  fMsgPh:'Raccontaci brevemente cosa ti porta qui...',
+  fConsent:'Ho letto e accetto l\u2019<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.'
 };
 
 /* richText: applica formattazione inline sicura su testo che potrebbe contenere
@@ -3938,29 +3946,29 @@ const templates = {
             <div class="form-wrap">
               <h3>${richText(s.form_title||'Prenota')}</h3>
               <p class="form-sub">${richText(s.form_subtitle||'')}</p>
-              <form id="leadForm" novalidate>
+              <form id="leadForm">
                 <div class="field-row">
-                  <div class="field"><label>Nome</label><input type="text" name="firstName" required></div>
-                  <div class="field"><label>Cognome</label><input type="text" name="lastName" required></div>
+                  <div class="field"><label>${I18N.fName}</label><input type="text" name="firstName" required></div>
+                  <div class="field"><label>${I18N.fSurname}</label><input type="text" name="lastName" required></div>
                 </div>
                 <div class="field-row">
-                  <div class="field"><label>Email</label><input type="email" name="email" required></div>
-                  <div class="field"><label>Telefono</label><input type="tel" name="phone" required></div>
+                  <div class="field"><label>${I18N.fEmail}</label><input type="email" name="email" required></div>
+                  <div class="field"><label>${I18N.fPhone}</label><input type="tel" name="phone" required></div>
                 </div>
                 <div class="field">
-                  <label>Cosa ti interessa</label>
+                  <label>${I18N.fInterest}</label>
                   <select name="treatment" required>
-                    <option value="">Seleziona...</option>
+                    <option value="">${I18N.fSelect}</option>
                     ${treatments}
                   </select>
                 </div>
                 <div class="field">
-                  <label>Messaggio (opzionale)</label>
-                  <textarea name="message" placeholder="Raccontaci brevemente cosa ti porta qui..."></textarea>
+                  <label>${I18N.fMessage}</label>
+                  <textarea name="message" placeholder="${I18N.fMsgPh}" required></textarea>
                 </div>
                 <label class="consent">
                   <input type="checkbox" required>
-                  <span>Ho letto e accetto l'<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.</span>
+                  <span>${I18N.fConsent}</span>
                 </label>
                 <button type="submit" class="btn btn-primary">${esc(s.submit_label||'Invia')}</button>
               </form>
