@@ -1581,8 +1581,8 @@ section.testimonials .test-stars { color:#F5A623 !important; }
    ============================================================ */
 .cta-section { background:#000; }
 .cta-card {
-  display:grid; grid-template-columns:1.1fr 1fr;
-  gap:60px; align-items:start;
+  display:grid; grid-template-columns:1fr;
+  gap:36px; align-items:start;
   background:#0B0B0D;
   border-radius:var(--radius-xl);
   padding:clamp(40px, 5vw, 70px);
@@ -1620,13 +1620,19 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 .form-sub { color:var(--ink-soft); margin-bottom:24px; font-size:.95rem; }
 .form-wrap input, .form-wrap textarea, .form-wrap select {
   width:100%; padding:13px 16px;
-  border:1px solid var(--line);
-  background:var(--white);
+  border:1px solid rgba(255,255,255,.16);
+  background:#1E2023;
   border-radius:10px;
-  font-size:.95rem; color:var(--ink); font-family:inherit;
+  font-size:.95rem; color:#EDEAE3; font-family:inherit;
   margin-bottom:14px;
   transition:border-color .25s var(--ease-out), box-shadow .25s var(--ease-out);
 }
+.form-wrap input::placeholder, .form-wrap textarea::placeholder { color:rgba(237,234,227,.45); }
+:root[data-theme="light"] .form-wrap input,
+:root[data-theme="light"] .form-wrap textarea,
+:root[data-theme="light"] .form-wrap select { background:#FFFFFF; border-color:#D9D4C8; color:#1B2433; }
+:root[data-theme="light"] .form-wrap input::placeholder,
+:root[data-theme="light"] .form-wrap textarea::placeholder { color:#9AA0AC; }
 .form-wrap input:focus, .form-wrap textarea:focus, .form-wrap select:focus {
   outline:0;
   border-color:var(--gold);
@@ -1634,11 +1640,27 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 }
 .form-wrap textarea { min-height:90px; resize:vertical; }
 .form-wrap .btn { width:100%; margin-top:6px; }
-.form-wrap .btn::after {
-  content:"→"; margin-left:4px;
-  transition:transform .25s var(--ease-spring);
+/* checkbox privacy in linea col testo */
+.form-wrap .consent{
+  display:flex; align-items:flex-start; gap:10px;
+  margin:4px 0 16px; font-size:.85rem; line-height:1.5;
+  color:var(--ink-soft); cursor:pointer; text-align:left;
 }
-.form-wrap .btn:hover::after { transform:translateX(4px); }
+.form-wrap .consent input{
+  width:auto; flex:0 0 auto; margin:3px 0 0; padding:0;
+  accent-color:#FF6B2C;
+}
+/* DESKTOP: form largo, i 5 campi su un'unica fila, messaggio a tutta larghezza */
+@media (min-width:861px){
+  #leadForm{ display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; align-items:start; }
+  #leadForm .field-row{ display:contents; }
+  #leadForm .field{ margin:0; }
+  #leadForm input, #leadForm select, #leadForm textarea{ margin-bottom:0; }
+  #leadForm > .field:nth-of-type(4){ grid-column:1 / -1; } /* messaggio */
+  #leadForm .consent{ grid-column:1 / -1; margin:2px 0 0; }
+  #leadForm .btn{ grid-column:1 / -1; margin-top:0; }
+}
+
 .form-success {
   display:none; text-align:center; padding:32px 16px;
 }
@@ -3930,7 +3952,7 @@ const templates = {
                   <input type="checkbox" required>
                   <span>Ho letto e accetto l'<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.</span>
                 </label>
-                <button type="submit" class="btn btn-primary">${esc(s.submit_label||'Invia')} →</button>
+                <button type="submit" class="btn btn-primary">${esc(s.submit_label||'Invia')}</button>
               </form>
               <div class="form-success" id="formSuccess">
                 <h4>${esc(s.success_title||'Grazie!')}</h4>
