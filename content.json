@@ -711,6 +711,24 @@
           "c3": ""
         }
       ]
+    },
+    {
+      "type": "cta_form",
+      "id": "lead",
+      "title_a": "Scrivici",
+      "title_accent": "",
+      "body": "Vuoi che un nostro esperto ti contatti ? ",
+      "perks": [],
+      "form_title": "compila il form",
+      "form_subtitle": "",
+      "treatments": [],
+      "submit_label": "invia richiesta",
+      "success_title": "Form inviato.",
+      "success_body": "Grazie, un esperto ti contatterà a breve",
+      "style": {
+        "text": "#ffffff",
+        "accent": "#ff6b2d"
+      }
     }
   ],
   "footer": {
