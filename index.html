@@ -3298,6 +3298,16 @@ body.js-ready section.testimonials.fx-in .test-badge:nth-child(3) .tb-stars { an
 </head>
 <body>
 
+<!-- Form statico per Netlify Forms (nascosto): rende rilevabile il form generato via JS -->
+<form name="contatti" data-netlify="true" netlify-honeypot="bot-field" hidden>
+  <input type="text" name="firstName">
+  <input type="text" name="lastName">
+  <input type="email" name="email">
+  <input type="tel" name="phone">
+  <input type="text" name="treatment">
+  <textarea name="message"></textarea>
+  <input name="bot-field">
+</form>
 <div class="topbar" id="topbar"></div>
 <nav class="nav" id="nav"></nav>
 
@@ -4945,13 +4955,26 @@ function initBehaviors(){
   if(form){
     form.addEventListener('submit', async e => {
       e.preventDefault();
+      const btn = form.querySelector('button[type="submit"]');
+      const btnLabel = btn ? btn.textContent : '';
+      if(btn){ btn.disabled = true; btn.textContent = 'Invio in corso…'; }
       const formData = Object.fromEntries(new FormData(form).entries());
-      console.log('Lead ricevuto:', formData);
-      // TODO: replace with real endpoint
-      await new Promise(r => setTimeout(r, 500));
-      form.style.display = 'none';
-      const succ = document.getElementById('formSuccess');
-      if(succ) succ.classList.add('active');
+      try{
+        const res = await fetch('/', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ 'form-name':'contatti', ...formData }).toString()
+        });
+        if(!res.ok) throw new Error('HTTP ' + res.status);
+        form.style.display = 'none';
+        const succ = document.getElementById('formSuccess');
+        if(succ) succ.classList.add('active');
+        try{ if(window.gtag) gtag('event','lead_submit',{ treatment: formData.treatment||'' }); }catch(err){}
+        try{ if(window.fbq) fbq('track','Lead'); }catch(err){}
+      }catch(err){
+        if(btn){ btn.disabled = false; btn.textContent = btnLabel; }
+        alert('Invio non riuscito. Riprova tra qualche istante o scrivici su WhatsApp.');
+      }
     });
   }
 }
