@@ -617,7 +617,7 @@
           "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza-con-dottoressa-federicamansi?month=2026-07",
           "scarcity": "",
           "photo": "/images/1783097121005-mansi-1-landing-2.png",
-          "features": "Complete clinical assessment\nAdvanced, in-depth analysis\nResult simulation with advanced software\nDefinitive treatment plan\nComplete guidance\nOnline or at the clinic"
+          "features": "Complete clinical assessment\nAdvanced, in-depth analysis\nResult simulation with advanced software\nPreliminary treatment plan (final review with Dr. Campa)\nComplete guidance\nOnline or at the clinic"
         },
         {
           "name": "Video call with a Beauty Consultant",
@@ -632,7 +632,7 @@
           "cta_href": "https://calendly.com/segreteriacampa/beauty-consultant?month=2026-07",
           "scarcity": "",
           "photo": "/images/1783076406610-foto-staff-landing-5.webp",
-          "features": "A first orientation, free of charge\nDiscussion of your case and attentive listening to your needs\nResult simulation with advanced software\nPreliminary treatment plan (final review with Dr. Campa)\nComplete guidance\nOnline only"
+          "features": "A first orientation, free of charge\npreliminary assessment of your needs\nResult simulation with advanced software\nPreliminary treatment plan (final review with Dr. Campa)\nGeneral guidance\nOnline only"
         },
         {
           "name": "Message us on WhatsApp",
@@ -711,6 +711,29 @@
           "c3": ""
         }
       ]
+    },
+    {
+      "type": "cta_form",
+      "id": "lead",
+      "title_a": "Write to us",
+      "title_accent": "now",
+      "body": "Fill in this form and Dr. Domenico Campa's team will contact you right away",
+      "perks": [],
+      "form_title": "fill in the form",
+      "form_subtitle": "",
+      "treatments": [
+        "Rinoplastica",
+        "Blefaroplastica",
+        "Mastoplastica",
+        "Medicina Estetica"
+      ],
+      "submit_label": "send request",
+      "success_title": "Form sent.",
+      "success_body": "Thank you — one of our experts will contact you shortly",
+      "style": {
+        "text": "#ffffff",
+        "accent": "#ff6b2d"
+      }
     }
   ],
   "footer": {
@@ -989,6 +1012,16 @@
     "5,0 · 2.238 recensioni Google": "5.0 · 2,238 Google reviews",
     "85 persone hanno prenotato negli ultimi 7 giorni": "85 people booked in the last 7 days",
     "MASTOPLASTICA ADDITIVA": "BREAST AUGMENTATION",
-    "mastoplastica additiva": "breast augmentation"
+    "mastoplastica additiva": "breast augmentation",
+    "Compila questo form, verrai Subito contattata/o dal team del dott. Domenico campa": "Fill in this form and Dr. Domenico Campa's team will contact you right away",
+    "Form inviato.": "Form sent.",
+    "Grazie, un esperto ti contatterà a breve": "Thank you — one of our experts will contact you shortly",
+    "Indicazioni di carattere generale": "General guidance",
+    "Piano pre definitivo di trattamento (revisione finale con il dott.Campa)": "Preliminary treatment plan (final review with Dr. Campa)",
+    "Scrivici": "Write to us",
+    "compila il form": "fill in the form",
+    "individuazione preliminare delle tue esigenze": "preliminary assessment of your needs",
+    "invia richiesta": "send request",
+    "ora": "now"
   }
 }
