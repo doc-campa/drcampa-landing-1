@@ -4395,6 +4395,38 @@ function renderFooter(data){
 /* ==========================================================
    INIT — fetch content.json, set colors, render everything
    ========================================================== */
+/* ==========================================================
+   RECENSIONI GOOGLE LIVE — rating e conteggio reali dalla scheda
+   Google Business (via function con cache). Fallback: valori editor.
+   ========================================================== */
+function applyLiveReviews(data, live){
+  const rating = Number(live.rating), total = Number(live.total);
+  if(!rating || !total) return;
+  const r0 = (Math.round(rating*10)/10).toFixed(1);
+  const r = SITE_LANG==='en' ? r0 : r0.replace('.', ',');
+  const sep = SITE_LANG==='en' ? ',' : '.';
+  const t = String(total).replace(/\B(?=(\d{3})+(?!\d))/g, sep);
+  const revWord = SITE_LANG==='en' ? 'reviews' : 'recensioni';
+  ((data.topbar||{}).items||[]).forEach(it => {
+    if(it && it.google_brand){
+      it.label = r + ' \u00b7 ' + t + ' ' + revWord + ' Google';
+      it.strong_part = t;
+    }
+  });
+  (data.sections||[]).forEach(s => {
+    if(s.type === 'testimonials'){
+      if(s.reviews_rating) s.reviews_rating = r;
+      if(s.reviews_count) s.reviews_count = t;
+      (s.review_badges||[]).forEach(bd => {
+        if(/google/i.test(bd.name||'')){
+          if(bd.rating) bd.rating = r;
+          if(bd.count) bd.count = t + ' ' + revWord;
+        }
+      });
+    }
+  });
+}
+
 async function init(){
   try{ document.documentElement.lang = SITE_LANG; }catch(e){}
   try{document.documentElement.setAttribute("data-theme", localStorage.getItem("theme")||"dark");}catch(e){document.documentElement.setAttribute("data-theme","dark");}
@@ -4404,6 +4436,14 @@ async function init(){
     if(!res.ok && SITE_LANG==='en'){ res = await fetch('content.json?t=' + Date.now(), {cache:'no-store'}); }
     if(!res.ok) throw new Error('HTTP ' + res.status);
     data = await res.json();
+    /* numeri Google reali (max 1,5s di attesa; se non arrivano, valori editor) */
+    try{
+      const live = await Promise.race([
+        fetch('/.netlify/functions/google-reviews').then(r => r.ok ? r.json() : null).catch(() => null),
+        new Promise(resolve => setTimeout(() => resolve(null), 1500))
+      ]);
+      if(live) applyLiveReviews(data, live);
+    }catch(e){}
   } catch(err){
     document.getElementById('app').innerHTML =
       `<div style="padding:80px 20px;text-align:center;color:#c44">Errore caricamento contenuti: ${esc(err.message)}</div>`;
