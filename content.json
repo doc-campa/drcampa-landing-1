@@ -648,7 +648,7 @@
           "cta2_label": ""
         }
       ],
-      "footer_note": "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.",
+      "footer_note": "",
       "style": {
         "bg": "#000105",
         "accent": "#fe6a2d",
@@ -717,7 +717,7 @@
       "id": "lead",
       "title_a": "Scrivici",
       "title_accent": "ora",
-      "body": "Compila questo form, verrai Subito contattata/o dal team del dott. Domenico campa",
+      "body": "Se desidera puoi compilare questo form e verraj Subito contattata/o da una delle Beauty\nConsultant del Dott. Domenico Campa",
       "perks": [],
       "form_title": "compila il form",
       "form_subtitle": "",
