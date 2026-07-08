@@ -1652,11 +1652,11 @@ section.testimonials .test-stars { color:#F5A623 !important; }
 }
 /* DESKTOP: form largo, i 5 campi su un'unica fila, messaggio a tutta larghezza */
 @media (min-width:861px){
-  #leadForm{ display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; align-items:start; }
+  #leadForm{ display:grid; grid-template-columns:repeat(4, 1fr); gap:14px; align-items:start; }
   #leadForm .field-row{ display:contents; }
   #leadForm .field{ margin:0; }
   #leadForm input, #leadForm select, #leadForm textarea{ margin-bottom:0; }
-  #leadForm > .field:nth-of-type(4){ grid-column:1 / -1; } /* messaggio */
+  #leadForm > .field:nth-of-type(3){ grid-column:1 / -1; } /* messaggio */
   #leadForm .consent{ grid-column:1 / -1; margin:2px 0 0; }
   #leadForm .btn{ grid-column:1 / -1; margin-top:0; }
 }
@@ -3340,8 +3340,8 @@ const I18N = SITE_LANG==='en' ? {
   waDefault:'Hi! I\u2019d like some information about a consultation.',
   waSend:'Open WhatsApp', waIam:'Hi! I\u2019m ', waFallback:'I\u2019d like some information.',
   fName:'First name', fSurname:'Last name', fEmail:'Email', fPhone:'Phone',
-  fInterest:'What are you interested in', fSelect:'Select\u2026', fMessage:'Message',
-  fMsgPh:'Tell us briefly what brings you here\u2026',
+  fInterest:'What are you interested in', fSelect:'Select\u2026', fMessage:'What are you interested in?',
+  fMsgPh:'Write your request or your needs here\u2026',
   fConsent:'I have read and accept the <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a> and consent to the processing of my data in order to be contacted.'
 } : {
   videoSoon:'Video in arrivo',
@@ -3354,8 +3354,8 @@ const I18N = SITE_LANG==='en' ? {
   waDefault:'Ciao! Vorrei ricevere informazioni su una consulenza.',
   waSend:'Apri WhatsApp', waIam:'Ciao! Sono ', waFallback:'Vorrei ricevere informazioni.',
   fName:'Nome', fSurname:'Cognome', fEmail:'Email', fPhone:'Telefono',
-  fInterest:'Cosa ti interessa', fSelect:'Seleziona\u2026', fMessage:'Messaggio',
-  fMsgPh:'Raccontaci brevemente cosa ti porta qui...',
+  fInterest:'Cosa ti interessa', fSelect:'Seleziona\u2026', fMessage:'A cosa sei interessato/a?',
+  fMsgPh:'Scrivi qui la tua richiesta o la tua esigenza..',
   fConsent:'Ho letto e accetto l\u2019<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.'
 };
 
@@ -3954,13 +3954,6 @@ const templates = {
                 <div class="field-row">
                   <div class="field"><label>${I18N.fEmail}</label><input type="email" name="email" required></div>
                   <div class="field"><label>${I18N.fPhone}</label><input type="tel" name="phone" required></div>
-                </div>
-                <div class="field">
-                  <label>${I18N.fInterest}</label>
-                  <select name="treatment" required>
-                    <option value="">${I18N.fSelect}</option>
-                    ${treatments}
-                  </select>
                 </div>
                 <div class="field">
                   <label>${I18N.fMessage}</label>
