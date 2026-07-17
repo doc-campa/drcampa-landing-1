@@ -379,6 +379,7 @@ html.no-topbar .hero { padding-top:190px; }
   transition:color .2s;
 }
 .nav-cta .login:hover { color:var(--orange); }
+.nav-cta .login .login-ic { display:none; }
 /* Bottone "Prenota Consulto" nella nav: arancio fluo */
 .nav-cta .btn-primary {
   background:var(--orange);
@@ -2150,7 +2151,15 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   }
   .nav-links li { padding:14px 0; border-bottom:1px solid rgba(20,28,46,.08); }
   .nav-links li:last-child { border-bottom:0; }
-  .nav-cta .login { display:none; }
+  /* Mobile: "Chiama" diventa un'icona telefono tonda */
+  .nav-cta { gap:10px; }
+  .nav-cta .login {
+    display:grid; place-items:center;
+    width:38px; height:38px; border-radius:50%;
+    border:1px solid rgba(42,54,86,.22); padding:0;
+  }
+  .nav-cta .login .login-txt { display:none; }
+  .nav-cta .login .login-ic { display:block; width:17px; height:17px; }
 }
 
 /* ============================================================
@@ -4346,7 +4355,7 @@ function renderNav(data){
       </a>
       <ul class="nav-links">${links}</ul>
       <div class="nav-cta">
-        ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login">${esc(nav.phone_label)}</a>`:''}
+        ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login" aria-label="${esc(nav.phone_label)}"><svg class="login-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="login-txt">${esc(nav.phone_label)}</span></a>`:''}
         ${nav.cta_label?`<a href="${esc(nav.cta_href||'#')}" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
         <button class="theme-toggle lang-toggle" id="langToggle" type="button" aria-label="Cambia lingua / Change language" title="${SITE_LANG==='en'?'Passa all\'italiano':'Switch to English'}">${SITE_LANG==='en'?'IT':'EN'}</button>
         <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambia tema chiaro o scuro" title="Tema chiaro / scuro">
@@ -4798,6 +4807,53 @@ function initCookieBanner(){
    WHATSAPP — al click sui link wa.me si apre un mini-form:
    nome + messaggio -> apre WhatsApp con il testo precompilato
    ========================================================== */
+/* ==========================================================
+   CALENDLY — i link calendly.com si aprono in POPUP sulla pagina
+   (invece che in nuova scheda), così possiamo tracciare gli eventi:
+   dataLayer per GTM + GA4 + Pixel sulla prenotazione confermata.
+   ========================================================== */
+function initCalendlyPopup(){
+  function loadAssets(cb){
+    if(window.Calendly){ cb(); return; }
+    var l=document.createElement('link'); l.rel='stylesheet';
+    l.href='https://assets.calendly.com/assets/external/widget.css';
+    document.head.appendChild(l);
+    var s=document.createElement('script'); s.async=true;
+    s.src='https://assets.calendly.com/assets/external/widget.js';
+    s.onload=cb; document.head.appendChild(s);
+  }
+  document.addEventListener('click', function(e){
+    var a = e.target && e.target.closest ? e.target.closest('a[href*="calendly.com"]') : null;
+    if(!a) return;
+    e.preventDefault();
+    var url = a.getAttribute('href');
+    loadAssets(function(){
+      try{ Calendly.initPopupWidget({ url:url }); }
+      catch(err){ window.open(url, '_blank', 'noopener'); }
+    });
+  });
+  var lastCalEvent='';
+  window.addEventListener('message', function(e){
+    var d = e.data || {};
+    if(typeof d.event === 'string' && d.event.indexOf('calendly') === 0){
+      var name = (d.event.split('.')[1]) || '';
+      var allowed = ['event_type_viewed','profile_page_viewed','date_and_time_selected','event_scheduled'];
+      if(allowed.indexOf(name) === -1 || name === lastCalEvent) return;
+      lastCalEvent = name;
+      window.dataLayer = window.dataLayer || [];
+      var obj = { event:'calendly', calendly_event:name };
+      if(name === 'event_scheduled' && d.payload && d.payload.invitee && d.payload.invitee.uri){
+        obj.invitee_uri = d.payload.invitee.uri;
+      }
+      window.dataLayer.push(obj);
+      try{ if(window.gtag) gtag('event', 'calendly_' + name, {}); }catch(err){}
+      if(name === 'event_scheduled'){
+        try{ if(window.fbq) fbq('trackCustom', 'CalendlyScheduled', {}); }catch(err){}
+      }
+    }
+  });
+}
+
 function initWaModal(){
   var modal=null, currentNum='';
   function build(){
@@ -4885,6 +4941,9 @@ function initBehaviors(){
     try{ localStorage.setItem('site_lang', SITE_LANG==='en' ? 'it' : 'en'); }catch(e){}
     location.reload();
   });
+
+  // ---- CALENDLY POPUP + TRACCIAMENTO ----
+  initCalendlyPopup();
 
   // ---- COOKIE BANNER ----
   initCookieBanner();
