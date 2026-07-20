@@ -1381,27 +1381,41 @@ async function trTranslateMissing(strings, tm){
   }
   return missing.length;
 }
-async function saveEnglish(){
-  // 1. Carica EN esistente (per sha e memoria di traduzione)
-  let enSha = null, tm = {};
+/* Prepara il JSON inglese (traduzione con memoria) SENZA committare */
+async function prepareEnglish(){
+  let tm = {};
   try{
     const r = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.en.json?ref=${BRANCH}`);
-    enSha = r.sha;
     try{ const old = JSON.parse(b64decode(r.content.replace(/\n/g, ''))); tm = old._tm || {}; }catch(e){}
   }catch(e){ /* prima volta: il file non esiste ancora */ }
-  // 2. Traduce solo le frasi nuove
-  const nuove = await trTranslateMissing(trCollect(data), tm);
-  // 3. Ricostruisce l'inglese e committa
+  await trTranslateMissing(trCollect(data), tm);
   const en = trBuildEn(data, tm);
   en._tm = tm;
-  const body = {
-    message: 'Auto-translate content.en.json' + (nuove ? ` (+${nuove} frasi)` : ''),
-    content: b64encode(JSON.stringify(en, null, 2)),
-    branch: BRANCH
-  };
-  if(enSha) body.sha = enSha;
-  await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/contents/content.en.json`, { method: 'PUT', body });
-  return nuove;
+  return JSON.stringify(en, null, 2);
+}
+
+/* UN SOLO commit per piu' file = UN SOLO deploy Netlify (risparmio crediti) */
+async function commitFiles(files, message){
+  const ref = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/ref/heads/${BRANCH}`);
+  const baseSha = ref.object.sha;
+  const baseCommit = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/commits/${baseSha}`);
+  const treeItems = [];
+  for(const f of files){
+    const blob = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/blobs`, {
+      method:'POST', body:{ content: b64encode(f.content), encoding:'base64' }
+    });
+    treeItems.push({ path: f.path, mode: '100644', type: 'blob', sha: blob.sha });
+  }
+  const tree = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/trees`, {
+    method:'POST', body:{ base_tree: baseCommit.tree.sha, tree: treeItems }
+  });
+  const commit = await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/commits`, {
+    method:'POST', body:{ message, tree: tree.sha, parents:[baseSha] }
+  });
+  await gh(`/repos/${REPO_OWNER}/${REPO_NAME}/git/refs/heads/${BRANCH}`, {
+    method:'PATCH', body:{ sha: commit.sha }
+  });
+  return commit.sha;
 }
 
 async function uploadImage(file){
@@ -3647,14 +3661,17 @@ async function doSave(){
   document.querySelector('#saveBtn').disabled = true;
   document.querySelector('#saveBtn').innerHTML = '<span class="spinner"></span> Pubblico…';
   try {
-    await saveContent();
-    ui.isDirty = false;
-    // Traduzione inglese automatica (non blocca la pubblicazione italiana)
-    let enOk = true, enErr = '';
+    // Prima preparo la traduzione EN, poi UN UNICO commit IT+EN => un solo deploy
+    let enStr = null, enOk = true, enErr = '';
     try {
       document.querySelector('#saveBtn').innerHTML = '<span class="spinner"></span> Traduco EN…';
-      await saveEnglish();
+      enStr = await prepareEnglish();
     } catch(e){ enOk = false; enErr = e.message || String(e); }
+    document.querySelector('#saveBtn').innerHTML = '<span class="spinner"></span> Pubblico…';
+    const files = [{ path:'content.json', content: JSON.stringify(data, null, 2) }];
+    if(enStr) files.push({ path:'content.en.json', content: enStr });
+    await commitFiles(files, enStr ? 'Publish content IT+EN (single deploy)' : 'Publish content');
+    ui.isDirty = false;
     ui.isSaving = false;
     document.querySelector('#saveBtn').disabled = false;
     document.querySelector('#saveBtn').textContent = 'Pubblica';
