@@ -3880,7 +3880,7 @@ const templates = {
       const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
       const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
       const media = src
-        ? `<video class="wv-video" autoplay muted loop playsinline preload="metadata"${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
+        ? `<video class="wv-video" muted loop playsinline preload="none" data-src="${esc(src)}"${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}></video>`
         : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">${I18N.videoSoon}</div>`);
       return `
         <figure class="wv-card reveal">
@@ -4941,6 +4941,27 @@ function initBehaviors(){
     try{ localStorage.setItem('site_lang', SITE_LANG==='en' ? 'it' : 'en'); }catch(e){}
     location.reload();
   });
+
+  // ---- VIDEO LAZY: i video partono (e si scaricano) solo quando visibili ----
+  (function(){
+    var vids = document.querySelectorAll('video[data-src]');
+    if(!vids.length) return;
+    function start(v){
+      if(v.dataset.loaded) return;
+      v.dataset.loaded = '1';
+      v.src = v.dataset.src;
+      v.autoplay = true;
+      v.play && v.play().catch(function(){});
+    }
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if(en.isIntersecting){ start(en.target); io.unobserve(en.target); } });
+      }, { rootMargin:'200px' });
+      vids.forEach(function(v){ io.observe(v); });
+    } else {
+      vids.forEach(start);
+    }
+  })();
 
   // ---- CALENDLY POPUP + TRACCIAMENTO ----
   initCalendlyPopup();
