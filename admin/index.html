@@ -1132,7 +1132,8 @@ const SECTION_SCHEMA = {
     ['title_accent', 'Titolo (parte in corsivo/oro)', 'text', 'Es: "un intervento?".'],
     ['subtitle', 'Sottotitolo descrittivo', 'textarea', 'Frase introduttiva sotto al titolo. Usa **grassetto** se vuoi.'],
     ['items', 'Video (consigliati 4)', 'list-object', 'Video verticali che partono da soli, muti e in loop. Carica file MP4 leggeri (max 5-10MB l\'uno) per non rallentare il sito.', [
-      ['video', 'Video (MP4 verticale, autoplay muto)', 'video', 'Formato verticale 9:16. Tienilo corto e leggero.'],
+      ['video', 'Video (MP4 verticale, autoplay muto)', 'video', 'Formato verticale 9:16. Tienilo corto e leggero. In alternativa incolla un link YouTube nel campo qui sotto.'],
+      ['youtube', 'Oppure: link YouTube', 'text', 'Incolla il link del video (funzionano watch?v=, youtu.be e gli Shorts). Se compilato, ha la precedenza sul file caricato.'],
       ['poster', 'Anteprima (mostrata prima del caricamento)', 'image', 'Opzionale: un fotogramma del video. Se vuoto, parte direttamente il video.'],
       ['name', 'Nome del paziente (opzionale)', 'text', 'Es: "Giulia". Solo se hai il consenso a mostrarlo.'],
       ['treatment', 'Tipo di intervento', 'text', 'Es: "Rinoplastica", "Mastoplastica additiva".']
@@ -1311,7 +1312,7 @@ async function saveContent(){
    - Ricostruisce content.en.json e lo committa
    ===================================================================== */
 const TR_SKIP_KEYS = new Set(['href','src','image','poster','photo','logo_url','bg_image','video','icon','id','type',
-  'layout','service','style','colors','new_tab','google_brand','featured','free','autoplay','loop','muted','controls',
+  'youtube','layout','service','style','colors','new_tab','google_brand','featured','free','autoplay','loop','muted','controls',
   'c1','c2','c3','mission_percent','mobile_title_gap','title_offset','bg_position','bg_position_mobile','bg_zoom',
   'bg_zoom_mobile','play_x','play_y','player_width','player_ratio','label_size','intro_size','scale','number',
   'prefix','suffix','strong_part','enabled','watermark']);
@@ -2047,9 +2048,12 @@ const previewTemplates = {
     const items = (s.items||[]).map(it=>{
       const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
       const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
-      const media = src
-        ? `<video class="wv-video" autoplay muted loop playsinline${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
-        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`);
+      const ytm = String(it.youtube||'').match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+      const ytid = ytm ? ytm[1] : '';
+      const media = ytid
+        ? `<div class="wv-yt"><img class="wv-video" src="${poster?esc(poster):`https://i.ytimg.com/vi/${esc(ytid)}/hqdefault.jpg`}" alt=""><span class="wv-play"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span></div>`
+        :         (src ? `<video class="wv-video" autoplay muted loop playsinline${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}><source src="${esc(src)}"></video>`
+        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">Video in arrivo</div>`));
       return `<figure class="wv-card">
         <div class="wv-media">${media}</div>
         ${(it.name||it.treatment)?`<figcaption class="wv-cap">${it.name?`<span class="wv-name">${esc(it.name)}</span>`:''}${it.treatment?`<span class="wv-treatment">${esc(it.treatment)}</span>`:''}</figcaption>`:''}
