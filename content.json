@@ -220,7 +220,7 @@
       "items": [
         {
           "video": {
-            "src": "/videos/1783034130870-risveglio-2.webm",
+            "src": "",
             "autoplay": true,
             "loop": true,
             "muted": true,
@@ -228,11 +228,12 @@
           },
           "poster": "",
           "name": "E se non mi risveglio?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/l90eyC5A-98"
         },
         {
           "video": {
-            "src": "/videos/1783072689742-campa-risveglio2.webm",
+            "src": "",
             "autoplay": true,
             "loop": true,
             "muted": true,
@@ -240,11 +241,12 @@
           },
           "poster": "",
           "name": "Come è andata l'anestesia?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/XikUyRtFSbA"
         },
         {
           "video": {
-            "src": "/videos/1783030343389-risvegli-1.webm",
+            "src": "",
             "autoplay": true,
             "loop": true,
             "muted": true,
@@ -252,7 +254,8 @@
           },
           "poster": "",
           "name": "Posso parlare con l'anestesista?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/qBCZk6fzCqs"
         }
       ],
       "style": {
