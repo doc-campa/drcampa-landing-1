@@ -1469,6 +1469,27 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   box-shadow:0 20px 50px -24px rgba(0,0,0,.9);
 }
 .wv-video { width:100%; height:100%; object-fit:cover; display:block; }
+
+/* ===== VIDEO YOUTUBE: autoplay muto in loop, senza interfaccia YouTube ===== */
+.wv-yt{ position:absolute; inset:0; overflow:hidden; }
+.wv-yt-poster{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; display:block; z-index:1; transition:opacity .5s ease; }
+.wv-yt iframe{
+  position:absolute; top:50%; left:50%; width:100%; height:100%; border:0;
+  transform:translate(-50%,-50%) scale(1.35);   /* zoom: taglia titolo e bordi YouTube */
+  pointer-events:none;                          /* niente hover -> niente overlay YouTube */
+}
+.wv-yt-shield{ position:absolute; inset:0; z-index:2; }   /* blocca click verso YouTube */
+.wv-audio{
+  position:absolute; right:10px; bottom:10px; z-index:3;
+  width:38px; height:38px; border-radius:50%; border:0; padding:0; cursor:pointer;
+  display:grid; place-items:center; color:#fff; background:rgba(0,0,0,.5);
+  backdrop-filter:blur(3px); transition:background .2s ease, transform .2s ease;
+}
+.wv-audio:hover{ background:rgba(0,0,0,.72); transform:scale(1.06); }
+.wv-audio svg{ width:18px; height:18px; }
+.wv-audio .ic-on{ display:none; }
+.wv-audio:not(.is-muted) .ic-off{ display:none; }
+.wv-audio:not(.is-muted) .ic-on{ display:block; }
 .wv-empty {
   position:absolute; inset:0; display:grid; place-items:center;
   color:rgba(255,255,255,.4); font-size:.85rem; letter-spacing:.03em;
@@ -3333,6 +3354,16 @@ function esc(s){
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 
+
+/* Estrae l'ID di un video da qualsiasi formato di link YouTube
+   (watch?v=, youtu.be/, /shorts/, /embed/). Stringa vuota se non è YouTube. */
+function ytId(u){
+  if(!u) return '';
+  var s = String(u).trim();
+  var m = s.match(/(?:youtube\.com\/(?:watch\?(?:.*&)?v=|shorts\/|embed\/|live\/)|youtu\.be\/)([A-Za-z0-9_-]{6,})/);
+  return m ? m[1] : (/^[A-Za-z0-9_-]{11}$/.test(s) ? s : '');
+}
+
 /* ===== LINGUA SITO (IT default / EN) ===== */
 const SITE_LANG = (function(){
   try{ return (typeof localStorage!=='undefined' && localStorage.getItem('site_lang')==='en') ? 'en' : 'it'; }
@@ -3879,9 +3910,16 @@ const templates = {
     const items = (s.items||[]).map(it=>{
       const src = it.video ? (typeof it.video==='object' ? (it.video.src||'') : it.video) : '';
       const poster = it.poster || (it.video && typeof it.video==='object' ? (it.video.poster||'') : '');
-      const media = src
+      const ytid = ytId(it.youtube || (typeof it.video==='string' ? it.video : ''));
+      const media = ytid
+        ? `<div class="wv-yt" data-yt="${esc(ytid)}" aria-label="${esc(it.name||'Video')}">
+             <img class="wv-yt-poster" src="${poster?esc(poster):`https://i.ytimg.com/vi/${esc(ytid)}/hqdefault.jpg`}" alt="${esc(it.name||'')}" loading="lazy">
+             <span class="wv-yt-shield"></span>
+             <button type="button" class="wv-audio is-muted" aria-label="Audio"><svg class="ic-off" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><line x1="17" y1="9" x2="23" y2="15"/><line x1="23" y1="9" x2="17" y2="15"/></svg><svg class="ic-on" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M16 9a4 4 0 0 1 0 6"/><path d="M19 6a8 8 0 0 1 0 12"/></svg></button>
+           </div>`
+        : (src
         ? `<video class="wv-video" muted loop playsinline preload="none" data-src="${esc(src)}"${(it.video&&typeof it.video==='object'&&it.video.controls)?' controls':''}${poster?` poster="${esc(poster)}"`:''}></video>`
-        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">${I18N.videoSoon}</div>`);
+        : (poster ? `<img class="wv-video" src="${esc(poster)}" alt="${esc(it.name||'')}">` : `<div class="wv-empty">${I18N.videoSoon}</div>`));
       return `
         <figure class="wv-card reveal">
           <div class="wv-media">${media}</div>
@@ -4934,6 +4972,60 @@ function initBehaviors(){
 
   // ---- TREATMENTS TABS ----
   initTreatmentsTabs();
+
+  // ---- VIDEO YOUTUBE: autoplay muto in loop quando entrano nello schermo ----
+  (function(){
+    var boxes = document.querySelectorAll('.wv-yt');
+    if(!boxes.length) return;
+    function load(box){
+      if(box.dataset.loaded) return;
+      var id = box.dataset.yt;
+      if(!id) return;
+      box.dataset.loaded = '1';
+      var f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/' + id +
+        '?autoplay=1&mute=1&loop=1&playlist=' + id +
+        '&controls=0&modestbranding=1&rel=0&iv_load_policy=3&playsinline=1&disablekb=1&fs=0&enablejsapi=1';
+      f.setAttribute('allow','autoplay; encrypted-media; picture-in-picture');
+      f.setAttribute('title', box.getAttribute('aria-label') || 'Video');
+      f.setAttribute('tabindex','-1');
+      var poster = box.querySelector('.wv-yt-poster');
+      box.insertBefore(f, box.firstChild);
+      setTimeout(function(){ if(poster) poster.style.opacity = '0'; }, 900);
+      box.__frame = f;
+    }
+    function cmd(box, func){
+      if(!box.__frame || !box.__frame.contentWindow) return;
+      box.__frame.contentWindow.postMessage(JSON.stringify({event:'command', func:func, args:[]}), '*');
+    }
+    boxes.forEach(function(box){
+      var btn = box.querySelector('.wv-audio');
+      if(btn) btn.addEventListener('click', function(e){
+        e.stopPropagation();
+        var muted = btn.classList.contains('is-muted');
+        cmd(box, muted ? 'unMute' : 'mute');
+        btn.classList.toggle('is-muted', !muted);
+        if(muted){
+          document.querySelectorAll('.wv-yt').forEach(function(other){
+            if(other === box) return;
+            var ob = other.querySelector('.wv-audio');
+            if(ob && !ob.classList.contains('is-muted')){ cmd(other,'mute'); ob.classList.add('is-muted'); }
+          });
+          try{ if(window.gtag) gtag('event','video_unmute',{ provider:'youtube', video_id:box.dataset.yt }); }catch(err){}
+        }
+      });
+    });
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){
+          if(en.isIntersecting){ load(en.target); }
+          else if(en.target.dataset.loaded){ cmd(en.target, 'pauseVideo'); }
+        });
+        entries.forEach(function(en){ if(en.isIntersecting && en.target.dataset.loaded) cmd(en.target,'playVideo'); });
+      }, { rootMargin:'200px', threshold:0.01 });
+      boxes.forEach(function(b){ io.observe(b); });
+    } else { boxes.forEach(load); }
+  })();
 
   // ---- LINGUA ----
   var lt=document.getElementById('langToggle');
