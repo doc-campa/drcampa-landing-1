@@ -221,7 +221,7 @@
         {
           "video": {
             "src": "",
-            "autoplay": true,
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
@@ -234,7 +234,7 @@
         {
           "video": {
             "src": "",
-            "autoplay": true,
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
@@ -247,7 +247,7 @@
         {
           "video": {
             "src": "",
-            "autoplay": true,
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
