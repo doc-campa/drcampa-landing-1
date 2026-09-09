@@ -39,7 +39,7 @@
   "sections": [
     {
       "type": "hero",
-      "bg_image": "/images/1781114045941-copertina-2.jpg",
+      "bg_image": "/images/1781114045941-copertina-2.webp",
       "watermark": "",
       "headline_pre": "\"Be the best version",
       "headline_main": "of",
@@ -67,7 +67,7 @@
         "accent": "#fe6a2d",
         "text": "#ffffff"
       },
-      "video_player_poster": "/images/1783029079836-sfondo-video.png",
+      "video_player_poster": "/images/1783029079836-sfondo-video.webp",
       "mobile_title_gap": 220,
       "bg_zoom": "0.9",
       "bg_zoom_mobile": "1",
@@ -113,17 +113,17 @@
       "logos_title": "LE SOCIETÀ SCIENTIFICHE",
       "logos": [
         {
-          "image": "/images/1781351942304-logo-asps-dottor-campa.png",
+          "image": "/images/1781351942304-logo-asps-dottor-campa.webp",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781351945710-logo-aicpre-dottor-campa.png",
+          "image": "/images/1781351945710-logo-aicpre-dottor-campa.webp",
           "alt": "",
           "href": ""
         },
         {
-          "image": "/images/1781351949261-logo-sicpre-dottor-campa.png",
+          "image": "/images/1781351949261-logo-sicpre-dottor-campa.webp",
           "alt": "",
           "href": ""
         }
@@ -274,35 +274,35 @@
       "items": [
         {
           "label": "MASTOPLASTICA additiva",
-          "image": "/images/1783076034081-img-1424.png"
+          "image": "/images/1783076034081-img-1424.webp"
         },
         {
           "label": "rinoplastica",
-          "image": "/images/1783076002047-img-1428.jpg"
+          "image": "/images/1783076002047-img-1428.webp"
         },
         {
           "label": "rinoplastica",
-          "image": "/images/1783076053948-img-1430.png",
+          "image": "/images/1783076053948-img-1430.webp",
           "caption": ""
         },
         {
-          "image": "/images/1783096490872-landing-campa-4-2.png",
+          "image": "/images/1783096490872-landing-campa-4-2.webp",
           "label": "rinoplastica"
         },
         {
-          "image": "/images/1783098600798-img-1583.png",
+          "image": "/images/1783098600798-img-1583.webp",
           "label": "mastoplastica additiva"
         },
         {
-          "image": "/images/1783098687081-foto-eleonora.png",
+          "image": "/images/1783098687081-foto-eleonora.webp",
           "label": "rinoplastica"
         },
         {
-          "image": "/images/1783098747794-eleonora-2.png",
+          "image": "/images/1783098747794-eleonora-2.webp",
           "label": "MASTOPLASTICA ADDITIVA"
         },
         {
-          "image": "/images/1783098760226-img-1580.png",
+          "image": "/images/1783098760226-img-1580.webp",
           "label": "mastoplastica additiva",
           "caption": ""
         }
@@ -619,7 +619,7 @@
           "cta2_label": "Prenota videoconsulenza",
           "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza-con-dottoressa-federicamansi?month=2026-07",
           "scarcity": "",
-          "photo": "/images/1783097121005-mansi-1-landing-2.png",
+          "photo": "/images/1783097121005-mansi-1-landing-2.webp",
           "features": "Valutazione clinica completa\nAnalisi avanzata e approfondita\nSimulazione del risultato con software avanzati\nPiano pre definitivo di trattamento (revisione finale con il dott.Campa)\nIndicazioni complete\nOnline o in studio"
         },
         {
