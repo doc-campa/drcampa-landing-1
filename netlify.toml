@@ -12,6 +12,23 @@
     Cache-Control = "public, max-age=0, must-revalidate"
 
 [[headers]]
+  for = "/content.en.json"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Cache lunga per le immagini: i nomi file contengono un timestamp univoco,
+# quindi non cambiano mai. I visitatori di ritorno non le riscaricano.
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/videos/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
   for = "/admin/*"
   [headers.values]
     X-Frame-Options = "DENY"
