@@ -1678,10 +1678,18 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   #leadForm .field-row{ display:contents; }
   #leadForm .field{ margin:0; }
   #leadForm input, #leadForm select, #leadForm textarea{ margin-bottom:0; }
-  #leadForm > .field:nth-of-type(3){ grid-column:1 / -1; } /* messaggio */
+  #leadForm .field-msg{ grid-column:1 / -1; } /* messaggio */
+  #leadForm .field-group3{ grid-column:1 / -1; display:grid; grid-template-columns:repeat(3, 1fr); gap:14px; }
   #leadForm .consent{ grid-column:1 / -1; margin:2px 0 0; }
   #leadForm .btn{ grid-column:1 / -1; margin-top:0; }
 }
+
+/* Le tre domande: affiancate su desktop, impilate su mobile */
+.field-group3{ display:grid; grid-template-columns:1fr; gap:0; }
+.field-group3 .field label{ display:block; }
+.form-wrap select{ cursor:pointer; }
+.form-wrap select:invalid{ color:rgba(237,234,227,.45); }
+:root[data-theme="light"] .form-wrap select:invalid{ color:#9AA0AC; }
 
 .form-success {
   display:none; text-align:center; padding:32px 16px;
@@ -3335,7 +3343,12 @@ body.js-ready section.testimonials.fx-in .test-badge:nth-child(3) .tb-stars { an
   <input type="email" name="email">
   <input type="tel" name="phone">
   <input type="text" name="treatment">
+  <select name="intervento"><option value="Rinoplastica"></option></select>
+  <select name="budget"><option value="Fino a 3.000 €"></option></select>
+  <select name="tempistica"><option value="Il prima possibile"></option></select>
   <textarea name="message"></textarea>
+  <input type="text" name="consenso">
+  <input type="text" name="sito_web">
   <input name="bot-field">
 </form>
 <div class="topbar" id="topbar"></div>
@@ -3382,6 +3395,11 @@ const I18N = SITE_LANG==='en' ? {
   fName:'First name', fSurname:'Last name', fEmail:'Email', fPhone:'Phone',
   fInterest:'What are you interested in', fSelect:'Select\u2026', fMessage:'What are you interested in?',
   fMsgPh:'Write your request or your needs here\u2026',
+  qIntervento:'Which procedure are you interested in?',
+  qBudget:'What budget would you like to set aside for yourself?',
+  qQuando:'When would you like to have the procedure?',
+  optBudget:['Up to \u20ac3,000','\u20ac3,000 \u2013 6,000','\u20ac6,000 \u2013 10,000','Over \u20ac10,000','I\u2019d rather discuss it in consultation'],
+  optQuando:['As soon as possible','Within 3 months','Within 6 months','More than 6 months','Just gathering information'],
   fConsent:'I have read and accept the <a href="/privacy.html" target="_blank" rel="noopener">privacy policy</a> and consent to the processing of my data in order to be contacted.'
 } : {
   videoSoon:'Video in arrivo',
@@ -3396,6 +3414,11 @@ const I18N = SITE_LANG==='en' ? {
   fName:'Nome', fSurname:'Cognome', fEmail:'Email', fPhone:'Telefono',
   fInterest:'Cosa ti interessa', fSelect:'Seleziona\u2026', fMessage:'A cosa sei interessato/a?',
   fMsgPh:'Scrivi qui la tua richiesta o la tua esigenza..',
+  qIntervento:'A quale intervento sei interessata/o?',
+  qBudget:'Quanto desideri destinare per investire su te stessa/o?',
+  qQuando:'Quando desidereresti effettuare l\u2019intervento?',
+  optBudget:['Fino a 3.000 \u20ac','3.000 \u2013 6.000 \u20ac','6.000 \u2013 10.000 \u20ac','Oltre 10.000 \u20ac','Preferisco parlarne in consulenza'],
+  optQuando:['Il prima possibile','Entro 3 mesi','Entro 6 mesi','Oltre 6 mesi','Sto raccogliendo informazioni'],
   fConsent:'Ho letto e accetto l\u2019<a href="/privacy.html" target="_blank" rel="noopener">informativa privacy</a> e acconsento al trattamento dei dati per essere ricontattato.'
 };
 
@@ -3980,7 +4003,7 @@ const templates = {
 
   cta_form(s){
     const perks = (s.perks||[]).map(p=>`<li>${richText(p)}</li>`).join('');
-    const treatments = (s.treatments||[]).map(t=>`<option>${esc(t)}</option>`).join('');
+    const treatments = (s.treatments||[]).map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join('');
     return `
       <section${sectionStyleAttr(s)} class="cta-section"${s.id?` id="${esc(s.id)}"`:''}>
         <div class="container">
@@ -4002,14 +4025,38 @@ const templates = {
                   <div class="field"><label>${I18N.fEmail}</label><input type="email" name="email" required></div>
                   <div class="field"><label>${I18N.fPhone}</label><input type="tel" name="phone" required></div>
                 </div>
-                <div class="field">
+                <div class="field-group3">
+                  <div class="field">
+                    <label>${I18N.qIntervento}</label>
+                    <select name="intervento" required>
+                      <option value="">${I18N.fSelect}</option>
+                      ${treatments}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>${I18N.qBudget}</label>
+                    <select name="budget" required>
+                      <option value="">${I18N.fSelect}</option>
+                      ${I18N.optBudget.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('')}
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label>${I18N.qQuando}</label>
+                    <select name="tempistica" required>
+                      <option value="">${I18N.fSelect}</option>
+                      ${I18N.optQuando.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join('')}
+                    </select>
+                  </div>
+                </div>
+                <div class="field field-msg">
                   <label>${I18N.fMessage}</label>
                   <textarea name="message" placeholder="${I18N.fMsgPh}" required></textarea>
                 </div>
                 <label class="consent">
-                  <input type="checkbox" required>
+                  <input type="checkbox" name="consenso" value="true" required>
                   <span>${I18N.fConsent}</span>
                 </label>
+                <input type="text" name="sito_web" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
                 <button type="submit" class="btn btn-primary">${esc(s.submit_label||'Invia')}</button>
               </form>
               <div class="form-success" id="formSuccess">
