@@ -5222,6 +5222,7 @@ function initBehaviors(){
       const btnLabel = btn ? btn.textContent : '';
       if(btn){ btn.disabled = true; btn.textContent = 'Invio in corso…'; }
       const formData = Object.fromEntries(new FormData(form).entries());
+      crmSend(formData, 'form_contatti');
       try{
         const res = await fetch('/', {
           method:'POST',
@@ -5298,6 +5299,60 @@ function animateNumber(el){
     else el.textContent = format(target);
   }
   requestAnimationFrame(step);
+}
+
+/* ==========================================================
+   GEMA SALES HUB — invio parallelo tramite funzione server-side
+   Netlify Forms resta la fonte primaria: se GEMA non risponde,
+   il lead NON si perde e l'utente non vede errori.
+   ========================================================== */
+var CRM_ENDPOINT = '/.netlify/functions/lead';
+var CRM_ENABLED  = true;   /* metti false per staccare l'invio senza toccare altro */
+
+/* ID univoco e stabile della compilazione (richiesto da GEMA per evitare doppioni) */
+function crmExternalId(){
+  try{
+    var r = (window.crypto && crypto.randomUUID) ? crypto.randomUUID()
+          : (Date.now().toString(36) + '-' + Math.random().toString(36).slice(2,10));
+    return 'form-' + location.hostname.split('.')[0] + '-' + r;
+  }catch(e){
+    return 'form-' + Date.now();
+  }
+}
+
+function crmSend(fd, origine){
+  if(!CRM_ENABLED) return Promise.resolve(null);
+  try{
+    var payload = {
+      externalId:  crmExternalId(),
+      firstName:   fd.firstName  || '',
+      lastName:    fd.lastName   || '',
+      email:       fd.email      || '',
+      phone:       fd.phone      || '',
+      intervento:  fd.intervento || '',
+      budget:      fd.budget     || '',
+      tempistica:  fd.tempistica || '',
+      origine:     origine       || ''
+    };
+    return fetch(CRM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(payload),
+      keepalive: true
+    }).then(function(r){
+      return r.json().catch(function(){ return null; });
+    }).then(function(j){
+      if(!j || j.ok !== true) console.warn('[GEMA] risposta inattesa:', j);
+      else console.log('[GEMA] lead inviato, id:', j.id);
+      return j;
+    }).catch(function(err){
+      console.warn('[GEMA] invio fallito:', err);
+      return null;
+    });
+  }catch(err){
+    console.warn('[GEMA] errore:', err);
+    return Promise.resolve(null);
+  }
 }
 
 init();
