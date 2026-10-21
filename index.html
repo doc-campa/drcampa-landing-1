@@ -2940,6 +2940,18 @@ section[style*="--section-text"] li { color:inherit; }
   .booking-ladder.bl-columns .bl-row-paid.bl-row-haspics{ margin-top:110px; gap:160px; }
 }
 
+/* Da 4 schede in su, su schermi medi vanno a capo a due per riga invece di
+   schiacciarsi fino a diventare illeggibili. Il row-gap lascia spazio alle
+   foto che sporgono sopra le schede della seconda riga.
+   NB: deve stare DOPO le regole .bl-row/.bl-card-wrap qui sopra, altrimenti
+   il loro flex:1 1 0 vince per ordine nel foglio di stile. */
+@media (min-width:761px) and (max-width:1180px){
+  .booking-ladder.bl-columns .bl-row-paid{ flex-wrap:wrap; }
+  .booking-ladder.bl-columns .bl-row-paid > .bl-tier,
+  .booking-ladder.bl-columns .bl-row-paid > .bl-card-wrap{ flex:1 1 calc(50% - 8px); }
+  .booking-ladder.bl-columns .bl-row-paid.bl-row-haspics{ row-gap:200px; }
+}
+
 /* ============================================================
    HERO CENTRATA (video grande al centro, stile "event")
    ============================================================ */
