@@ -638,6 +638,24 @@
           "features": "Un primo Orientamento Gratuito\nindividuazione preliminare delle tue esigenze\nSimulazione del risultato con software avanzati\nPiano Pre-Definitivo di trattamento (Revisione finale con il Dott. Campa)\nIndicazioni di carattere generale\nEsclusivamente Online"
         },
         {
+          "name": "Visita Specialistica Otorinolaringoiatrica",
+          "who": "",
+          "format": "",
+          "value_line": "Con il Dott. Giovanni Apuzzo.<br>Diagnosi e gestione delle patologie di naso, orecchie e gola.",
+          "price": "180€",
+          "icon": "",
+          "featured": "",
+          "free": false,
+          "cta_label": "Prenota la visita",
+          "cta_href": "https://calendly.com/segreteriacampa/consulenza-con-il-dott-salzillo-giuseppe-clone",
+          "cta2_label": "",
+          "cta2_href": "",
+          "scarcity": "",
+          "photo": "",
+          "price_compare": "",
+          "features": "Visita otorinolaringoiatrica completa\nValutazione clinica delle vie aeree superiori\nAnalisi della funzionalità respiratoria nasale\nInquadramento diagnostico personalizzato\nValutazione di eventuali esami e referti precedenti\nDefinizione del percorso terapeutico più indicato"
+        },
+        {
           "name": "Scrivici su WhatsApp",
           "who": "Segreteria Studio Campa",
           "format": "Chat · veloce e diretta",
