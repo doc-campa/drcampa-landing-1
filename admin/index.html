@@ -1117,11 +1117,12 @@ const SECTION_SCHEMA = {
         ['true', 'Sì — gratuito']
       ]]
     ]],
-    ['compare_features', 'Servizi a confronto (✓ inclusi / ✗ esclusi)', 'list-object', 'Una riga per servizio: la STESSA lista appare in tutte le schede. Le 3 colonne corrispondono alle prime 3 schede nell\'ordine qui sopra.', [
+    ['compare_features', 'Servizi a confronto (✓ inclusi / ✗ esclusi)', 'list-object', 'Si usa SOLO nelle schede che lasciano vuoto "Cosa include": lì appare questa lista al posto dell\'elenco proprio. Le colonne seguono l\'ordine delle schede qui sopra: 1ª, 2ª, 3ª, 4ª.', [
       ['label', 'Servizio', 'text', 'Es: "Valutazione clinica completa".'],
       ['c1', 'Inclusa nella 1ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]],
       ['c2', 'Inclusa nella 2ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]],
-      ['c3', 'Inclusa nella 3ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]]
+      ['c3', 'Inclusa nella 3ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]],
+      ['c4', 'Inclusa nella 4ª scheda?', 'select', null, [['', '✗ No'], ['sì', '✓ Sì']]]
     ]],
     ['footer_note', 'Nota finale rassicurante (opzionale)', 'textarea', 'Es: "Nessun impegno. Nessuna pressione. Solo chiarezza.". Usa **grassetto** per evidenziare.']
   ],
@@ -1313,7 +1314,7 @@ async function saveContent(){
    ===================================================================== */
 const TR_SKIP_KEYS = new Set(['href','src','image','poster','photo','logo_url','bg_image','video','icon','id','type',
   'youtube','layout','service','style','colors','new_tab','google_brand','featured','free','autoplay','loop','muted','controls',
-  'c1','c2','c3','mission_percent','mobile_title_gap','title_offset','bg_position','bg_position_mobile','bg_zoom',
+  'c1','c2','c3','c4','mission_percent','mobile_title_gap','title_offset','bg_position','bg_position_mobile','bg_zoom',
   'bg_zoom_mobile','play_x','play_y','player_width','player_ratio','label_size','intro_size','scale','number',
   'prefix','suffix','strong_part','enabled','watermark']);
 function trSkipKey(k){ return TR_SKIP_KEYS.has(k) || /(_href|_link)$/.test(k); }
