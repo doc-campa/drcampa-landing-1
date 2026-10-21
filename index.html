@@ -86,6 +86,10 @@
    ============================================================ */
 *, *::before, *::after { box-sizing:border-box; }
 html { scroll-behavior:smooth; -webkit-text-size-adjust:100%; }
+/* Il solo overflow-x:hidden sul body non basta: su iOS Safari la pagina
+   continua a scorrere lateralmente. "clip" blocca davvero il pan senza
+   creare un contenitore di scorrimento (hidden resta come ripiego). */
+html { overflow-x:hidden; overflow-x:clip; }
 body {
   margin:0;
   font-family:var(--font-sans);
@@ -96,6 +100,7 @@ body {
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
   overflow-x:hidden;
+  overflow-x:clip;
 }
 img, video, svg { max-width:100%; display:block; height:auto; }
 a { color:inherit; text-decoration:none; }
@@ -355,6 +360,7 @@ html.no-topbar .hero { padding-top:190px; }
 .nav-links {
   display:flex; gap:28px; list-style:none; margin:0; padding:0;
 }
+.nav-links .nav-tools { display:none; }
 .nav-links a {
   font-family:var(--font-display);
   font-size:1.02rem;
@@ -2170,6 +2176,10 @@ section.testimonials .test-stars { color:#F5A623 !important; }
      a 3 colonne si riduce a 2: logo a sinistra, CTA/toggle a destra. */
   .nav-inner { grid-template-columns:1fr auto; }
   .mobile-toggle { display:flex; }
+  /* justify-self:center (regola desktop) su un elemento in posizione assoluta
+     lo fa restringere al contenuto: il pannello usciva largo 215px invece che
+     a tutta larghezza. Serve la stessa specificita' per vincere. */
+  .nav-inner > .nav-links { justify-self:stretch; }
   .nav-links {
     position:absolute; left:0; right:0; top:100%;
     flex-direction:column; gap:0;
@@ -2185,8 +2195,17 @@ section.testimonials .test-stars { color:#F5A623 !important; }
   }
   .nav-links li { padding:14px 0; border-bottom:1px solid rgba(20,28,46,.08); }
   .nav-links li:last-child { border-bottom:0; }
+  /* Su mobile lingua e tema si spostano dentro il menu hamburger: in barra
+     restavano 5 elementi che non entrano nemmeno su iPhone grande, e il menu
+     finiva fuori schermo. */
+  .nav-cta .theme-toggle { display:none; }
+  .nav-links .nav-tools { display:flex; gap:12px; align-items:center; }
+  .nav-links .nav-tools .theme-toggle { display:grid; }
+  .nav-cta .btn-primary { padding:9px 16px; font-size:.86rem; letter-spacing:.04em; min-width:0; }
+  .logo-mark.logo-mark-img img { max-width:120px; }
+
   /* Mobile: "Chiama" diventa un'icona telefono tonda */
-  .nav-cta { gap:10px; }
+  .nav-cta { gap:10px; min-width:0; }
   .nav-cta .login {
     display:grid; place-items:center;
     width:38px; height:38px; border-radius:50%;
@@ -4445,21 +4464,26 @@ function renderNav(data){
   const nav = data.nav||{};
   const links = (nav.links||[]).map(l=>`<li><a href="${esc(l.href||'#')}">${esc(l.label||'')}</a></li>`).join('');
   const logoText = data.site?.logo_text || '';
+  /* Lingua e tema: stessi due pulsanti sia nella barra (desktop) sia dentro il
+     menu hamburger (mobile). Agganciati per attributo, non per id, perche' ora
+     esistono in due copie. */
+  const langBtn = `<button class="theme-toggle lang-toggle" data-lang-toggle type="button" aria-label="Cambia lingua / Change language" title="${SITE_LANG==='en'?'Passa all\'italiano':'Switch to English'}">${SITE_LANG==='en'?'IT':'EN'}</button>`;
+  const themeBtn = `<button class="theme-toggle" data-theme-toggle type="button" aria-label="Cambia tema chiaro o scuro" title="Tema chiaro / scuro">
+          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        </button>`;
   return `
     <div class="container nav-inner">
       <a href="#top" class="logo">
         ${logoMark(data)}
         ${logoText?`<span class="logo-text">${esc(logoText)}</span>`:''}
       </a>
-      <ul class="nav-links">${links}</ul>
+      <ul class="nav-links">${links}<li class="nav-tools">${langBtn}${themeBtn}</li></ul>
       <div class="nav-cta">
         ${nav.phone_label?`<a href="${esc(nav.phone_href||'#')}" class="login" aria-label="${esc(nav.phone_label)}"><svg class="login-ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.79 19.79 0 0 1 2.12 4.18 2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span class="login-txt">${esc(nav.phone_label)}</span></a>`:''}
         ${nav.cta_label?`<a href="${esc(nav.cta_href||'#')}" class="btn btn-primary">${esc(nav.cta_label)}</a>`:''}
-        <button class="theme-toggle lang-toggle" id="langToggle" type="button" aria-label="Cambia lingua / Change language" title="${SITE_LANG==='en'?'Passa all\'italiano':'Switch to English'}">${SITE_LANG==='en'?'IT':'EN'}</button>
-        <button class="theme-toggle" id="themeToggle" type="button" aria-label="Cambia tema chiaro o scuro" title="Tema chiaro / scuro">
-          <svg class="ic-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-          <svg class="ic-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
-        </button>
+        ${langBtn}
+        ${themeBtn}
         <button class="mobile-toggle" id="mobileToggle" aria-label="Menu">
           <span></span><span></span><span></span>
         </button>
@@ -5018,7 +5042,7 @@ function initBehaviors(){
     if(mq.addEventListener) mq.addEventListener("change", start); else if(mq.addListener) mq.addListener(start);
     setActive(0); start();
   })();
-  (function(){var tt=document.getElementById("themeToggle");if(tt){tt.addEventListener("click",function(){var c=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",c);try{localStorage.setItem("theme",c);}catch(e){}});}})();
+  (function(){document.querySelectorAll("[data-theme-toggle]").forEach(function(tt){tt.addEventListener("click",function(){var c=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";document.documentElement.setAttribute("data-theme",c);try{localStorage.setItem("theme",c);}catch(e){}});});})();
 
   // ---- VIDEO MODAL ----
   initVideoModal();
@@ -5088,10 +5112,11 @@ function initBehaviors(){
   })();
 
   // ---- LINGUA ----
-  var lt=document.getElementById('langToggle');
-  if(lt) lt.addEventListener('click', function(){
-    try{ localStorage.setItem('site_lang', SITE_LANG==='en' ? 'it' : 'en'); }catch(e){}
-    location.reload();
+  document.querySelectorAll('[data-lang-toggle]').forEach(function(lt){
+    lt.addEventListener('click', function(){
+      try{ localStorage.setItem('site_lang', SITE_LANG==='en' ? 'it' : 'en'); }catch(e){}
+      location.reload();
+    });
   });
 
   // ---- VIDEO LAZY: i video partono (e si scaricano) solo quando visibili ----
