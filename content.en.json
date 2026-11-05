@@ -220,39 +220,42 @@
       "items": [
         {
           "video": {
-            "src": "/videos/1783034130870-risveglio-2.webm",
-            "autoplay": true,
+            "src": "",
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
           },
           "poster": "",
           "name": "What if I don't wake up?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/l90eyC5A-98"
         },
         {
           "video": {
-            "src": "/videos/1783072689742-campa-risveglio2.webm",
-            "autoplay": true,
+            "src": "",
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
           },
           "poster": "",
           "name": "How did the anaesthesia go?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/XikUyRtFSbA"
         },
         {
           "video": {
-            "src": "/videos/1783030343389-risvegli-1.webm",
-            "autoplay": true,
+            "src": "",
+            "autoplay": false,
             "loop": true,
             "muted": true,
             "controls": true
           },
           "poster": "",
           "name": "Can I talk to the anaesthetist?",
-          "treatment": ""
+          "treatment": "",
+          "youtube": "https://youtube.com/shorts/qBCZk6fzCqs"
         }
       ],
       "style": {
@@ -553,7 +556,7 @@
       "row_a": [
         {
           "pill": "OVER",
-          "num": "3 CLINICS",
+          "num": "4 CLINICS",
           "label": "in Italy"
         },
         {
@@ -596,9 +599,9 @@
           "cta_label": "Book in person",
           "cta_href": "https://calendly.com/segreteriacampa/consulenza",
           "cta2_label": "Book a video consultation",
-          "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza-con-dottoressa-federicamansi",
+          "cta2_href": "https://calendly.com/segreteriacampa/video-consulenza",
           "scarcity": "",
-          "photo": "/images/1783073643380-campa-1-landing.webp",
+          "photo": "/images/1783591439149-img-0220-2.webp",
           "price_compare": "",
           "features": "Complete clinical assessment\nAdvanced, in-depth analysis\nResult simulation with advanced software\nDefinitive treatment plan\nDirect discussion with Dr. Campa\nComplete guidance\nOnline or at the clinic"
         },
@@ -635,6 +638,24 @@
           "features": "A first orientation, free of charge\npreliminary assessment of your needs\nResult simulation with advanced software\nPreliminary treatment plan (final review with Dr. Campa)\nGeneral guidance\nOnline only"
         },
         {
+          "name": "ENT Specialist Consultation",
+          "who": "",
+          "format": "",
+          "value_line": "With Dr. Giovanni Apuzzo.<br>An in-depth specialist assessment of nasal breathing function, to identify any anatomical or functional alterations.",
+          "price": "€180",
+          "icon": "",
+          "featured": "",
+          "free": false,
+          "cta_label": "Book in person",
+          "cta_href": "https://calendly.com/segreteriacampa/consulenza-con-il-dott-salzillo-giuseppe-clone",
+          "cta2_label": "Book a video consultation",
+          "cta2_href": "https://calendly.com/segreteriacampa/consulenza-con-il-dott-apuzzo-giovanni-clone",
+          "scarcity": "",
+          "photo": "/images/1792583417551-campa-dottsenzanome.webp",
+          "price_compare": "",
+          "features": "In-depth specialist medical history\nAnalysis of breathing disorders and difficulties\nClinical assessment of the nasal structures\nEndoscopic examination with a paediatric flexible fibrescope\nAssessment of any obstruction of the nasal airways\nDiagnostic assessment and preliminary evaluation ahead of any surgery"
+        },
+        {
           "name": "Message us on WhatsApp",
           "who": "Studio Campa front desk",
           "format": "Chat · quick and direct",
@@ -644,11 +665,11 @@
           "featured": "",
           "free": true,
           "cta_label": "Message us on WhatsApp",
-          "cta_href": "https://wa.me/393332204059",
+          "cta_href": "https://wa.me/393762994046",
           "cta2_label": ""
         }
       ],
-      "footer_note": "No commitment. No pressure. Just the **clarity** of knowing the right step for you.",
+      "footer_note": "",
       "style": {
         "bg": "#000105",
         "accent": "#fe6a2d",
@@ -717,15 +738,31 @@
       "id": "lead",
       "title_a": "Write to us",
       "title_accent": "now",
-      "body": "Fill in this form and Dr. Domenico Campa's team will contact you right away",
+      "body": "If you wish, you can fill in this form and one of Dr. Domenico Campa's Beauty\nConsultants will contact you right away",
       "perks": [],
-      "form_title": "fill in the form",
+      "form_title": "Fill in the Form",
       "form_subtitle": "",
       "treatments": [
+        "Mastoplastica Additiva",
+        "Mastopessi senza protesi",
+        "Mastopessi con protesi",
+        "Mastoplastica Riduttiva",
         "Rinoplastica",
-        "Blefaroplastica",
-        "Mastoplastica",
-        "Medicina Estetica"
+        "Addominoplastica",
+        "Liposuzione",
+        "Lifting Viso MACS",
+        "Lifting Cosce",
+        "Lifting Braccia",
+        "Blefaroplastica completa, superiore o inferiore",
+        "Otoplastica",
+        "Split Lobo",
+        "Lifting Temporale (Foxy eyes)",
+        "Gluteoplastica con protesi",
+        "Liplift",
+        "Medicina estetica",
+        "Medicina rigenerativa",
+        "Laser",
+        "Non so ancora / vorrei un consiglio"
       ],
       "submit_label": "send request",
       "success_title": "Form sent.",
@@ -814,7 +851,7 @@
     "enabled": true,
     "items": [
       {
-        "label": "5.0 · 2,238 Google reviews",
+        "label": "5.0 · 2,264 Google reviews",
         "href": "https://www.google.com/search?q=dottore+domenico+campa",
         "new_tab": true,
         "icon": "star",
@@ -894,6 +931,8 @@
     "Le immagini sono pubblicate previo consenso esplicito scritto dei pazienti, ai sensi del DPR n. 137/2012 e del codice deontologico FNOMCeO. Ogni caso clinico è unico: i risultati mostrati non costituiscono garanzia di esiti analoghi in altri pazienti.": "Images are published with the patients' explicit written consent, pursuant to Italian Presidential Decree no. 137/2012 and the FNOMCeO code of medical ethics. Every clinical case is unique: the results shown are no guarantee of similar outcomes in other patients.",
     "MASTOPLASTICA additiva": "BREAST augmentation",
     "rinoplastica": "rhinoplasty",
+    "mastoplastica additiva": "breast augmentation",
+    "MASTOPLASTICA ADDITIVA": "BREAST AUGMENTATION",
     "Scopri tutti i risultati @dottcampa_chirurgoplastico": "See all results @dottcampa_chirurgoplastico",
     "Trattamenti": "Treatments",
     "Interventi": "Surgical Procedures",
@@ -950,7 +989,7 @@
     "i nosrti": "our",
     "Numeri": "Numbers",
     "OLTRE": "OVER",
-    "3 SEDI": "3 CLINICS",
+    "4 SEDI": "4 CLINICS",
     "in Italia": "in Italy",
     "20 ANNI": "20 YEARS",
     "di esperienza": "of experience",
@@ -976,19 +1015,29 @@
     "Consulenza Dott.ssa Mansi": "Consultation with Dr. Mansi",
     "Conosci la Dott.ssa Mansi.<br> Primo aiuto del Dott. Campa": "Meet Dr. Mansi,<br> Dr. Campa's first assistant",
     "200€": "€200",
+    "Piano pre definitivo di trattamento (revisione finale con il dott.Campa)": "Preliminary treatment plan (final review with Dr. Campa)",
     "Videocall con una Beauty Consultant": "Video call with a Beauty Consultant",
     "Conosci la Beauty Consultant che ti accompagnerà per tutto il percorso.": "Meet the Beauty Consultant who will guide you through the whole journey.",
     "Gratis": "Free",
     "Prenota la videocall": "Book the video call",
     "Un primo Orientamento Gratuito": "A first orientation, free of charge",
-    "Discussione del tuo caso e Ascolto delle tue esigenze": "Discussion of your case and attentive listening to your needs",
+    "individuazione preliminare delle tue esigenze": "preliminary assessment of your needs",
     "Piano Pre-Definitivo di trattamento (Revisione finale con il Dott. Campa)": "Preliminary treatment plan (final review with Dr. Campa)",
+    "Indicazioni di carattere generale": "General guidance",
     "Esclusivamente Online": "Online only",
+    "Visita Specialistica Otorinolaringoiatrica": "ENT Specialist Consultation",
+    "Con il Dott. Giovanni Apuzzo.<br>Una valutazione specialistica approfondita della funzionalità respiratoria nasale, finalizzata a individuare eventuali alterazioni anatomiche e funzionali.": "With Dr. Giovanni Apuzzo.<br>An in-depth specialist assessment of nasal breathing function, to identify any anatomical or functional alterations.",
+    "180€": "€180",
+    "Anamnesi specialistica approfondita": "In-depth specialist medical history",
+    "Analisi dei disturbi e delle difficoltà respiratorie": "Analysis of breathing disorders and difficulties",
+    "Valutazione clinica delle strutture nasali": "Clinical assessment of the nasal structures",
+    "Esame endoscopico con fibroscopio flessibile pediatrico": "Endoscopic examination with a paediatric flexible fibrescope",
+    "Valutazione di eventuali ostruzioni delle vie aeree nasali": "Assessment of any obstruction of the nasal airways",
+    "Inquadramento diagnostico e valutazione preliminare a un eventuale intervento chirurgico": "Diagnostic assessment and preliminary evaluation ahead of any surgery",
     "Scrivici su WhatsApp": "Message us on WhatsApp",
     "Segreteria Studio Campa": "Studio Campa front desk",
     "Chat · veloce e diretta": "Chat · quick and direct",
     "Hai solo una domanda? Scrivici ora: è il modo più semplice per fare il primo passo.": "Just have a question? Message us now: it's the easiest way to take the first step.",
-    "Nessun impegno. Nessuna pressione. Solo la **chiarezza** di sapere qual è il passo giusto per te.": "No commitment. No pressure. Just the **clarity** of knowing the right step for you.",
     "Analisi Fotografica e simulazione del risultato": "Photographic analysis and result simulation",
     "Piano di trattamento personalizzato": "Personalised treatment plan",
     "Supporto dedicato e continuo": "Dedicated, ongoing support",
@@ -997,6 +1046,13 @@
     "Consigli direttamente dal chirurgo": "Advice directly from the surgeon",
     "Accesso prioritario all'agenda": "Priority access to the diary",
     "Colloquio conoscitivo": "Introductory conversation",
+    "Scrivici": "Write to us",
+    "ora": "now",
+    "Se desidera puoi compilare questo form e verrai Subito contattata/o da una delle Beauty\nConsultant del Dott. Domenico Campa": "If you wish, you can fill in this form and one of Dr. Domenico Campa's Beauty\nConsultants will contact you right away",
+    "Compila il Form": "Fill in the Form",
+    "invia richiesta": "send request",
+    "Form inviato.": "Form sent.",
+    "Grazie, un esperto ti contatterà a breve": "Thank you — one of our experts will contact you shortly",
     "Studio di Chirurgia Plastica ed Estetica. Cura della persona, attenzione clinica, risultati pensati per durare nel tempo.": "Plastic and Aesthetic Surgery practice. Personal care, clinical attention, results designed to last.",
     "Blefaroplastica": "Blepharoplasty",
     "Mastoplastica": "Breast surgery",
@@ -1009,19 +1065,7 @@
     "TikTok": "TikTok",
     "YouTube": "YouTube",
     "© 2026 Dr. Domenico Campa — P.IVA 10210391214": "© 2026 Dr. Domenico Campa — VAT no. 10210391214",
-    "5,0 · 2.238 recensioni Google": "5.0 · 2,238 Google reviews",
-    "85 persone hanno prenotato negli ultimi 7 giorni": "85 people booked in the last 7 days",
-    "MASTOPLASTICA ADDITIVA": "BREAST AUGMENTATION",
-    "mastoplastica additiva": "breast augmentation",
-    "Compila questo form, verrai Subito contattata/o dal team del dott. Domenico campa": "Fill in this form and Dr. Domenico Campa's team will contact you right away",
-    "Form inviato.": "Form sent.",
-    "Grazie, un esperto ti contatterà a breve": "Thank you — one of our experts will contact you shortly",
-    "Indicazioni di carattere generale": "General guidance",
-    "Piano pre definitivo di trattamento (revisione finale con il dott.Campa)": "Preliminary treatment plan (final review with Dr. Campa)",
-    "Scrivici": "Write to us",
-    "compila il form": "fill in the form",
-    "individuazione preliminare delle tue esigenze": "preliminary assessment of your needs",
-    "invia richiesta": "send request",
-    "ora": "now"
+    "5,0 · 2.264 recensioni Google": "5.0 · 2,264 Google reviews",
+    "85 persone hanno prenotato negli ultimi 7 giorni": "85 people booked in the last 7 days"
   }
 }
