@@ -2557,6 +2557,18 @@ section[style*="--section-text"] li { color:inherit; }
 }
 .bl-tier.is-free .bl-cta:hover { background:rgba(255,107,44,.12); }
 
+/* Scheda con servizio non ancora attivo: tasti spenti e nota sotto. */
+.bl-cta-soon{
+  cursor:default; pointer-events:none;
+  opacity:.42; filter:grayscale(1);
+  box-shadow:none !important; transform:none !important;
+}
+.bl-soon-note{
+  margin:2px 0 0; width:100%;
+  font-size:.74rem; line-height:1.35; letter-spacing:.02em;
+  text-align:center; opacity:.72;
+}
+
 .bl-footer-note {
   text-align:center; margin:48px auto 0; max-width:620px;
   font-size:1rem; line-height:1.6; opacity:.8;
@@ -4302,9 +4314,22 @@ const templates = {
           }).join('')}</ul>`
         : featUl(t);
       const tSlug = String(t.name||('tier-'+(idx+1))).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'');
-      const ctaA = t.cta_label?`<a class="bl-cta bl-cta-${tSlug}${t.cta2_label?'-prenota-dal-vivo':''}" data-tier="${esc(t.name||'')}" data-cta="primario" href="${esc(t.cta_href||'#contatti')}"${extAttr(t.cta_href)}>${esc(t.cta_label)}</a>`:'';
-      const ctaB = t.cta2_label?`<a class="bl-cta bl-cta-alt bl-cta-${tSlug}-videoconsulenza" data-tier="${esc(t.name||'')}" data-cta="secondario" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)}</a>`:'';
-      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
+      /* "coming_soon" valorizzato = servizio non ancora attivo: i tasti restano
+         visibili ma diventano <span>, quindi non cliccabili, non raggiungibili
+         da tastiera e invisibili al tracciamento dei click. */
+      const soon = String(t.coming_soon||'').trim();
+      const ctaA = t.cta_label
+        ? (soon
+            ? `<span class="bl-cta bl-cta-soon" aria-disabled="true">${esc(t.cta_label)}</span>`
+            : `<a class="bl-cta bl-cta-${tSlug}${t.cta2_label?'-prenota-dal-vivo':''}" data-tier="${esc(t.name||'')}" data-cta="primario" href="${esc(t.cta_href||'#contatti')}"${extAttr(t.cta_href)}>${esc(t.cta_label)}</a>`)
+        : '';
+      const ctaB = t.cta2_label
+        ? (soon
+            ? `<span class="bl-cta bl-cta-alt bl-cta-soon" aria-disabled="true">${esc(t.cta2_label)}</span>`
+            : `<a class="bl-cta bl-cta-alt bl-cta-${tSlug}-videoconsulenza" data-tier="${esc(t.name||'')}" data-cta="secondario" href="${esc(t.cta2_href||'#contatti')}"${extAttr(t.cta2_href)}>${esc(t.cta2_label)}</a>`)
+        : '';
+      const soonNote = soon?`<p class="bl-soon-note">${richText(soon)}</p>`:'';
+      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}${soonNote}</div>`:'';
       return `<div class="${cls}">
         ${(compareMode&&t.photo) ? '' : (t.icon ? `<div class="bl-icon">${icon}</div>` : '')}
         <div class="bl-tier-body">
