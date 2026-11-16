@@ -1099,6 +1099,7 @@ const SECTION_SCHEMA = {
       ['cta_href', 'Link del bottone', 'text', 'Es: "#contatti" oppure un link WhatsApp "https://wa.me/39...".'],
       ['cta2_label', 'Secondo bottone — testo (opzionale)', 'text', 'Es: "Prenota online". Crea il doppio tasto (dal vivo / online).'],
       ['cta2_href', 'Secondo bottone — link (opzionale)', 'text', 'Es: "#contatti" o link Calendly per la versione online.'],
+      ['coming_soon', 'Servizio non ancora attivo (opzionale)', 'text', 'Scrivi qui la nota, es: "Disponibile a breve". Finché questo campo è pieno i tasti della scheda restano visibili ma NON sono cliccabili. Svuotalo per riattivare le prenotazioni.'],
       ['icon', 'Icona', 'select', null, [
         ['crown', '👑 Corona (premium)'],
         ['video', '🎥 Video'],
@@ -2265,9 +2266,12 @@ const previewTemplates = {
             return `<li class="${on?'is-on':'is-off'}">${on?checkSvg:xSvg}<span>${richText(r.label)}</span></li>`;
           }).join('')}</ul>`
         : featUl(t);
-      const ctaA = t.cta_label?`<span class="bl-cta">${esc(t.cta_label)}</span>`:'';
-      const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt">${esc(t.cta2_label)}</span>`:'';
-      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}</div>`:'';
+      const soonPrev = String(t.coming_soon||'').trim();
+      const soonCls = soonPrev?' bl-cta-soon':'';
+      const ctaA = t.cta_label?`<span class="bl-cta${soonCls}">${esc(t.cta_label)}</span>`:'';
+      const ctaB = t.cta2_label?`<span class="bl-cta bl-cta-alt${soonCls}">${esc(t.cta2_label)}</span>`:'';
+      const soonNote = soonPrev?`<p class="bl-soon-note">${richText(soonPrev)}</p>`:'';
+      const ctaWrap = (ctaA||ctaB)?`<div class="bl-cta-pair">${ctaA}${ctaB}${soonNote}</div>`:'';
       return `<div class="${cls}">
         ${(compareMode&&t.photo) ? '' : (t.icon ? `<div class="bl-icon">${icon}</div>` : '')}
         <div class="bl-tier-body">
