@@ -650,7 +650,7 @@
           "cta_href": "https://calendly.com/segreteriacampa/consulenza-con-il-dott-salzillo-giuseppe-clone",
           "cta2_label": "Prenota videoconsulenza",
           "cta2_href": "https://calendly.com/segreteriacampa/consulenza-con-il-dott-apuzzo-giovanni-clone",
-      "coming_soon": "Presto in arrivo",
+          "coming_soon": "Presto in arrivo",
           "scarcity": "",
           "photo": "/images/1792583417551-campa-dottsenzanome.webp",
           "price_compare": "",
@@ -827,8 +827,8 @@
             "href": "tel:+393332204059"
           },
           {
-            "label": "segreteriacampa@gmail.com",
-            "href": "mailto:segreteriacampa@gmail.com"
+            "label": "segreteria@domenicocampa.it",
+            "href": "mailto:segreteria@domenicocampa.it"
           },
           {
             "label": "Instagram",
