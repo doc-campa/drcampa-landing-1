@@ -33,3 +33,16 @@
   [headers.values]
     X-Frame-Options = "DENY"
     X-Content-Type-Options = "nosniff"
+
+# Informative privacy e cookie gestite da iubenda
+[[redirects]]
+  from = "/privacy.html"
+  to = "https://www.iubenda.com/privacy-policy/65678320"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/cookie-policy.html"
+  to = "https://www.iubenda.com/privacy-policy/65678320/cookie-policy"
+  status = 301
+  force = true
